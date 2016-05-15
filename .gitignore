@@ -1,0 +1,7 @@
+*.suo
+*.sdf
+ipch
+/temp/*
+/bin/*
+*.vcxproj.user
+!nothing.txt

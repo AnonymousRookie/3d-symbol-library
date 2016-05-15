@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<T3DSModel>
+		<item>铲车</item><item>大理石2</item><item>大炮</item><item>带孔墙</item><item>飞机1</item><item>高层建筑</item><item>红旗2</item><item>禁止通行</item><item>骆驼</item><item>米袋</item><item>墙</item><item>三角柱</item><item>十层高楼</item><item>坦克</item><item>围墙</item><item>行人</item><item>岩石1</item><item>岩石3</item><item>养殖场</item></T3DSModel>
+	<CitySymbol>
+		<item>City</item><item>Drugstore</item><item>Goverment</item><item>Hangar</item><item>Museum</item><item>Property</item><item>Temple</item><item>Retailshop</item></CitySymbol>
+	<TreeModel>
+		<item>CACTUS1</item><item>CACTUS2</item><item>CACTUS5</item><item>CACTUS3</item></TreeModel>
+	<T3DTreeModel>
+		<item>CACTUS3</item><item>CACTUS5</item><item>CACTUS0</item><item>CACTUS1</item></T3DTreeModel>
+	<WeatherSymbol>
+		<item>a0</item><item>a1</item><item>a2</item><item>a3</item><item>a4</item><item>a5</item><item>a6</item><item>a7</item><item>a8</item><item>a9</item></WeatherSymbol>
+</root>
