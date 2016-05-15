@@ -1,5 +1,5 @@
-/************************************************************************/
-/* ÏµÍ³ÉèÖÃ¶Ô»°¿ò	Àà														*/
+ï»¿/************************************************************************/
+/* ç³»ç»Ÿè®¾ç½®å¯¹è¯æ¡†   ç±»                                                      */
 /************************************************************************/
 
 #include "stdafx.h"
@@ -8,109 +8,86 @@
 #include "afxdialogex.h"
 
 
-// CSystemSetting ¶Ô»°¿ò
+// CSystemSetting å¯¹è¯æ¡†
 
 IMPLEMENT_DYNAMIC(CSystemSetting, CDialog)
 
 CSystemSetting::CSystemSetting(CWnd* pParent /*=NULL*/)
-	: CDialog(CSystemSetting::IDD, pParent)
-	, m_SceneDataPATH(_T(""))
-{
-	// Empty
+    : CDialog(CSystemSetting::IDD, pParent)
+    , m_SceneDataPATH(_T("")) {
+    // Empty
 }
 
-CSystemSetting::~CSystemSetting()
-{
-	// Empty
+CSystemSetting::~CSystemSetting() {
+    // Empty
 }
 
-void CSystemSetting::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_SCENE_DATA_PATH, m_SceneDataPATH);
+void CSystemSetting::DoDataExchange(CDataExchange* pDX) {
+    CDialog::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_EDIT_SCENE_DATA_PATH, m_SceneDataPATH);
 }
 
 
 BEGIN_MESSAGE_MAP(CSystemSetting, CDialog)
-	ON_BN_CLICKED(IDOK, &CSystemSetting::OnBnClickedOk)
-	ON_BN_CLICKED(IDCANCEL, &CSystemSetting::OnBnClickedCancel)
-	ON_BN_CLICKED(IDC_BUTTON_CHANGE_PATH, &CSystemSetting::OnBnClickedButtonChangePath)
+    ON_BN_CLICKED(IDOK, &CSystemSetting::OnBnClickedOk)
+    ON_BN_CLICKED(IDCANCEL, &CSystemSetting::OnBnClickedCancel)
+    ON_BN_CLICKED(IDC_BUTTON_CHANGE_PATH, &CSystemSetting::OnBnClickedButtonChangePath)
 END_MESSAGE_MAP()
 
 
-// CSystemSetting ÏûÏ¢´¦Àí³ÌĞò
+// CSystemSetting æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 
-void CSystemSetting::OnBnClickedOk()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-
-	g_sceneDataPath = m_SceneDataPATH;
-
-	char sceneDir[256];
-	GetCurrentDirectoryA(256,sceneDir);
-	g_systemConfigureFile = strcat(sceneDir,"\\system.ini");
-	
-	CFileFind finder;
-	BOOL isFind = finder.FindFile(g_systemConfigureFile.c_str());
-	if(!isFind)
-	{
-		MessageBox("Can not find configure file!","warning",MB_OK);
-	}
-	else
-	{
-		::WritePrivateProfileStringA("SceneDataPath","path",m_SceneDataPATH,g_systemConfigureFile.c_str());
-	}
-	
-	CDialog::OnOK();
+void CSystemSetting::OnBnClickedOk() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    g_sceneDataPath = m_SceneDataPATH;
+    char sceneDir[256];
+    GetCurrentDirectoryA(256, sceneDir);
+    g_systemConfigureFile = strcat(sceneDir, "\\system.ini");
+    CFileFind finder;
+    BOOL isFind = finder.FindFile(g_systemConfigureFile.c_str());
+    if (!isFind) {
+        MessageBox("Can not find configure file!", "warning", MB_OK);
+    } else {
+        ::WritePrivateProfileStringA("SceneDataPath", "path", m_SceneDataPATH, g_systemConfigureFile.c_str());
+    }
+    CDialog::OnOK();
 }
 
 
-void CSystemSetting::OnBnClickedCancel()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-
-	CDialog::OnCancel();
+void CSystemSetting::OnBnClickedCancel() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    CDialog::OnCancel();
 }
 
 
-void CSystemSetting::OnBnClickedButtonChangePath()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-
-	char szPath[MAX_PATH];     //´æ·ÅÑ¡ÔñµÄÄ¿Â¼Â·¾¶ 
+void CSystemSetting::OnBnClickedButtonChangePath() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    char szPath[MAX_PATH];     //å­˜æ”¾é€‰æ‹©çš„ç›®å½•è·¯å¾„
     CString str;
-
-    ZeroMemory(szPath, sizeof(szPath));  
-
-    BROWSEINFO bi;   
-    bi.hwndOwner = m_hWnd;   
-    bi.pidlRoot = NULL;   
-    bi.pszDisplayName = szPath;   
-    bi.lpszTitle = "ÇëÑ¡Ôñ³¡¾°Êı¾İÎÄ¼şËùÔÚµÄÄ¿Â¼";   
-    bi.ulFlags = 0;   
-    bi.lpfn = NULL;   
-    bi.lParam = 0;   
-    bi.iImage = 0;   
-    //µ¯³öÑ¡ÔñÄ¿Â¼¶Ô»°¿ò
-    LPITEMIDLIST lp = SHBrowseForFolder(&bi);   
-
-    if(lp && SHGetPathFromIDList(lp, szPath))   
-    {
-        str.Format("Ñ¡ÔñµÄÄ¿Â¼Îª %s",  szPath);
-        //AfxMessageBox(str); 
-		m_SceneDataPATH = szPath;
-		UpdateData(FALSE);
+    ZeroMemory(szPath, sizeof(szPath));
+    BROWSEINFO bi;
+    bi.hwndOwner = m_hWnd;
+    bi.pidlRoot = NULL;
+    bi.pszDisplayName = szPath;
+    bi.lpszTitle = "è¯·é€‰æ‹©åœºæ™¯æ•°æ®æ–‡ä»¶æ‰€åœ¨çš„ç›®å½•";
+    bi.ulFlags = 0;
+    bi.lpfn = NULL;
+    bi.lParam = 0;
+    bi.iImage = 0;
+    //å¼¹å‡ºé€‰æ‹©ç›®å½•å¯¹è¯æ¡†
+    LPITEMIDLIST lp = SHBrowseForFolder(&bi);
+    if (lp && SHGetPathFromIDList(lp, szPath)) {
+        str.Format("é€‰æ‹©çš„ç›®å½•ä¸º %s",  szPath);
+        //AfxMessageBox(str);
+        m_SceneDataPATH = szPath;
+        UpdateData(FALSE);
     }
 }
 
-BOOL CSystemSetting::OnInitDialog()
-{
-	CDialog::OnInitDialog();
-
-	m_SceneDataPATH = CString(g_sceneDataPath.c_str());
-
-	UpdateData(FALSE);
-
-	return TRUE;  
+BOOL CSystemSetting::OnInitDialog() {
+    CDialog::OnInitDialog();
+    m_SceneDataPATH = CString(g_sceneDataPath.c_str());
+    UpdateData(FALSE);
+    return TRUE;
 }

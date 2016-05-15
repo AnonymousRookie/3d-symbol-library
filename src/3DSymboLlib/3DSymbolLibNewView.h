@@ -1,5 +1,5 @@
-
-// 3DSymbolLibNewView.h : CMy3DSymbolLibNewView ÀàµÄ½Ó¿Ú
+ï»¿
+// 3DSymbolLibNewView.h : CMy3DSymbolLibNewView ç±»çš„æ¥å£
 //
 
 #include "MainFrm.h"
@@ -27,14 +27,14 @@
 #pragma once
 
 // SkyBox Tex
-enum {TP,LF,BK,RT,FR};
+enum {TP, LF, BK, RT, FR};
 
 
-//[160119]LINE_ADD Ìí¼ÓÏß   [160209]AREA_ADD Ìí¼ÓÃæ
-enum { QUERY_COORDINATE,QUERY_DISTENCE,SELECTLINE,SELECTFLYPATH, LINE_ADD, AREA_ADD};/*MOUSEMOVE_3DMODEL±êÊ¶ÔÚÒÆ¶¯Ä£ĞÍ£¬ÕâÊÇselect¡ª¡ª3dmodelÄ£Ê½ÏÂµÄ²Ù×÷Ó¦¸ÃÔİÍ£*/
-enum { SELECT, MOVE, SCALE }; 
+//[160119]LINE_ADD æ·»åŠ çº¿   [160209]AREA_ADD æ·»åŠ é¢
+enum { QUERY_COORDINATE, QUERY_DISTENCE, SELECTLINE, SELECTFLYPATH, LINE_ADD, AREA_ADD}; /*MOUSEMOVE_3DMODELæ ‡è¯†åœ¨ç§»åŠ¨æ¨¡å‹ï¼Œè¿™æ˜¯selectâ€”â€”3dmodelæ¨¡å¼ä¸‹çš„æ“ä½œåº”è¯¥æš‚åœ*/
+enum { SELECT, MOVE, SCALE };
 
-enum {GIS_FLY_STATICHEIGHT,	GIS_FLY_PATHHEIGHT};
+enum {GIS_FLY_STATICHEIGHT, GIS_FLY_PATHHEIGHT};
 
 // model type
 enum {MODEL_3DS, MODEL_CITY, MODEL_TREE_3D, MODEL_TREE};
@@ -43,133 +43,128 @@ enum {MODEL_3DS, MODEL_CITY, MODEL_TREE_3D, MODEL_TREE};
 enum {MOUSE_SHAPE_SLECT, MOUSE_SHAPE_EDIT, MOUSE_SHAPE_ARROW};
 
 // load model type "change parameter" "add new model"
-// ĞÂÔöÄ£ĞÍ£¬¸üĞÂÄ£ĞÍ
-enum{MODEL_NEW, MODEL_CHANGE};
+// æ–°å¢æ¨¡å‹ï¼Œæ›´æ–°æ¨¡å‹
+enum {MODEL_NEW, MODEL_CHANGE};
 
 
-// a ÊÇ·ñÎª0
+// a æ˜¯å¦ä¸º0
 #define DOUBLE_NUMBER_IS_ZERO(a) ( ((a)>-0.000001) && ((a)<0.000001) )
 
 
 
-// ÊÇ·ñ´æÔÚÒÑ¾­´ò¿ªµÄ·ûºÅÎÄ¼ş
-#define EXIST_OPENED_SYMBOLLIB_FILE			1
-#define NOT_EXIST_OPENED_SYMBOLLIB_FILE		0
+// æ˜¯å¦å­˜åœ¨å·²ç»æ‰“å¼€çš„ç¬¦å·æ–‡ä»¶
+#define EXIST_OPENED_SYMBOLLIB_FILE         1
+#define NOT_EXIST_OPENED_SYMBOLLIB_FILE     0
 
 
 
 
 // model select struct
-typedef struct  
-{
-	int modelType;
-	int modelID;
-}SelectedModel, *PSelectedModel;
-
- 
-// Ä£ĞÍ½á¹¹Ìå,´æ´¢¸÷Àà·ûºÅ×´Ì¬
-typedef struct  
-{
-	CString strModelPath;		// Ä£ĞÍÂ·¾¶
-	int		iModelNum;			// Ä£ĞÍÔÚÖÖÀàÖĞID
-	int		xPos;				// Æ½ÃæË®Æ½Î»ÖÃ
-	int		zPos;				// Æ½ÃæZÎ»ÖÃ
-	float	hPos;				// µ×Ãæ¾àÀëµØÃæ¸ß¶È
-	float	radiu;				// Ä£ĞÍĞı×ª°ë¾¶£¬¾àÀëÖĞĞÄÏß
-	int		angle;				// Ä£ĞÍÈÆYÖáĞı×ª
-	float	scale;				// Ä£ĞÍËõ·ÅÒò×Ó
-	bool	isSelected;			// Ä£ĞÍÊÇ·ñ´¦ÓÚÑ¡ÖĞ×´Ì¬
-	int		iRotateX;			// Ä£ĞÍÈÆXÖáĞı×ª½Ç¶È
-	int		iRotateY;			// Ä£ĞÍÈÆYÖáĞı×ª½Ç¶È
-	int		iRotateZ;			// Ä£ĞÍÈÆZÖáĞı×ª½Ç¶È
-	int		iDisplayType;		// ÎÆÀíÓ³Éä·½Ê½£º ÖØ¸´  À­Éì
-}CModelStruct, *PModelStruct;
-
-typedef struct  
-{
-	int posX;	int posY;	int posZ;
-	int rotX;	int rotY;	int rotZ;
-	float scale;
-	CString modelPath;
-	bool isDeleted; //ÊÇ·ñ±»É¾³ı
-	int modelID;
-	bool modelSelected;
-	// 3dsÄ£ĞÍÎÆÀíÂ·¾¶¼°ÎÄ¼şÃû
-	CString m_3DS_Mode_Texture_PATH_NAME;
-}CModelParamStruct, *PModelParamStruct;
+typedef struct {
+    int modelType;
+    int modelID;
+} SelectedModel, *PSelectedModel;
 
 
-// ÇúÏß°ë¾¶,»ººÍÇúÏß³¤¶È(¼ÓÔØ³¡¾°)
-typedef struct Curve_R_L0_Struct
-{
-	long curve_R;
-	int curve_L0;
-}Curve_R_L0_Struct, *PCurve_R_L0_Struct;
+// æ¨¡å‹ç»“æ„ä½“,å­˜å‚¨å„ç±»ç¬¦å·çŠ¶æ€
+typedef struct {
+    CString strModelPath;       // æ¨¡å‹è·¯å¾„
+    int     iModelNum;          // æ¨¡å‹åœ¨ç§ç±»ä¸­ID
+    int     xPos;               // å¹³é¢æ°´å¹³ä½ç½®
+    int     zPos;               // å¹³é¢Zä½ç½®
+    float   hPos;               // åº•é¢è·ç¦»åœ°é¢é«˜åº¦
+    float   radiu;              // æ¨¡å‹æ—‹è½¬åŠå¾„ï¼Œè·ç¦»ä¸­å¿ƒçº¿
+    int     angle;              // æ¨¡å‹ç»•Yè½´æ—‹è½¬
+    float   scale;              // æ¨¡å‹ç¼©æ”¾å› å­
+    bool    isSelected;         // æ¨¡å‹æ˜¯å¦å¤„äºé€‰ä¸­çŠ¶æ€
+    int     iRotateX;           // æ¨¡å‹ç»•Xè½´æ—‹è½¬è§’åº¦
+    int     iRotateY;           // æ¨¡å‹ç»•Yè½´æ—‹è½¬è§’åº¦
+    int     iRotateZ;           // æ¨¡å‹ç»•Zè½´æ—‹è½¬è§’åº¦
+    int     iDisplayType;       // çº¹ç†æ˜ å°„æ–¹å¼ï¼š é‡å¤  æ‹‰ä¼¸
+} CModelStruct, *PModelStruct;
+
+typedef struct {
+    int posX;
+    int posY;
+    int posZ;
+    int rotX;
+    int rotY;
+    int rotZ;
+    float scale;
+    CString modelPath;
+    bool isDeleted; //æ˜¯å¦è¢«åˆ é™¤
+    int modelID;
+    bool modelSelected;
+    // 3dsæ¨¡å‹çº¹ç†è·¯å¾„åŠæ–‡ä»¶å
+    CString m_3DS_Mode_Texture_PATH_NAME;
+} CModelParamStruct, *PModelParamStruct;
+
+
+// æ›²çº¿åŠå¾„,ç¼“å’Œæ›²çº¿é•¿åº¦(åŠ è½½åœºæ™¯)
+typedef struct Curve_R_L0_Struct {
+    long curve_R;
+    int curve_L0;
+} Curve_R_L0_Struct, *PCurve_R_L0_Struct;
 
 
 
 
 
 //[160119]
-//µã
-typedef struct _Point3
-{
-	double _x;
-	double _y;
-	double _z;
-}Point3, *PPoint3;
+//ç‚¹
+typedef struct _Point3 {
+    double _x;
+    double _y;
+    double _z;
+} Point3, *PPoint3;
 
-//Ïß
-typedef struct _Line3
-{
-	Point3 pt1;
-	Point3 pt2;
-}Line3, *PLine3;
+//çº¿
+typedef struct _Line3 {
+    Point3 pt1;
+    Point3 pt2;
+} Line3, *PLine3;
 
 
 /************************************************************************/
-/* Ãæ·ûºÅÈı½Ç»¯															*/
+/* é¢ç¬¦å·ä¸‰è§’åŒ–                                                         */
 /************************************************************************/
 
-typedef struct _Triangle{
-	Point3 pt1;
-	Point3 pt2;
-	Point3 pt3;
-}Triangle, *PTriangle;
+typedef struct _Triangle {
+    Point3 pt1;
+    Point3 pt2;
+    Point3 pt3;
+} Triangle, *PTriangle;
 
 
 
 
-// ËÄ±ßĞÎ
-typedef struct _Area_4
-{
-	Point3 pt1;
-	Point3 pt2;
-	Point3 pt3;
-	Point3 pt4;
+// å››è¾¹å½¢
+typedef struct _Area_4 {
+    Point3 pt1;
+    Point3 pt2;
+    Point3 pt3;
+    Point3 pt4;
 
 
-	// ±£´æËùÓĞ¶à±ßĞÎÄÚ²¿ÍêÕûµÄÈı½ÇĞÎ
-	vector<Triangle> TrianglesInPolygonVecotr;
-	// ±£´æËùÓĞ¾Ö²¿Èı½Ç»¯ÁËµÄÈı½ÇĞÎ(Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ, ÇÒ¶à±ßĞÎµÄÄ³Ìõ±ßÓëÈı½ÇĞÎÓĞ2¸ö½»µã)
-	vector<Triangle> LocalTrianglesVecotr1;
-	// ±£´æËùÓĞ¾Ö²¿Èı½Ç»¯ÁËµÄÈı½ÇĞÎ(Èı½ÇĞÎÖ»ÓĞ2¸öµãÔÚ¶à±ßĞÎÄÚ, ÇÒ¶à±ßĞÎµÄÄ³Ìõ±ßÓëÈı½ÇĞÎÓĞ2¸ö½»µã)
-	vector<Triangle> LocalTrianglesVecotr2;
-	// ±£´æËùÓĞ¾Ö²¿Èı½Ç»¯ÁËµÄÈı½ÇĞÎ(Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ, ÇÒ¶à±ßĞÎµÄ1¸ö¶ËµãÔÚÈı½ÇĞÎÖĞ)
-	vector<Triangle> LocalTrianglesVecotr1_1;
-	// ±£´æËùÓĞ¾Ö²¿Èı½Ç»¯ÁËµÄÈı½ÇĞÎ(Èı½ÇĞÎÖ»ÓĞ2¸öµãÔÚ¶à±ßĞÎÄÚ, ÇÒ¶à±ßĞÎµÄ1¸ö¶ËµãÔÚÈı½ÇĞÎÖĞ)
-	vector<Triangle> LocalTrianglesVecotr2_1;
-	// ±£´æËùÓĞ¾Ö²¿Èı½Ç»¯ÁËµÄÈı½ÇĞÎ(Ä³Èı½ÇĞÎÃ»ÓĞµãÔÚ¶à±ßĞÎÄÚ, µ«¶à±ßĞÎµÄ1¸ö¶ËµãÔÚÈı½ÇĞÎÖĞ)
-	vector<Triangle> LocalTrianglesVecotr_last;
+    // ä¿å­˜æ‰€æœ‰å¤šè¾¹å½¢å†…éƒ¨å®Œæ•´çš„ä¸‰è§’å½¢
+    vector<Triangle> TrianglesInPolygonVecotr;
+    // ä¿å­˜æ‰€æœ‰å±€éƒ¨ä¸‰è§’åŒ–äº†çš„ä¸‰è§’å½¢(ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…, ä¸”å¤šè¾¹å½¢çš„æŸæ¡è¾¹ä¸ä¸‰è§’å½¢æœ‰2ä¸ªäº¤ç‚¹)
+    vector<Triangle> LocalTrianglesVecotr1;
+    // ä¿å­˜æ‰€æœ‰å±€éƒ¨ä¸‰è§’åŒ–äº†çš„ä¸‰è§’å½¢(ä¸‰è§’å½¢åªæœ‰2ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…, ä¸”å¤šè¾¹å½¢çš„æŸæ¡è¾¹ä¸ä¸‰è§’å½¢æœ‰2ä¸ªäº¤ç‚¹)
+    vector<Triangle> LocalTrianglesVecotr2;
+    // ä¿å­˜æ‰€æœ‰å±€éƒ¨ä¸‰è§’åŒ–äº†çš„ä¸‰è§’å½¢(ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…, ä¸”å¤šè¾¹å½¢çš„1ä¸ªç«¯ç‚¹åœ¨ä¸‰è§’å½¢ä¸­)
+    vector<Triangle> LocalTrianglesVecotr1_1;
+    // ä¿å­˜æ‰€æœ‰å±€éƒ¨ä¸‰è§’åŒ–äº†çš„ä¸‰è§’å½¢(ä¸‰è§’å½¢åªæœ‰2ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…, ä¸”å¤šè¾¹å½¢çš„1ä¸ªç«¯ç‚¹åœ¨ä¸‰è§’å½¢ä¸­)
+    vector<Triangle> LocalTrianglesVecotr2_1;
+    // ä¿å­˜æ‰€æœ‰å±€éƒ¨ä¸‰è§’åŒ–äº†çš„ä¸‰è§’å½¢(æŸä¸‰è§’å½¢æ²¡æœ‰ç‚¹åœ¨å¤šè¾¹å½¢å†…, ä½†å¤šè¾¹å½¢çš„1ä¸ªç«¯ç‚¹åœ¨ä¸‰è§’å½¢ä¸­)
+    vector<Triangle> LocalTrianglesVecotr_last;
 
 
-	CString area_texture;
-	UINT area_texture_rd;
+    CString area_texture;
+    UINT area_texture_rd;
 
-	unsigned short deleted;
-
-
-}Area_4, *PArea_4;
+    unsigned short deleted;
+} Area_4, *PArea_4;
 
 
 
@@ -177,742 +172,741 @@ typedef struct _Area_4
 
 
 
-class CMy3DSymbolLibNewView : public CView
-{
-protected: // ½ö´ÓĞòÁĞ»¯´´½¨
-	CMy3DSymbolLibNewView();
-	DECLARE_DYNCREATE(CMy3DSymbolLibNewView)
+class CMy3DSymbolLibNewView : public CView {
+  protected: // ä»…ä»åºåˆ—åŒ–åˆ›å»º
+    CMy3DSymbolLibNewView();
+    DECLARE_DYNCREATE(CMy3DSymbolLibNewView)
 
-	// ÌØĞÔ
-public:
-	CMy3DSymbolLibNewDoc* GetDocument() const;
+    // ç‰¹æ€§
+  public:
+    CMy3DSymbolLibNewDoc* GetDocument() const;
 
-	// ²Ù×÷
-public:
+    // æ“ä½œ
+  public:
+    // é‡å†™
+  public:
+    virtual void OnDraw(CDC* pDC);  // é‡å†™ä»¥ç»˜åˆ¶è¯¥è§†å›¾
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
-	// ÖØĞ´
-public:
-	virtual void OnDraw(CDC* pDC);  // ÖØĞ´ÒÔ»æÖÆ¸ÃÊÓÍ¼
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-protected:
-	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+  protected:
+    virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
+    virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
+    virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 
-	// ÊµÏÖ
-public:
-	virtual ~CMy3DSymbolLibNewView();
+    // å®ç°
+  public:
+    virtual ~CMy3DSymbolLibNewView();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+    virtual void AssertValid() const;
+    virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
-
-	// Éú³ÉµÄÏûÏ¢Ó³Éäº¯Êı
-protected:
-	afx_msg void OnFilePrintPreview();
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	DECLARE_MESSAGE_MAP()
-public:
-	PFNGLACTIVETEXTUREARBPROC glActiveTextureARB;
-	PFNGLMULTITEXCOORD2FARBPROC glMultiTexCoord2fARB;
-
-	HWND		hwnd;
-	CDC*	    m_pDC;			
-	HGLRC		m_hRC;	
-
-	int m_SCREEN_WIDTH;		//ÆÁÄ»¿í¶È
-	int m_SCREEN_HEIGHT;	//ÆÁÄ»¸ß¶È
-
-	int WinViewX,WinViewY;	//´æ´¢Ëù¶¨ÒåÊÓ¿ÚµÄ¿í¶ÈºÍ¸ß¶È
-	BOOL bStereoAvailable;	//ÏÔ¿¨ÊÇ·ñÖ§³ÖÁ¢ÌåÏÔÊ¾
-
-	GLfloat m_ViewWideNarrow;   //ÓÃÀ´µ÷ÕûgluPerspective()º¯Êı¶¨ÒåÆ½½ØÍ·ÌåµÄÊÓÒ°µÄ½Ç¶È(Ôö´ó»ò¼õĞ¡)
-	double m_near,m_far;	//gluPerspective()º¯Êı¶¨ÒåÆ½½ØÍ·ÌåµÄ½ü¼ô²ÃÆ½ÃæºÍÔ¶¼ô²ÃÆ½ÃæµÄ¾àÀë
-	
-	float m_FrustumAngle;
-
-	BOOL SetupPixelFormat();
-	BOOL InitializeOpenGL(CDC *pDC);
-
-	void InitData();
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnDestroy();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnContourTerrainImport();
-
-	afx_msg LRESULT OnGoodBye(WPARAM wParam,LPARAM lParam);	// ×Ô¶¨ÒåÏìÓ¦ÏûÏ¢,ÏìÓ¦Ä£ĞÍÉèÖÃ,·ÇÄ£Ê½¶Ô»°¿ò
-
-	// µ¼ÈëµÈ¸ßÏßµØÊÆÍ¼ÎÆÀí¼°Êı¾İ
-	int					iTerrainType;						// 1-µÈ¸ß, 2-Ëæ»ú, 0-Ã»ÓĞµ¼ÈëµØĞÎ
-	CString				terrainTexFileName;
-	CString				terrainContourFileName;
-	BITMAPINFOHEADER	g_bit;								// ¶¨ÒåÎ»Í¼½á¹¹£¬ÔÚModelObjÖĞÊ¹ÓÃ»Ò¶ÈµÈ¸ßÏßÍ¼Éú³ÉµØĞÎ
-	unsigned char		*g_imageData;						// ¶¨ÒåÍ¼ĞÎ»º´æÇø£¬ÔÚModelObjÖĞÊ¹ÓÃ»Ò¶ÈµÈ¸ßÏßÍ¼Éú³ÉµØĞÎ
-	UINT				texTerrain;							// ÌùÍ¼	
-	bool				LoadT8(char *filename, GLuint &texture);
-	unsigned char*		LoadBit(char *filename, BITMAPINFOHEADER *bitmap);
-
-
-	bool		g_isTerrainInit;
-	void		InitTerrain();
-	void		DrawTerrain();
-	float		GetHeight(float x, float z);		// »ñÈ¡µØÃæ¸ß¶È
-
-
-	//Ïà»ú²ÎÊı±äÁ¿ 
-	CVector3	m_vEyePosition;		//Ïà»úÊÓµã×ø±ê
-	CVector3	m_vLook;			//Ïà»ú¹Û²ìµã×ø±ê
-	CVector3	m_vUp;				//Ïà»úÏòÖĞÈıÎ¬Ê¸Á¿
-	
-
-	float		m_viewHeight;		//ÊÓµã¸ß¶È
-	float		m_oldviewHeight;	//Ç°Ò»ÊÓµã¸ß¶È
-
-	CVector3	m_originLook;		//Ïà»ú³õÊ¼ÊÓµã×ø±ê
-	float		m_viewdegree;		//¹Û²ìµãÓëÊÓµãÖ®¼äµÄ¸©ÊÓ½Ç
-
-
-	// ÂşÓÎ
-	float	    rad_xz;				// ½Ç¶È
-	float	    g_Angle;			// ·½Î»½Ç
-	float	    g_elev;				// Ñö¸©½Ç
-	float		gao;
-
-	//ÓÃÓÚ¼ÆËãÏà»úÊÂ²ÎÊıµÄCVector3ÀàĞÍ±äÁ¿
-	CVector3	m_vStrafe;		
-	CVector3	View;		
-
-	void DrawScene();
-	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-
-	// ÉèÖÃ»æÍ¼Ä£Ê½
-	int m_Drawmode;
-	void SetDrawMode();
-
-	// Ìì¿ÕºĞ
-	bool		 iSkyBoxLoaded;
-	afx_msg	void OnSkyboxTex();
-	UINT		 g_texSkyBox[5];
-	void		 CreateSkyBox();
-	void		 SkyBoxTexture(UINT textur);
-	afx_msg void OnUpdateDrawmodeLine(CCmdUI *pCmdUI);
-	afx_msg void OnDrawmodeRender();
-	afx_msg void OnUpdateDrawmodeRender(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateDrawmodeTexture(CCmdUI *pCmdUI);
-	afx_msg void OnDrawmodeLine();
-	afx_msg void OnDrawmodeTexture();
-	afx_msg void OnSpacequerySet();
-
-	// ¿Õ¼ä²éÑ¯±êÖ¾²ÎÊı
-	int		m_shizxLength;		// ²éÑ¯±êÖ¾µÄÊ®×ÖÏß³¤¶È
-	int		m_shuzxHeight;		// ²éÑ¯±êÖ¾µÄÊúÖ±Ïß³¤¶È
-	int		m_QueryLineWidth;	// ²éÑ¯±êÖ¾ÏßµÄ¿í¶È
-	int		m_QueryColorR,m_QueryColorG,m_QueryColorB;// ²éÑ¯±êÖ¾ÏßµÄÑÕÉ«(ºì,ÂÌ,À¶)
-
-	BYTE	m_QueryType;		// ±êÊ¶¿Õ¼ä²éÑ¯Àà±ğ
-	BYTE    m_OperateType;		// Ä£ĞÍ²Ù×÷ÀàĞÍ
-
-	bool	m_bmouseView;		// ÊÇ·ñÆğÓÃÊó±ê¿ØÖÆÏà»ú
-	POINT	m_oldMousePos;		// Ç°Ò»Êó±êÎ»ÖÃ
-
-	double	pt1[3],pt2[3];		// ´æ´¢²éÑ¯µÄ×ø±ê
-	int		m_bSearchDistencePtNums;// ²éÑ¯Ê±µãÈ¡µÄ¿Õ¼äµãÊı
-
-
-	long m_linePtnums;		// µ±Ç°ÏßÂ··½°¸Éè¼Æ½»µã×ÜÊı
-	long m_oldlinePtnums;	// Ô­ÓĞÏßÂ··½°¸Éè¼Æ½»µãÊı
-
-
-	afx_msg void OnQueryCoordinate();
-	afx_msg void OnUpdateQueryCoordinate(CCmdUI *pCmdUI);
-	afx_msg void OnQueryDistence();
-	afx_msg void OnUpdateQueryDistence(CCmdUI *pCmdUI);
-
-	void ScreenToGL(CPoint point);
-	void DrawSearchPoint();
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-
-	// ÉãÏñ»ú  ¼üÅÌ¿ØÖÆ
-
-	//Ïà»úĞı×ª²ÎÊı
-	float	m_Step_X;	//Ïà»úÔÚX·½ÏòÒÆ¶¯µÄ²½³¤(Êó±ê¿ØÖÆ)
-	float	m_Step_Z;	//Ïà»úÔÚZ·½ÏòÒÆ¶¯µÄ²½³¤(Êó±ê¿ØÖÆ) 
-
-	float	m_xTrans;	//ÔÚX·½ÏòÉÏÒÆ¶¯µÄ¾àÀë(¼üÅÌ¿ØÖÆ)
-	float	m_zTrans;	//ÔÚZ·½ÏòÉÏÒÆ¶¯µÄ¾àÀë(¼üÅÌ¿ØÖÆ)
-	int		m_keynumber;//±êÊ¶¼üÅÌ°´¼üÖµ
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-
-	void CamraUpdate();
-	void MoveCameraZ(float speed);
-	void CheckForMovement();
-	void MoveCameraX(float speed);
-	void SetCamra(); 
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	void SetViewByMouse();
-	void RotateView(float angle, float x, float y, float z);
-	float  derAngleY;	//	Êó±ê¿ØÖÆÊ±Y·½ÏòµÄÃô¸ĞÏµÊı
-	float  derAngleZ;	//	Êó±ê¿ØÖÆÊ±Z·½ÏòµÄÃô¸ĞÏµÊı
-	float  derDisScale; //	Êó±êÒÆ¶¯Ä£ĞÍÊ±Ãô¸ĞÏµÊı
-	afx_msg void OnCameraParamSet();
-
-	//ÈıÎ¬ÂşÓÎ
-	BOOL m_ShowFlyPath; //	±êÊ¶ÊÇ·ñÏÔÊ¾·ÉĞĞÂ·¾¶
-	CArray<PCordinate,PCordinate> m_FlayPath;		// ´æ´¢½øĞĞ·ÉĞĞÂ·¾¶Ñ¡ÔñÊ±ËùÑ¡ÔñµÄÒ»ÏµÁĞµã×ø±ê
-	CArray<PCordinate,PCordinate> m_FlayPathTempPts;// ´æ´¢ÁÙÊ±½øĞĞ·ÉĞĞÂ·¾¶Ñ¡ÔñÊ±ËùÑ¡ÔñµÄÒ»ÏµÁĞµã×ø±ê
-	afx_msg void OnPathManuinput();
-	void DrawFlyPath();
-	afx_msg void OnFlppathInterpolation(); 
-	afx_msg void OnFlypathSave();
-	int FlyPathSave(char *pathfile);
-	BOOL m_PathFlag;//ÊÇ·ñÊäÈë·ÉĞĞÂ·¾¶
-	afx_msg void OnFlyOpenpath();
-	int FlyPathRead(char *pathfile);
-	afx_msg void OnFlyOnoffpath();
-	afx_msg void OnUpdateFlyOnoffpath(CCmdUI *pCmdUI);
-
-	BYTE m_FlyHeightType;			// ÈıÎ¬ÂşÓÎÀàĞÍ(¹Ì¶¨¸ß¶ÈÂşÓÎ,¹Ì¶¨¸ß²îÂşÓÎ)
-	int m_flypathPtIndex;			// ·ÉĞĞÂ·¾¶×ø±êË÷ÒıºÅ
-	int m_flyPathCurrentPtIndex;	// ÔÚ·ÉĞĞ¹ı³ÌÖĞ¼ÇÂ¼µ±Ç°Â·¾¶µãµÄË÷ÒıºÅ,ÓÃÓÚÔİÍ£·ÉĞĞÆ÷
-	int m_flyspeed;					// ·ÉĞĞÊ±µÄ¼ÆÊ±Æ÷Ê±¼ä¼ä¸ô 
-
-	BOOL m_fly_start_pause_Enable;  // ÔİÍ£/¿ªÊ¼ÊÇ·ñÉúĞ§
-	
-	afx_msg void OnFlyStaticheight();
-	afx_msg void OnUpdateFlyStaticheight(CCmdUI *pCmdUI);
-	void SetFLyTimer();
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	void GetCameraCorrdinate(double x1, double y1, double z1, double x2, double y2, double z2);
-	float m_maxHeight, m_minHeight,m_StaticHeight;
-	afx_msg void OnFlyRoutineheight();
-
-	GLfloat m_ViewUpDown;			// ÊÓ½ÇÉÏ,ÏÂÇã
-	afx_msg void OnUpdateFlyRoutineheight(CCmdUI *pCmdUI);
-
-	BOOL m_FlyPause;				//ÊÇ·ñÔİÍ£·ÉĞĞ
-	afx_msg void OnFlyPlaypause();
-	afx_msg void OnUpdateFlyPlaypause(CCmdUI *pCmdUI);
-	afx_msg void OnFlyStop();
-	afx_msg void OnFlyOnestep();
-	afx_msg void OnFlyViewEnlarge();
-	afx_msg void OnFlyViewSmall();
-	afx_msg void OnFlyHeightUp();
-	afx_msg void OnFlyHeightDown();
-	afx_msg void OnFlyViewUp();
-	afx_msg void OnFlyViewDown();
-	afx_msg void OnFlySpeedUp();
-	afx_msg void OnFlySpeedDown();
-	void DisplayHelp();
-	CGLFont* Font;			// ÏÔÊ¾·ÉĞĞÊ±¿ì½İ¼üÎÄ×ÖÌáÊ¾
-	int	m_Time,				// ¿ªÊ¼Ê±¼ä
-		m_Fram,				// ÏÔÊ¾´ÎÊı
-		tim;				// Ë¢ĞÂËÙ¶È
-	HFONT	hFont,hFont0;
-	void	TextFlyHelp();	// ÏÔÊ¾ÎÄ×Ö 
-
-	//ÏÔÊ¾ÁĞ±í²ÎÊı 
-	GLuint m_ClockList;		//Ê±ÖÓÖ¸±±ÕëÏÔÊ¾ÁĞ±í
-	float m_NorthPtangle;	//Ö¸±±Õë³õÊ¼Ö¸Ïò½Ç¶È
-	void InitList();
-	void MakeClockList();
-	void DrawClock();
-	void SetClockProjectionNavigate();
-	void PrintText(float x, float y, char *string);
-	void GetNorthPtangle();
-	void DrawNorthPt();
-
-	GLuint m_SkyList;		// Ê±ÖÓÖ¸±±ÕëÏÔÊ¾ÁĞ±í
-	bool m_bShowbreviary;	// ÊÇ·ñÏÔÊ¾ËõÂÔÊÓÍ¼
-	void MakeSkykList();
-	void DrawSky();
-	void SetSkyProjection();
-	void SetSkyProjectionNavigate();
-
-	// 3DSÄ£ĞÍ
-	afx_msg void On3dsModelLoad();
-	
-	int m_i3DModelNum;
-
-
-	CArray<PModelParamStruct, PModelParamStruct> m_3DModel;
-
-
-/************************************************************************/
-/*                   ÏßÂ·												*/
-/************************************************************************/
-
-	BOOL b_haveMadeRail3DwayList;	// ÊÇ·ñÒÑ¾­ÓĞÈıÎ¬ÏßÂ·ÏÔÊ¾ÁĞ±í(Í¸ÊÓÍ¶Ó°Ä£Ê½ÏÂ)
-	
-	Railway m_Railway;				// ÏßÂ·Â·»ù½á¹¹
-	GLuint m_Rail3DwayList;			// ÏßÂ·ÈıÎ¬Ä£ĞÍÏÔÊ¾ÁĞ±í(Í¸ÊÓÍ¶Ó°Ä£Ê½)
-
-	CArray<PCordinate,PCordinate> m_TempPts;// ÁÙÊ±µã
-
-	CTexture m_cTxtureBP;		// Â·»ù±ßÆÂÎÆÀí
-	CTexture m_cTxtureLJ;		// Â·¼çÎÆÀí
-	CTexture m_cTxtureGdToLJ;	// µÀ´²±ßÆÂÎÆÀí
-	CTexture m_cTxtureRailway;	// ¹ìµÀÎÆÀí
-	CTexture m_cTxturePT;		// ±ßÆÂÆ½Ì¨ÎÆÀí	
-
-	CTexture m_cFillFaceTxture;	// ¶ÏÃæÎÆÀí
-
-	// ÊµÏÖÍ¸ÊÓÍ¶Ó°Ä£Ê½ÏÂµÄÏßÂ·ÈıÎ¬Ä£ĞÍ»æÖÆ
-	void DrawRailwaythesme();
-
-	// »æÖÆÖĞĞÄÏß(Î»ÓÚµØÃæÒÔÏÂµÄ²¿·Ö²»»æÖÆ)
-	void DrawCenterLine(long index, BOOL ifSelectLine);
-
-	// »æÖÆ±ßÆÂ
-	void DrawBP(long index, int BPside);
-
-	void fun(PCordinate ppt);
-	void fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0);
-
-
-	// ¼ÆËã2¸öÏòÁ¿Ö®¼äµÄ¼Ğ½Ç,ÓÉ²ÎÊı·µ»Ø
-	void getDegreeBetween2Vectors(CVector3 v1_Begin/*in*/,CVector3 v1_End/*in*/,
-		CVector3 v2_Begin/*in*/,CVector3 v2_End/*in*/, float *pDegreeRet/*out*/);
-
-	void drawFillFace(vector<Railway3DCordinate> fillFacePoints);
-	
-//=====================================================================================
-
-
-	// 3DSÄ£ĞÍ
-	CLoad3DS*	m_3ds;											// ¶¨Òå3DSÄ£ĞÍ 
-
-	
-	void Draw3DModel(PModelParamStruct model);
-
-	afx_msg void On3dsModelSelectSet();
-	afx_msg void OnUpdate3dsModelSelectSet(CCmdUI *pCmdUI);
-	bool bIsSelect3DModel;
-
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-
-	bool bIsMouseMove3DModel;
-	afx_msg void On3dsModelMouseMove();
-	afx_msg void OnUpdate3dsModelMouseMove(CCmdUI *pCmdUI);
-	void JudgeModelSelected(PCordinate ppt);	// ÅĞ¶ÏÄ£ĞÍ×éÖĞÄÄĞ©Ä£ĞÍ±»Ñ¡ÖĞ,½øĞĞ×´Ì¬ĞŞ¸Ä
-	int m_bMouseMove3DModelPtNums;				// ×ó¼ü°´ÏÂÊıÁ¿¼ÓÒ»,×ó¼üµ¯ÆğÔÙ¼ÓÒ»,µ½2Ê±¾Í¿ÉÒÆ¶¯Ä£ĞÍÎ»ÖÃ,ÒÆ¶¯ÏòÁ¿ÎªÊó±ê±ä¶¯ÏòÁ¿
-
-
-	CMainFrame *pMain;							// »ñÈ¡MainFrameÀàÖ¸Õë
-
-	// ¾°¹ÛÊ÷¿ØÖÆ
-	afx_msg void OnTreeLoad();
-	CArray<PModelStruct,PModelStruct> m_TreeModel; // ´æ´¢ËùÓĞ¾°¹ÛÊ÷ĞÅÏ¢
-	void LoadT16(char *filename, GLuint &texture);
-	int m_iTreeModelNum;		
-	UINT g_cactus[50];								// ÌùÍ¼,ÎÆÀí
-
-	// ÏÔÊ¾ÌØÊâÆ½ÃæÊ÷£¬³¡¾°Ğı×ªÊ±Ê÷Ò²¸ú×ÅĞı×ª£¬Ê¼ÖÕÊÇÕıÃæ¶Ô×ÅÓÃ»§£¬ÕâÑù¾Í¿´²»³öÊÇÆ½ÃæÁË
-	void ShowTree(int i);
-
-	// µ¼Èë3DÁ¢Ìå¾°¹ÛÊ÷Ä£ĞÍ
-	afx_msg void On3dTreeLoad();
-	CArray<PModelStruct,PModelStruct> m_3DTreeModel; // ´æ´¢ËùÓĞ¾°¹ÛÊ÷ĞÅÏ¢
-	int m_i3DTreeModelNum;		
-	UINT g_cactus3DTree[50];								// ÌùÍ¼,ÎÆÀí
-
-	// ÏÔÊ¾ÌØÊâÆ½ÃæÊ÷£¬³¡¾°Ğı×ªÊ±Ê÷Ò²¸ú×ÅĞı×ª£¬Ê¼ÖÕÊÇÕıÃæ¶Ô×ÅÓÃ»§£¬ÕâÑù¾Í¿´²»³öÊÇÆ½ÃæÁË
-	void Show3DTree(int i);
-
-	// ³ÇÊĞ·ûºÅ
-	afx_msg void OnCitySymbolLoad();
-	int m_iCitySymbolModelNum;
-	CArray<PModelStruct,PModelStruct> m_CitySymbolModel; // ´æ´¢ËùÓĞ³ÇÊĞ·ûºÅĞÅÏ¢
-	UINT g_citySymbolTex[50];							 // ÌùÍ¼,ÎÆÀí
-	void ShowCitySymbol0(int i);
-	void ShowCitySymbol(int i);
-	void LoadPNG(const char *fileName, GLuint &texture);
-
-	//µ¼ÈëÌìÆøÎÆÀí Ö»ÓĞÒ»¸öÎÆÀí
-	
-	afx_msg void OnWeatherLoad();
-	
-	UINT g_weatherTex;									// ÌùÍ¼,ÎÆÀí
-	void ShowWeather();
-	bool bIsWeatherLoad;
-
-	// ÅĞ¶ÏÊÇ·ñ½øĞĞÁË×ø±ê²éÑ¯²Ù×÷
-	bool IsSearchPoint;
-
-	// ½«¶Ô»°¿ò±äÁ¿¸³Öµ¸ø½á¹¹Ìå
-	void C3DModelParamSetTOPModelStruct(C3DModelParamSet& model, PModelStruct &pStruct);  
-	// ½«¶Ô»°¿ò±äÁ¿¸³Öµ¸ø½á¹¹Ìå
-	void ModelParamDlgToPModelParamStruct(ModelParam &model, PModelParamStruct pStruct);
-	// ½«½á¹¹ÌåÄÚÈİ¸³Öµ¸ø±äÁ¿
-	void PModelParamStructToModelParamDlg(ModelParam &model, PModelParamStruct pStruct);
-
-	// ¹öÂÖ¿ØÖÆÊÓ¾°´°ÌåµÄ´óĞ¡£¨ËõĞ¡£¬·Å´ó£©
-	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-
-	// ÉäÏßÊ°È¡ÎïÌå
-	void JudgeRayIntersect(
-		CVector3 rayStart,		// ÉäÏßÆğµã  
-		CVector3 rayDir,		// ÉäÏß³¤¶ÈºÍ·½Ïò  
-		CVector3 returnNormal	// ¿ÉÑ¡µÄ£¬Ïà½»µã´¦·¨ÏòÁ¿
-		);
-	// ÅĞ¶ÏÉäÏßÊÇ·ñÓëAABB°üÎ§ºĞ£¬²¢·µ»Ø½»µã
-	float RayIntersect(  
-		CVector3 rayStart,		// ÉäÏßÆğµã  
-		CVector3 rayDir,		// ÉäÏß³¤¶ÈºÍ·½Ïò  
-		CVector3 returnNormal,	// ¿ÉÑ¡µÄ£¬Ïà½»µã´¦·¨ÏòÁ¿  
-		CVector3 min,			// °üÎ§ºĞ×óÏÂ½Ç¶¥µã
-		CVector3 max			// °üÎ§ºĞÓÒÉÏ½Ç¶¥µã
-		);
-
-	// Ê°È¡Ä£ĞÍ¼¯ºÏ
-	vector<PSelectedModel> m_pSelectedModelSet;
-	// Ñ¡ÖĞÎïÌåÏß¿òÑÕÉ«
-	float wireR,wireG,wireB;
-	// ÉÁË¸¶¨Ê±Æ÷Æô¶¯±êÊ¶
-	bool m_bFlash;
-
-	bool m_bMouseMoveSelect; // Ñ¡ÔñÄ£Ê½ÏÂµÄÊó±êÒÆ¶¯Ê°È¡Ä£ĞÍ
-	int m_mouseShape;		 // Êó±êĞÎÌ¬
-
-	// ³¡¾°ÅäÖÃÎÄ¼şµ¼Èë
-	bool m_bSecneConfig;
-	afx_msg void OnSceneLoad();
-
-	
-
-	CString m_AllDataPath; // ËùÓĞÊı¾İÎÄ¼şÂ·¾¶
-	CString m_SceneConfig; // ³¡¾°ÎÄ¼ş¼Ğ
-
-	// µØĞÎÎÄ¼ş¼Ğ£¬µØĞÎÎÆÀíÎÄ¼ş¼Ğ£¬µØĞÎµÈ¸ßÎÄ¼ş¼Ğ
-	CString m_TerrainFolder, m_TerrainTextureFolder, m_TerrainContourFolder; 
-	// µØĞÎÎÆÀí£¬µØĞÎµÈ¸ßÍ¼
-	CString m_TerrainTexture, m_TerrainContour;
-	// SkyBox
-	CString m_SkyBoxFolder, m_SkyBoxKindFolder, m_SkyBoxTP,m_SkyBoxLT,m_SkyBoxRT,m_SkyBoxBK,m_SkyBoxFR;
-	
-	// 3DS Ä£ĞÍ	
-	CString m_3DModelFolder;
-	CString m_3DModelPath;
-	
-	float m_3DModelPosX, m_3DModelPosY, m_3DModelPosZ;
-	
-	float m_3DModelRotX, m_3DModelRotY, m_3DModelRotZ;
-	float m_3DModelScale;
-
-
-	// ³ÇÊĞ±êÊ¶Êı¾İ
-	CString m_CitySymbolFolder, m_CitySymbolTex;
-	
-	float m_CitySymbolPosX, m_CitySymbolPosY, m_CitySymbolPosZ;
-
-	// ¾°¹ÛÊ÷Êı¾İ
-	CString m_TreeModelFolder, m_TreeModelTex;
-	
-	float m_TreeModelPosX, m_TreeModelPosY, m_TreeModelPosZ;
-
-	// ÌìÆøÊı¾İ
-	CString m_WeatherFolder, m_WeatherTex;
-
-	// Ìì¿ÕºĞÎÆÀí
-	void LoadSkyBoxTex(CString skyTP, CString skyLF, CString skyBK, CString skyRT, CString skyFR);
-	CString g_texSkyBoxFlieNameTP,g_texSkyBoxFlieNameLF,g_texSkyBoxFlieNameBK,g_texSkyBoxFlieNameRT,g_texSkyBoxFlieNameFR;
-
-	// µØĞÎÎÆÀí
-	void LoadTerrainTex(CString terrainTex, CString terrainContour);
-
-	// 3DÄ£ĞÍÉèÖÃ
-	//void Load3DModel(PModelStruct p3d, int iModelID);
-	//void Load3DModel(PModelParamStruct p3d, int iModelID);
-	void Load3DModel(PModelParamStruct p3d, int iLoadModelType); 
-
-	bool m_bIsLBtnDown;
-	afx_msg void OnSceneSave();
-	bool ScenSave(CString scenePth);
-
-	// ¿ØÖÆÑ¡ÖĞÄ£ĞÍ,µ¥¸öÄ£ĞÍÑ¡Ôñ¿ÉÒÔ¿ØÖÆËùÓĞÄ£ĞÍ²ÎÊıÉèÖÃ£¬×éÄ£ĞÍÑ¡ÔñµÄ»°Ö»ÄÜÒÆ¶¯×éºÏÄ£ĞÍ
-	// ÓÒ¼ü°´ÏÂ µ¯Æğ ±êÊ¶
-	
-	int m_selectedModelID; // µ±Ç°Êó±êÑ¡ÖĞÄ£ĞÍID£¬µ±Ç°Ä¬ÈÏÖ»ÓĞ3DSÄ£ĞÍ
-	afx_msg void OnModelMove();
-	afx_msg void OnModelParam();
-	afx_msg void OnModelScale();
-
-	afx_msg void OnConfigureSymbolList();
-	afx_msg void OnSystemSetting();
-	afx_msg void OnCloseCurrentScene();
-	afx_msg void OnModelDelete();
-	afx_msg void OnMenuBuild3dlinemodle();
-	afx_msg void OnMenuLinedesign();
-	afx_msg void OnUpdateMenuLinedesign(CCmdUI *pCmdUI);
-
-
-
-/************************************************************************/
-/* ·Ç3DSÄ£ĞÍ²ÎÊıÉèÖÃµÄ·ÇÄ£Ê½¶Ô»°¿ò   º¯ÊıÓë±äÁ¿					    		*/
-/************************************************************************/
-public:
-	C3DModelParamSet *paramSet_modeless_dlg;
-	void C3DModelParamSetTOPModelStruct(C3DModelParamSet *model, PModelStruct &pStruct);
-	PModelStruct p3dtree;			//3dtree
-	PModelStruct ptree;				//tree
-	PModelStruct pCitySymbol;		//CitySymbol
-	BOOL m_isSetXYByMouse;
-
-/************************************************************************/
-/* Variables: Ñ¡ÏßãĞÖµÉè¶¨(¾àÀë,¼Ğ½Ç)										*/
-/************************************************************************/
-private:
-	// ÓÃÓÚ¼ÆËã2µãÖ®¼äÏß¶Î³¤¶È
-	float last_x, last_y, last_z;
-	float pre_x,  pre_y,  pre_z;
-	// ÓÃÓÚ¼ÆËã2Ïß¶Î¼ä¼Ğ½Ç
-	CVector3 v1_begin, v1_end;
-	CVector3 v2_begin, v2_end;
-	// ¼ÇÂ¼µãµÄ¸öÊı
-	int p_count;		
-
-/************************************************************************/
-/* Variables: ÇúÏßÒªËØÉè¶¨												*/
-/************************************************************************/
-private:
-	long m_Curve_R;	 // ÇúÏß°ë¾¶
-	int  m_Curve_L0; // »ººÍÇúÏß³¤
-
-	float m_distance_between_2_points;	// µ±Ç°2µãÏß¶Î¼äµÄ¾àÀë
-	float m_pre_distance;				// Ç°Ò»Ïß¶Î¼äµÄ¾àÀë
-
-
-public:
-	afx_msg void OnMenuClearLines(); // Çå³ıËùÓĞÏßÂ·	
-
-private:
-	void initLines(); // ³õÊ¼»¯ÏßÂ·Êı¾İ
-	void clearLinesData();// Çå³ıËùÓĞÏßÂ·Êı¾İ
-	void loadSceneFile(CString filename);// ¼ÓÔØ³¡¾°¹¤³ÌÎÄ¼ş
-
-	// ¼ÓÔØµãÎÄ¼ş
-	void LoadPointSymbolFile(CString filename);
-	// ¼ÓÔØÏßÎÄ¼ş
-	void LoadLineSymbolFile(CString filename);
-	// ¼ÓÔØÇøÎÄ¼ş
-	void LoadAreaSymbolFile(CString filename);
-
-
-	// µ±Ç°¹¤³ÌÎÄ¼şÃû
-	CString m_CurrentProjectName;
-
-
-	// µ±Ç°·ûºÅÖÖÀà¸öÊı
-	CString m_CurrentSymbolTypeNum;
-	// µã¡¢Ïß¡¢ÇøÎÄ¼ş
-	CString m_PointSymbolFile, m_LineSymbolFile, m_AreaSymbolFile;
-
-
-	// ÅĞ¶Ïµ±Ç°¹¤³ÌÖĞÊÇ·ñ´æÔÚÒÑ¾­´ò¿ªµÄµã¡¢Ïß¡¢ÃæÎÄ¼ş
-	BOOL exist_point_file();
-	BOOL exist_line_file();
-	BOOL exist_area_file();
-
-	BOOL exist_point_flag;
-	BOOL exist_line_flag;
-	BOOL exist_area_flag;
-
-	// ĞÂ½¨·ûºÅÎÄ¼ş
 
-	int new_symbol_file(unsigned int type, char *fileName); //0,1,2 µãÏßÃæ
-
-	int new_point_file();
-	int new_line_file();
-	int new_area_file();
+    // ç”Ÿæˆçš„æ¶ˆæ¯æ˜ å°„å‡½æ•°
+  protected:
+    afx_msg void OnFilePrintPreview();
+    afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+    afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+    DECLARE_MESSAGE_MAP()
+  public:
+    PFNGLACTIVETEXTUREARBPROC glActiveTextureARB;
+    PFNGLMULTITEXCOORD2FARBPROC glMultiTexCoord2fARB;
+
+    HWND        hwnd;
+    CDC*        m_pDC;
+    HGLRC       m_hRC;
 
+    int m_SCREEN_WIDTH;     //å±å¹•å®½åº¦
+    int m_SCREEN_HEIGHT;    //å±å¹•é«˜åº¦
 
+    int WinViewX, WinViewY; //å­˜å‚¨æ‰€å®šä¹‰è§†å£çš„å®½åº¦å’Œé«˜åº¦
+    BOOL bStereoAvailable;  //æ˜¾å¡æ˜¯å¦æ”¯æŒç«‹ä½“æ˜¾ç¤º
 
-	// ±£´æµãÎÄ¼ş
-	int savePointSymbolFile(CString filename);
-	// ±£´æÏßÎÄ¼ş
-	int saveLineSymbolFile(CString filename);
-	// ±£´æÇøÎÄ¼ş
-	int saveAreaSymbolFile(CString filename);
+    GLfloat m_ViewWideNarrow;   //ç”¨æ¥è°ƒæ•´gluPerspective()å‡½æ•°å®šä¹‰å¹³æˆªå¤´ä½“çš„è§†é‡çš„è§’åº¦(å¢å¤§æˆ–å‡å°)
+    double m_near, m_far;   //gluPerspective()å‡½æ•°å®šä¹‰å¹³æˆªå¤´ä½“çš„è¿‘å‰ªè£å¹³é¢å’Œè¿œå‰ªè£å¹³é¢çš„è·ç¦»
 
+    float m_FrustumAngle;
 
-//[160119]Ïß·ûºÅ
-private:
-	
-	void drawLine(Line3 line);
+    BOOL SetupPixelFormat();
+    BOOL InitializeOpenGL(CDC* pDC);
 
-	//¿Õ¼äµãÇóÍ¶Ó°µ½Æ½ÃæµÄÖ±Ïß·½³ÌÏµÊıABC, Ax+By+C=0
-	void getLine2ABC(double *A, double *B, double *C, Point3 p1, Point3 p2);
+    void InitData();
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnDestroy();
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg void OnContourTerrainImport();
 
+    afx_msg LRESULT OnGoodBye(WPARAM wParam, LPARAM lParam); // è‡ªå®šä¹‰å“åº”æ¶ˆæ¯,å“åº”æ¨¡å‹è®¾ç½®,éæ¨¡å¼å¯¹è¯æ¡†
 
-	int m_LineEdit_pointNum; // Ïß±à¼­  Ñ¡ÔñµÄµãµÄ¸öÊı
+    // å¯¼å…¥ç­‰é«˜çº¿åœ°åŠ¿å›¾çº¹ç†åŠæ•°æ®
+    int                 iTerrainType;                       // 1-ç­‰é«˜, 2-éšæœº, 0-æ²¡æœ‰å¯¼å…¥åœ°å½¢
+    CString             terrainTexFileName;
+    CString             terrainContourFileName;
+    BITMAPINFOHEADER    g_bit;                              // å®šä¹‰ä½å›¾ç»“æ„ï¼Œåœ¨ModelObjä¸­ä½¿ç”¨ç°åº¦ç­‰é«˜çº¿å›¾ç”Ÿæˆåœ°å½¢
+    unsigned char*       g_imageData;                       // å®šä¹‰å›¾å½¢ç¼“å­˜åŒºï¼Œåœ¨ModelObjä¸­ä½¿ç”¨ç°åº¦ç­‰é«˜çº¿å›¾ç”Ÿæˆåœ°å½¢
+    UINT                texTerrain;                         // è´´å›¾
+    bool                LoadT8(char* filename, GLuint& texture);
+    unsigned char*      LoadBit(char* filename, BITMAPINFOHEADER* bitmap);
 
-	Line3 m_line;
 
-	CArray<PLine3,PLine3> m_LinesArray; // ´æ·ÅËùÓĞµÄÏß·ûºÅ
+    bool        g_isTerrainInit;
+    void        InitTerrain();
+    void        DrawTerrain();
+    float       GetHeight(float x, float z);        // è·å–åœ°é¢é«˜åº¦
+
+
+    //ç›¸æœºå‚æ•°å˜é‡
+    CVector3    m_vEyePosition;     //ç›¸æœºè§†ç‚¹åæ ‡
+    CVector3    m_vLook;            //ç›¸æœºè§‚å¯Ÿç‚¹åæ ‡
+    CVector3    m_vUp;              //ç›¸æœºå‘ä¸­ä¸‰ç»´çŸ¢é‡
+
+
+    float       m_viewHeight;       //è§†ç‚¹é«˜åº¦
+    float       m_oldviewHeight;    //å‰ä¸€è§†ç‚¹é«˜åº¦
+
+    CVector3    m_originLook;       //ç›¸æœºåˆå§‹è§†ç‚¹åæ ‡
+    float       m_viewdegree;       //è§‚å¯Ÿç‚¹ä¸è§†ç‚¹ä¹‹é—´çš„ä¿¯è§†è§’
+
+
+    // æ¼«æ¸¸
+    float       rad_xz;             // è§’åº¦
+    float       g_Angle;            // æ–¹ä½è§’
+    float       g_elev;             // ä»°ä¿¯è§’
+    float       gao;
+
+    //ç”¨äºè®¡ç®—ç›¸æœºäº‹å‚æ•°çš„CVector3ç±»å‹å˜é‡
+    CVector3    m_vStrafe;
+    CVector3    View;
+
+    void DrawScene();
+    afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+
+    // è®¾ç½®ç»˜å›¾æ¨¡å¼
+    int m_Drawmode;
+    void SetDrawMode();
+
+    // å¤©ç©ºç›’
+    bool         iSkyBoxLoaded;
+    afx_msg void OnSkyboxTex();
+    UINT         g_texSkyBox[5];
+    void         CreateSkyBox();
+    void         SkyBoxTexture(UINT textur);
+    afx_msg void OnUpdateDrawmodeLine(CCmdUI* pCmdUI);
+    afx_msg void OnDrawmodeRender();
+    afx_msg void OnUpdateDrawmodeRender(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateDrawmodeTexture(CCmdUI* pCmdUI);
+    afx_msg void OnDrawmodeLine();
+    afx_msg void OnDrawmodeTexture();
+    afx_msg void OnSpacequerySet();
+
+    // ç©ºé—´æŸ¥è¯¢æ ‡å¿—å‚æ•°
+    int     m_shizxLength;      // æŸ¥è¯¢æ ‡å¿—çš„åå­—çº¿é•¿åº¦
+    int     m_shuzxHeight;      // æŸ¥è¯¢æ ‡å¿—çš„ç«–ç›´çº¿é•¿åº¦
+    int     m_QueryLineWidth;   // æŸ¥è¯¢æ ‡å¿—çº¿çš„å®½åº¦
+    int     m_QueryColorR, m_QueryColorG, m_QueryColorB; // æŸ¥è¯¢æ ‡å¿—çº¿çš„é¢œè‰²(çº¢,ç»¿,è“)
+
+    BYTE    m_QueryType;        // æ ‡è¯†ç©ºé—´æŸ¥è¯¢ç±»åˆ«
+    BYTE    m_OperateType;      // æ¨¡å‹æ“ä½œç±»å‹
+
+    bool    m_bmouseView;       // æ˜¯å¦èµ·ç”¨é¼ æ ‡æ§åˆ¶ç›¸æœº
+    POINT   m_oldMousePos;      // å‰ä¸€é¼ æ ‡ä½ç½®
+
+    double  pt1[3], pt2[3];     // å­˜å‚¨æŸ¥è¯¢çš„åæ ‡
+    int     m_bSearchDistencePtNums;// æŸ¥è¯¢æ—¶ç‚¹å–çš„ç©ºé—´ç‚¹æ•°
+
+
+    long m_linePtnums;      // å½“å‰çº¿è·¯æ–¹æ¡ˆè®¾è®¡äº¤ç‚¹æ€»æ•°
+    long m_oldlinePtnums;   // åŸæœ‰çº¿è·¯æ–¹æ¡ˆè®¾è®¡äº¤ç‚¹æ•°
+
+
+    afx_msg void OnQueryCoordinate();
+    afx_msg void OnUpdateQueryCoordinate(CCmdUI* pCmdUI);
+    afx_msg void OnQueryDistence();
+    afx_msg void OnUpdateQueryDistence(CCmdUI* pCmdUI);
+
+    void ScreenToGL(CPoint point);
+    void DrawSearchPoint();
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+
+    afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+
+    // æ‘„åƒæœº  é”®ç›˜æ§åˆ¶
+
+    //ç›¸æœºæ—‹è½¬å‚æ•°
+    float   m_Step_X;   //ç›¸æœºåœ¨Xæ–¹å‘ç§»åŠ¨çš„æ­¥é•¿(é¼ æ ‡æ§åˆ¶)
+    float   m_Step_Z;   //ç›¸æœºåœ¨Zæ–¹å‘ç§»åŠ¨çš„æ­¥é•¿(é¼ æ ‡æ§åˆ¶)
+
+    float   m_xTrans;   //åœ¨Xæ–¹å‘ä¸Šç§»åŠ¨çš„è·ç¦»(é”®ç›˜æ§åˆ¶)
+    float   m_zTrans;   //åœ¨Zæ–¹å‘ä¸Šç§»åŠ¨çš„è·ç¦»(é”®ç›˜æ§åˆ¶)
+    int     m_keynumber;//æ ‡è¯†é”®ç›˜æŒ‰é”®å€¼
+    afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+
+    void CamraUpdate();
+    void MoveCameraZ(float speed);
+    void CheckForMovement();
+    void MoveCameraX(float speed);
+    void SetCamra();
+    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+    void SetViewByMouse();
+    void RotateView(float angle, float x, float y, float z);
+    float  derAngleY;   //  é¼ æ ‡æ§åˆ¶æ—¶Yæ–¹å‘çš„æ•æ„Ÿç³»æ•°
+    float  derAngleZ;   //  é¼ æ ‡æ§åˆ¶æ—¶Zæ–¹å‘çš„æ•æ„Ÿç³»æ•°
+    float  derDisScale; //  é¼ æ ‡ç§»åŠ¨æ¨¡å‹æ—¶æ•æ„Ÿç³»æ•°
+    afx_msg void OnCameraParamSet();
+
+    //ä¸‰ç»´æ¼«æ¸¸
+    BOOL m_ShowFlyPath; //  æ ‡è¯†æ˜¯å¦æ˜¾ç¤ºé£è¡Œè·¯å¾„
+    CArray<PCordinate, PCordinate> m_FlayPath;      // å­˜å‚¨è¿›è¡Œé£è¡Œè·¯å¾„é€‰æ‹©æ—¶æ‰€é€‰æ‹©çš„ä¸€ç³»åˆ—ç‚¹åæ ‡
+    CArray<PCordinate, PCordinate> m_FlayPathTempPts; // å­˜å‚¨ä¸´æ—¶è¿›è¡Œé£è¡Œè·¯å¾„é€‰æ‹©æ—¶æ‰€é€‰æ‹©çš„ä¸€ç³»åˆ—ç‚¹åæ ‡
+    afx_msg void OnPathManuinput();
+    void DrawFlyPath();
+    afx_msg void OnFlppathInterpolation();
+    afx_msg void OnFlypathSave();
+    int FlyPathSave(char* pathfile);
+    BOOL m_PathFlag;//æ˜¯å¦è¾“å…¥é£è¡Œè·¯å¾„
+    afx_msg void OnFlyOpenpath();
+    int FlyPathRead(char* pathfile);
+    afx_msg void OnFlyOnoffpath();
+    afx_msg void OnUpdateFlyOnoffpath(CCmdUI* pCmdUI);
+
+    BYTE m_FlyHeightType;           // ä¸‰ç»´æ¼«æ¸¸ç±»å‹(å›ºå®šé«˜åº¦æ¼«æ¸¸,å›ºå®šé«˜å·®æ¼«æ¸¸)
+    int m_flypathPtIndex;           // é£è¡Œè·¯å¾„åæ ‡ç´¢å¼•å·
+    int m_flyPathCurrentPtIndex;    // åœ¨é£è¡Œè¿‡ç¨‹ä¸­è®°å½•å½“å‰è·¯å¾„ç‚¹çš„ç´¢å¼•å·,ç”¨äºæš‚åœé£è¡Œå™¨
+    int m_flyspeed;                 // é£è¡Œæ—¶çš„è®¡æ—¶å™¨æ—¶é—´é—´éš”
+
+    BOOL m_fly_start_pause_Enable;  // æš‚åœ/å¼€å§‹æ˜¯å¦ç”Ÿæ•ˆ
+
+    afx_msg void OnFlyStaticheight();
+    afx_msg void OnUpdateFlyStaticheight(CCmdUI* pCmdUI);
+    void SetFLyTimer();
+    afx_msg void OnTimer(UINT_PTR nIDEvent);
+    void GetCameraCorrdinate(double x1, double y1, double z1, double x2, double y2, double z2);
+    float m_maxHeight, m_minHeight, m_StaticHeight;
+    afx_msg void OnFlyRoutineheight();
+
+    GLfloat m_ViewUpDown;           // è§†è§’ä¸Š,ä¸‹å€¾
+    afx_msg void OnUpdateFlyRoutineheight(CCmdUI* pCmdUI);
+
+    BOOL m_FlyPause;                //æ˜¯å¦æš‚åœé£è¡Œ
+    afx_msg void OnFlyPlaypause();
+    afx_msg void OnUpdateFlyPlaypause(CCmdUI* pCmdUI);
+    afx_msg void OnFlyStop();
+    afx_msg void OnFlyOnestep();
+    afx_msg void OnFlyViewEnlarge();
+    afx_msg void OnFlyViewSmall();
+    afx_msg void OnFlyHeightUp();
+    afx_msg void OnFlyHeightDown();
+    afx_msg void OnFlyViewUp();
+    afx_msg void OnFlyViewDown();
+    afx_msg void OnFlySpeedUp();
+    afx_msg void OnFlySpeedDown();
+    void DisplayHelp();
+    CGLFont* Font;          // æ˜¾ç¤ºé£è¡Œæ—¶å¿«æ·é”®æ–‡å­—æç¤º
+    int m_Time,             // å¼€å§‹æ—¶é—´
+        m_Fram,             // æ˜¾ç¤ºæ¬¡æ•°
+        tim;                // åˆ·æ–°é€Ÿåº¦
+    HFONT   hFont, hFont0;
+    void    TextFlyHelp();  // æ˜¾ç¤ºæ–‡å­—
 
+    //æ˜¾ç¤ºåˆ—è¡¨å‚æ•°
+    GLuint m_ClockList;     //æ—¶é’ŸæŒ‡åŒ—é’ˆæ˜¾ç¤ºåˆ—è¡¨
+    float m_NorthPtangle;   //æŒ‡åŒ—é’ˆåˆå§‹æŒ‡å‘è§’åº¦
+    void InitList();
+    void MakeClockList();
+    void DrawClock();
+    void SetClockProjectionNavigate();
+    void PrintText(float x, float y, char* string);
+    void GetNorthPtangle();
+    void DrawNorthPt();
+
+    GLuint m_SkyList;       // æ—¶é’ŸæŒ‡åŒ—é’ˆæ˜¾ç¤ºåˆ—è¡¨
+    bool m_bShowbreviary;   // æ˜¯å¦æ˜¾ç¤ºç¼©ç•¥è§†å›¾
+    void MakeSkykList();
+    void DrawSky();
+    void SetSkyProjection();
+    void SetSkyProjectionNavigate();
+
+    // 3DSæ¨¡å‹
+    afx_msg void On3dsModelLoad();
+
+    int m_i3DModelNum;
+
+
+    CArray<PModelParamStruct, PModelParamStruct> m_3DModel;
 
-	// ¼ÆËãÏß¶Î_lineËù¾­¹ıµÄºáÏòºÍ×İÏò¸ñÍøÊı, ¼°Ë÷Òı·¶Î§
-	void CalcuateGridNum(int *rowNum, int *row_index_begin, int *row_index_end, 
-		int *colNum, int *col_index_begin, int *col_index_end, Line3 _line);
+
+    /************************************************************************/
+    /*                   çº¿è·¯                                               */
+    /************************************************************************/
+
+    BOOL b_haveMadeRail3DwayList;   // æ˜¯å¦å·²ç»æœ‰ä¸‰ç»´çº¿è·¯æ˜¾ç¤ºåˆ—è¡¨(é€è§†æŠ•å½±æ¨¡å¼ä¸‹)
+
+    Railway m_Railway;              // çº¿è·¯è·¯åŸºç»“æ„
+    GLuint m_Rail3DwayList;         // çº¿è·¯ä¸‰ç»´æ¨¡å‹æ˜¾ç¤ºåˆ—è¡¨(é€è§†æŠ•å½±æ¨¡å¼)
+
+    CArray<PCordinate, PCordinate> m_TempPts; // ä¸´æ—¶ç‚¹
+
+    CTexture m_cTxtureBP;       // è·¯åŸºè¾¹å¡çº¹ç†
+    CTexture m_cTxtureLJ;       // è·¯è‚©çº¹ç†
+    CTexture m_cTxtureGdToLJ;   // é“åºŠè¾¹å¡çº¹ç†
+    CTexture m_cTxtureRailway;  // è½¨é“çº¹ç†
+    CTexture m_cTxturePT;       // è¾¹å¡å¹³å°çº¹ç†
+
+    CTexture m_cFillFaceTxture; // æ–­é¢çº¹ç†
+
+    // å®ç°é€è§†æŠ•å½±æ¨¡å¼ä¸‹çš„çº¿è·¯ä¸‰ç»´æ¨¡å‹ç»˜åˆ¶
+    void DrawRailwaythesme();
+
+    // ç»˜åˆ¶ä¸­å¿ƒçº¿(ä½äºåœ°é¢ä»¥ä¸‹çš„éƒ¨åˆ†ä¸ç»˜åˆ¶)
+    void DrawCenterLine(long index, BOOL ifSelectLine);
+
+    // ç»˜åˆ¶è¾¹å¡
+    void DrawBP(long index, int BPside);
+
+    void fun(PCordinate ppt);
+    void fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0);
+
+
+    // è®¡ç®—2ä¸ªå‘é‡ä¹‹é—´çš„å¤¹è§’,ç”±å‚æ•°è¿”å›
+    void getDegreeBetween2Vectors(CVector3 v1_Begin/*in*/, CVector3 v1_End/*in*/,
+                                  CVector3 v2_Begin/*in*/, CVector3 v2_End/*in*/, float* pDegreeRet/*out*/);
+
+    void drawFillFace(vector<Railway3DCordinate> fillFacePoints);
+
+    //=====================================================================================
+
+
+    // 3DSæ¨¡å‹
+    CLoad3DS*   m_3ds;                                          // å®šä¹‰3DSæ¨¡å‹
+
+
+    void Draw3DModel(PModelParamStruct model);
+
+    afx_msg void On3dsModelSelectSet();
+    afx_msg void OnUpdate3dsModelSelectSet(CCmdUI* pCmdUI);
+    bool bIsSelect3DModel;
+
+    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+
+    bool bIsMouseMove3DModel;
+    afx_msg void On3dsModelMouseMove();
+    afx_msg void OnUpdate3dsModelMouseMove(CCmdUI* pCmdUI);
+    void JudgeModelSelected(PCordinate ppt);    // åˆ¤æ–­æ¨¡å‹ç»„ä¸­å“ªäº›æ¨¡å‹è¢«é€‰ä¸­,è¿›è¡ŒçŠ¶æ€ä¿®æ”¹
+    int m_bMouseMove3DModelPtNums;              // å·¦é”®æŒ‰ä¸‹æ•°é‡åŠ ä¸€,å·¦é”®å¼¹èµ·å†åŠ ä¸€,åˆ°2æ—¶å°±å¯ç§»åŠ¨æ¨¡å‹ä½ç½®,ç§»åŠ¨å‘é‡ä¸ºé¼ æ ‡å˜åŠ¨å‘é‡
+
+
+    CMainFrame* pMain;                          // è·å–MainFrameç±»æŒ‡é’ˆ
+
+    // æ™¯è§‚æ ‘æ§åˆ¶
+    afx_msg void OnTreeLoad();
+    CArray<PModelStruct, PModelStruct> m_TreeModel; // å­˜å‚¨æ‰€æœ‰æ™¯è§‚æ ‘ä¿¡æ¯
+    void LoadT16(char* filename, GLuint& texture);
+    int m_iTreeModelNum;
+    UINT g_cactus[50];                              // è´´å›¾,çº¹ç†
+
+    // æ˜¾ç¤ºç‰¹æ®Šå¹³é¢æ ‘ï¼Œåœºæ™¯æ—‹è½¬æ—¶æ ‘ä¹Ÿè·Ÿç€æ—‹è½¬ï¼Œå§‹ç»ˆæ˜¯æ­£é¢å¯¹ç€ç”¨æˆ·ï¼Œè¿™æ ·å°±çœ‹ä¸å‡ºæ˜¯å¹³é¢äº†
+    void ShowTree(int i);
+
+    // å¯¼å…¥3Dç«‹ä½“æ™¯è§‚æ ‘æ¨¡å‹
+    afx_msg void On3dTreeLoad();
+    CArray<PModelStruct, PModelStruct> m_3DTreeModel; // å­˜å‚¨æ‰€æœ‰æ™¯è§‚æ ‘ä¿¡æ¯
+    int m_i3DTreeModelNum;
+    UINT g_cactus3DTree[50];                                // è´´å›¾,çº¹ç†
 
-	// ¼ÆËãÆ½Ãæ½»µã×ø±ê,²¢¼ÆËã³ö½»µã³öµÄ¸ß³ÌÖµ
-	void CalcuateJD(int rowNum, int row_index_begin, int row_index_end, 
-		int colNum, int col_index_begin, int col_index_end, Line3 _line, vector<Point3> &_pv);
+    // æ˜¾ç¤ºç‰¹æ®Šå¹³é¢æ ‘ï¼Œåœºæ™¯æ—‹è½¬æ—¶æ ‘ä¹Ÿè·Ÿç€æ—‹è½¬ï¼Œå§‹ç»ˆæ˜¯æ­£é¢å¯¹ç€ç”¨æˆ·ï¼Œè¿™æ ·å°±çœ‹ä¸å‡ºæ˜¯å¹³é¢äº†
+    void Show3DTree(int i);
 
-	// ¼ÆËã2ÌõÖ±ÏßµÄ½»µãy=x+b, Ax+By+C=0, ·µ»Ø-1±íÊ¾ÎŞ½»µã
-	BOOL GetJDFrom2Line(PPoint3 p/*out*/,double b, double A, double B, double C);
+    // åŸå¸‚ç¬¦å·
+    afx_msg void OnCitySymbolLoad();
+    int m_iCitySymbolModelNum;
+    CArray<PModelStruct, PModelStruct> m_CitySymbolModel; // å­˜å‚¨æ‰€æœ‰åŸå¸‚ç¬¦å·ä¿¡æ¯
+    UINT g_citySymbolTex[50];                            // è´´å›¾,çº¹ç†
+    void ShowCitySymbol0(int i);
+    void ShowCitySymbol(int i);
+    void LoadPNG(const char* fileName, GLuint& texture);
 
-	vector<Point3> JD_vector1;
-	vector<Point3> JD_vector2;
-	vector<Point3> JD_vector3; // Ğ±Ïß½»µã
+    //å¯¼å…¥å¤©æ°”çº¹ç† åªæœ‰ä¸€ä¸ªçº¹ç†
 
-	vector<Point3> Line_a_JD_vector;
-	vector<Point3> Line_b_JD_vector;
+    afx_msg void OnWeatherLoad();
 
+    UINT g_weatherTex;                                  // è´´å›¾,çº¹ç†
+    void ShowWeather();
+    bool bIsWeatherLoad;
 
-	BOOL fuse_Flag;
+    // åˆ¤æ–­æ˜¯å¦è¿›è¡Œäº†åæ ‡æŸ¥è¯¢æ“ä½œ
+    bool IsSearchPoint;
 
-	void DrawJDLine(vector<Point3> &_pv1,  vector<Point3> &_pv2);
+    // å°†å¯¹è¯æ¡†å˜é‡èµ‹å€¼ç»™ç»“æ„ä½“
+    void C3DModelParamSetTOPModelStruct(C3DModelParamSet& model, PModelStruct& pStruct);
+    // å°†å¯¹è¯æ¡†å˜é‡èµ‹å€¼ç»™ç»“æ„ä½“
+    void ModelParamDlgToPModelParamStruct(ModelParam& model, PModelParamStruct pStruct);
+    // å°†ç»“æ„ä½“å†…å®¹èµ‹å€¼ç»™å˜é‡
+    void PModelParamStructToModelParamDlg(ModelParam& model, PModelParamStruct pStruct);
+
+    // æ»šè½®æ§åˆ¶è§†æ™¯çª—ä½“çš„å¤§å°ï¼ˆç¼©å°ï¼Œæ”¾å¤§ï¼‰
+    afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 
+    // å°„çº¿æ‹¾å–ç‰©ä½“
+    void JudgeRayIntersect(
+        CVector3 rayStart,      // å°„çº¿èµ·ç‚¹
+        CVector3 rayDir,        // å°„çº¿é•¿åº¦å’Œæ–¹å‘
+        CVector3 returnNormal   // å¯é€‰çš„ï¼Œç›¸äº¤ç‚¹å¤„æ³•å‘é‡
+    );
+    // åˆ¤æ–­å°„çº¿æ˜¯å¦ä¸AABBåŒ…å›´ç›’ï¼Œå¹¶è¿”å›äº¤ç‚¹
+    float RayIntersect(
+        CVector3 rayStart,      // å°„çº¿èµ·ç‚¹
+        CVector3 rayDir,        // å°„çº¿é•¿åº¦å’Œæ–¹å‘
+        CVector3 returnNormal,  // å¯é€‰çš„ï¼Œç›¸äº¤ç‚¹å¤„æ³•å‘é‡
+        CVector3 min,           // åŒ…å›´ç›’å·¦ä¸‹è§’é¡¶ç‚¹
+        CVector3 max            // åŒ…å›´ç›’å³ä¸Šè§’é¡¶ç‚¹
+    );
+
+    // æ‹¾å–æ¨¡å‹é›†åˆ
+    vector<PSelectedModel> m_pSelectedModelSet;
+    // é€‰ä¸­ç‰©ä½“çº¿æ¡†é¢œè‰²
+    float wireR, wireG, wireB;
+    // é—ªçƒå®šæ—¶å™¨å¯åŠ¨æ ‡è¯†
+    bool m_bFlash;
+
+    bool m_bMouseMoveSelect; // é€‰æ‹©æ¨¡å¼ä¸‹çš„é¼ æ ‡ç§»åŠ¨æ‹¾å–æ¨¡å‹
+    int m_mouseShape;        // é¼ æ ‡å½¢æ€
+
+    // åœºæ™¯é…ç½®æ–‡ä»¶å¯¼å…¥
+    bool m_bSecneConfig;
+    afx_msg void OnSceneLoad();
+
+
+
+    CString m_AllDataPath; // æ‰€æœ‰æ•°æ®æ–‡ä»¶è·¯å¾„
+    CString m_SceneConfig; // åœºæ™¯æ–‡ä»¶å¤¹
+
+    // åœ°å½¢æ–‡ä»¶å¤¹ï¼Œåœ°å½¢çº¹ç†æ–‡ä»¶å¤¹ï¼Œåœ°å½¢ç­‰é«˜æ–‡ä»¶å¤¹
+    CString m_TerrainFolder, m_TerrainTextureFolder, m_TerrainContourFolder;
+    // åœ°å½¢çº¹ç†ï¼Œåœ°å½¢ç­‰é«˜å›¾
+    CString m_TerrainTexture, m_TerrainContour;
+    // SkyBox
+    CString m_SkyBoxFolder, m_SkyBoxKindFolder, m_SkyBoxTP, m_SkyBoxLT, m_SkyBoxRT, m_SkyBoxBK, m_SkyBoxFR;
+
+    // 3DS æ¨¡å‹
+    CString m_3DModelFolder;
+    CString m_3DModelPath;
+
+    float m_3DModelPosX, m_3DModelPosY, m_3DModelPosZ;
+
+    float m_3DModelRotX, m_3DModelRotY, m_3DModelRotZ;
+    float m_3DModelScale;
+
+
+    // åŸå¸‚æ ‡è¯†æ•°æ®
+    CString m_CitySymbolFolder, m_CitySymbolTex;
+
+    float m_CitySymbolPosX, m_CitySymbolPosY, m_CitySymbolPosZ;
+
+    // æ™¯è§‚æ ‘æ•°æ®
+    CString m_TreeModelFolder, m_TreeModelTex;
+
+    float m_TreeModelPosX, m_TreeModelPosY, m_TreeModelPosZ;
+
+    // å¤©æ°”æ•°æ®
+    CString m_WeatherFolder, m_WeatherTex;
+
+    // å¤©ç©ºç›’çº¹ç†
+    void LoadSkyBoxTex(CString skyTP, CString skyLF, CString skyBK, CString skyRT, CString skyFR);
+    CString g_texSkyBoxFlieNameTP, g_texSkyBoxFlieNameLF, g_texSkyBoxFlieNameBK, g_texSkyBoxFlieNameRT, g_texSkyBoxFlieNameFR;
+
+    // åœ°å½¢çº¹ç†
+    void LoadTerrainTex(CString terrainTex, CString terrainContour);
+
+    // 3Dæ¨¡å‹è®¾ç½®
+    //void Load3DModel(PModelStruct p3d, int iModelID);
+    //void Load3DModel(PModelParamStruct p3d, int iModelID);
+    void Load3DModel(PModelParamStruct p3d, int iLoadModelType);
+
+    bool m_bIsLBtnDown;
+    afx_msg void OnSceneSave();
+    bool ScenSave(CString scenePth);
 
-	// ËùÓĞÈı½ÇĞÎ¶¥µã×ø±ê×îĞ¡×î´óÖµ
-	void GetMinXY(vector<Point3> &_pv1,  vector<Point3> &_pv2, double *_minX, double *_minY, double *_maxX, double *_maxY);
+    // æ§åˆ¶é€‰ä¸­æ¨¡å‹,å•ä¸ªæ¨¡å‹é€‰æ‹©å¯ä»¥æ§åˆ¶æ‰€æœ‰æ¨¡å‹å‚æ•°è®¾ç½®ï¼Œç»„æ¨¡å‹é€‰æ‹©çš„è¯åªèƒ½ç§»åŠ¨ç»„åˆæ¨¡å‹
+    // å³é”®æŒ‰ä¸‹ å¼¹èµ· æ ‡è¯†
 
-	// Ïß·ûºÅÎÆÀí×ø±ê
-	void GetUV(double _x, double _y, double _minX, double _minY, double _maxX, double _maxY, double *_u, double *_v);
+    int m_selectedModelID; // å½“å‰é¼ æ ‡é€‰ä¸­æ¨¡å‹IDï¼Œå½“å‰é»˜è®¤åªæœ‰3DSæ¨¡å‹
+    afx_msg void OnModelMove();
+    afx_msg void OnModelParam();
+    afx_msg void OnModelScale();
 
+    afx_msg void OnConfigureSymbolList();
+    afx_msg void OnSystemSetting();
+    afx_msg void OnCloseCurrentScene();
+    afx_msg void OnModelDelete();
+    afx_msg void OnMenuBuild3dlinemodle();
+    afx_msg void OnMenuLinedesign();
+    afx_msg void OnUpdateMenuLinedesign(CCmdUI* pCmdUI);
 
-/************************************************************************/
-/*        Ãæ·ûºÅ															*/
-/************************************************************************/
-private:
 
-	int m_Area_pointNum; // Ãæ·ûºÅ Ñ¡ÔñµÄµãµÄ¸öÊı
-	Area_4 m_area4_forScreenRecord; // 4±ßĞÎ
 
-	CArray<PArea_4, PArea_4> m_Area4_Array; // ´æ·ÅËùÓĞµÄÃæ·ûºÅ
+    /************************************************************************/
+    /* é3DSæ¨¡å‹å‚æ•°è®¾ç½®çš„éæ¨¡å¼å¯¹è¯æ¡†   å‡½æ•°ä¸å˜é‡                             */
+    /************************************************************************/
+  public:
+    C3DModelParamSet* paramSet_modeless_dlg;
+    void C3DModelParamSetTOPModelStruct(C3DModelParamSet* model, PModelStruct& pStruct);
+    PModelStruct p3dtree;           //3dtree
+    PModelStruct ptree;             //tree
+    PModelStruct pCitySymbol;       //CitySymbol
+    BOOL m_isSetXYByMouse;
 
+    /************************************************************************/
+    /* Variables: é€‰çº¿é˜ˆå€¼è®¾å®š(è·ç¦»,å¤¹è§’)                                       */
+    /************************************************************************/
+  private:
+    // ç”¨äºè®¡ç®—2ç‚¹ä¹‹é—´çº¿æ®µé•¿åº¦
+    float last_x, last_y, last_z;
+    float pre_x,  pre_y,  pre_z;
+    // ç”¨äºè®¡ç®—2çº¿æ®µé—´å¤¹è§’
+    CVector3 v1_begin, v1_end;
+    CVector3 v2_begin, v2_end;
+    // è®°å½•ç‚¹çš„ä¸ªæ•°
+    int p_count;
 
-	vector<Point3> Line_1_JD_vector;
-	vector<Point3> Line_2_JD_vector;
-	vector<Point3> Line_3_JD_vector;
-	vector<Point3> Line_4_JD_vector;
+    /************************************************************************/
+    /* Variables: æ›²çº¿è¦ç´ è®¾å®š                                              */
+    /************************************************************************/
+  private:
+    long m_Curve_R;  // æ›²çº¿åŠå¾„
+    int  m_Curve_L0; // ç¼“å’Œæ›²çº¿é•¿
 
+    float m_distance_between_2_points;  // å½“å‰2ç‚¹çº¿æ®µé—´çš„è·ç¦»
+    float m_pre_distance;               // å‰ä¸€çº¿æ®µé—´çš„è·ç¦»
 
 
+  public:
+    afx_msg void OnMenuClearLines(); // æ¸…é™¤æ‰€æœ‰çº¿è·¯
 
-	BOOL Area_fuse_Flag;
-	// ¶à±ßĞÎÈı½Ç»¯
-	void Area_Triangled(PArea_4 &_area4);
+  private:
+    void initLines(); // åˆå§‹åŒ–çº¿è·¯æ•°æ®
+    void clearLinesData();// æ¸…é™¤æ‰€æœ‰çº¿è·¯æ•°æ®
+    void loadSceneFile(CString filename);// åŠ è½½åœºæ™¯å·¥ç¨‹æ–‡ä»¶
 
-	UINT m_area_texture;
-	void LoadAreaTexture(CString _areaTexture_str, UINT &texture_id);// ¼ÓÔØÃæ·ûºÅÎÆÀí
+    // åŠ è½½ç‚¹æ–‡ä»¶
+    void LoadPointSymbolFile(CString filename);
+    // åŠ è½½çº¿æ–‡ä»¶
+    void LoadLineSymbolFile(CString filename);
+    // åŠ è½½åŒºæ–‡ä»¶
+    void LoadAreaSymbolFile(CString filename);
 
 
-	// ¸ü»»Ñ¡ÖĞµÄÃæ·ûºÅµÄÎÆÀí
-	void UpdateAreaTexture(PPR_Point _mp, CPoint point);
-	void ScreenToGL2(CPoint point, GLdouble &wx , GLdouble &wz);
+    // å½“å‰å·¥ç¨‹æ–‡ä»¶å
+    CString m_CurrentProjectName;
 
 
-	unsigned short area_id;
+    // å½“å‰ç¬¦å·ç§ç±»ä¸ªæ•°
+    CString m_CurrentSymbolTypeNum;
+    // ç‚¹ã€çº¿ã€åŒºæ–‡ä»¶
+    CString m_PointSymbolFile, m_LineSymbolFile, m_AreaSymbolFile;
 
 
-	// ´æ·Å¶à±ßĞÎÄÚµÄµã
-	vector<Point3> pointsInPolygonVector;
-	vector<Point3> index_pointsInPolygonVector;
+    // åˆ¤æ–­å½“å‰å·¥ç¨‹ä¸­æ˜¯å¦å­˜åœ¨å·²ç»æ‰“å¼€çš„ç‚¹ã€çº¿ã€é¢æ–‡ä»¶
+    BOOL exist_point_file();
+    BOOL exist_line_file();
+    BOOL exist_area_file();
 
-	// ¼ÆËã³öËùÓĞ°üº¬ÔÚ¶à±ßĞÎÄÚµÄµã
-	int FindAllPointsInPolygon(Area_4 &m_area4);
+    BOOL exist_point_flag;
+    BOOL exist_line_flag;
+    BOOL exist_area_flag;
 
-	//(MAP_W * MAP_W)·½Õó 1:ÔÚ¶à±ßĞÎÄÚ, 0:²»ÔÚ  
-	int inPolygonArrayFlag[MAP_W][MAP_W];
+    // æ–°å»ºç¬¦å·æ–‡ä»¶
 
+    int new_symbol_file(unsigned int type, char* fileName); //0,1,2 ç‚¹çº¿é¢
 
-	// ÕÒ³öËùÓĞ°üº¬ÔÚ¶à±ßĞÎÄÚµÄÈı½ÇĞÎ(°üÀ¨ÍêÕûÈı½ÇĞÎºÍ¾­¹ı¾Ö²¿Èı½Ç»¯µÄÈı½ÇĞÎ)
-	int FindAllTrianglesInPolygon(Area_4 &m_area4);
+    int new_point_file();
+    int new_line_file();
+    int new_area_file();
 
-	// Ö»ÓĞ1¸öµãÔÚ¶à±ßĞÎĞÎÄÚµÄÈı½ÇĞÎ(ĞèÖØĞÂÈı½Ç»¯)
-	int FindTriangles_1_point_inPolygon(Area_4 &m_area4);
 
-	// Ö»ÓĞ2¸öµãÔÚ¶à±ßĞÎĞÎÄÚµÄÈı½ÇĞÎ(ĞèÖØĞÂÈı½Ç»¯)
-	int FindTriangles_2_point_inPolygon(Area_4 &m_area4);
 
-	// ÓĞ3¸öµãÔÚ¶à±ßĞÎĞÎÄÚµÄÈı½ÇĞÎ
-	int FindTriangles_3_point_inPolygon(Area_4 &_area4);
+    // ä¿å­˜ç‚¹æ–‡ä»¶
+    int savePointSymbolFile(CString filename);
+    // ä¿å­˜çº¿æ–‡ä»¶
+    int saveLineSymbolFile(CString filename);
+    // ä¿å­˜åŒºæ–‡ä»¶
+    int saveAreaSymbolFile(CString filename);
 
-	// ¶à±ßĞÎµÄÒ»Ìõ±ß  Óë  Èı½ÇĞÎ  ÓĞ2¸ö½»µã, ÕÒ³ö·ûºÏÌõ¼şµÄÈı½ÇĞÎ
-	void Find_triangles_1_line_2_JD(Area_4 &m_area4, Triangle &tmp_triangle, CPointPolygonRelationship &tmp_PPR, const PPR_Point &tmp_point1, const PPR_Point &tmp_point21, const PPR_Point &tmp_point22);
 
+    //[160119]çº¿ç¬¦å·
+  private:
 
-	// ±£´æËùÓĞ¾Ö²¿Èı½Ç»¯ÁËµÄÈı½ÇĞÎ
-	//vector<Triangle> LocalTrianglesVecotr;
+    void drawLine(Line3 line);
 
+    //ç©ºé—´ç‚¹æ±‚æŠ•å½±åˆ°å¹³é¢çš„ç›´çº¿æ–¹ç¨‹ç³»æ•°ABC, Ax+By+C=0
+    void getLine2ABC(double* A, double* B, double* C, Point3 p1, Point3 p2);
 
 
-	// ±£´æËùÓĞ¶à±ßĞÎÄÚ²¿ÍêÕûµÄÈı½ÇĞÎ
-	//vector<Triangle> TrianglesInPolygonVecotr;
+    int m_LineEdit_pointNum; // çº¿ç¼–è¾‘  é€‰æ‹©çš„ç‚¹çš„ä¸ªæ•°
 
+    Line3 m_line;
 
+    CArray<PLine3, PLine3> m_LinesArray; // å­˜æ”¾æ‰€æœ‰çš„çº¿ç¬¦å·
 
-	// ±£´æËùÓĞ¾Ö²¿Èı½Ç»¯ÁËµÄÈı½ÇĞÎ(Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ, ÇÒ¶à±ßĞÎµÄÄ³Ìõ±ßÓëÈı½ÇĞÎÓĞ2¸ö½»µã)
-	//vector<Triangle> LocalTrianglesVecotr1;
 
-	// ±£´æËùÓĞ¾Ö²¿Èı½Ç»¯ÁËµÄÈı½ÇĞÎ(Èı½ÇĞÎÖ»ÓĞ2¸öµãÔÚ¶à±ßĞÎÄÚ, ÇÒ¶à±ßĞÎµÄÄ³Ìõ±ßÓëÈı½ÇĞÎÓĞ2¸ö½»µã)
-	//vector<Triangle> LocalTrianglesVecotr2;
+    // è®¡ç®—çº¿æ®µ_lineæ‰€ç»è¿‡çš„æ¨ªå‘å’Œçºµå‘æ ¼ç½‘æ•°, åŠç´¢å¼•èŒƒå›´
+    void CalcuateGridNum(int* rowNum, int* row_index_begin, int* row_index_end,
+                         int* colNum, int* col_index_begin, int* col_index_end, Line3 _line);
 
+    // è®¡ç®—å¹³é¢äº¤ç‚¹åæ ‡,å¹¶è®¡ç®—å‡ºäº¤ç‚¹å‡ºçš„é«˜ç¨‹å€¼
+    void CalcuateJD(int rowNum, int row_index_begin, int row_index_end,
+                    int colNum, int col_index_begin, int col_index_end, Line3 _line, vector<Point3>& _pv);
 
-	
+    // è®¡ç®—2æ¡ç›´çº¿çš„äº¤ç‚¹y=x+b, Ax+By+C=0, è¿”å›-1è¡¨ç¤ºæ— äº¤ç‚¹
+    BOOL GetJDFrom2Line(PPoint3 p/*out*/, double b, double A, double B, double C);
 
+    vector<Point3> JD_vector1;
+    vector<Point3> JD_vector2;
+    vector<Point3> JD_vector3; // æ–œçº¿äº¤ç‚¹
 
-	// ---------------------------------------------
+    vector<Point3> Line_a_JD_vector;
+    vector<Point3> Line_b_JD_vector;
 
-	// ¶à±ßĞÎ¶¥µã´¦µÄÈı½ÇĞÎ
-	void FindTriangles_polygon_has_vertex_in_triangle(Area_4 &m_area4);
 
-	void FindTriangles_polygon_has_vertex_in_triangle_1_1(Area_4 &m_area4, Triangle &tmp_triangle1, Triangle &tmp_triangle2, const PPR_Point &tmp_point1, const PPR_Point &tmp_point21, const PPR_Point &tmp_point22);
-	void FindTriangles_polygon_has_vertex_in_triangle_2_1(Area_4 &m_area4, Triangle &tmp_triangle1, Triangle &tmp_triangle2, Triangle &tmp_triangle3, const PPR_Point &tmp_point1, const PPR_Point &tmp_point21, const PPR_Point &tmp_point22);
+    BOOL fuse_Flag;
 
- 
-	// ±£´æËùÓĞ¾Ö²¿Èı½Ç»¯ÁËµÄÈı½ÇĞÎ(Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ, ÇÒ¶à±ßĞÎµÄ1¸ö¶ËµãÔÚÈı½ÇĞÎÖĞ)
-	//vector<Triangle> LocalTrianglesVecotr1_1;
+    void DrawJDLine(vector<Point3>& _pv1,  vector<Point3>& _pv2);
 
-	// ±£´æËùÓĞ¾Ö²¿Èı½Ç»¯ÁËµÄÈı½ÇĞÎ(Èı½ÇĞÎÖ»ÓĞ2¸öµãÔÚ¶à±ßĞÎÄÚ, ÇÒ¶à±ßĞÎµÄ1¸ö¶ËµãÔÚÈı½ÇĞÎÖĞ)
-	//vector<Triangle> LocalTrianglesVecotr2_1;
 
+    // æ‰€æœ‰ä¸‰è§’å½¢é¡¶ç‚¹åæ ‡æœ€å°æœ€å¤§å€¼
+    void GetMinXY(vector<Point3>& _pv1,  vector<Point3>& _pv2, double* _minX, double* _minY, double* _maxX, double* _maxY);
 
+    // çº¿ç¬¦å·çº¹ç†åæ ‡
+    void GetUV(double _x, double _y, double _minX, double _minY, double _maxX, double _maxY, double* _u, double* _v);
 
-	void FindTriangles_polygon_has_vertex_in_triangle_last(Area_4 &m_area4, Triangle &tmp_triangle1, Triangle &tmp_triangle2, Triangle &tmp_triangle3, Triangle &tmp_triangle4, const PPR_Point &tmp_point0, const PPR_Point &tmp_point1, const PPR_Point &tmp_point21, const PPR_Point &tmp_point22);
-	// ±£´æËùÓĞ¾Ö²¿Èı½Ç»¯ÁËµÄÈı½ÇĞÎ(Ä³Èı½ÇĞÎÃ»ÓĞµãÔÚ¶à±ßĞÎÄÚ, µ«¶à±ßĞÎµÄ1¸ö¶ËµãÔÚÈı½ÇĞÎÖĞ)
-	//vector<Triangle> LocalTrianglesVecotr_last;
 
+    /************************************************************************/
+    /*        é¢ç¬¦å·                                                            */
+    /************************************************************************/
+  private:
 
-public:
-	afx_msg LRESULT OnProjectSetted(WPARAM wParam, LPARAM lParam);
+    int m_Area_pointNum; // é¢ç¬¦å· é€‰æ‹©çš„ç‚¹çš„ä¸ªæ•°
+    Area_4 m_area4_forScreenRecord; // 4è¾¹å½¢
 
-public:
-	afx_msg void OnSceneNew();
-	afx_msg void OnSceneSaveAs();
-	afx_msg void OnMenuLineAdd();
-	afx_msg void OnMenuLineFuse();
-	afx_msg void OnUpdateMenuLineAdd(CCmdUI *pCmdUI);
-	afx_msg void OnMenuAddLineWidth();
-	afx_msg void OnMenuAddAreaSlib();
-	afx_msg void OnUpdateMenuAddAreaSlib(CCmdUI *pCmdUI);
-	afx_msg void OnMenuAreaFuse();
-	afx_msg void OnMenuAddPointSymbol();
-	afx_msg void OnMenuAddPoint3dsmax();
-	afx_msg void OnMenuAddPoint2dImg();
-	afx_msg void OnMenuAddPoint3dImg();
-	afx_msg void OnMenuUpdateAreaTexture();
-	afx_msg void OnMenuAreaDelete();
+    CArray<PArea_4, PArea_4> m_Area4_Array; // å­˜æ”¾æ‰€æœ‰çš„é¢ç¬¦å·
+
+
+    vector<Point3> Line_1_JD_vector;
+    vector<Point3> Line_2_JD_vector;
+    vector<Point3> Line_3_JD_vector;
+    vector<Point3> Line_4_JD_vector;
+
+
+
+
+    BOOL Area_fuse_Flag;
+    // å¤šè¾¹å½¢ä¸‰è§’åŒ–
+    void Area_Triangled(PArea_4& _area4);
+
+    UINT m_area_texture;
+    void LoadAreaTexture(CString _areaTexture_str, UINT& texture_id);// åŠ è½½é¢ç¬¦å·çº¹ç†
+
+
+    // æ›´æ¢é€‰ä¸­çš„é¢ç¬¦å·çš„çº¹ç†
+    void UpdateAreaTexture(PPR_Point _mp, CPoint point);
+    void ScreenToGL2(CPoint point, GLdouble& wx , GLdouble& wz);
+
+
+    unsigned short area_id;
+
+
+    // å­˜æ”¾å¤šè¾¹å½¢å†…çš„ç‚¹
+    vector<Point3> pointsInPolygonVector;
+    vector<Point3> index_pointsInPolygonVector;
+
+    // è®¡ç®—å‡ºæ‰€æœ‰åŒ…å«åœ¨å¤šè¾¹å½¢å†…çš„ç‚¹
+    int FindAllPointsInPolygon(Area_4& m_area4);
+
+    //(MAP_W * MAP_W)æ–¹é˜µ 1:åœ¨å¤šè¾¹å½¢å†…, 0:ä¸åœ¨
+    int inPolygonArrayFlag[MAP_W][MAP_W];
+
+
+    // æ‰¾å‡ºæ‰€æœ‰åŒ…å«åœ¨å¤šè¾¹å½¢å†…çš„ä¸‰è§’å½¢(åŒ…æ‹¬å®Œæ•´ä¸‰è§’å½¢å’Œç»è¿‡å±€éƒ¨ä¸‰è§’åŒ–çš„ä¸‰è§’å½¢)
+    int FindAllTrianglesInPolygon(Area_4& m_area4);
+
+    // åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å½¢å†…çš„ä¸‰è§’å½¢(éœ€é‡æ–°ä¸‰è§’åŒ–)
+    int FindTriangles_1_point_inPolygon(Area_4& m_area4);
+
+    // åªæœ‰2ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å½¢å†…çš„ä¸‰è§’å½¢(éœ€é‡æ–°ä¸‰è§’åŒ–)
+    int FindTriangles_2_point_inPolygon(Area_4& m_area4);
+
+    // æœ‰3ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å½¢å†…çš„ä¸‰è§’å½¢
+    int FindTriangles_3_point_inPolygon(Area_4& _area4);
+
+    // å¤šè¾¹å½¢çš„ä¸€æ¡è¾¹  ä¸  ä¸‰è§’å½¢  æœ‰2ä¸ªäº¤ç‚¹, æ‰¾å‡ºç¬¦åˆæ¡ä»¶çš„ä¸‰è§’å½¢
+    void Find_triangles_1_line_2_JD(Area_4& m_area4, Triangle& tmp_triangle, CPointPolygonRelationship& tmp_PPR, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22);
+
+
+    // ä¿å­˜æ‰€æœ‰å±€éƒ¨ä¸‰è§’åŒ–äº†çš„ä¸‰è§’å½¢
+    //vector<Triangle> LocalTrianglesVecotr;
+
+
+
+    // ä¿å­˜æ‰€æœ‰å¤šè¾¹å½¢å†…éƒ¨å®Œæ•´çš„ä¸‰è§’å½¢
+    //vector<Triangle> TrianglesInPolygonVecotr;
+
+
+
+    // ä¿å­˜æ‰€æœ‰å±€éƒ¨ä¸‰è§’åŒ–äº†çš„ä¸‰è§’å½¢(ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…, ä¸”å¤šè¾¹å½¢çš„æŸæ¡è¾¹ä¸ä¸‰è§’å½¢æœ‰2ä¸ªäº¤ç‚¹)
+    //vector<Triangle> LocalTrianglesVecotr1;
+
+    // ä¿å­˜æ‰€æœ‰å±€éƒ¨ä¸‰è§’åŒ–äº†çš„ä¸‰è§’å½¢(ä¸‰è§’å½¢åªæœ‰2ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…, ä¸”å¤šè¾¹å½¢çš„æŸæ¡è¾¹ä¸ä¸‰è§’å½¢æœ‰2ä¸ªäº¤ç‚¹)
+    //vector<Triangle> LocalTrianglesVecotr2;
+
+
+
+
+
+    // ---------------------------------------------
+
+    // å¤šè¾¹å½¢é¡¶ç‚¹å¤„çš„ä¸‰è§’å½¢
+    void FindTriangles_polygon_has_vertex_in_triangle(Area_4& m_area4);
+
+    void FindTriangles_polygon_has_vertex_in_triangle_1_1(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22);
+    void FindTriangles_polygon_has_vertex_in_triangle_2_1(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, Triangle& tmp_triangle3, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22);
+
+
+    // ä¿å­˜æ‰€æœ‰å±€éƒ¨ä¸‰è§’åŒ–äº†çš„ä¸‰è§’å½¢(ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…, ä¸”å¤šè¾¹å½¢çš„1ä¸ªç«¯ç‚¹åœ¨ä¸‰è§’å½¢ä¸­)
+    //vector<Triangle> LocalTrianglesVecotr1_1;
+
+    // ä¿å­˜æ‰€æœ‰å±€éƒ¨ä¸‰è§’åŒ–äº†çš„ä¸‰è§’å½¢(ä¸‰è§’å½¢åªæœ‰2ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…, ä¸”å¤šè¾¹å½¢çš„1ä¸ªç«¯ç‚¹åœ¨ä¸‰è§’å½¢ä¸­)
+    //vector<Triangle> LocalTrianglesVecotr2_1;
+
+
+
+    void FindTriangles_polygon_has_vertex_in_triangle_last(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, Triangle& tmp_triangle3, Triangle& tmp_triangle4, const PPR_Point& tmp_point0, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22);
+    // ä¿å­˜æ‰€æœ‰å±€éƒ¨ä¸‰è§’åŒ–äº†çš„ä¸‰è§’å½¢(æŸä¸‰è§’å½¢æ²¡æœ‰ç‚¹åœ¨å¤šè¾¹å½¢å†…, ä½†å¤šè¾¹å½¢çš„1ä¸ªç«¯ç‚¹åœ¨ä¸‰è§’å½¢ä¸­)
+    //vector<Triangle> LocalTrianglesVecotr_last;
+
+
+  public:
+    afx_msg LRESULT OnProjectSetted(WPARAM wParam, LPARAM lParam);
+
+  public:
+    afx_msg void OnSceneNew();
+    afx_msg void OnSceneSaveAs();
+    afx_msg void OnMenuLineAdd();
+    afx_msg void OnMenuLineFuse();
+    afx_msg void OnUpdateMenuLineAdd(CCmdUI* pCmdUI);
+    afx_msg void OnMenuAddLineWidth();
+    afx_msg void OnMenuAddAreaSlib();
+    afx_msg void OnUpdateMenuAddAreaSlib(CCmdUI* pCmdUI);
+    afx_msg void OnMenuAreaFuse();
+    afx_msg void OnMenuAddPointSymbol();
+    afx_msg void OnMenuAddPoint3dsmax();
+    afx_msg void OnMenuAddPoint2dImg();
+    afx_msg void OnMenuAddPoint3dImg();
+    afx_msg void OnMenuUpdateAreaTexture();
+    afx_msg void OnMenuAreaDelete();
 };
 
-#ifndef _DEBUG  // 3DSymbolLibNewView.cpp ÖĞµÄµ÷ÊÔ°æ±¾
-inline CMy3DSymbolLibNewDoc* CMy3DSymbolLibNewView::GetDocument() const
-{ return reinterpret_cast<CMy3DSymbolLibNewDoc*>(m_pDocument); }
+#ifndef _DEBUG  // 3DSymbolLibNewView.cpp ä¸­çš„è°ƒè¯•ç‰ˆæœ¬
+inline CMy3DSymbolLibNewDoc* CMy3DSymbolLibNewView::GetDocument() const {
+    return reinterpret_cast<CMy3DSymbolLibNewDoc*>(m_pDocument);
+}
 #endif
 

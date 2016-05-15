@@ -1,85 +1,84 @@
-#pragma once
+ï»¿#pragma once
 #include "afxwin.h"
 
 
-// C3DModelParamSet ¶Ô»°¿ò
+// C3DModelParamSet å¯¹è¯æ¡†
 
-#define WM_GOODBYE				WM_USER+100		//¶Ô»°¿òÏûÏ¢ÏìÓ¦
-#define WM_UPDATE_EDIT_XY		WM_USER+101		//¸üĞÂ¶Ô»°¿ò
+#define WM_GOODBYE              WM_USER+100     //å¯¹è¯æ¡†æ¶ˆæ¯å“åº”
+#define WM_UPDATE_EDIT_XY       WM_USER+101     //æ›´æ–°å¯¹è¯æ¡†
 
-#define SET_XY_BY_MOUSE_FALSE	WM_USER+102		//checkbox ×´Ì¬ ==> Ñ¡ÖĞ
-#define SET_XY_BY_MOUSE_TRUE	WM_USER+103		//checkbox ×´Ì¬ ==> Î´Ñ¡ÖĞ
+#define SET_XY_BY_MOUSE_FALSE   WM_USER+102     //checkbox çŠ¶æ€ ==> é€‰ä¸­
+#define SET_XY_BY_MOUSE_TRUE    WM_USER+103     //checkbox çŠ¶æ€ ==> æœªé€‰ä¸­
 
-struct ModeParam
-{
-	//¾°¹ÛÊ÷,3d¾°¹ÛÊ÷,³ÇÊĞ·ûºÅ
-	//tree,3dtree,CitySymbol
-	CString type;
+struct ModeParam {
+    //æ™¯è§‚æ ‘,3dæ™¯è§‚æ ‘,åŸå¸‚ç¬¦å·
+    //tree,3dtree,CitySymbol
+    CString type;
 };
 
 
-class C3DModelParamSet : public CDialog
-{
-	DECLARE_DYNAMIC(C3DModelParamSet)
+class C3DModelParamSet : public CDialog {
+    DECLARE_DYNAMIC(C3DModelParamSet)
 
-public:
-	C3DModelParamSet(CWnd* pParent = NULL);   // ±ê×¼¹¹Ôìº¯Êı(Ä£Ì¬¶Ô»°¿ò)
-	C3DModelParamSet(CView *pView);			  // ·ÇÄ£Ì¬¶Ô»°¿ò¹¹Ôìº¯Êı
+  public:
+    C3DModelParamSet(CWnd* pParent = NULL);   // æ ‡å‡†æ„é€ å‡½æ•°(æ¨¡æ€å¯¹è¯æ¡†)
+    C3DModelParamSet(CView* pView);           // éæ¨¡æ€å¯¹è¯æ¡†æ„é€ å‡½æ•°
 
-	virtual ~C3DModelParamSet();
+    virtual ~C3DModelParamSet();
 
-	BOOL C3DModelParamSet::Create();
+    BOOL C3DModelParamSet::Create();
 
-	// ¶Ô»°¿òÊı¾İ
-	enum { IDD = IDD_DIALOG_3DMODEL_PARAM };
+    // å¯¹è¯æ¡†æ•°æ®
+    enum { IDD = IDD_DIALOG_3DMODEL_PARAM };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+  protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
 
-	DECLARE_MESSAGE_MAP()
-
+    DECLARE_MESSAGE_MAP()
 
 
-public:
-	CView *m_pView; //Ö¸Ïòµ÷ÓÃ´Ë¶Ô»°¿òµÄÊÓÀà¶ÔÏóµÄÖ¸Õë
-	ModeParam m_modeParam;
-public:
-	// xPos Î»ÖÃ // hPos ¸ß¶È // zPos Î»ÖÃ
-	// radiu Ğı×ª°ë¾¶
-	// angle ½Ç¶È
-	// scale ´óĞ¡
-	int		xPos;
-	int		zPos;
-	float	hPos;	
-	float	radiu;
-	int		angle;
-	float	scale; 
-	virtual BOOL OnInitDialog(); 
 
-	CString m_strTitle; //¶Ô»°¿ò±êÌâ
+  public:
+    CView* m_pView; //æŒ‡å‘è°ƒç”¨æ­¤å¯¹è¯æ¡†çš„è§†ç±»å¯¹è±¡çš„æŒ‡é’ˆ
+    ModeParam m_modeParam;
 
-	// Ä£ĞÍÈÆ X ÖáĞı×ª½Ç¶È
-	int iRotateX;
-	// Ä£ĞÍÈÆYÖáĞı×ª½Ç¶È
-	int iRotateY;
-	// Ä£ĞÍÈÆZÖáĞı×ª½Ç¶È
-	int iRotateZ;
-	// ÎÆÀíÓ³Éä·½Ê½
-	int iDisplayType;
-	afx_msg void OnBnClickedRadioRepeat();
-	afx_msg void OnBnClickedRadioStretch();
+  public:
+    // xPos ä½ç½® // hPos é«˜åº¦ // zPos ä½ç½®
+    // radiu æ—‹è½¬åŠå¾„
+    // angle è§’åº¦
+    // scale å¤§å°
+    int     xPos;
+    int     zPos;
+    float   hPos;
+    float   radiu;
+    int     angle;
+    float   scale;
+    virtual BOOL OnInitDialog();
 
+    CString m_strTitle; //å¯¹è¯æ¡†æ ‡é¢˜
 
-	virtual void OnOK();
-	virtual void OnCancel();
+    // æ¨¡å‹ç»• X è½´æ—‹è½¬è§’åº¦
+    int iRotateX;
+    // æ¨¡å‹ç»•Yè½´æ—‹è½¬è§’åº¦
+    int iRotateY;
+    // æ¨¡å‹ç»•Zè½´æ—‹è½¬è§’åº¦
+    int iRotateZ;
+    // çº¹ç†æ˜ å°„æ–¹å¼
+    int iDisplayType;
+    afx_msg void OnBnClickedRadioRepeat();
+    afx_msg void OnBnClickedRadioStretch();
 
 
-public:
-	int isSetXYByMouse;
+    virtual void OnOK();
+    virtual void OnCancel();
 
-	afx_msg void OnClickedCheckSetXyByMouse();
-	CButton m_SetPosCheckBox;
 
-	// ×Ô¶¨ÒåÏìÓ¦ÏûÏ¢,ÏìÓ¦Ä£ĞÍÉèÖÃ,·ÇÄ£Ê½¶Ô»°¿ò
-	afx_msg LRESULT OnUpdateEditXY(WPARAM wParam, LPARAM lParam);
+  public:
+    int isSetXYByMouse;
+
+    afx_msg void OnClickedCheckSetXyByMouse();
+    CButton m_SetPosCheckBox;
+
+    // è‡ªå®šä¹‰å“åº”æ¶ˆæ¯,å“åº”æ¨¡å‹è®¾ç½®,éæ¨¡å¼å¯¹è¯æ¡†
+    afx_msg LRESULT OnUpdateEditXY(WPARAM wParam, LPARAM lParam);
 };

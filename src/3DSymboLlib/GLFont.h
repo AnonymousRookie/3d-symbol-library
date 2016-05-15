@@ -1,4 +1,4 @@
-// GLFont.h: interface for the CGLFont class.
+ï»¿// GLFont.h: interface for the CGLFont class.
 
 #if !defined(AFX_GLFONT_H__88F1F000_50F5_452A_B95E_60ED83712FA5__INCLUDED_)
 #define AFX_GLFONT_H__88F1F000_50F5_452A_B95E_60ED83712FA5__INCLUDED_
@@ -7,24 +7,23 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CGLFont  
-{
-public:
-	// ³£¹æÎÄ×ÖÏÔÊ¾¡£ Æ½Ãæ×Ö·ûÏÔÊ¾£¬²»Ö§³Öºº×Ö
-	void Entext(float x,float y, LPCTSTR str,HFONT hFont,float r,float g,float b);
-	
-	// 3DÎÄ×ÖÏÔÊ¾¡£ Ö§³Öºº×Ö
-	void C3dtext(LPCTSTR str,HFONT hFont,float z);
-	void Printfc3d(CString strText,HFONT hFont,float z=0.05f);
+class CGLFont {
+  public:
+    // å¸¸è§„æ–‡å­—æ˜¾ç¤ºã€‚ å¹³é¢å­—ç¬¦æ˜¾ç¤ºï¼Œä¸æ”¯æŒæ±‰å­—
+    void Entext(float x, float y, LPCTSTR str, HFONT hFont, float r, float g, float b);
 
-	// Æ½Ãæºº×Ö
-	void Printftext(int x, int y, LPCTSTR lpszText,HFONT hFont);
-	void Settext(float x,float y,CString str,HFONT Font,float r,float g,float b);
+    // 3Dæ–‡å­—æ˜¾ç¤ºã€‚ æ”¯æŒæ±‰å­—
+    void C3dtext(LPCTSTR str, HFONT hFont, float z);
+    void Printfc3d(CString strText, HFONT hFont, float z = 0.05f);
 
-	CGLFont();
-	virtual ~CGLFont();
-protected:
-	HFONT hFont; //×ÖÌå¾ä±ú
+    // å¹³é¢æ±‰å­—
+    void Printftext(int x, int y, LPCTSTR lpszText, HFONT hFont);
+    void Settext(float x, float y, CString str, HFONT Font, float r, float g, float b);
+
+    CGLFont();
+    virtual ~CGLFont();
+  protected:
+    HFONT hFont; //å­—ä½“å¥æŸ„
 };
 
 #endif // !defined(AFX_GLFONT_H__88F1F000_50F5_452A_B95E_60ED83712FA5__INCLUDED_)

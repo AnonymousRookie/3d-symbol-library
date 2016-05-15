@@ -1,28 +1,27 @@
-#pragma once
+ï»¿#pragma once
 
 
-// TerrainImportContour ¶Ô»°¿ò
+// TerrainImportContour å¯¹è¯æ¡†
 
-class TerrainImportContour : public CDialog
-{
-	DECLARE_DYNAMIC(TerrainImportContour)
+class TerrainImportContour : public CDialog {
+    DECLARE_DYNAMIC(TerrainImportContour)
 
-public:
-	TerrainImportContour(CWnd* pParent = NULL);   // ±ê×¼¹¹Ôìº¯Êı
-	virtual ~TerrainImportContour();
+  public:
+    TerrainImportContour(CWnd* pParent = NULL);   // æ ‡å‡†æ„é€ å‡½æ•°
+    virtual ~TerrainImportContour();
 
-// ¶Ô»°¿òÊı¾İ
-	enum { IDD = IDD_DIALOG_CONTOUR_TERRAIN_IMPORT };
+    // å¯¹è¯æ¡†æ•°æ®
+    enum { IDD = IDD_DIALOG_CONTOUR_TERRAIN_IMPORT };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+  protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
 
-	DECLARE_MESSAGE_MAP()
-public:
-	// µØ±íÎÆÀíÍ¼Æ¬
-	CString m_TerrainContoureTex;
-	// µÈ¸ßÊÆÍ¼
-	CString m_TerrainContour;
-	afx_msg void OnBnClickedButtonTerrainTexBroswer();
-	afx_msg void OnBnClickedButtonContoureBroswer();
+    DECLARE_MESSAGE_MAP()
+  public:
+    // åœ°è¡¨çº¹ç†å›¾ç‰‡
+    CString m_TerrainContoureTex;
+    // ç­‰é«˜åŠ¿å›¾
+    CString m_TerrainContour;
+    afx_msg void OnBnClickedButtonTerrainTexBroswer();
+    afx_msg void OnBnClickedButtonContoureBroswer();
 };

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "DesingScheme.h"
 
 #include "GlobalVariable.h"
@@ -6,1877 +6,1398 @@
 #include "LeastSquares.h"
 
 
-CDesingScheme::CDesingScheme(void)
-{
-	// empty
+CDesingScheme::CDesingScheme(void) {
+    // empty
 }
 
 
-CDesingScheme::~CDesingScheme(void)
-{
-	// empty
+CDesingScheme::~CDesingScheme(void) {
+    // empty
 }
 
 
 
-double CDesingScheme::GetDistenceXY(double x1,double y1,double x2,double y2)
-{
-	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
-}
-
-
-/************************************************************************/
-/* Function: ¸ù¾İÇ°Ò»¸öµã¼ÆËã±ßÆÂÄ£ĞÍ										*/
-/************************************************************************/
-void CDesingScheme::Get3DLineModel(double x1, double y1, double z1,double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj,float mWidthGuiMianToLujian,float mAngleLujinaToBianPo,CString strJDstyle,CString strJDstyleNext,long index,double mLC)
-{
-	float mangle;
-	float dx=x2-x1;
-	float dz=z2-z1;
-	
-	double x11,y11,z11,x12,y12,z12;
-	double x21,y21,z21,x22,y22,z22;
-
-	//fRailwayWidth£ºµ¥ÏßµØ¶ÎµÀ´²¶¥Ãæ¿í¶È
-	float L1=fRailwayWidth/2.0;
-
-    //1.¸ù¾İÏßÂ·Ç°ºóÖĞĞÄÏßµÄÈıÎ¬×ø±ê¼ÆËã Ìú¹ì¶¥Ãæ ×óÓÒµãµÄx,y,z×ø±ê
-	Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-
-	PRailway3DCordinate pt;
-	pt=new Railway3DCordinate;
-	pt->x1=x11;	pt->y1=y11;	pt->z1=z11;
-	pt->x2=x12;	pt->y2=y12;	pt->z2=z12;
-	PtS_Railway3D.Add(pt);
-	
-	//£².¸ù¾İÏßÂ·Ç°ºóÖĞĞÄÏßµÄÈıÎ¬×ø±ê¼ÆËã µÀ´²¶¥Ãæ ×óÓÒµãµÄx,y,z×ø±ê
-	L1=fRailwayWidth/2.0 + mWidthGuiMianToLujian;
-	Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-	pt=new Railway3DCordinate;
-	pt->x1=x11;	pt->y1=y11-h_FromGmToLj;	pt->z1=z11;
-	pt->x2=x12;	pt->y2=y12-h_FromGmToLj;	pt->z2=z12;
-	PtS_RailwayLj3D.Add(pt);
-	
-	
-	//3.¸ù¾İÏßÂ·Ç°ºóÖĞĞÄÏßµÄÈıÎ¬×ø±ê¼ÆËã²ê½Å×óÓÒµãµÄx,y,z×ø±ê LjWidth=²ê¼çÖÁ²ê½ÅµÄË®Æ½¾àÀë
-	L1=fRailwayWidth/2.0 + mWidthGuiMianToLujian + LjWidth;
-	Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-	pt=new Railway3DCordinate;
-	pt->x1=x11;	pt->y1=y11-h_FromGmToLj;pt->z1=z11;
-	pt->x2=x12;	pt->y2=y12-h_FromGmToLj;	pt->z2=z12;
-
-	//¸ù¾İÏßÂ·Ç°ºóÖĞĞÄÏßµÄÈıÎ¬×ø±ê¼ÆËã¼ÆËãÂ·»ùÃæ×óÓÒµãµÄx,y,z×ø±ê
-	pt->TW_left=GetTW(pt->x1, pt->z1, pt->y1);//¼ÆËã×ó±ßÆÂµÄÌîÍÚÀàĞÍ
-	pt->TW_right=GetTW(pt->x2, pt->z2, pt->y2);//¼ÆËãÓÒ±ßÆÂµÄÌîÍÚÀàĞÍ
- 	pt->mAngle=mangle; //
-	PtS_RailwayLjToBP3D.Add(pt);//´æ´¢±ßÆÂ×óÃæ²àµÄÌîÍÚÀàĞÍ
-	
-
-		
-	//Õı³£±ßÆÂ´¦
-	{
-		L1=fRailwayWidth/2.0+mWidthGuiMianToLujian+LjWidth;
-
-		//¼ÆËã×ó²à±ßÆÂµãÓëµØÃæµÄ½»µã×ø±ê
-		GetDMJD(x1,y1,z1,x2,y2,z2,L1,pt->y1,pt->x1, pt->z1,pt->TW_left,-1,\
-			pt->x1,pt->y1,pt->z1,\
-			pt->x1,pt->y1,pt->z1,mLC,strJDstyle);
-
-		//¼ÆËãÓÒ²à±ßÆÂµãÓëµØÃæµÄ½»µã×ø±ê
-		GetDMJD(x1,y1,z1,x2,y2,z2,L1,pt->y2,pt->x2, pt->z2,pt->TW_right,1,\
-			pt->x2,pt->y2,pt->z2,\
-			pt->x2,pt->y2,pt->z2,mLC,strJDstyle);
-	} 
+double CDesingScheme::GetDistenceXY(double x1, double y1, double x2, double y2) {
+    return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 }
 
 
 /************************************************************************/
-/* Function: ¸ù¾İºóÒ»¸öµã¼ÆËã±ßÆÂÄ£ĞÍ										*/
+/* Function: æ ¹æ®å‰ä¸€ä¸ªç‚¹è®¡ç®—è¾¹å¡æ¨¡å‹                                       */
 /************************************************************************/
-void CDesingScheme::Get3DLineModelLast(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo,CString strJDstyle,CString strJDstyleNext,long index,double mLC)
-{
-		
-	float mangle;
-	float dx=x2-x1;
-	float dz=z2-z1;
-	
-	double x11,y11,z11,x12,y12,z12;
-	double x21,y21,z21,x22,y22,z22;
+void CDesingScheme::Get3DLineModel(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo, CString strJDstyle, CString strJDstyleNext, long index, double mLC) {
+    float mangle;
+    float dx = x2 - x1;
+    float dz = z2 - z1;
+    double x11, y11, z11, x12, y12, z12;
+    double x21, y21, z21, x22, y22, z22;
+    //fRailwayWidthï¼šå•çº¿åœ°æ®µé“åºŠé¡¶é¢å®½åº¦
+    float L1 = fRailwayWidth / 2.0;
+    //1.æ ¹æ®çº¿è·¯å‰åä¸­å¿ƒçº¿çš„ä¸‰ç»´åæ ‡è®¡ç®— é“è½¨é¡¶é¢ å·¦å³ç‚¹çš„x,y,zåæ ‡
+    Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+    PRailway3DCordinate pt;
+    pt = new Railway3DCordinate;
+    pt->x1 = x11;
+    pt->y1 = y11;
+    pt->z1 = z11;
+    pt->x2 = x12;
+    pt->y2 = y12;
+    pt->z2 = z12;
+    PtS_Railway3D.Add(pt);
+    //ï¼’.æ ¹æ®çº¿è·¯å‰åä¸­å¿ƒçº¿çš„ä¸‰ç»´åæ ‡è®¡ç®— é“åºŠé¡¶é¢ å·¦å³ç‚¹çš„x,y,zåæ ‡
+    L1 = fRailwayWidth / 2.0 + mWidthGuiMianToLujian;
+    Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+    pt = new Railway3DCordinate;
+    pt->x1 = x11;
+    pt->y1 = y11 - h_FromGmToLj;
+    pt->z1 = z11;
+    pt->x2 = x12;
+    pt->y2 = y12 - h_FromGmToLj;
+    pt->z2 = z12;
+    PtS_RailwayLj3D.Add(pt);
+    //3.æ ¹æ®çº¿è·¯å‰åä¸­å¿ƒçº¿çš„ä¸‰ç»´åæ ‡è®¡ç®—ç¢´è„šå·¦å³ç‚¹çš„x,y,zåæ ‡ LjWidth=ç¢´è‚©è‡³ç¢´è„šçš„æ°´å¹³è·ç¦»
+    L1 = fRailwayWidth / 2.0 + mWidthGuiMianToLujian + LjWidth;
+    Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+    pt = new Railway3DCordinate;
+    pt->x1 = x11;
+    pt->y1 = y11 - h_FromGmToLj;
+    pt->z1 = z11;
+    pt->x2 = x12;
+    pt->y2 = y12 - h_FromGmToLj;
+    pt->z2 = z12;
+    //æ ¹æ®çº¿è·¯å‰åä¸­å¿ƒçº¿çš„ä¸‰ç»´åæ ‡è®¡ç®—è®¡ç®—è·¯åŸºé¢å·¦å³ç‚¹çš„x,y,zåæ ‡
+    pt->TW_left = GetTW(pt->x1, pt->z1, pt->y1); //è®¡ç®—å·¦è¾¹å¡çš„å¡«æŒ–ç±»å‹
+    pt->TW_right = GetTW(pt->x2, pt->z2, pt->y2); //è®¡ç®—å³è¾¹å¡çš„å¡«æŒ–ç±»å‹
+    pt->mAngle = mangle; //
+    PtS_RailwayLjToBP3D.Add(pt);//å­˜å‚¨è¾¹å¡å·¦é¢ä¾§çš„å¡«æŒ–ç±»å‹
+    //æ­£å¸¸è¾¹å¡å¤„
+    {
+        L1 = fRailwayWidth / 2.0 + mWidthGuiMianToLujian + LjWidth;
+        //è®¡ç®—å·¦ä¾§è¾¹å¡ç‚¹ä¸åœ°é¢çš„äº¤ç‚¹åæ ‡
+        GetDMJD(x1, y1, z1, x2, y2, z2, L1, pt->y1, pt->x1, pt->z1, pt->TW_left, -1, \
+                pt->x1, pt->y1, pt->z1, \
+                pt->x1, pt->y1, pt->z1, mLC, strJDstyle);
+        //è®¡ç®—å³ä¾§è¾¹å¡ç‚¹ä¸åœ°é¢çš„äº¤ç‚¹åæ ‡
+        GetDMJD(x1, y1, z1, x2, y2, z2, L1, pt->y2, pt->x2, pt->z2, pt->TW_right, 1, \
+                pt->x2, pt->y2, pt->z2, \
+                pt->x2, pt->y2, pt->z2, mLC, strJDstyle);
+    }
+}
 
-	float L1=fRailwayWidth/2.0;
 
-    
-	Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-
-	PRailway3DCordinate pt;
-	
-
-	pt=new Railway3DCordinate;
-	pt->x1=x21;	pt->y1=y21;	pt->z1=z21;
-	pt->x2=x22;	pt->y2=y22;	pt->z2=z22;
-	PtS_Railway3D.Add(pt);
-	
-
-	
-	L1=fRailwayWidth/2.0+mWidthGuiMianToLujian;
-	Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-
-	pt=new Railway3DCordinate;
-	pt->x1=x21;	pt->y1=y21-h_FromGmToLj;pt->z1=z21;
-	pt->x2=x22;	pt->y2=y22-h_FromGmToLj;pt->z2=z22;
-	PtS_RailwayLj3D.Add(pt);
-
-	
-	
-	L1=fRailwayWidth/2.0+mWidthGuiMianToLujian+LjWidth;
-	Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-	
-	pt=new Railway3DCordinate;
-	pt->x1=x21;	pt->y1=y21-h_FromGmToLj;pt->z1=z21;
-	pt->x2=x22;	pt->y2=y22-h_FromGmToLj;pt->z2=z22;
-	
-	
-	pt->TW_left=GetTW(pt->x1, pt->z1, pt->y1);
-	pt->TW_right=GetTW(pt->x2, pt->z2, pt->y2);
- 	pt->mAngle=mangle;
-	PtS_RailwayLjToBP3D.Add(pt);
-	
-	
-	
-
-	
-
-	GetDMJDLast(x1,y1,z1,x2,y2,z2,L1,pt->y1,pt->x1, pt->z1,pt->TW_left,-1,\
-		pt->x1,pt->y1,pt->z1,\
-		pt->x1,pt->y1,pt->z1,mLC,strJDstyle);
-	GetDMJDLast(x1,y1,z1,x2,y2,z2,L1,pt->y2,pt->x2, pt->z2,pt->TW_right,1,\
-		pt->x2,pt->y2,pt->z2,\
-		pt->x2,pt->y2,pt->z2,mLC,strJDstyle);
-	
-
+/************************************************************************/
+/* Function: æ ¹æ®åä¸€ä¸ªç‚¹è®¡ç®—è¾¹å¡æ¨¡å‹                                       */
+/************************************************************************/
+void CDesingScheme::Get3DLineModelLast(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo, CString strJDstyle, CString strJDstyleNext, long index, double mLC) {
+    float mangle;
+    float dx = x2 - x1;
+    float dz = z2 - z1;
+    double x11, y11, z11, x12, y12, z12;
+    double x21, y21, z21, x22, y22, z22;
+    float L1 = fRailwayWidth / 2.0;
+    Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+    PRailway3DCordinate pt;
+    pt = new Railway3DCordinate;
+    pt->x1 = x21;
+    pt->y1 = y21;
+    pt->z1 = z21;
+    pt->x2 = x22;
+    pt->y2 = y22;
+    pt->z2 = z22;
+    PtS_Railway3D.Add(pt);
+    L1 = fRailwayWidth / 2.0 + mWidthGuiMianToLujian;
+    Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+    pt = new Railway3DCordinate;
+    pt->x1 = x21;
+    pt->y1 = y21 - h_FromGmToLj;
+    pt->z1 = z21;
+    pt->x2 = x22;
+    pt->y2 = y22 - h_FromGmToLj;
+    pt->z2 = z22;
+    PtS_RailwayLj3D.Add(pt);
+    L1 = fRailwayWidth / 2.0 + mWidthGuiMianToLujian + LjWidth;
+    Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+    pt = new Railway3DCordinate;
+    pt->x1 = x21;
+    pt->y1 = y21 - h_FromGmToLj;
+    pt->z1 = z21;
+    pt->x2 = x22;
+    pt->y2 = y22 - h_FromGmToLj;
+    pt->z2 = z22;
+    pt->TW_left = GetTW(pt->x1, pt->z1, pt->y1);
+    pt->TW_right = GetTW(pt->x2, pt->z2, pt->y2);
+    pt->mAngle = mangle;
+    PtS_RailwayLjToBP3D.Add(pt);
+    GetDMJDLast(x1, y1, z1, x2, y2, z2, L1, pt->y1, pt->x1, pt->z1, pt->TW_left, -1, \
+                pt->x1, pt->y1, pt->z1, \
+                pt->x1, pt->y1, pt->z1, mLC, strJDstyle);
+    GetDMJDLast(x1, y1, z1, x2, y2, z2, L1, pt->y2, pt->x2, pt->z2, pt->TW_right, 1, \
+                pt->x2, pt->y2, pt->z2, \
+                pt->x2, pt->y2, pt->z2, mLC, strJDstyle);
 }
 
 
 
 /************************************************************************/
-/* Function: ¸ù¾İÏßÂ·Ç°ºóÖĞĞÄÏßÁ½µãµÄÈıÎ¬×ø±ê¼ÆËã¶ÔÓ¦µÄÂ·»ùºá¶ÏÃæ×óÓÒµã×ø±ê	*/
+/* Function: æ ¹æ®çº¿è·¯å‰åä¸­å¿ƒçº¿ä¸¤ç‚¹çš„ä¸‰ç»´åæ ‡è®¡ç®—å¯¹åº”çš„è·¯åŸºæ¨ªæ–­é¢å·¦å³ç‚¹åæ ‡ */
 /************************************************************************/
-void CDesingScheme::Get3DCorrdinate(double x1, double y1, double z1, double x2, double y2, double z2, float dx,float dz,float L, double *x11, double *y11, double *z11, double *x12, double *y12, double *z12, double *x21, double *y21, double *z21, double *x22, double *y22, double *z22,float *angle)
-{
-	float mangle;
-	if(fabs(dx)<=0.000001)  //Èç¹ûÇ°ºóÏßÂ·ÖĞÏßµãµÄX×ø±êÖ®²î<=0.000001,ÔòÈÏÎªÁ½µã×é³ÉµÄÖ±ÏßÆ½ĞĞÓÚYÖá
-	{
-		if(dz<0) 
-			mangle=PAI/2.0;   //Èç¹ûdz<0,Ö±Ïß½Ç¶È=90
-		else
-			mangle=3/2.0*PAI;   //Èç¹ûdz<0,Ö±Ïß½Ç¶È=270
-	
-		//¼ÆËãÏßÂ·ÖĞÏßµ±Ç°µã(x1,y1,z1)¶ÔÓ¦µÄ×ó²àµãÈıÎ¬×ø±ê
-		*x11=x1-L*sin(mangle);
-		*y11=y1;	
-		*z11=z1;
-		
-		//¼ÆËãÏßÂ·ÖĞÏßÏÂÒ»µã(x2,y2,z2)¶ÔÓ¦µÄ×ó²àµãÈıÎ¬×ø±ê
-		*x21=x2-L*sin(mangle);
-		*y21=y2;	
-		*z21=z2;
-		*angle=mangle;
-	}  
-	else //¸ù¾İfabs(dz/dx)Öµ¼ÆËãÇ°ºóÏßÂ·ÖĞÏßµã¹¹³ÉµÄÖ±Ïß½Ç¶È
-	{
-		mangle=atan(fabs(dz/dx));
-		if(dx>=0 && dz<=0)  //1 ÏóÏŞ
-		{
-			//¼ÆËãÏßÂ·ÖĞÏßµ±Ç°µã(x1,y1,z1)¶ÔÓ¦µÄ×ó²àµãÈıÎ¬×ø±ê
-			*x11=x1-L*sin(mangle);
-			*y11=y1;	
-			*z11=z1-L*cos(mangle);
-		
-			//¼ÆËãÏßÂ·ÖĞÏßÏÂÒ»µã(x2,y2,z2)¶ÔÓ¦µÄ×ó²àµãÈıÎ¬×ø±ê
-			*x21=x2-L*sin(mangle);
-			*y21=y2;	
-			*z21=z2-L*cos(mangle);
-			*angle=mangle;
-		}
-		else if(dx<=0 && dz<=0) //2 ÏóÏŞ
-		{
-			//¼ÆËãÏßÂ·ÖĞÏßµ±Ç°µã(x1,y1,z1)¶ÔÓ¦µÄ×ó²àµãÈıÎ¬×ø±ê
-			*x11=x1-L*sin(mangle);
-			*y11=y1;	
-			*z11=z1+L*cos(mangle);
-
-			//¼ÆËãÏßÂ·ÖĞÏßÏÂÒ»µã(x2,y2,z2)¶ÔÓ¦µÄ×ó²àµãÈıÎ¬×ø±ê
-			*x21=x2-L*sin(mangle);
-			*y21=y2;	
-			*z21=z2+L*cos(mangle);
-
-			*angle=PAI-mangle;
-		}
-		else if(dx<=0 && dz>=0) //3 ÏóÏŞ
-		{
-			//¼ÆËãÏßÂ·ÖĞÏßµ±Ç°µã(x1,y1,z1)¶ÔÓ¦µÄ×ó²àµãÈıÎ¬×ø±ê
-			*x11=x1+L*sin(mangle);
-			*y11=y1;	
-			*z11=z1+L*cos(mangle);
-			
-			//¼ÆËãÏßÂ·ÖĞÏßÏÂÒ»µã(x2,y2,z2)¶ÔÓ¦µÄ×ó²àµãÈıÎ¬×ø±ê
-			*x21=x2+L*sin(mangle);
-			*y21=y2;	
-			*z21=z2+L*cos(mangle);	
-			*angle=PAI+mangle;
-		}
-		else if(dx>=0 && dz>=0) //4 ÏóÏŞ
-		{
-			//¼ÆËãÏßÂ·ÖĞÏßµ±Ç°µã(x1,y1,z1)¶ÔÓ¦µÄ×ó²àµãÈıÎ¬×ø±ê
-			*x11=x1+L*sin(mangle);
-			*y11=y1;	
-			*z11=z1-L*cos(mangle);
-			
-			//¼ÆËãÏßÂ·ÖĞÏßÏÂÒ»µã(x2,y2,z2)¶ÔÓ¦µÄ×ó²àµãÈıÎ¬×ø±ê
-			*x21=x2+L*sin(mangle);
-			*y21=y2;	
-			*z21=z2-L*cos(mangle);
-			*angle=2*PAI-mangle;
-		}
-	}
-	
-	//¼ÆËãÏßÂ·ÖĞÏßµ±Ç°µã(x1,y1,z1)¶ÔÓ¦µÄÓÒ²àµãÈıÎ¬×ø±ê
-	*x12=2*x1-*x11;
-	*y12=2*y1-*y11;
-	*z12=2*z1-*z11;
-	
-	//¼ÆËãÏßÂ·ÖĞÏßÏÂÒ»µã(x2,y2,z2)¶ÔÓ¦µÄÓÒ²àµãÈıÎ¬×ø±ê
-	*x22=2*x2-*x21;
-	*y22=2*y2-*y21;
-	*z22=2*z2-*z21;
-	
+void CDesingScheme::Get3DCorrdinate(double x1, double y1, double z1, double x2, double y2, double z2, float dx, float dz, float L, double* x11, double* y11, double* z11, double* x12, double* y12, double* z12, double* x21, double* y21, double* z21, double* x22, double* y22, double* z22, float* angle) {
+    float mangle;
+    if (fabs(dx) <= 0.000001) { //å¦‚æœå‰åçº¿è·¯ä¸­çº¿ç‚¹çš„Xåæ ‡ä¹‹å·®<=0.000001,åˆ™è®¤ä¸ºä¸¤ç‚¹ç»„æˆçš„ç›´çº¿å¹³è¡ŒäºYè½´
+        if (dz < 0)
+            mangle = PAI / 2.0; //å¦‚æœdz<0,ç›´çº¿è§’åº¦=90
+        else
+            mangle = 3 / 2.0 * PAI; //å¦‚æœdz<0,ç›´çº¿è§’åº¦=270
+        //è®¡ç®—çº¿è·¯ä¸­çº¿å½“å‰ç‚¹(x1,y1,z1)å¯¹åº”çš„å·¦ä¾§ç‚¹ä¸‰ç»´åæ ‡
+        *x11 = x1 - L * sin(mangle);
+        *y11 = y1;
+        *z11 = z1;
+        //è®¡ç®—çº¿è·¯ä¸­çº¿ä¸‹ä¸€ç‚¹(x2,y2,z2)å¯¹åº”çš„å·¦ä¾§ç‚¹ä¸‰ç»´åæ ‡
+        *x21 = x2 - L * sin(mangle);
+        *y21 = y2;
+        *z21 = z2;
+        *angle = mangle;
+    } else { //æ ¹æ®fabs(dz/dx)å€¼è®¡ç®—å‰åçº¿è·¯ä¸­çº¿ç‚¹æ„æˆçš„ç›´çº¿è§’åº¦
+        mangle = atan(fabs(dz / dx));
+        if (dx >= 0 && dz <= 0) { //1 è±¡é™
+            //è®¡ç®—çº¿è·¯ä¸­çº¿å½“å‰ç‚¹(x1,y1,z1)å¯¹åº”çš„å·¦ä¾§ç‚¹ä¸‰ç»´åæ ‡
+            *x11 = x1 - L * sin(mangle);
+            *y11 = y1;
+            *z11 = z1 - L * cos(mangle);
+            //è®¡ç®—çº¿è·¯ä¸­çº¿ä¸‹ä¸€ç‚¹(x2,y2,z2)å¯¹åº”çš„å·¦ä¾§ç‚¹ä¸‰ç»´åæ ‡
+            *x21 = x2 - L * sin(mangle);
+            *y21 = y2;
+            *z21 = z2 - L * cos(mangle);
+            *angle = mangle;
+        } else if (dx <= 0 && dz <= 0) { //2 è±¡é™
+            //è®¡ç®—çº¿è·¯ä¸­çº¿å½“å‰ç‚¹(x1,y1,z1)å¯¹åº”çš„å·¦ä¾§ç‚¹ä¸‰ç»´åæ ‡
+            *x11 = x1 - L * sin(mangle);
+            *y11 = y1;
+            *z11 = z1 + L * cos(mangle);
+            //è®¡ç®—çº¿è·¯ä¸­çº¿ä¸‹ä¸€ç‚¹(x2,y2,z2)å¯¹åº”çš„å·¦ä¾§ç‚¹ä¸‰ç»´åæ ‡
+            *x21 = x2 - L * sin(mangle);
+            *y21 = y2;
+            *z21 = z2 + L * cos(mangle);
+            *angle = PAI - mangle;
+        } else if (dx <= 0 && dz >= 0) { //3 è±¡é™
+            //è®¡ç®—çº¿è·¯ä¸­çº¿å½“å‰ç‚¹(x1,y1,z1)å¯¹åº”çš„å·¦ä¾§ç‚¹ä¸‰ç»´åæ ‡
+            *x11 = x1 + L * sin(mangle);
+            *y11 = y1;
+            *z11 = z1 + L * cos(mangle);
+            //è®¡ç®—çº¿è·¯ä¸­çº¿ä¸‹ä¸€ç‚¹(x2,y2,z2)å¯¹åº”çš„å·¦ä¾§ç‚¹ä¸‰ç»´åæ ‡
+            *x21 = x2 + L * sin(mangle);
+            *y21 = y2;
+            *z21 = z2 + L * cos(mangle);
+            *angle = PAI + mangle;
+        } else if (dx >= 0 && dz >= 0) { //4 è±¡é™
+            //è®¡ç®—çº¿è·¯ä¸­çº¿å½“å‰ç‚¹(x1,y1,z1)å¯¹åº”çš„å·¦ä¾§ç‚¹ä¸‰ç»´åæ ‡
+            *x11 = x1 + L * sin(mangle);
+            *y11 = y1;
+            *z11 = z1 - L * cos(mangle);
+            //è®¡ç®—çº¿è·¯ä¸­çº¿ä¸‹ä¸€ç‚¹(x2,y2,z2)å¯¹åº”çš„å·¦ä¾§ç‚¹ä¸‰ç»´åæ ‡
+            *x21 = x2 + L * sin(mangle);
+            *y21 = y2;
+            *z21 = z2 - L * cos(mangle);
+            *angle = 2 * PAI - mangle;
+        }
+    }
+    //è®¡ç®—çº¿è·¯ä¸­çº¿å½“å‰ç‚¹(x1,y1,z1)å¯¹åº”çš„å³ä¾§ç‚¹ä¸‰ç»´åæ ‡
+    *x12 = 2 * x1 - *x11;
+    *y12 = 2 * y1 - *y11;
+    *z12 = 2 * z1 - *z11;
+    //è®¡ç®—çº¿è·¯ä¸­çº¿ä¸‹ä¸€ç‚¹(x2,y2,z2)å¯¹åº”çš„å³ä¾§ç‚¹ä¸‰ç»´åæ ‡
+    *x22 = 2 * x2 - *x21;
+    *y22 = 2 * y2 - *y21;
+    *z22 = 2 * z2 - *z21;
 }
 
 
 /************************************************************************/
-/* Function: ¼ÆËã¸÷½»µãµÄÇúÏßÒªËØ											*/
+/* Function: è®¡ç®—å„äº¤ç‚¹çš„æ›²çº¿è¦ç´                                            */
 /************************************************************************/
-void CDesingScheme::CalculateCurveData()
-{
-	CString tt;
-	PLineCurve pTempCurveElements;
-	
-	double m_startLC = 0;	// ÆğµãÀï³Ì
-    	
-	if(PtS_JD.GetSize()>1)	// Èç¹ûÉè¼Æ½»µãÊı´óÓÚ1
-	{
-		//¼ÆËãµÚ1¸ö½»µã"JD0"µÄÇúÏßÒªËØ
-		pTempCurveElements			= JDCurveElements.GetAt(0);
-		pTempCurveElements->ZH		= pTempCurveElements->HZ			 = m_startLC; // »ºÖ±µãÀï³Ì Ö±»ºµãÀï³Ì
-		pTempCurveElements->HY		= pTempCurveElements->YH			 = m_startLC;
-		pTempCurveElements->Alfa		= pTempCurveElements->T			 = pTempCurveElements->L	  = 0;
-		pTempCurveElements->R		= pTempCurveElements->RoateStyle = pTempCurveElements->E	  = 0;
-		pTempCurveElements->P		= pTempCurveElements->L0			 = pTempCurveElements->Ly = pTempCurveElements->Jzxc = 0;
-		pTempCurveElements->JDLC		= m_startLC;			// ½»µãÀï³Ì
-		pTempCurveElements->ID		= "JD0";				// ½»µãIDºÅ
-		pTempCurveElements->x		= PtS_JD.GetAt(0)->x;	// ½»µãx×ø±ê
-		pTempCurveElements->y		= -PtS_JD.GetAt(0)->z;	// ½»µãy×ø±ê
-		pTempCurveElements->z		= PtS_JD.GetAt(0)->y;	// ½»µãz×ø±ê
-		pTempCurveElements->Cneterx = pTempCurveElements->x;// ÇúÏßÔ²ĞÄx×ø±ê
-		pTempCurveElements->Cnetery = pTempCurveElements->y;// ÇúÏßÔ²ĞÄy×ø±ê
-		
-		pTempCurveElements->ZH_xy	= new  Cordinate;		 //Ö±»ºµã×ø±ê
-		pTempCurveElements->ZH_xy->x= pTempCurveElements->x;
-		pTempCurveElements->ZH_xy->y= pTempCurveElements->y;
-
-		pTempCurveElements->HY_xy	= new  Cordinate;		//»ºÔ²µã×ø±ê
-		pTempCurveElements->HY_xy->x= pTempCurveElements->x;
-		pTempCurveElements->HY_xy->y= pTempCurveElements->y;
-		
-		pTempCurveElements->YH_xy	= new  Cordinate;		//Ô²»ºµã×ø±ê
-		pTempCurveElements->YH_xy->x= pTempCurveElements->x;
-		pTempCurveElements->YH_xy->y= pTempCurveElements->y;
-
-		pTempCurveElements->HZ_xy	= new  Cordinate;		//»ºÖ±µã×ø±ê
-		pTempCurveElements->HZ_xy->x= pTempCurveElements->x;
-		pTempCurveElements->HZ_xy->y= pTempCurveElements->y;
- 
-		//¼ÆËã×îºóÒ»¸ö½»µãJDNµÄÇúÏßÒªËØ
-		pTempCurveElements		 = JDCurveElements.GetAt(PtS_JD.GetSize()-1);
-		pTempCurveElements->Alfa = pTempCurveElements->T = pTempCurveElements->L=0; //½»µã×ª½Ç
- 
-		pTempCurveElements->RoateStyle = pTempCurveElements->E = 0;				//ÍâÊ¸¾à
- 
-		pTempCurveElements->Ly	 = pTempCurveElements->Jzxc = 0;					//¼ĞÖ±Ïß
-		pTempCurveElements->Dist = pTempCurveElements->fwj	= 0;				//½»µãÆ«½Ç
- 
-		pTempCurveElements->x		= PtS_JD.GetAt(PtS_JD.GetSize()-1)->x;		//½»µãx×ø±ê
-		pTempCurveElements->y		= -PtS_JD.GetAt(PtS_JD.GetSize()-1)->z;		//½»µãy×ø±ê
-		pTempCurveElements->z		= PtS_JD.GetAt(PtS_JD.GetSize()-1)->y;		//½»µãz×ø±ê
-		pTempCurveElements->Cneterx	= pTempCurveElements->x;						//ÇúÏßÔ²ĞÄx×ø±ê
-		pTempCurveElements->Cnetery	= pTempCurveElements->y;						//ÇúÏßÔ²ĞÄy×ø±ê
-		
-		pTempCurveElements->ZH_xy	= new Cordinate;			//Ö±»ºµã×ø±ê
-		pTempCurveElements->ZH_xy->x= pTempCurveElements->x;
-		pTempCurveElements->ZH_xy->y= pTempCurveElements->y;
-		
-		pTempCurveElements->HY_xy	= new Cordinate;			//»ºÔ²µã×ø±ê
-		pTempCurveElements->HY_xy->x= pTempCurveElements->x;
-		pTempCurveElements->HY_xy->y= pTempCurveElements->y;
-		
-		pTempCurveElements->YH_xy	= new Cordinate;			//Ô²»ºµã×ø±ê
-		pTempCurveElements->YH_xy->x= pTempCurveElements->x;
-		pTempCurveElements->YH_xy->y= pTempCurveElements->y;
-		
-		pTempCurveElements->HZ_xy	= new  Cordinate;			//»ºÖ±µã×ø±ê
-		pTempCurveElements->HZ_xy->x= pTempCurveElements->x;
-		pTempCurveElements->HZ_xy->y= pTempCurveElements->y;
-		
- 
-		float dertE,dertN;
-		float fwj,fwj2;
-		
-		long i;
-
-							/*
-		N
-		|
-		|
-		|
-		|
-		|____________ E
-							*/
-
-		//¼ÆËã½»µãJD1Óë½»µãJDNÖ®¼ä½»µãµÄÇúÏßÒªËØ
-		
-		for(i=0;i<PtS_JD.GetSize()-1;i++)
-		{
-			// Çó·½Î»½Çfwj
-			dertE	= PtS_JD.GetAt(i+1)->x		-	PtS_JD.GetAt(i)->x;
-			dertN	= (-PtS_JD.GetAt(i+1)->z)	-	(-PtS_JD.GetAt(i)->z);
-
-			if( dertE>=0 && dertN>0){				//1ÏóÏŞ	
-				fwj = atan(fabs(dertE/dertN));		//·½Î»½Ç	
-			}
-			else if(dertE>=0 && dertN<0){			//2ÏóÏŞ
-				fwj = PAI-atan(fabs(dertE/dertN));	
-			}
-			else if(dertE<0 && dertN<0){			//3ÏóÏŞ
-				fwj = PAI+atan(fabs(dertE/dertN));
-			}
-			else if(dertE<0 && dertN>0){			//4ÏóÏŞ
-				fwj = 2*PAI-atan(fabs(dertE/dertN));
-			}
-			else if(dertE>0 && dertN==0){
-				fwj = PAI/2.0;
-			}
-			else if(dertE<0 && dertN==0){		
-				fwj = 3*PAI/2.0;			
-			}
- 
-			JDCurveElements.GetAt(i)->fwj	=	fwj;							// ·½Î»½Ç	
-			JDCurveElements.GetAt(i)->Dist	=	sqrt(dertE*dertE+dertN*dertN);	// ½»µã¾àÀë	
-
-
-
-
-			// Çó·½Î»½Çfwj2
-			if(dertN>=0 && dertE>0){				//1ÏóÏŞ	
-				fwj2=atan(fabs(dertN/dertE));		//·½Î»½Ç2
-			}
-			else if(dertN>=0 && dertE<0){			//2ÏóÏŞ
-				fwj2=PAI-atan(fabs(dertN/dertE));	 
-			}
-			else if(dertN<0 && dertE<0){			//3ÏóÏŞ
-				fwj2=PAI+atan(fabs(dertN/dertE));
-			}
-			else if(dertN<0 && dertE>0){			//4ÏóÏŞ
-				fwj2=2*PAI-atan(fabs(dertN/dertE));	
-			}
-			else if(dertN>0 && dertE==0){		
-				fwj2=PAI/2.0;
-			}
-			else if(dertN<0 && dertE==0){	
-				fwj2=3*PAI/2.0;
-			}
-			JDCurveElements.GetAt(i)->fwj2=fwj2;
-
-		}
-		
-        // ×îºóÒ»¸ö½»µãµÄ·½Î»½Ç2=0
-		JDCurveElements.GetAt(PtS_JD.GetSize()-1)->fwj2=0;
-		
-		for(i=0;i<PtS_JD.GetSize()-2;i++)
-		{			
-			// ÇúÏß×ª½Ç = fwj[i+1] - fwj[i]
-			JDCurveElements.GetAt(i+1)->Alfa = JDCurveElements.GetAt(i+1)->fwj - JDCurveElements.GetAt(i)->fwj;
-			
-			if(fabs(JDCurveElements.GetAt(i+1)->Alfa) > PAI)
-			{
-				if(JDCurveElements.GetAt(i+1)->Alfa<0)
-					JDCurveElements.GetAt(i+1)->Alfa = fabs(JDCurveElements.GetAt(i+1)->Alfa)-PAI;
-			}
-		
-			CString tmpAlfaStr;
-			tmpAlfaStr.Format("Alfa = %f ¶È",(JDCurveElements.GetAt(i+1)->Alfa) * 180/PAI);
-
-			if(JDCurveElements.GetAt(i+1)->Alfa > 0){
-				JDCurveElements.GetAt(i+1)->RoateStyle = 1;	// ÓÒ×ª
-				//AfxMessageBox("ÓÒ×ª" + tmpAlfaStr);
-			}
-			else if(JDCurveElements.GetAt(i+1)->Alfa < 0){
-				JDCurveElements.GetAt(i+1)->RoateStyle = -1;	// ×ó×ª
-				//AfxMessageBox("×ó×ª" + tmpAlfaStr);
-			}
-			
-			
-			if(PtS_JD.GetAt(i+1)->x - PtS_JD.GetAt(i)->x > 0)
-			{
-				if(JDCurveElements.GetAt(i+1)->Alfa < 0)
-					JDCurveElements.GetAt(i+1)->Alfa = -JDCurveElements.GetAt(i+1)->Alfa;
-			}
-
-		
-			float ftan = tan(JDCurveElements.GetAt(i+1)->Alfa/2.0);
-
-			// ÇĞÏß³¤T[i+1] = (R[i+1] + p[i+1]) * tan(Alfa[i+1]/2) + l0[i+1]/2
-			JDCurveElements.GetAt(i+1)->T = \
-				(JDCurveElements.GetAt(i+1)->R + \
-				JDCurveElements.GetAt(i+1)->P) * \
-				tan(JDCurveElements.GetAt(i+1)->Alfa/2.0) + \
-				JDCurveElements.GetAt(i+1)->L0/2.0;
-					
-			// ÇúÏß³¤L[L+1] = Alfa[i+1] * R[i+1] + l0[i+1]
-			JDCurveElements.GetAt(i+1)->L	=	fabs(JDCurveElements.GetAt(i+1)->Alfa*JDCurveElements.GetAt(i+1)->R)+JDCurveElements.GetAt(i+1)->L0;
-			// Ö±»ºµãÀï³ÌZH[i+1] = Dist[i] - T[i] - T[i+1] + HZ[i]
-			JDCurveElements.GetAt(i+1)->ZH	=	JDCurveElements.GetAt(i)->Dist-JDCurveElements.GetAt(i)->T-JDCurveElements.GetAt(i+1)->T+JDCurveElements.GetAt(i)->HZ;
-			// »ºÖ±µãÀï³ÌHZ[i+1] = ZH[i+1] + L[i+1]
-			JDCurveElements.GetAt(i+1)->HZ	=	JDCurveElements.GetAt(i+1)->ZH+JDCurveElements.GetAt(i+1)->L;
-			JDCurveElements.GetAt(i+1)->HY	=	JDCurveElements.GetAt(i+1)->ZH+JDCurveElements.GetAt(i+1)->L0;
-			JDCurveElements.GetAt(i+1)->YH	=	JDCurveElements.GetAt(i+1)->HZ-JDCurveElements.GetAt(i+1)->L0;		
-			JDCurveElements.GetAt(i+1)->Ly	=	JDCurveElements.GetAt(i+1)->YH-JDCurveElements.GetAt(i+1)->HY;
-			JDCurveElements.GetAt(i+1)->JDLC=	JDCurveElements.GetAt(i+1)->ZH+JDCurveElements.GetAt(i+1)->T;
-			JDCurveElements.GetAt(i+1)->E	=	(JDCurveElements.GetAt(i+1)->R+JDCurveElements.GetAt(i+1)->P)/cos(JDCurveElements.GetAt(i+1)->Alfa/2.0)-JDCurveElements.GetAt(i+1)->R;
-			JDCurveElements.GetAt(i+1)->x	=	PtS_JD.GetAt(i+1)->x;
-			JDCurveElements.GetAt(i+1)->y	=	-PtS_JD.GetAt(i+1)->z;
-			JDCurveElements.GetAt(i+1)->z	=	PtS_JD.GetAt(i+1)->y;
-
-			float distence=JDCurveElements.GetAt(i+1)->ZH-JDCurveElements.GetAt(i)->JDLC;
-
-			JDCurveElements.GetAt(i+1)->ZH_xy	 = new  Cordinate;		
-			JDCurveElements.GetAt(i+1)->ZH_xy->x = JDCurveElements.GetAt(i+1)->x-JDCurveElements.GetAt(i+1)->T*cos(JDCurveElements.GetAt(i)->fwj2);
-			JDCurveElements.GetAt(i+1)->ZH_xy->y = JDCurveElements.GetAt(i+1)->y-JDCurveElements.GetAt(i+1)->T*sin(JDCurveElements.GetAt(i)->fwj2);
-			JDCurveElements.GetAt(i+1)->HZ_xy	 = new  Cordinate;		
-			JDCurveElements.GetAt(i+1)->HZ_xy->x = JDCurveElements.GetAt(i+1)->x+JDCurveElements.GetAt(i+1)->T*cos(JDCurveElements.GetAt(i+1)->fwj2);
-			JDCurveElements.GetAt(i+1)->HZ_xy->y = JDCurveElements.GetAt(i+1)->y+JDCurveElements.GetAt(i+1)->T*sin(JDCurveElements.GetAt(i+1)->fwj2);
-	
-			double ptx,pty;
-			float LL;
-			float L0 =	JDCurveElements.GetAt(i+1)->L0;
-			long R	 =	JDCurveElements.GetAt(i+1)->R;
-			LL		 =	JDCurveElements.GetAt(i+1)->HY - JDCurveElements.GetAt(i+1)->ZH;
-
-
-			// (ptx,pty)ÔÚ»ººÍÇúÏßÉÏ
-			ptx = LL - LL*LL*LL*LL*LL/(40.0*R*R*L0*L0) + LL*LL*LL*LL*LL*LL*LL*LL*LL/(3456.0*R*R*R*R*L0*L0*L0*L0);
-			pty = LL*LL*LL/(6.0*R*L0)*(1-LL*LL*LL*LL/(56.0*R*R*L0*L0)+LL*LL*LL*LL*LL*LL*LL*LL/(7040.0*R*R*R*R*L0*L0*L0*L0));
-			
-			float xita=PAI/2.0-JDCurveElements.GetAt(i)->fwj;
-			double xc,yc;
-			if(JDCurveElements.GetAt(i+1)->RoateStyle==-1)		//×ó×ª
-			{
-				xc=cos(xita)*ptx-sin(xita)*pty+JDCurveElements.GetAt(i+1)->ZH_xy->x;
-				yc=sin(xita)*ptx+cos(xita)*pty+JDCurveElements.GetAt(i+1)->ZH_xy->y;
-			}
-			else if(JDCurveElements.GetAt(i+1)->RoateStyle==1)	//ÓÒ×ª
-			{
-				xc=cos(xita)*ptx+sin(xita)*pty+JDCurveElements.GetAt(i+1)->ZH_xy->x;
-				yc=sin(xita)*ptx-cos(xita)*pty+JDCurveElements.GetAt(i+1)->ZH_xy->y;
-			}
-
-			//»ºÔ²µã×ø±ê(x,y)
-			JDCurveElements.GetAt(i+1)->HY_xy	 = new  Cordinate;		
-			JDCurveElements.GetAt(i+1)->HY_xy->x = xc;
-			JDCurveElements.GetAt(i+1)->HY_xy->y = yc;
-			
-			
-			xita=3*PAI/2.0-JDCurveElements.GetAt(i+1)->fwj;
-			if(JDCurveElements.GetAt(i+1)->RoateStyle==-1)	
-			{
-				xc=cos(xita)*ptx+sin(xita)*pty+JDCurveElements.GetAt(i+1)->HZ_xy->x;
-				yc=sin(xita)*ptx-cos(xita)*pty+JDCurveElements.GetAt(i+1)->HZ_xy->y;
-			}
-			else if(JDCurveElements.GetAt(i+1)->RoateStyle==1)	
-			{
-				xc=cos(xita)*ptx-sin(xita)*pty+JDCurveElements.GetAt(i+1)->HZ_xy->x;
-				yc=sin(xita)*ptx+cos(xita)*pty+JDCurveElements.GetAt(i+1)->HZ_xy->y;
-			}
-
-			//Ô²»ºµã×ø±ê(x,y)
-			JDCurveElements.GetAt(i+1)->YH_xy	 = new  Cordinate;		
-			JDCurveElements.GetAt(i+1)->YH_xy->x = xc;
-			JDCurveElements.GetAt(i+1)->YH_xy->y = yc;
-   
-			double dx,dy;
-			dx=JDCurveElements.GetAt(i+1)->YH_xy->x-JDCurveElements.GetAt(i+1)->HY_xy->x;
-			dy=JDCurveElements.GetAt(i+1)->YH_xy->y-JDCurveElements.GetAt(i+1)->HY_xy->y;
-			float rAngle=atan(dy/dx);
-			float peiAngle=(PAI-fabs(JDCurveElements.GetAt(i+1)->Alfa)+L0*1.0/JDCurveElements.GetAt(i+1)->R)/2.0;
-			float thetaAngle;
-			double centerx,centery;
-
-			if(JDCurveElements.GetAt(i+1)->RoateStyle==-1)	
-			{
-				if(dx>0)
-				{
-					thetaAngle=peiAngle+rAngle;
-				}
-				else if(dx<0)
-				{
-					thetaAngle=peiAngle+rAngle+PAI;
-				}
-				centerx=JDCurveElements.GetAt(i+1)->HY_xy->x+JDCurveElements.GetAt(i+1)->R*cos(thetaAngle);
-				centery=JDCurveElements.GetAt(i+1)->HY_xy->y+JDCurveElements.GetAt(i+1)->R*sin(thetaAngle);			
-			}
-			else if(JDCurveElements.GetAt(i+1)->RoateStyle==1)	
-			{
-				
-				if(dx>0)
-				{
-					thetaAngle=peiAngle-rAngle;
-				}
-				else if(dx<0)
-				{
-					thetaAngle=peiAngle-rAngle+PAI;
-				}
-				centerx=JDCurveElements.GetAt(i+1)->HY_xy->x+JDCurveElements.GetAt(i+1)->R*cos(thetaAngle);
-				centery=JDCurveElements.GetAt(i+1)->HY_xy->y-JDCurveElements.GetAt(i+1)->R*sin(thetaAngle);			
-
-			}
-			//ÇúÏßÔ²ĞÄx,y×ø±ê
-			JDCurveElements.GetAt(i+1)->Cneterx = centerx;
-			JDCurveElements.GetAt(i+1)->Cnetery = centery;
-		}
-			
-		
-		
-		PLineCurve pPreCurveElements = JDCurveElements.GetAt(PtS_JD.GetSize()-2);
-		pTempCurveElements = JDCurveElements.GetAt(PtS_JD.GetSize()-1);
-
-		double x1 = pPreCurveElements->HZ_xy->x;
-		double y1 = pPreCurveElements->HZ_xy->y;
-		double x2 = pTempCurveElements->x;
-		double y2 = pTempCurveElements->y;
-		double dist = sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
-		double mlc	= pPreCurveElements->HZ+dist;
-		pTempCurveElements->ZH = pTempCurveElements->HZ = mlc;
-		pTempCurveElements->HY = pTempCurveElements->YH = mlc;
-		pTempCurveElements->JDLC = mlc;
-		pTempCurveElements->L = 0;
-		pTempCurveElements->T = 0;
-		double m_EndLC = mlc;
-		pTempCurveElements->fwj =0;
-		pTempCurveElements->fwj2=0;
-	}
-
-    Save3DlineZX();//ÔÚ½»µã¼äÄÚ²åµã²¢±£´æµ½Êı×éÖĞ,¹©³ÌĞòµ÷ÓÃ	
+void CDesingScheme::CalculateCurveData() {
+    CString tt;
+    PLineCurve pTempCurveElements;
+    double m_startLC = 0;   // èµ·ç‚¹é‡Œç¨‹
+    if (PtS_JD.GetSize() > 1) { // å¦‚æœè®¾è®¡äº¤ç‚¹æ•°å¤§äº1
+        //è®¡ç®—ç¬¬1ä¸ªäº¤ç‚¹"JD0"çš„æ›²çº¿è¦ç´ 
+        pTempCurveElements          = JDCurveElements.GetAt(0);
+        pTempCurveElements->ZH      = pTempCurveElements->HZ             = m_startLC; // ç¼“ç›´ç‚¹é‡Œç¨‹ ç›´ç¼“ç‚¹é‡Œç¨‹
+        pTempCurveElements->HY      = pTempCurveElements->YH             = m_startLC;
+        pTempCurveElements->Alfa        = pTempCurveElements->T          = pTempCurveElements->L      = 0;
+        pTempCurveElements->R       = pTempCurveElements->RoateStyle = pTempCurveElements->E      = 0;
+        pTempCurveElements->P       = pTempCurveElements->L0             = pTempCurveElements->Ly = pTempCurveElements->Jzxc = 0;
+        pTempCurveElements->JDLC        = m_startLC;            // äº¤ç‚¹é‡Œç¨‹
+        pTempCurveElements->ID      = "JD0";                // äº¤ç‚¹IDå·
+        pTempCurveElements->x       = PtS_JD.GetAt(0)->x;   // äº¤ç‚¹xåæ ‡
+        pTempCurveElements->y       = -PtS_JD.GetAt(0)->z;  // äº¤ç‚¹yåæ ‡
+        pTempCurveElements->z       = PtS_JD.GetAt(0)->y;   // äº¤ç‚¹zåæ ‡
+        pTempCurveElements->Cneterx = pTempCurveElements->x;// æ›²çº¿åœ†å¿ƒxåæ ‡
+        pTempCurveElements->Cnetery = pTempCurveElements->y;// æ›²çº¿åœ†å¿ƒyåæ ‡
+        pTempCurveElements->ZH_xy   = new  Cordinate;        //ç›´ç¼“ç‚¹åæ ‡
+        pTempCurveElements->ZH_xy->x = pTempCurveElements->x;
+        pTempCurveElements->ZH_xy->y = pTempCurveElements->y;
+        pTempCurveElements->HY_xy   = new  Cordinate;       //ç¼“åœ†ç‚¹åæ ‡
+        pTempCurveElements->HY_xy->x = pTempCurveElements->x;
+        pTempCurveElements->HY_xy->y = pTempCurveElements->y;
+        pTempCurveElements->YH_xy   = new  Cordinate;       //åœ†ç¼“ç‚¹åæ ‡
+        pTempCurveElements->YH_xy->x = pTempCurveElements->x;
+        pTempCurveElements->YH_xy->y = pTempCurveElements->y;
+        pTempCurveElements->HZ_xy   = new  Cordinate;       //ç¼“ç›´ç‚¹åæ ‡
+        pTempCurveElements->HZ_xy->x = pTempCurveElements->x;
+        pTempCurveElements->HZ_xy->y = pTempCurveElements->y;
+        //è®¡ç®—æœ€åä¸€ä¸ªäº¤ç‚¹JDNçš„æ›²çº¿è¦ç´ 
+        pTempCurveElements       = JDCurveElements.GetAt(PtS_JD.GetSize() - 1);
+        pTempCurveElements->Alfa = pTempCurveElements->T = pTempCurveElements->L = 0; //äº¤ç‚¹è½¬è§’
+        pTempCurveElements->RoateStyle = pTempCurveElements->E = 0;             //å¤–çŸ¢è·
+        pTempCurveElements->Ly   = pTempCurveElements->Jzxc = 0;                    //å¤¹ç›´çº¿
+        pTempCurveElements->Dist = pTempCurveElements->fwj  = 0;                //äº¤ç‚¹åè§’
+        pTempCurveElements->x       = PtS_JD.GetAt(PtS_JD.GetSize() - 1)->x;    //äº¤ç‚¹xåæ ‡
+        pTempCurveElements->y       = -PtS_JD.GetAt(PtS_JD.GetSize() - 1)->z;   //äº¤ç‚¹yåæ ‡
+        pTempCurveElements->z       = PtS_JD.GetAt(PtS_JD.GetSize() - 1)->y;    //äº¤ç‚¹zåæ ‡
+        pTempCurveElements->Cneterx = pTempCurveElements->x;                        //æ›²çº¿åœ†å¿ƒxåæ ‡
+        pTempCurveElements->Cnetery = pTempCurveElements->y;                        //æ›²çº¿åœ†å¿ƒyåæ ‡
+        pTempCurveElements->ZH_xy   = new Cordinate;            //ç›´ç¼“ç‚¹åæ ‡
+        pTempCurveElements->ZH_xy->x = pTempCurveElements->x;
+        pTempCurveElements->ZH_xy->y = pTempCurveElements->y;
+        pTempCurveElements->HY_xy   = new Cordinate;            //ç¼“åœ†ç‚¹åæ ‡
+        pTempCurveElements->HY_xy->x = pTempCurveElements->x;
+        pTempCurveElements->HY_xy->y = pTempCurveElements->y;
+        pTempCurveElements->YH_xy   = new Cordinate;            //åœ†ç¼“ç‚¹åæ ‡
+        pTempCurveElements->YH_xy->x = pTempCurveElements->x;
+        pTempCurveElements->YH_xy->y = pTempCurveElements->y;
+        pTempCurveElements->HZ_xy   = new  Cordinate;           //ç¼“ç›´ç‚¹åæ ‡
+        pTempCurveElements->HZ_xy->x = pTempCurveElements->x;
+        pTempCurveElements->HZ_xy->y = pTempCurveElements->y;
+        float dertE, dertN;
+        float fwj, fwj2;
+        long i;
+        /*
+        N
+        |
+        |
+        |
+        |
+        |____________ E
+         */
+        //è®¡ç®—äº¤ç‚¹JD1ä¸äº¤ç‚¹JDNä¹‹é—´äº¤ç‚¹çš„æ›²çº¿è¦ç´ 
+        for (i = 0; i < PtS_JD.GetSize() - 1; i++) {
+            // æ±‚æ–¹ä½è§’fwj
+            dertE   = PtS_JD.GetAt(i + 1)->x      -   PtS_JD.GetAt(i)->x;
+            dertN   = (-PtS_JD.GetAt(i + 1)->z)   - (-PtS_JD.GetAt(i)->z);
+            if (dertE >= 0 && dertN > 0) {           //1è±¡é™
+                fwj = atan(fabs(dertE / dertN));    //æ–¹ä½è§’
+            } else if (dertE >= 0 && dertN < 0) {   //2è±¡é™
+                fwj = PAI - atan(fabs(dertE / dertN));
+            } else if (dertE < 0 && dertN < 0) {    //3è±¡é™
+                fwj = PAI + atan(fabs(dertE / dertN));
+            } else if (dertE < 0 && dertN > 0) {    //4è±¡é™
+                fwj = 2 * PAI - atan(fabs(dertE / dertN));
+            } else if (dertE > 0 && dertN == 0) {
+                fwj = PAI / 2.0;
+            } else if (dertE < 0 && dertN == 0) {
+                fwj = 3 * PAI / 2.0;
+            }
+            JDCurveElements.GetAt(i)->fwj   =   fwj;                            // æ–¹ä½è§’
+            JDCurveElements.GetAt(i)->Dist  =   sqrt(dertE * dertE + dertN * dertN); // äº¤ç‚¹è·ç¦»
+            // æ±‚æ–¹ä½è§’fwj2
+            if (dertN >= 0 && dertE > 0) {          //1è±¡é™
+                fwj2 = atan(fabs(dertN / dertE));   //æ–¹ä½è§’2
+            } else if (dertN >= 0 && dertE < 0) {   //2è±¡é™
+                fwj2 = PAI - atan(fabs(dertN / dertE));
+            } else if (dertN < 0 && dertE < 0) {    //3è±¡é™
+                fwj2 = PAI + atan(fabs(dertN / dertE));
+            } else if (dertN < 0 && dertE > 0) {    //4è±¡é™
+                fwj2 = 2 * PAI - atan(fabs(dertN / dertE));
+            } else if (dertN > 0 && dertE == 0) {
+                fwj2 = PAI / 2.0;
+            } else if (dertN < 0 && dertE == 0) {
+                fwj2 = 3 * PAI / 2.0;
+            }
+            JDCurveElements.GetAt(i)->fwj2 = fwj2;
+        }
+        // æœ€åä¸€ä¸ªäº¤ç‚¹çš„æ–¹ä½è§’2=0
+        JDCurveElements.GetAt(PtS_JD.GetSize() - 1)->fwj2 = 0;
+        for (i = 0; i < PtS_JD.GetSize() - 2; i++) {
+            // æ›²çº¿è½¬è§’ = fwj[i+1] - fwj[i]
+            JDCurveElements.GetAt(i + 1)->Alfa = JDCurveElements.GetAt(i + 1)->fwj - JDCurveElements.GetAt(i)->fwj;
+            if (fabs(JDCurveElements.GetAt(i + 1)->Alfa) > PAI) {
+                if (JDCurveElements.GetAt(i + 1)->Alfa < 0)
+                    JDCurveElements.GetAt(i + 1)->Alfa = fabs(JDCurveElements.GetAt(i + 1)->Alfa) - PAI;
+            }
+            CString tmpAlfaStr;
+            tmpAlfaStr.Format("Alfa = %f åº¦", (JDCurveElements.GetAt(i + 1)->Alfa) * 180 / PAI);
+            if (JDCurveElements.GetAt(i + 1)->Alfa > 0) {
+                JDCurveElements.GetAt(i + 1)->RoateStyle = 1; // å³è½¬
+                //AfxMessageBox("å³è½¬" + tmpAlfaStr);
+            } else if (JDCurveElements.GetAt(i + 1)->Alfa < 0) {
+                JDCurveElements.GetAt(i + 1)->RoateStyle = -1;  // å·¦è½¬
+                //AfxMessageBox("å·¦è½¬" + tmpAlfaStr);
+            }
+            if (PtS_JD.GetAt(i + 1)->x - PtS_JD.GetAt(i)->x > 0) {
+                if (JDCurveElements.GetAt(i + 1)->Alfa < 0)
+                    JDCurveElements.GetAt(i + 1)->Alfa = -JDCurveElements.GetAt(i + 1)->Alfa;
+            }
+            float ftan = tan(JDCurveElements.GetAt(i + 1)->Alfa / 2.0);
+            // åˆ‡çº¿é•¿T[i+1] = (R[i+1] + p[i+1]) * tan(Alfa[i+1]/2) + l0[i+1]/2
+            JDCurveElements.GetAt(i + 1)->T = \
+                                              (JDCurveElements.GetAt(i + 1)->R + \
+                                               JDCurveElements.GetAt(i + 1)->P) * \
+                                              tan(JDCurveElements.GetAt(i + 1)->Alfa / 2.0) + \
+                                              JDCurveElements.GetAt(i + 1)->L0 / 2.0;
+            // æ›²çº¿é•¿L[L+1] = Alfa[i+1] * R[i+1] + l0[i+1]
+            JDCurveElements.GetAt(i + 1)->L   =   fabs(JDCurveElements.GetAt(i + 1)->Alfa * JDCurveElements.GetAt(i + 1)->R) + JDCurveElements.GetAt(i + 1)->L0;
+            // ç›´ç¼“ç‚¹é‡Œç¨‹ZH[i+1] = Dist[i] - T[i] - T[i+1] + HZ[i]
+            JDCurveElements.GetAt(i + 1)->ZH  =   JDCurveElements.GetAt(i)->Dist - JDCurveElements.GetAt(i)->T - JDCurveElements.GetAt(i + 1)->T + JDCurveElements.GetAt(i)->HZ;
+            // ç¼“ç›´ç‚¹é‡Œç¨‹HZ[i+1] = ZH[i+1] + L[i+1]
+            JDCurveElements.GetAt(i + 1)->HZ  =   JDCurveElements.GetAt(i + 1)->ZH + JDCurveElements.GetAt(i + 1)->L;
+            JDCurveElements.GetAt(i + 1)->HY  =   JDCurveElements.GetAt(i + 1)->ZH + JDCurveElements.GetAt(i + 1)->L0;
+            JDCurveElements.GetAt(i + 1)->YH  =   JDCurveElements.GetAt(i + 1)->HZ - JDCurveElements.GetAt(i + 1)->L0;
+            JDCurveElements.GetAt(i + 1)->Ly  =   JDCurveElements.GetAt(i + 1)->YH - JDCurveElements.GetAt(i + 1)->HY;
+            JDCurveElements.GetAt(i + 1)->JDLC =   JDCurveElements.GetAt(i + 1)->ZH + JDCurveElements.GetAt(i + 1)->T;
+            JDCurveElements.GetAt(i + 1)->E   = (JDCurveElements.GetAt(i + 1)->R + JDCurveElements.GetAt(i + 1)->P) / cos(JDCurveElements.GetAt(i + 1)->Alfa / 2.0) - JDCurveElements.GetAt(i + 1)->R;
+            JDCurveElements.GetAt(i + 1)->x   =   PtS_JD.GetAt(i + 1)->x;
+            JDCurveElements.GetAt(i + 1)->y   =   -PtS_JD.GetAt(i + 1)->z;
+            JDCurveElements.GetAt(i + 1)->z   =   PtS_JD.GetAt(i + 1)->y;
+            float distence = JDCurveElements.GetAt(i + 1)->ZH - JDCurveElements.GetAt(i)->JDLC;
+            JDCurveElements.GetAt(i + 1)->ZH_xy    = new  Cordinate;
+            JDCurveElements.GetAt(i + 1)->ZH_xy->x = JDCurveElements.GetAt(i + 1)->x - JDCurveElements.GetAt(i + 1)->T * cos(JDCurveElements.GetAt(i)->fwj2);
+            JDCurveElements.GetAt(i + 1)->ZH_xy->y = JDCurveElements.GetAt(i + 1)->y - JDCurveElements.GetAt(i + 1)->T * sin(JDCurveElements.GetAt(i)->fwj2);
+            JDCurveElements.GetAt(i + 1)->HZ_xy    = new  Cordinate;
+            JDCurveElements.GetAt(i + 1)->HZ_xy->x = JDCurveElements.GetAt(i + 1)->x + JDCurveElements.GetAt(i + 1)->T * cos(JDCurveElements.GetAt(i + 1)->fwj2);
+            JDCurveElements.GetAt(i + 1)->HZ_xy->y = JDCurveElements.GetAt(i + 1)->y + JDCurveElements.GetAt(i + 1)->T * sin(JDCurveElements.GetAt(i + 1)->fwj2);
+            double ptx, pty;
+            float LL;
+            float L0 =  JDCurveElements.GetAt(i + 1)->L0;
+            long R   =  JDCurveElements.GetAt(i + 1)->R;
+            LL       =  JDCurveElements.GetAt(i + 1)->HY - JDCurveElements.GetAt(i + 1)->ZH;
+            // (ptx,pty)åœ¨ç¼“å’Œæ›²çº¿ä¸Š
+            ptx = LL - LL * LL * LL * LL * LL / (40.0 * R * R * L0 * L0) + LL * LL * LL * LL * LL * LL * LL * LL * LL / (3456.0 * R * R * R * R * L0 * L0 * L0 * L0);
+            pty = LL * LL * LL / (6.0 * R * L0) * (1 - LL * LL * LL * LL / (56.0 * R * R * L0 * L0) + LL * LL * LL * LL * LL * LL * LL * LL / (7040.0 * R * R * R * R * L0 * L0 * L0 * L0));
+            float xita = PAI / 2.0 - JDCurveElements.GetAt(i)->fwj;
+            double xc, yc;
+            if (JDCurveElements.GetAt(i + 1)->RoateStyle == -1) { //å·¦è½¬
+                xc = cos(xita) * ptx - sin(xita) * pty + JDCurveElements.GetAt(i + 1)->ZH_xy->x;
+                yc = sin(xita) * ptx + cos(xita) * pty + JDCurveElements.GetAt(i + 1)->ZH_xy->y;
+            } else if (JDCurveElements.GetAt(i + 1)->RoateStyle == 1) { //å³è½¬
+                xc = cos(xita) * ptx + sin(xita) * pty + JDCurveElements.GetAt(i + 1)->ZH_xy->x;
+                yc = sin(xita) * ptx - cos(xita) * pty + JDCurveElements.GetAt(i + 1)->ZH_xy->y;
+            }
+            //ç¼“åœ†ç‚¹åæ ‡(x,y)
+            JDCurveElements.GetAt(i + 1)->HY_xy    = new  Cordinate;
+            JDCurveElements.GetAt(i + 1)->HY_xy->x = xc;
+            JDCurveElements.GetAt(i + 1)->HY_xy->y = yc;
+            xita = 3 * PAI / 2.0 - JDCurveElements.GetAt(i + 1)->fwj;
+            if (JDCurveElements.GetAt(i + 1)->RoateStyle == -1) {
+                xc = cos(xita) * ptx + sin(xita) * pty + JDCurveElements.GetAt(i + 1)->HZ_xy->x;
+                yc = sin(xita) * ptx - cos(xita) * pty + JDCurveElements.GetAt(i + 1)->HZ_xy->y;
+            } else if (JDCurveElements.GetAt(i + 1)->RoateStyle == 1) {
+                xc = cos(xita) * ptx - sin(xita) * pty + JDCurveElements.GetAt(i + 1)->HZ_xy->x;
+                yc = sin(xita) * ptx + cos(xita) * pty + JDCurveElements.GetAt(i + 1)->HZ_xy->y;
+            }
+            //åœ†ç¼“ç‚¹åæ ‡(x,y)
+            JDCurveElements.GetAt(i + 1)->YH_xy    = new  Cordinate;
+            JDCurveElements.GetAt(i + 1)->YH_xy->x = xc;
+            JDCurveElements.GetAt(i + 1)->YH_xy->y = yc;
+            double dx, dy;
+            dx = JDCurveElements.GetAt(i + 1)->YH_xy->x - JDCurveElements.GetAt(i + 1)->HY_xy->x;
+            dy = JDCurveElements.GetAt(i + 1)->YH_xy->y - JDCurveElements.GetAt(i + 1)->HY_xy->y;
+            float rAngle = atan(dy / dx);
+            float peiAngle = (PAI - fabs(JDCurveElements.GetAt(i + 1)->Alfa) + L0 * 1.0 / JDCurveElements.GetAt(i + 1)->R) / 2.0;
+            float thetaAngle;
+            double centerx, centery;
+            if (JDCurveElements.GetAt(i + 1)->RoateStyle == -1) {
+                if (dx > 0) {
+                    thetaAngle = peiAngle + rAngle;
+                } else if (dx < 0) {
+                    thetaAngle = peiAngle + rAngle + PAI;
+                }
+                centerx = JDCurveElements.GetAt(i + 1)->HY_xy->x + JDCurveElements.GetAt(i + 1)->R * cos(thetaAngle);
+                centery = JDCurveElements.GetAt(i + 1)->HY_xy->y + JDCurveElements.GetAt(i + 1)->R * sin(thetaAngle);
+            } else if (JDCurveElements.GetAt(i + 1)->RoateStyle == 1) {
+                if (dx > 0) {
+                    thetaAngle = peiAngle - rAngle;
+                } else if (dx < 0) {
+                    thetaAngle = peiAngle - rAngle + PAI;
+                }
+                centerx = JDCurveElements.GetAt(i + 1)->HY_xy->x + JDCurveElements.GetAt(i + 1)->R * cos(thetaAngle);
+                centery = JDCurveElements.GetAt(i + 1)->HY_xy->y - JDCurveElements.GetAt(i + 1)->R * sin(thetaAngle);
+            }
+            //æ›²çº¿åœ†å¿ƒx,yåæ ‡
+            JDCurveElements.GetAt(i + 1)->Cneterx = centerx;
+            JDCurveElements.GetAt(i + 1)->Cnetery = centery;
+        }
+        PLineCurve pPreCurveElements = JDCurveElements.GetAt(PtS_JD.GetSize() - 2);
+        pTempCurveElements = JDCurveElements.GetAt(PtS_JD.GetSize() - 1);
+        double x1 = pPreCurveElements->HZ_xy->x;
+        double y1 = pPreCurveElements->HZ_xy->y;
+        double x2 = pTempCurveElements->x;
+        double y2 = pTempCurveElements->y;
+        double dist = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        double mlc  = pPreCurveElements->HZ + dist;
+        pTempCurveElements->ZH = pTempCurveElements->HZ = mlc;
+        pTempCurveElements->HY = pTempCurveElements->YH = mlc;
+        pTempCurveElements->JDLC = mlc;
+        pTempCurveElements->L = 0;
+        pTempCurveElements->T = 0;
+        double m_EndLC = mlc;
+        pTempCurveElements->fwj = 0;
+        pTempCurveElements->fwj2 = 0;
+    }
+    Save3DlineZX();//åœ¨äº¤ç‚¹é—´å†…æ’ç‚¹å¹¶ä¿å­˜åˆ°æ•°ç»„ä¸­,ä¾›ç¨‹åºè°ƒç”¨
 }
 
 
-float CDesingScheme::GetDistenceXYZ(double x1, double y1, double z1, double x2, double y2, double z2)
-{
-	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1));	
+float CDesingScheme::GetDistenceXYZ(double x1, double y1, double z1, double x2, double y2, double z2) {
+    return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1));
 }
 
 
 /************************************************************************/
-/* Function: ÔÚ½»µã¼äÄÚ²åµã²¢±£´æµ½Êı×éÖĞ,¹©³ÌĞòµ÷ÓÃ						*/
+/* Function: åœ¨äº¤ç‚¹é—´å†…æ’ç‚¹å¹¶ä¿å­˜åˆ°æ•°ç»„ä¸­,ä¾›ç¨‹åºè°ƒç”¨                        */
 /************************************************************************/
-void CDesingScheme::Save3DlineZX()
-{
-	int mNCDistence=4;
-
-	double x1,y1,z1,x2,y2,z2,x3,y3,z3;
-	float ZH_h,HZ_h;
-	CString m_strPtStyle;
-
-	
-	
-	PCordinate ppt;
-	for (long i=0;i<JDCurveElements.GetSize();i++)
-	{
-		
-		if(i==0 || i==JDCurveElements.GetSize()-1)
-		{
-			ppt=new Cordinate;
-			ppt->x=PtS_JD.GetAt(i)->x;
-			ppt->y=PtS_JD.GetAt(i)->y;
-			ppt->z=PtS_JD.GetAt(i)->z;
-			
-			ppt->dmh = GetHeightValue(ppt->x,-ppt->z);
-			
-			ppt->Derh=ppt->y-ppt->dmh;
-			ppt->strJDStyle = "½»µã×ø±ê";
-			ppt->Lc=JDCurveElements.GetAt(i)->ZH;
-			if(i==0){
-				PtS_3DLineZX.Add(ppt);
-			}
-			else  
-			{			
-				double L1=GetDistenceXY(PtS_JD.GetAt(i-1)->x,\
-							PtS_JD.GetAt(i-1)->z,PtS_JD.GetAt(i)->x,\
-							PtS_JD.GetAt(i)->z);
-				double L2=GetDistenceXY(PtS_JD.GetAt(i-1)->x,\
-							PtS_JD.GetAt(i-1)->z,\
-							JDCurveElements.GetAt(i-1)->HZ_xy->x,\
-							-JDCurveElements.GetAt(i-1)->HZ_xy->y);
-				y1=PtS_JD.GetAt(i-1)->y;
-				y2=PtS_JD.GetAt(i)->y;
-				float  HZ_h	= y1+L2/L1*(y2-y1);
-				float  ZH_h	= PtS_JD.GetAt(i)->y;
-				double LZH2	= JDCurveElements.GetAt(i)->ZH-JDCurveElements.GetAt(i-1)->HZ;
-				
-				// ƒÈ²åµã
-				NeiChaDian(LZH2,\
-					JDCurveElements.GetAt(i-1)->HZ_xy->x,\
-					HZ_h,\
-					-JDCurveElements.GetAt(i-1)->HZ_xy->y,\
-					JDCurveElements.GetAt(i)->ZH_xy->x,\
-					ZH_h,\
-					-JDCurveElements.GetAt(i)->ZH_xy->y,JDCurveElements.GetAt(i-1)->HZ\
-				);
-				PtS_3DLineZX.RemoveAt(PtS_3DLineZX.GetSize()-1);
-				PtS_3DLineZX.Add(ppt);
-			}
-
-		}
-			
-		
-		else if(i>0 && i<JDCurveElements.GetSize()-1)//µ±Ç°½»µãi²»ÊÇ·½°¸µÄ×îºóÒ»¸ö½»µã,ÓĞ»ººÍÇúÏß¶Î,ÇúÏß¶Î
-		{
-			
-			x1=PtS_JD.GetAt(i-1)->x;		y1=PtS_JD.GetAt(i-1)->y;		z1=PtS_JD.GetAt(i-1)->z;
-		
-			x2=PtS_JD.GetAt(i)->x;		y2=PtS_JD.GetAt(i)->y;		z2=PtS_JD.GetAt(i)->z;
-			
-			x3=PtS_JD.GetAt(i+1)->x;		y3=PtS_JD.GetAt(i+1)->y;		z3=PtS_JD.GetAt(i+1)->z;
-
-
-			double L1=GetDistenceXY(x1,z1,x2,z2);
-			double tx=JDCurveElements.GetAt(i)->ZH_xy->x;
-			double tz=-JDCurveElements.GetAt(i)->ZH_xy->y;
-			
-			double LZH=GetDistenceXY(x1,z1,tx,tz);
-			ZH_h=y1+LZH/L1*(y2-y1);
-			
-			
-			double LZH2=GetDistenceXY(\
-				JDCurveElements.GetAt(i-1)->HZ_xy->x,\
-				-JDCurveElements.GetAt(i-1)->HZ_xy->y,\
-				JDCurveElements.GetAt(i)->ZH_xy->x,\
-				-JDCurveElements.GetAt(i)->ZH_xy->y);
-			
-			tx=JDCurveElements.GetAt(i-1)->HZ_xy->x;
-			tz=-JDCurveElements.GetAt(i-1)->HZ_xy->y;
-			double LHZ=GetDistenceXY(x1,z1,tx,tz);
-			HZ_h=y1+LHZ/L1*(y2-y1);
-			
-
-			NeiChaDian(LZH2,\
-				JDCurveElements.GetAt(i-1)->HZ_xy->x,\
-				HZ_h,\
-				-JDCurveElements.GetAt(i-1)->HZ_xy->y,\
-				JDCurveElements.GetAt(i)->ZH_xy->x,\
-				ZH_h,\
-				-JDCurveElements.GetAt(i)->ZH_xy->y,\
-				JDCurveElements.GetAt(i-1)->HZ);
-
-	
-		
-			L1=GetDistenceXY(x2,z2,x3,z3);
-			tx=JDCurveElements.GetAt(i)->HZ_xy->x;
-			tz=-JDCurveElements.GetAt(i)->HZ_xy->y;
-			LHZ=GetDistenceXY(x2,z2,tx,tz);
-			HZ_h=y2+LHZ/L1*(y3-y2);
-		
-			
-			
-			float Derh=HZ_h-ZH_h;
-			float LL=JDCurveElements.GetAt(i)->HZ-JDCurveElements.GetAt(i)->ZH;
-			float L0=JDCurveElements.GetAt(i)->L0;
-			BOOL bEnd=FALSE;
-			float k=0;
-			while (k<L0 && bEnd==FALSE)
-			{
-				float h=ZH_h+k*Derh/LL;
-				k+=mNCDistence;
-				if(k>L0) 
-				{
-					k=L0;
-					bEnd=TRUE;
-				}
-				
-				GetQLXY(L0,JDCurveElements.GetAt(i)->R,\
-					JDCurveElements.GetAt(i)->RoateStyle,\
-					k,JDCurveElements.GetAt(i-1)->fwj,\
-					JDCurveElements.GetAt(i)->ZH_xy->x,\
-					JDCurveElements.GetAt(i)->ZH_xy->y,0,0,&x1,&y1,1);
-				
-				if(k==L0)
-					m_strPtStyle="»ºÔ²µã×ø±ê";
-				else
-					m_strPtStyle="Ç°»ººÍÇúÏß¶Îµã×ø±ê";
-			
-				ppt=new Cordinate;
-				ppt->x=x1;
-				ppt->y=h;
-				ppt->z=-y1;
-				
-				ppt->dmh = GetHeightValue(ppt->x,-ppt->z);
-				
-				ppt->Derh=ppt->y-ppt->dmh;
-				ppt->strJDStyle=m_strPtStyle;
-				ppt->Lc=k+JDCurveElements.GetAt(i)->ZH;
-				PtS_3DLineZX.Add(ppt);
-				
-			}
-			
-			
-			float Ly=JDCurveElements.GetAt(i)->Ly;
-			k=0;
-			bEnd=FALSE;
-			while(k<Ly && bEnd==FALSE)
-			{
-				k+=mNCDistence;
-				if(k>Ly) 
-				{
-					k=Ly;
-					bEnd=TRUE;
-				}
-				float h=ZH_h+(k+L0)*Derh/LL;
-				GetYQXXY(JDCurveElements.GetAt(i)->Cneterx,JDCurveElements.GetAt(i)->Cnetery,\
-					JDCurveElements.GetAt(i)->R,JDCurveElements.GetAt(i)->RoateStyle,\
-					k,JDCurveElements.GetAt(i)->Alfa,JDCurveElements.GetAt(i)->HY_xy->x,\
-					JDCurveElements.GetAt(i)->HY_xy->y,\
-					JDCurveElements.GetAt(i)->YH_xy->x,JDCurveElements.GetAt(i)->YH_xy->y,\
-					&x1,&y1);
-			
-				if(k==Ly)
-					m_strPtStyle="Ô²»ºµã×ø±ê";
-				else
-					m_strPtStyle="Ô²ÇúÏß¶Îµã×ø±ê";
-				
-				ppt=new Cordinate;
-				ppt->x=x1;
-				ppt->y=h;
-				ppt->z=-y1;
-				
-				ppt->dmh = GetHeightValue(ppt->x,-ppt->z);
-				
-				ppt->Derh=ppt->y-ppt->dmh;
-				ppt->strJDStyle=m_strPtStyle;
-				ppt->Lc=k+JDCurveElements.GetAt(i)->HY;
-				PtS_3DLineZX.Add(ppt);
-				
-			}
-		
-			
-			k=L0;
-			bEnd=FALSE;
-			
-			float L3=JDCurveElements.GetAt(i)->YH-JDCurveElements.GetAt(i)->ZH;
-			while(k>0 && bEnd==FALSE)
-			{
-				k-=mNCDistence;
-				float h=ZH_h+((L0-k)+L3)*Derh/LL;
-
-				if(k<0) 
-				{
-					k=0;
-					bEnd=FALSE;
-				}
-			
-				GetQLXY(L0,JDCurveElements.GetAt(i)->R,JDCurveElements.GetAt(i)->RoateStyle,\
-					k,JDCurveElements.GetAt(i)->fwj,0,0,JDCurveElements.GetAt(i)->HZ_xy->x,\
-					JDCurveElements.GetAt(i)->HZ_xy->y,&x1,&y1,2);
-			
-				if(k==0)
-					m_strPtStyle="»ºÖ±µã×ø±ê";
-				else
-					m_strPtStyle="ºó»ººÍÇúÏß¶Îµã×ø±ê";
-				
-				ppt=new Cordinate;
-				ppt->x=x1;
-				ppt->y=h;
-				ppt->z=-y1;
-				
-				ppt->dmh = GetHeightValue(ppt->x,-ppt->z);
-				
-				ppt->Derh=ppt->y-ppt->dmh;
-				ppt->strJDStyle=m_strPtStyle;
-				ppt->Lc=(L0-k)+JDCurveElements.GetAt(i)->YH;
-				
-				PtS_3DLineZX.Add(ppt);
-				
-			}
-		}
-	}			
+void CDesingScheme::Save3DlineZX() {
+    int mNCDistence = 4;
+    double x1, y1, z1, x2, y2, z2, x3, y3, z3;
+    float ZH_h, HZ_h;
+    CString m_strPtStyle;
+    PCordinate ppt;
+    for (long i = 0; i < JDCurveElements.GetSize(); i++) {
+        if (i == 0 || i == JDCurveElements.GetSize() - 1) {
+            ppt = new Cordinate;
+            ppt->x = PtS_JD.GetAt(i)->x;
+            ppt->y = PtS_JD.GetAt(i)->y;
+            ppt->z = PtS_JD.GetAt(i)->z;
+            ppt->dmh = GetHeightValue(ppt->x, -ppt->z);
+            ppt->Derh = ppt->y - ppt->dmh;
+            ppt->strJDStyle = "äº¤ç‚¹åæ ‡";
+            ppt->Lc = JDCurveElements.GetAt(i)->ZH;
+            if (i == 0) {
+                PtS_3DLineZX.Add(ppt);
+            } else {
+                double L1 = GetDistenceXY(PtS_JD.GetAt(i - 1)->x, \
+                                          PtS_JD.GetAt(i - 1)->z, PtS_JD.GetAt(i)->x, \
+                                          PtS_JD.GetAt(i)->z);
+                double L2 = GetDistenceXY(PtS_JD.GetAt(i - 1)->x, \
+                                          PtS_JD.GetAt(i - 1)->z, \
+                                          JDCurveElements.GetAt(i - 1)->HZ_xy->x, \
+                                          -JDCurveElements.GetAt(i - 1)->HZ_xy->y);
+                y1 = PtS_JD.GetAt(i - 1)->y;
+                y2 = PtS_JD.GetAt(i)->y;
+                float  HZ_h = y1 + L2 / L1 * (y2 - y1);
+                float  ZH_h = PtS_JD.GetAt(i)->y;
+                double LZH2 = JDCurveElements.GetAt(i)->ZH - JDCurveElements.GetAt(i - 1)->HZ;
+                // å…§æ’ç‚¹
+                NeiChaDian(LZH2, \
+                           JDCurveElements.GetAt(i - 1)->HZ_xy->x, \
+                           HZ_h, \
+                           -JDCurveElements.GetAt(i - 1)->HZ_xy->y, \
+                           JDCurveElements.GetAt(i)->ZH_xy->x, \
+                           ZH_h, \
+                           -JDCurveElements.GetAt(i)->ZH_xy->y, JDCurveElements.GetAt(i - 1)->HZ\
+                          );
+                PtS_3DLineZX.RemoveAt(PtS_3DLineZX.GetSize() - 1);
+                PtS_3DLineZX.Add(ppt);
+            }
+        } else if (i > 0 && i < JDCurveElements.GetSize() - 1) { //å½“å‰äº¤ç‚¹iä¸æ˜¯æ–¹æ¡ˆçš„æœ€åä¸€ä¸ªäº¤ç‚¹,æœ‰ç¼“å’Œæ›²çº¿æ®µ,æ›²çº¿æ®µ
+            x1 = PtS_JD.GetAt(i - 1)->x;
+            y1 = PtS_JD.GetAt(i - 1)->y;
+            z1 = PtS_JD.GetAt(i - 1)->z;
+            x2 = PtS_JD.GetAt(i)->x;
+            y2 = PtS_JD.GetAt(i)->y;
+            z2 = PtS_JD.GetAt(i)->z;
+            x3 = PtS_JD.GetAt(i + 1)->x;
+            y3 = PtS_JD.GetAt(i + 1)->y;
+            z3 = PtS_JD.GetAt(i + 1)->z;
+            double L1 = GetDistenceXY(x1, z1, x2, z2);
+            double tx = JDCurveElements.GetAt(i)->ZH_xy->x;
+            double tz = -JDCurveElements.GetAt(i)->ZH_xy->y;
+            double LZH = GetDistenceXY(x1, z1, tx, tz);
+            ZH_h = y1 + LZH / L1 * (y2 - y1);
+            double LZH2 = GetDistenceXY(\
+                                        JDCurveElements.GetAt(i - 1)->HZ_xy->x, \
+                                        -JDCurveElements.GetAt(i - 1)->HZ_xy->y, \
+                                        JDCurveElements.GetAt(i)->ZH_xy->x, \
+                                        -JDCurveElements.GetAt(i)->ZH_xy->y);
+            tx = JDCurveElements.GetAt(i - 1)->HZ_xy->x;
+            tz = -JDCurveElements.GetAt(i - 1)->HZ_xy->y;
+            double LHZ = GetDistenceXY(x1, z1, tx, tz);
+            HZ_h = y1 + LHZ / L1 * (y2 - y1);
+            NeiChaDian(LZH2, \
+                       JDCurveElements.GetAt(i - 1)->HZ_xy->x, \
+                       HZ_h, \
+                       -JDCurveElements.GetAt(i - 1)->HZ_xy->y, \
+                       JDCurveElements.GetAt(i)->ZH_xy->x, \
+                       ZH_h, \
+                       -JDCurveElements.GetAt(i)->ZH_xy->y, \
+                       JDCurveElements.GetAt(i - 1)->HZ);
+            L1 = GetDistenceXY(x2, z2, x3, z3);
+            tx = JDCurveElements.GetAt(i)->HZ_xy->x;
+            tz = -JDCurveElements.GetAt(i)->HZ_xy->y;
+            LHZ = GetDistenceXY(x2, z2, tx, tz);
+            HZ_h = y2 + LHZ / L1 * (y3 - y2);
+            float Derh = HZ_h - ZH_h;
+            float LL = JDCurveElements.GetAt(i)->HZ - JDCurveElements.GetAt(i)->ZH;
+            float L0 = JDCurveElements.GetAt(i)->L0;
+            BOOL bEnd = FALSE;
+            float k = 0;
+            while (k < L0 && bEnd == FALSE) {
+                float h = ZH_h + k * Derh / LL;
+                k += mNCDistence;
+                if (k > L0) {
+                    k = L0;
+                    bEnd = TRUE;
+                }
+                GetQLXY(L0, JDCurveElements.GetAt(i)->R, \
+                        JDCurveElements.GetAt(i)->RoateStyle, \
+                        k, JDCurveElements.GetAt(i - 1)->fwj, \
+                        JDCurveElements.GetAt(i)->ZH_xy->x, \
+                        JDCurveElements.GetAt(i)->ZH_xy->y, 0, 0, &x1, &y1, 1);
+                if (k == L0)
+                    m_strPtStyle = "ç¼“åœ†ç‚¹åæ ‡";
+                else
+                    m_strPtStyle = "å‰ç¼“å’Œæ›²çº¿æ®µç‚¹åæ ‡";
+                ppt = new Cordinate;
+                ppt->x = x1;
+                ppt->y = h;
+                ppt->z = -y1;
+                ppt->dmh = GetHeightValue(ppt->x, -ppt->z);
+                ppt->Derh = ppt->y - ppt->dmh;
+                ppt->strJDStyle = m_strPtStyle;
+                ppt->Lc = k + JDCurveElements.GetAt(i)->ZH;
+                PtS_3DLineZX.Add(ppt);
+            }
+            float Ly = JDCurveElements.GetAt(i)->Ly;
+            k = 0;
+            bEnd = FALSE;
+            while (k < Ly && bEnd == FALSE) {
+                k += mNCDistence;
+                if (k > Ly) {
+                    k = Ly;
+                    bEnd = TRUE;
+                }
+                float h = ZH_h + (k + L0) * Derh / LL;
+                GetYQXXY(JDCurveElements.GetAt(i)->Cneterx, JDCurveElements.GetAt(i)->Cnetery, \
+                         JDCurveElements.GetAt(i)->R, JDCurveElements.GetAt(i)->RoateStyle, \
+                         k, JDCurveElements.GetAt(i)->Alfa, JDCurveElements.GetAt(i)->HY_xy->x, \
+                         JDCurveElements.GetAt(i)->HY_xy->y, \
+                         JDCurveElements.GetAt(i)->YH_xy->x, JDCurveElements.GetAt(i)->YH_xy->y, \
+                         &x1, &y1);
+                if (k == Ly)
+                    m_strPtStyle = "åœ†ç¼“ç‚¹åæ ‡";
+                else
+                    m_strPtStyle = "åœ†æ›²çº¿æ®µç‚¹åæ ‡";
+                ppt = new Cordinate;
+                ppt->x = x1;
+                ppt->y = h;
+                ppt->z = -y1;
+                ppt->dmh = GetHeightValue(ppt->x, -ppt->z);
+                ppt->Derh = ppt->y - ppt->dmh;
+                ppt->strJDStyle = m_strPtStyle;
+                ppt->Lc = k + JDCurveElements.GetAt(i)->HY;
+                PtS_3DLineZX.Add(ppt);
+            }
+            k = L0;
+            bEnd = FALSE;
+            float L3 = JDCurveElements.GetAt(i)->YH - JDCurveElements.GetAt(i)->ZH;
+            while (k > 0 && bEnd == FALSE) {
+                k -= mNCDistence;
+                float h = ZH_h + ((L0 - k) + L3) * Derh / LL;
+                if (k < 0) {
+                    k = 0;
+                    bEnd = FALSE;
+                }
+                GetQLXY(L0, JDCurveElements.GetAt(i)->R, JDCurveElements.GetAt(i)->RoateStyle, \
+                        k, JDCurveElements.GetAt(i)->fwj, 0, 0, JDCurveElements.GetAt(i)->HZ_xy->x, \
+                        JDCurveElements.GetAt(i)->HZ_xy->y, &x1, &y1, 2);
+                if (k == 0)
+                    m_strPtStyle = "ç¼“ç›´ç‚¹åæ ‡";
+                else
+                    m_strPtStyle = "åç¼“å’Œæ›²çº¿æ®µç‚¹åæ ‡";
+                ppt = new Cordinate;
+                ppt->x = x1;
+                ppt->y = h;
+                ppt->z = -y1;
+                ppt->dmh = GetHeightValue(ppt->x, -ppt->z);
+                ppt->Derh = ppt->y - ppt->dmh;
+                ppt->strJDStyle = m_strPtStyle;
+                ppt->Lc = (L0 - k) + JDCurveElements.GetAt(i)->YH;
+                PtS_3DLineZX.Add(ppt);
+            }
+        }
+    }
 }
 
 
 /************************************************************************/
-/* Function: ƒÈ²åµã														*/
+/* Function: å…§æ’ç‚¹                                                     */
 /************************************************************************/
-void CDesingScheme::NeiChaDian(float ZHLength, double x1, double y1, double z1, double x2, double y2, double z2,double lc)
-{
-	float inputArr[3][2]; // ¼ÇÂ¼3µã
-	inputArr[0][0] = x1; inputArr[0][1] = y1;
-	inputArr[2][0] = x2; inputArr[2][1] = y2;
-
-	float outPutArr[3] = {0};// ÏµÊı
-
-	float h;
-	int m_XX;
-	double x,z;
-	float dx,dz;
-	float mangle;
-	PCordinate ppt;
-	dx=x2-x1;
-	dz=z2-z1;
-	if(fabs(dx)<=0.000001)
-	{
-		if(z2<z1)
-			mangle=PAI/2.0;
-		else
-			mangle=PAI*3/2.0;	
-	}
-	else
-	{
-		mangle=atan(fabs(dz/dx));
-		if(dx>=0 && dz<=0) 
-			m_XX=1;
-		else if(dx<=0 && dz<=0) 
-			m_XX=2;
-		else if(dx<=0 && dz>=0) 
-			m_XX=3;
-		else if(dx>=0 && dz>=0) 
-			m_XX=4;
-	}
-
-	bool is_height_enough_flag = false;
-	float lt=0;
-	float dh=(y2-y1)/ZHLength;
-	float tmpMaxH = 0;
-
-	while(lt<ZHLength)
-	{
-		lt+=10;
-		if(lt>ZHLength)
-			break;
-		h=y1+lt*dh;
-
-		switch(m_XX)
-		{
-		case 1:   
-			x=lt*cos(mangle)+x1;
-			z=-lt*sin(mangle)+z1;
-			break;
-		case 2:   
-			x=-lt*cos(mangle)+x1;
-			z=-lt*sin(mangle)+z1;
-			break;	
-		case 3:   
-			x=-lt*cos(mangle)+x1;
-			z=lt*sin(mangle)+z1;
-			break;	
-		case 4:   
-			x=lt*cos(mangle)+x1;
-			z=lt*sin(mangle)+z1;
-			break;				
-		}
-
-		if(GetHeightValue(x,z) > g_max_height-10)
-		{
-			if(GetHeightValue(x,z) > tmpMaxH)
-			{
-				tmpMaxH = GetHeightValue(x,z);
-				inputArr[1][0] = x;
-				inputArr[1][1] = tmpMaxH + 5;
-			}
-			is_height_enough_flag = true;
-		}
-	}
-
-	if(is_height_enough_flag)
-	{
-		CLeastSquares tmpLS;
-		tmpLS.process(inputArr,outPutArr);
-	}
-
-	if(is_height_enough_flag)
-	{
-		lt = 0;
-		dh = (y2-y1)/ZHLength;
-		while(lt<ZHLength)
-		{
-			lt+=10; 
-			if(lt>ZHLength)
-				break;
-
-			switch(m_XX)
-			{
-			case 1:   
-				x=lt*cos(mangle)+x1;
-				z=-lt*sin(mangle)+z1;
-				break;
-			case 2:   
-				x=-lt*cos(mangle)+x1;
-				z=-lt*sin(mangle)+z1;
-				break;	
-			case 3:   
-				x=-lt*cos(mangle)+x1;
-				z=lt*sin(mangle)+z1;
-				break;	
-			case 4:   
-				x=lt*cos(mangle)+x1;
-				z=lt*sin(mangle)+z1;
-				break;				
-			}
-
-			//h = GetHeightValue(x,z) + 10;
-			h = outPutArr[0] + outPutArr[1]*x + outPutArr[2] *x*x;
-
-			ppt=new Cordinate;
-			ppt->x=x;
-			ppt->y=h;
-			ppt->z=z;
-
-			ppt->dmh = GetHeightValue(ppt->x,-ppt->z);
-
-			ppt->Derh = ppt->y - ppt->dmh;		
-			ppt->strJDStyle="½»µã-Ö±»ºµã×ø±ê";
-			ppt->Lc=lc+lt;
-			PtS_3DLineZX.Add(ppt);
-		}
-	}
-	else
-	{
-		lt = 0;
-		dh = (y2-y1)/ZHLength;
-		while(lt<ZHLength)
-		{
-			lt+=10;
-			if(lt>ZHLength)
-				break;
-
-			h=y1+lt*dh;
-
-			switch(m_XX)
-			{
-			case 1:   
-				x=lt*cos(mangle)+x1;
-				z=-lt*sin(mangle)+z1;
-				break;
-			case 2:   
-				x=-lt*cos(mangle)+x1;
-				z=-lt*sin(mangle)+z1;
-				break;	
-			case 3:   
-				x=-lt*cos(mangle)+x1;
-				z=lt*sin(mangle)+z1;
-				break;	
-			case 4:   
-				x=lt*cos(mangle)+x1;
-				z=lt*sin(mangle)+z1;
-				break;				
-			}
-
-			ppt=new Cordinate;
-			ppt->x=x;
-			ppt->y=h;
-			ppt->z=z;
-
-			ppt->dmh = GetHeightValue(ppt->x,-ppt->z);
-
-			ppt->Derh = ppt->y - ppt->dmh;		
-			ppt->strJDStyle="½»µã-Ö±»ºµã×ø±ê";
-			ppt->Lc=lc+lt;
-			PtS_3DLineZX.Add(ppt);
-		}
-	}
-
-	ppt=new Cordinate;
-	ppt->x=x2;
-	ppt->y=y2;
-	ppt->z=z2;
-
-	ppt->dmh = GetHeightValue(ppt->x,-ppt->z);
-
-	ppt->Derh=ppt->y-ppt->dmh;				
-	ppt->strJDStyle="Ö±»ºµã×ø±ê";
-	ppt->Lc=lc+ZHLength;
-	PtS_3DLineZX.Add(ppt);
-}
-
- 
-/************************************************************************/
-/* Function: ¼ÆËã[»ººÍÇúÏß¶Î]ÉÏµãµÄ×ø±ê									*/
-/************************************************************************/
-void CDesingScheme::GetQLXY(float L0, long R, int RoateStyle, float LL, float fwj, double ZH_xy_x, double ZH_xy_y, double HZ_xy_x, double HZ_xy_y, double *xc, double *yc, int Q_H_L)
-{ 
-	double ptx,pty;
-	ptx=LL-LL*LL*LL*LL*LL/(40.0*R*R*L0*L0)+LL*LL*LL*LL*LL*LL*LL*LL*LL/(3456.0*R*R*R*R*L0*L0*L0*L0);
-	pty=LL*LL*LL/(6.0*R*L0)*(1-LL*LL*LL*LL/(56.0*R*R*L0*L0)+LL*LL*LL*LL*LL*LL*LL*LL/(7040.0*R*R*R*R*L0*L0*L0*L0));
-	float xita;
-	if(Q_H_L==1)
-	{		
-		xita=PAI/2.0-fwj;
-		
-		if(RoateStyle==-1)	
-		{
-			*xc=cos(xita)*ptx-sin(xita)*pty+ZH_xy_x;
-			*yc=sin(xita)*ptx+cos(xita)*pty+ZH_xy_y;
-		}
-		else if(RoateStyle==1)	
-		{
-			*xc=cos(xita)*ptx+sin(xita)*pty+ZH_xy_x;
-			*yc=sin(xita)*ptx-cos(xita)*pty+ZH_xy_y;
-		}
-	}
-	else     
-	{
-		xita=3*PAI/2.0-fwj; 
-		if(RoateStyle==-1)	
-		{
-			*xc=cos(xita)*ptx+sin(xita)*pty+HZ_xy_x;
-			*yc=sin(xita)*ptx-cos(xita)*pty+HZ_xy_y;
-		}
-		else if(RoateStyle==1)	
-		{
-			*xc=cos(xita)*ptx-sin(xita)*pty+HZ_xy_x;
-			*yc=sin(xita)*ptx+cos(xita)*pty+HZ_xy_y;
-		}
-	}
+void CDesingScheme::NeiChaDian(float ZHLength, double x1, double y1, double z1, double x2, double y2, double z2, double lc) {
+    float inputArr[3][2]; // è®°å½•3ç‚¹
+    inputArr[0][0] = x1;
+    inputArr[0][1] = y1;
+    inputArr[2][0] = x2;
+    inputArr[2][1] = y2;
+    float outPutArr[3] = {0};// ç³»æ•°
+    float h;
+    int m_XX;
+    double x, z;
+    float dx, dz;
+    float mangle;
+    PCordinate ppt;
+    dx = x2 - x1;
+    dz = z2 - z1;
+    if (fabs(dx) <= 0.000001) {
+        if (z2 < z1)
+            mangle = PAI / 2.0;
+        else
+            mangle = PAI * 3 / 2.0;
+    } else {
+        mangle = atan(fabs(dz / dx));
+        if (dx >= 0 && dz <= 0)
+            m_XX = 1;
+        else if (dx <= 0 && dz <= 0)
+            m_XX = 2;
+        else if (dx <= 0 && dz >= 0)
+            m_XX = 3;
+        else if (dx >= 0 && dz >= 0)
+            m_XX = 4;
+    }
+    bool is_height_enough_flag = false;
+    float lt = 0;
+    float dh = (y2 - y1) / ZHLength;
+    float tmpMaxH = 0;
+    while (lt < ZHLength) {
+        lt += 10;
+        if (lt > ZHLength)
+            break;
+        h = y1 + lt * dh;
+        switch (m_XX) {
+            case 1:
+                x = lt * cos(mangle) + x1;
+                z = -lt * sin(mangle) + z1;
+                break;
+            case 2:
+                x = -lt * cos(mangle) + x1;
+                z = -lt * sin(mangle) + z1;
+                break;
+            case 3:
+                x = -lt * cos(mangle) + x1;
+                z = lt * sin(mangle) + z1;
+                break;
+            case 4:
+                x = lt * cos(mangle) + x1;
+                z = lt * sin(mangle) + z1;
+                break;
+        }
+        if (GetHeightValue(x, z) > g_max_height - 10) {
+            if (GetHeightValue(x, z) > tmpMaxH) {
+                tmpMaxH = GetHeightValue(x, z);
+                inputArr[1][0] = x;
+                inputArr[1][1] = tmpMaxH + 5;
+            }
+            is_height_enough_flag = true;
+        }
+    }
+    if (is_height_enough_flag) {
+        CLeastSquares tmpLS;
+        tmpLS.process(inputArr, outPutArr);
+    }
+    if (is_height_enough_flag) {
+        lt = 0;
+        dh = (y2 - y1) / ZHLength;
+        while (lt < ZHLength) {
+            lt += 10;
+            if (lt > ZHLength)
+                break;
+            switch (m_XX) {
+                case 1:
+                    x = lt * cos(mangle) + x1;
+                    z = -lt * sin(mangle) + z1;
+                    break;
+                case 2:
+                    x = -lt * cos(mangle) + x1;
+                    z = -lt * sin(mangle) + z1;
+                    break;
+                case 3:
+                    x = -lt * cos(mangle) + x1;
+                    z = lt * sin(mangle) + z1;
+                    break;
+                case 4:
+                    x = lt * cos(mangle) + x1;
+                    z = lt * sin(mangle) + z1;
+                    break;
+            }
+            //h = GetHeightValue(x,z) + 10;
+            h = outPutArr[0] + outPutArr[1] * x + outPutArr[2] * x * x;
+            ppt = new Cordinate;
+            ppt->x = x;
+            ppt->y = h;
+            ppt->z = z;
+            ppt->dmh = GetHeightValue(ppt->x, -ppt->z);
+            ppt->Derh = ppt->y - ppt->dmh;
+            ppt->strJDStyle = "äº¤ç‚¹-ç›´ç¼“ç‚¹åæ ‡";
+            ppt->Lc = lc + lt;
+            PtS_3DLineZX.Add(ppt);
+        }
+    } else {
+        lt = 0;
+        dh = (y2 - y1) / ZHLength;
+        while (lt < ZHLength) {
+            lt += 10;
+            if (lt > ZHLength)
+                break;
+            h = y1 + lt * dh;
+            switch (m_XX) {
+                case 1:
+                    x = lt * cos(mangle) + x1;
+                    z = -lt * sin(mangle) + z1;
+                    break;
+                case 2:
+                    x = -lt * cos(mangle) + x1;
+                    z = -lt * sin(mangle) + z1;
+                    break;
+                case 3:
+                    x = -lt * cos(mangle) + x1;
+                    z = lt * sin(mangle) + z1;
+                    break;
+                case 4:
+                    x = lt * cos(mangle) + x1;
+                    z = lt * sin(mangle) + z1;
+                    break;
+            }
+            ppt = new Cordinate;
+            ppt->x = x;
+            ppt->y = h;
+            ppt->z = z;
+            ppt->dmh = GetHeightValue(ppt->x, -ppt->z);
+            ppt->Derh = ppt->y - ppt->dmh;
+            ppt->strJDStyle = "äº¤ç‚¹-ç›´ç¼“ç‚¹åæ ‡";
+            ppt->Lc = lc + lt;
+            PtS_3DLineZX.Add(ppt);
+        }
+    }
+    ppt = new Cordinate;
+    ppt->x = x2;
+    ppt->y = y2;
+    ppt->z = z2;
+    ppt->dmh = GetHeightValue(ppt->x, -ppt->z);
+    ppt->Derh = ppt->y - ppt->dmh;
+    ppt->strJDStyle = "ç›´ç¼“ç‚¹åæ ‡";
+    ppt->Lc = lc + ZHLength;
+    PtS_3DLineZX.Add(ppt);
 }
 
 
 /************************************************************************/
-/* Function: ¼ÆËã[Ô²ÇúÏß]ÉÏµãµÄ×ø±ê										*/
+/* Function: è®¡ç®—[ç¼“å’Œæ›²çº¿æ®µ]ä¸Šç‚¹çš„åæ ‡                                 */
 /************************************************************************/
-void CDesingScheme::GetYQXXY(double centerx, double centery, long R, int RoateStyle, float LL, float alfa, double HY_xy_x, double HY_xy_y, double YH_xy_x, double YH_xy_y, double *xc, double *yc)
-{
-	double dx,dy;
-	dx=HY_xy_x-centerx;
-	dy=HY_xy_y-centery;
-	
-		
-	float peiAngle=atan(dy/dx);
-		
-	float thetaAngle=LL*1.0/R;
-	float rAngle;
-
-	if(RoateStyle==-1)	
-	{
-		if(dx>0)
-		{
-			rAngle=peiAngle+thetaAngle;
-		}
-		else if(dx<0)
-		{
-			rAngle=peiAngle+thetaAngle-PAI;
-		}
-	}
-	else if(RoateStyle==1)	
-	{
-			
-		if(dx>0)
-		{
-			rAngle=peiAngle-thetaAngle;
-		}
-		else if(dx<0)
-		{
-			rAngle=peiAngle-thetaAngle+PAI;
-		}
-	}
-	*xc=centerx+R*cos(rAngle);
-	*yc=centery+R*sin(rAngle);			
+void CDesingScheme::GetQLXY(float L0, long R, int RoateStyle, float LL, float fwj, double ZH_xy_x, double ZH_xy_y, double HZ_xy_x, double HZ_xy_y, double* xc, double* yc, int Q_H_L) {
+    double ptx, pty;
+    ptx = LL - LL * LL * LL * LL * LL / (40.0 * R * R * L0 * L0) + LL * LL * LL * LL * LL * LL * LL * LL * LL / (3456.0 * R * R * R * R * L0 * L0 * L0 * L0);
+    pty = LL * LL * LL / (6.0 * R * L0) * (1 - LL * LL * LL * LL / (56.0 * R * R * L0 * L0) + LL * LL * LL * LL * LL * LL * LL * LL / (7040.0 * R * R * R * R * L0 * L0 * L0 * L0));
+    float xita;
+    if (Q_H_L == 1) {
+        xita = PAI / 2.0 - fwj;
+        if (RoateStyle == -1) {
+            *xc = cos(xita) * ptx - sin(xita) * pty + ZH_xy_x;
+            *yc = sin(xita) * ptx + cos(xita) * pty + ZH_xy_y;
+        } else if (RoateStyle == 1) {
+            *xc = cos(xita) * ptx + sin(xita) * pty + ZH_xy_x;
+            *yc = sin(xita) * ptx - cos(xita) * pty + ZH_xy_y;
+        }
+    } else {
+        xita = 3 * PAI / 2.0 - fwj;
+        if (RoateStyle == -1) {
+            *xc = cos(xita) * ptx + sin(xita) * pty + HZ_xy_x;
+            *yc = sin(xita) * ptx - cos(xita) * pty + HZ_xy_y;
+        } else if (RoateStyle == 1) {
+            *xc = cos(xita) * ptx - sin(xita) * pty + HZ_xy_x;
+            *yc = sin(xita) * ptx + cos(xita) * pty + HZ_xy_y;
+        }
+    }
 }
 
 
 /************************************************************************/
-/* Function:  ¼ÆËã±ßÆÂÓëÔÚÃæµÄ½»µã×ø±ê										*/
+/* Function: è®¡ç®—[åœ†æ›²çº¿]ä¸Šç‚¹çš„åæ ‡                                     */
 /************************************************************************/
-void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y2, double z2,\
-			float L,float h0, double x0,double z0,int TW, int LeftRight,\
-			double tx0,double ty0,double tz0,double tx1,double ty1,double tz1,double mLC,CString strJDstyle)
-{
-	double x11,y11,z11,x12,y12,z12;
-	double x21,y21,z21,x22,y22,z22;
-
-	float L1,mangle;
-	float dx=x2-x1;
-	float dz=z2-z1;
-
-
-	PLuQianHuPo ptt;
-	ptt= new LuQianHuPo;
-
-	float m_Lj_Dh = 0.6;// ²ê¼çÖÁ²ê½ÅµÄ¸ß¶È
-	
-	//¸ù¾İ¹æ·¶ÉèÖÃµÄ Â·µÌ »¤ÆÂÊıÖµ
-	float Lt_h1 = 6;		//1¼¶±ßÆÂÆÂ¸ß
-	float Lt_h2 = 12;		//2¼¶±ßÆÂÆÂ¸ß
-	float Lt_m1=1.5;		//1¼¶±ßÆÂÆÂÂÊ
-	float Lt_m2=1.75;		//2¼¶±ßÆÂÆÂÂÊ
-	float Lt_b=2.0;			//±ßÆÂÆ½Ì¨¿í¶È
-
-
-	float Lt_h3 = ty0 - Lt_h1 - Lt_h2;		//2¼¶±ßÆÂÆÂ¸ß
-	float Lt_m3 = 0.45;						//1¼¶±ßÆÂÆÂÂÊ
-
-	
-	// ----------------------------------------------------------
-	if(LeftRight == -1)		// ×ó²à±ßÆÂ
-	{
-		ptt->Huponums_L = 3;
-
-		/************************************************************************/
-		/*								Ò»¼¶±ßÆÂ                                 */
-		/************************************************************************/
-		
-		// µã1
-		ptt->HuPo_L[0].Hp[0].x = tx0; /**/ ptt->HuPo_L[0].Hp[0].y = ty0;  /**/ ptt->HuPo_L[0].Hp[0].z = tz0;
-
-		// µã2
-		ptt->HuPo_L[0].Hp[1].x = tx1; /**/ ptt->HuPo_L[0].Hp[1].y = ty1;  /**/ ptt->HuPo_L[0].Hp[1].z = tz1;
-
-		// µã3
-		L1 = L + Lt_h1*Lt_m1;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_L[0].Hp[2].x = x11;
-		ptt->HuPo_L[0].Hp[2].y = y11 - m_Lj_Dh - Lt_h1; 
-		ptt->HuPo_L[0].Hp[2].z = z11;
-		
-		
-		// Ò»¼¶»¤ÆÂµÄ¸ß¶È¡¢±ßÆÂÆÂÂÊ¡¢±ßÆÂÀàĞÍ
-		ptt->HuPo_L[0].h = Lt_h1; /**/ ptt->HuPo_L[0].m = Lt_m1; /**/ ptt->HuPo_L[0].style = 0;
+void CDesingScheme::GetYQXXY(double centerx, double centery, long R, int RoateStyle, float LL, float alfa, double HY_xy_x, double HY_xy_y, double YH_xy_x, double YH_xy_y, double* xc, double* yc) {
+    double dx, dy;
+    dx = HY_xy_x - centerx;
+    dy = HY_xy_y - centery;
+    float peiAngle = atan(dy / dx);
+    float thetaAngle = LL * 1.0 / R;
+    float rAngle;
+    if (RoateStyle == -1) {
+        if (dx > 0) {
+            rAngle = peiAngle + thetaAngle;
+        } else if (dx < 0) {
+            rAngle = peiAngle + thetaAngle - PAI;
+        }
+    } else if (RoateStyle == 1) {
+        if (dx > 0) {
+            rAngle = peiAngle - thetaAngle;
+        } else if (dx < 0) {
+            rAngle = peiAngle - thetaAngle + PAI;
+        }
+    }
+    *xc = centerx + R * cos(rAngle);
+    *yc = centery + R * sin(rAngle);
+}
 
 
-
-		/************************************************************************/
-		/*								¶ş¼¶±ßÆÂ                                 */
-		/************************************************************************/
-
-
-		// µã1
-		// Ò»¼¶»¤ÆÂµÄ×îºó1¸öµã Óë ¶ş¼¶»¤ÆÂµÄµÚ1¸öµãÖØºÏ
-		ptt->HuPo_L[1].Hp[0].x = ptt->HuPo_L[0].Hp[2].x;
-		ptt->HuPo_L[1].Hp[0].y = ptt->HuPo_L[0].Hp[2].y;
-		ptt->HuPo_L[1].Hp[0].z = ptt->HuPo_L[0].Hp[2].z;
-
-
-		// µã2
-		L1 = L + Lt_h1*Lt_m1 + Lt_b;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_L[1].Hp[1].x =x11;
-		ptt->HuPo_L[1].Hp[1].y =ptt->HuPo_L[1].Hp[0].y;
-		ptt->HuPo_L[1].Hp[1].z =z11;
-
-		// µã3
-		L1 = L + Lt_h1*Lt_m1 + Lt_b + Lt_h2*Lt_m2;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_L[1].Hp[2].x = x11;
-		ptt->HuPo_L[1].Hp[2].y = y11 - m_Lj_Dh - Lt_h1 - Lt_h2;
-		ptt->HuPo_L[1].Hp[2].z = z11;
-
-		// ¶ş¼¶»¤ÆÂµÄ¸ß¶È¡¢±ßÆÂÆÂÂÊ¡¢±ßÆÂÆ½Ì¨¿í¶È¡¢±ßÆÂÀàĞÍ
-		ptt->HuPo_L[1].h = Lt_h2;
-		ptt->HuPo_L[1].m = Lt_m2;
-		ptt->HuPo_L[1].b = Lt_b;
-		ptt->HuPo_L[1].style = 1;
-
-		/************************************************************************/
-		/*								Èı¼¶±ßÆÂ                                 */
-		/************************************************************************/
-		// µã1
-		ptt->HuPo_L[2].Hp[0].x =ptt->HuPo_L[1].Hp[2].x;
-		ptt->HuPo_L[2].Hp[0].y =ptt->HuPo_L[1].Hp[2].y;
-		ptt->HuPo_L[2].Hp[0].z =ptt->HuPo_L[1].Hp[2].z;
-
-		// µã2
-		L1 = L + Lt_h1*Lt_m1 + Lt_b + Lt_h2*Lt_m2 + Lt_b;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_L[2].Hp[1].x =x11;
-		ptt->HuPo_L[2].Hp[1].y =ptt->HuPo_L[2].Hp[0].y;
-		ptt->HuPo_L[2].Hp[1].z =z11;
-
-		// µã3
-		L1 = L + Lt_h1*Lt_m1 + Lt_b + Lt_h2*Lt_m2 + Lt_b + Lt_h3*Lt_m3;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_L[2].Hp[2].x = x11;
-		ptt->HuPo_L[2].Hp[2].y =y11 - m_Lj_Dh - Lt_h1 - Lt_h2 - Lt_h3;
-		ptt->HuPo_L[2].Hp[2].z =z11;
-		 
-		ptt->HuPo_L[2].m	 = Lt_m3;
-		ptt->HuPo_L[2].b = Lt_b;
-		ptt->HuPo_L[2].style = 2;
-
-		PtS_HuPo.Add(ptt);
-
-		long MN=PtS_HuPo.GetSize()-1;
-		PtS_HuPo.GetAt(MN)->TW_left=TW;
-		PtS_HuPo.GetAt(MN)->Lc=mLC;
-		PtS_HuPo.GetAt(MN)->strJDStyle=strJDstyle;
-
-	}// End ×ó²à±ßÆÂ
-
-
-	else if(LeftRight == 1) // ÓÒ²à±ßÆÂ
-	{
-
-		ptt=PtS_HuPo.GetAt(PtS_HuPo.GetSize()-1);
-
-		ptt->Huponums_R = 3;
-
-		/************************************************************************/
-		/*								Ò»¼¶±ßÆÂ                                 */
-		/************************************************************************/
-
-		// µã1
-		ptt->HuPo_R[0].Hp[0].x = tx0; /**/ ptt->HuPo_R[0].Hp[0].y = ty0;  /**/ ptt->HuPo_R[0].Hp[0].z = tz0;
-
-		// µã2
-		ptt->HuPo_R[0].Hp[1].x = tx1; /**/ ptt->HuPo_R[0].Hp[1].y = ty1;  /**/ ptt->HuPo_R[0].Hp[1].z = tz1;
-
-		// µã3
-		L1 = L + Lt_h1*Lt_m1;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_R[0].Hp[2].x = x12;
-		ptt->HuPo_R[0].Hp[2].y = y12 - m_Lj_Dh - Lt_h1; 
-		ptt->HuPo_R[0].Hp[2].z = z12;
-
-
-		// Ò»¼¶»¤ÆÂµÄ¸ß¶È¡¢±ßÆÂÆÂÂÊ¡¢±ßÆÂÀàĞÍ
-		ptt->HuPo_R[0].h = Lt_h1; /**/ ptt->HuPo_R[0].m = Lt_m1; /**/ ptt->HuPo_R[0].style = 0;
-
-
-
-		/************************************************************************/
-		/*								¶ş¼¶±ßÆÂ                                 */
-		/************************************************************************/
-		// µã1
-		// Ò»¼¶»¤ÆÂµÄ×îºó1¸öµã Óë ¶ş¼¶»¤ÆÂµÄµÚ1¸öµãÖØºÏ
-		ptt->HuPo_R[1].Hp[0].x = ptt->HuPo_R[0].Hp[2].x;
-		ptt->HuPo_R[1].Hp[0].y = ptt->HuPo_R[0].Hp[2].y;
-		ptt->HuPo_R[1].Hp[0].z = ptt->HuPo_R[0].Hp[2].z;
-
-
-		// µã2
-		L1 = L + Lt_h1*Lt_m1 + Lt_b;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_R[1].Hp[1].x =x12;
-		ptt->HuPo_R[1].Hp[1].y =ptt->HuPo_R[1].Hp[0].y;
-		ptt->HuPo_R[1].Hp[1].z =z12;
-
-		// µã3
-		L1 = L + Lt_h1*Lt_m1 + Lt_b + Lt_h2*Lt_m2;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_R[1].Hp[2].x = x12;
-		ptt->HuPo_R[1].Hp[2].y = y12 - m_Lj_Dh - Lt_h1 - Lt_h2;
-		ptt->HuPo_R[1].Hp[2].z = z12;
-
-		// ¶ş¼¶»¤ÆÂµÄ¸ß¶È¡¢±ßÆÂÆÂÂÊ¡¢±ßÆÂÆ½Ì¨¿í¶È¡¢±ßÆÂÀàĞÍ
-		ptt->HuPo_R[1].h = Lt_h2;
-		ptt->HuPo_R[1].m = Lt_m2;
-		ptt->HuPo_R[1].b = Lt_b;
-		ptt->HuPo_R[1].style = 1;
-
-		/************************************************************************/
-		/*								Èı¼¶±ßÆÂ                                 */
-		/************************************************************************/
-
-		// µã1
-		ptt->HuPo_R[2].Hp[0].x =ptt->HuPo_R[1].Hp[2].x;
-		ptt->HuPo_R[2].Hp[0].y =ptt->HuPo_R[1].Hp[2].y;
-		ptt->HuPo_R[2].Hp[0].z =ptt->HuPo_R[1].Hp[2].z;
-
-		// µã2
-		L1 = L + Lt_h1*Lt_m1 + Lt_b + Lt_h2*Lt_m2 + Lt_b;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_R[2].Hp[1].x =x12;
-		ptt->HuPo_R[2].Hp[1].y =ptt->HuPo_R[2].Hp[0].y;
-		ptt->HuPo_R[2].Hp[1].z =z12;
-
-		// µã3
-		L1 = L + Lt_h1*Lt_m1 + Lt_b + Lt_h2*Lt_m2 + Lt_b + Lt_h3*Lt_m3;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_R[2].Hp[2].x = x12;
-		ptt->HuPo_R[2].Hp[2].y =y12 - m_Lj_Dh - Lt_h1 - Lt_h2 - Lt_h3;
-		ptt->HuPo_R[2].Hp[2].z =z12;
-
-		ptt->HuPo_R[2].m	 = Lt_m3;
-		ptt->HuPo_R[2].b = Lt_b;
-		ptt->HuPo_R[2].style = 2;
-
-		long MN=PtS_HuPo.GetSize()-1;
-		PtS_HuPo.GetAt(MN)->TW_right=TW;
-
-
-	}// End ÓÒ²à±ßÆÂ
-
-	// ----------------------------------------------------------
+/************************************************************************/
+/* Function:  è®¡ç®—è¾¹å¡ä¸åœ¨é¢çš„äº¤ç‚¹åæ ‡                                      */
+/************************************************************************/
+void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y2, double z2, \
+                            float L, float h0, double x0, double z0, int TW, int LeftRight, \
+                            double tx0, double ty0, double tz0, double tx1, double ty1, double tz1, double mLC, CString strJDstyle) {
+    double x11, y11, z11, x12, y12, z12;
+    double x21, y21, z21, x22, y22, z22;
+    float L1, mangle;
+    float dx = x2 - x1;
+    float dz = z2 - z1;
+    PLuQianHuPo ptt;
+    ptt = new LuQianHuPo;
+    float m_Lj_Dh = 0.6;// ç¢´è‚©è‡³ç¢´è„šçš„é«˜åº¦
+    //æ ¹æ®è§„èŒƒè®¾ç½®çš„ è·¯å ¤ æŠ¤å¡æ•°å€¼
+    float Lt_h1 = 6;        //1çº§è¾¹å¡å¡é«˜
+    float Lt_h2 = 12;       //2çº§è¾¹å¡å¡é«˜
+    float Lt_m1 = 1.5;      //1çº§è¾¹å¡å¡ç‡
+    float Lt_m2 = 1.75;     //2çº§è¾¹å¡å¡ç‡
+    float Lt_b = 2.0;       //è¾¹å¡å¹³å°å®½åº¦
+    float Lt_h3 = ty0 - Lt_h1 - Lt_h2;      //2çº§è¾¹å¡å¡é«˜
+    float Lt_m3 = 0.45;                     //1çº§è¾¹å¡å¡ç‡
+    // ----------------------------------------------------------
+    if (LeftRight == -1) {  // å·¦ä¾§è¾¹å¡
+        ptt->Huponums_L = 3;
+        /************************************************************************/
+        /*                              ä¸€çº§è¾¹å¡                                 */
+        /************************************************************************/
+        // ç‚¹1
+        ptt->HuPo_L[0].Hp[0].x = tx0; /**/ ptt->HuPo_L[0].Hp[0].y = ty0;  /**/ ptt->HuPo_L[0].Hp[0].z = tz0;
+        // ç‚¹2
+        ptt->HuPo_L[0].Hp[1].x = tx1; /**/ ptt->HuPo_L[0].Hp[1].y = ty1;  /**/ ptt->HuPo_L[0].Hp[1].z = tz1;
+        // ç‚¹3
+        L1 = L + Lt_h1 * Lt_m1;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_L[0].Hp[2].x = x11;
+        ptt->HuPo_L[0].Hp[2].y = y11 - m_Lj_Dh - Lt_h1;
+        ptt->HuPo_L[0].Hp[2].z = z11;
+        // ä¸€çº§æŠ¤å¡çš„é«˜åº¦ã€è¾¹å¡å¡ç‡ã€è¾¹å¡ç±»å‹
+        ptt->HuPo_L[0].h = Lt_h1; /**/ ptt->HuPo_L[0].m = Lt_m1; /**/ ptt->HuPo_L[0].style = 0;
+        /************************************************************************/
+        /*                              äºŒçº§è¾¹å¡                                 */
+        /************************************************************************/
+        // ç‚¹1
+        // ä¸€çº§æŠ¤å¡çš„æœ€å1ä¸ªç‚¹ ä¸ äºŒçº§æŠ¤å¡çš„ç¬¬1ä¸ªç‚¹é‡åˆ
+        ptt->HuPo_L[1].Hp[0].x = ptt->HuPo_L[0].Hp[2].x;
+        ptt->HuPo_L[1].Hp[0].y = ptt->HuPo_L[0].Hp[2].y;
+        ptt->HuPo_L[1].Hp[0].z = ptt->HuPo_L[0].Hp[2].z;
+        // ç‚¹2
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_L[1].Hp[1].x = x11;
+        ptt->HuPo_L[1].Hp[1].y = ptt->HuPo_L[1].Hp[0].y;
+        ptt->HuPo_L[1].Hp[1].z = z11;
+        // ç‚¹3
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b + Lt_h2 * Lt_m2;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_L[1].Hp[2].x = x11;
+        ptt->HuPo_L[1].Hp[2].y = y11 - m_Lj_Dh - Lt_h1 - Lt_h2;
+        ptt->HuPo_L[1].Hp[2].z = z11;
+        // äºŒçº§æŠ¤å¡çš„é«˜åº¦ã€è¾¹å¡å¡ç‡ã€è¾¹å¡å¹³å°å®½åº¦ã€è¾¹å¡ç±»å‹
+        ptt->HuPo_L[1].h = Lt_h2;
+        ptt->HuPo_L[1].m = Lt_m2;
+        ptt->HuPo_L[1].b = Lt_b;
+        ptt->HuPo_L[1].style = 1;
+        /************************************************************************/
+        /*                              ä¸‰çº§è¾¹å¡                                 */
+        /************************************************************************/
+        // ç‚¹1
+        ptt->HuPo_L[2].Hp[0].x = ptt->HuPo_L[1].Hp[2].x;
+        ptt->HuPo_L[2].Hp[0].y = ptt->HuPo_L[1].Hp[2].y;
+        ptt->HuPo_L[2].Hp[0].z = ptt->HuPo_L[1].Hp[2].z;
+        // ç‚¹2
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b + Lt_h2 * Lt_m2 + Lt_b;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_L[2].Hp[1].x = x11;
+        ptt->HuPo_L[2].Hp[1].y = ptt->HuPo_L[2].Hp[0].y;
+        ptt->HuPo_L[2].Hp[1].z = z11;
+        // ç‚¹3
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b + Lt_h2 * Lt_m2 + Lt_b + Lt_h3 * Lt_m3;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_L[2].Hp[2].x = x11;
+        ptt->HuPo_L[2].Hp[2].y = y11 - m_Lj_Dh - Lt_h1 - Lt_h2 - Lt_h3;
+        ptt->HuPo_L[2].Hp[2].z = z11;
+        ptt->HuPo_L[2].m     = Lt_m3;
+        ptt->HuPo_L[2].b = Lt_b;
+        ptt->HuPo_L[2].style = 2;
+        PtS_HuPo.Add(ptt);
+        long MN = PtS_HuPo.GetSize() - 1;
+        PtS_HuPo.GetAt(MN)->TW_left = TW;
+        PtS_HuPo.GetAt(MN)->Lc = mLC;
+        PtS_HuPo.GetAt(MN)->strJDStyle = strJDstyle;
+    }// End å·¦ä¾§è¾¹å¡
+    else if (LeftRight == 1) { // å³ä¾§è¾¹å¡
+        ptt = PtS_HuPo.GetAt(PtS_HuPo.GetSize() - 1);
+        ptt->Huponums_R = 3;
+        /************************************************************************/
+        /*                              ä¸€çº§è¾¹å¡                                 */
+        /************************************************************************/
+        // ç‚¹1
+        ptt->HuPo_R[0].Hp[0].x = tx0; /**/ ptt->HuPo_R[0].Hp[0].y = ty0;  /**/ ptt->HuPo_R[0].Hp[0].z = tz0;
+        // ç‚¹2
+        ptt->HuPo_R[0].Hp[1].x = tx1; /**/ ptt->HuPo_R[0].Hp[1].y = ty1;  /**/ ptt->HuPo_R[0].Hp[1].z = tz1;
+        // ç‚¹3
+        L1 = L + Lt_h1 * Lt_m1;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_R[0].Hp[2].x = x12;
+        ptt->HuPo_R[0].Hp[2].y = y12 - m_Lj_Dh - Lt_h1;
+        ptt->HuPo_R[0].Hp[2].z = z12;
+        // ä¸€çº§æŠ¤å¡çš„é«˜åº¦ã€è¾¹å¡å¡ç‡ã€è¾¹å¡ç±»å‹
+        ptt->HuPo_R[0].h = Lt_h1; /**/ ptt->HuPo_R[0].m = Lt_m1; /**/ ptt->HuPo_R[0].style = 0;
+        /************************************************************************/
+        /*                              äºŒçº§è¾¹å¡                                 */
+        /************************************************************************/
+        // ç‚¹1
+        // ä¸€çº§æŠ¤å¡çš„æœ€å1ä¸ªç‚¹ ä¸ äºŒçº§æŠ¤å¡çš„ç¬¬1ä¸ªç‚¹é‡åˆ
+        ptt->HuPo_R[1].Hp[0].x = ptt->HuPo_R[0].Hp[2].x;
+        ptt->HuPo_R[1].Hp[0].y = ptt->HuPo_R[0].Hp[2].y;
+        ptt->HuPo_R[1].Hp[0].z = ptt->HuPo_R[0].Hp[2].z;
+        // ç‚¹2
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_R[1].Hp[1].x = x12;
+        ptt->HuPo_R[1].Hp[1].y = ptt->HuPo_R[1].Hp[0].y;
+        ptt->HuPo_R[1].Hp[1].z = z12;
+        // ç‚¹3
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b + Lt_h2 * Lt_m2;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_R[1].Hp[2].x = x12;
+        ptt->HuPo_R[1].Hp[2].y = y12 - m_Lj_Dh - Lt_h1 - Lt_h2;
+        ptt->HuPo_R[1].Hp[2].z = z12;
+        // äºŒçº§æŠ¤å¡çš„é«˜åº¦ã€è¾¹å¡å¡ç‡ã€è¾¹å¡å¹³å°å®½åº¦ã€è¾¹å¡ç±»å‹
+        ptt->HuPo_R[1].h = Lt_h2;
+        ptt->HuPo_R[1].m = Lt_m2;
+        ptt->HuPo_R[1].b = Lt_b;
+        ptt->HuPo_R[1].style = 1;
+        /************************************************************************/
+        /*                              ä¸‰çº§è¾¹å¡                                 */
+        /************************************************************************/
+        // ç‚¹1
+        ptt->HuPo_R[2].Hp[0].x = ptt->HuPo_R[1].Hp[2].x;
+        ptt->HuPo_R[2].Hp[0].y = ptt->HuPo_R[1].Hp[2].y;
+        ptt->HuPo_R[2].Hp[0].z = ptt->HuPo_R[1].Hp[2].z;
+        // ç‚¹2
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b + Lt_h2 * Lt_m2 + Lt_b;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_R[2].Hp[1].x = x12;
+        ptt->HuPo_R[2].Hp[1].y = ptt->HuPo_R[2].Hp[0].y;
+        ptt->HuPo_R[2].Hp[1].z = z12;
+        // ç‚¹3
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b + Lt_h2 * Lt_m2 + Lt_b + Lt_h3 * Lt_m3;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_R[2].Hp[2].x = x12;
+        ptt->HuPo_R[2].Hp[2].y = y12 - m_Lj_Dh - Lt_h1 - Lt_h2 - Lt_h3;
+        ptt->HuPo_R[2].Hp[2].z = z12;
+        ptt->HuPo_R[2].m     = Lt_m3;
+        ptt->HuPo_R[2].b = Lt_b;
+        ptt->HuPo_R[2].style = 2;
+        long MN = PtS_HuPo.GetSize() - 1;
+        PtS_HuPo.GetAt(MN)->TW_right = TW;
+    }// End å³ä¾§è¾¹å¡
+    // ----------------------------------------------------------
 }
 
 
 
 /************************************************************************/
-/* Function: ¼ÆËãÖÕµã´¦±ßÆÂÓëÃæµÄ½»µã×ø±ê									*/
+/* Function: è®¡ç®—ç»ˆç‚¹å¤„è¾¹å¡ä¸é¢çš„äº¤ç‚¹åæ ‡                                   */
 /************************************************************************/
-void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, double y2, double z2,\
-			float L,float h0, double x0,double z0,int TW, int LeftRight,\
-			double tx0,double ty0,double tz0,double tx1,double ty1,double tz1,double mLC,CString strJDstyle)
-{
-	double x11,y11,z11,x12,y12,z12;
-	double x21,y21,z21,x22,y22,z22;
-
-	float L1,mangle;
-	float dx=x2-x1;
-	float dz=z2-z1;
-
-
-	PLuQianHuPo ptt;
-	ptt= new LuQianHuPo;
-
-	float m_Lj_Dh = 0.6;// ²ê¼çÖÁ²ê½ÅµÄ¸ß¶È
-
-	//¸ù¾İ¹æ·¶ÉèÖÃµÄ Â·µÌ »¤ÆÂÊıÖµ
-	float Lt_h1 = 6;		//1¼¶±ßÆÂÆÂ¸ß
-	float Lt_h2 = 12;		//2¼¶±ßÆÂÆÂ¸ß
-	float Lt_m1=1.5;		//1¼¶±ßÆÂÆÂÂÊ
-	float Lt_m2=1.75;		//2¼¶±ßÆÂÆÂÂÊ
-	float Lt_b=2.0;			//±ßÆÂÆ½Ì¨¿í¶È
-
-
-	float Lt_h3 = ty0 - Lt_h1 - Lt_h2;		//2¼¶±ßÆÂÆÂ¸ß
-	float Lt_m3 = 0.45;						//1¼¶±ßÆÂÆÂÂÊ
-
-
-	// ----------------------------------------------------------
-	if(LeftRight == -1)		// ×ó²à±ßÆÂ
-	{
-		ptt->Huponums_L = 3;
-
-		/************************************************************************/
-		/*								Ò»¼¶±ßÆÂ                                 */
-		/************************************************************************/
-
-		// µã1
-		ptt->HuPo_L[0].Hp[0].x = tx0; /**/ ptt->HuPo_L[0].Hp[0].y = ty0;  /**/ ptt->HuPo_L[0].Hp[0].z = tz0;
-
-		// µã2
-		ptt->HuPo_L[0].Hp[1].x = tx1; /**/ ptt->HuPo_L[0].Hp[1].y = ty1;  /**/ ptt->HuPo_L[0].Hp[1].z = tz1;
-
-		// µã3
-		L1 = L + Lt_h1*Lt_m1;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_L[0].Hp[2].x = x21;
-		ptt->HuPo_L[0].Hp[2].y = y21 - m_Lj_Dh - Lt_h1; 
-		ptt->HuPo_L[0].Hp[2].z = z21;
-
-
-		// Ò»¼¶»¤ÆÂµÄ¸ß¶È¡¢±ßÆÂÆÂÂÊ¡¢±ßÆÂÀàĞÍ
-		ptt->HuPo_L[0].h = Lt_h1; /**/ ptt->HuPo_L[0].m = Lt_m1; /**/ ptt->HuPo_L[0].style = 0;
-
-
-
-		/************************************************************************/
-		/*								¶ş¼¶±ßÆÂ                                 */
-		/************************************************************************/
-
-
-		// µã1
-
-		// Ò»¼¶»¤ÆÂµÄ×îºó1¸öµã Óë ¶ş¼¶»¤ÆÂµÄµÚ1¸öµãÖØºÏ
-		ptt->HuPo_L[1].Hp[0].x = ptt->HuPo_L[0].Hp[2].x;
-		ptt->HuPo_L[1].Hp[0].y = ptt->HuPo_L[0].Hp[2].y;
-		ptt->HuPo_L[1].Hp[0].z = ptt->HuPo_L[0].Hp[2].z;
-
-
-		// µã2
-		L1 = L + Lt_h1*Lt_m1 + Lt_b;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_L[1].Hp[1].x =x21;
-		ptt->HuPo_L[1].Hp[1].y =ptt->HuPo_L[1].Hp[0].y;
-		ptt->HuPo_L[1].Hp[1].z =z21;
-
-		// µã3
-		L1 = L + Lt_h1*Lt_m1 + Lt_b + Lt_h2*Lt_m2;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_L[1].Hp[2].x = x21;
-		ptt->HuPo_L[1].Hp[2].y = y21 - m_Lj_Dh - Lt_h1 - Lt_h2;
-		ptt->HuPo_L[1].Hp[2].z = z21;
-
-		// ¶ş¼¶»¤ÆÂµÄ¸ß¶È¡¢±ßÆÂÆÂÂÊ¡¢±ßÆÂÆ½Ì¨¿í¶È¡¢±ßÆÂÀàĞÍ
-		ptt->HuPo_L[1].h = Lt_h2;
-		ptt->HuPo_L[1].m = Lt_m2;
-		ptt->HuPo_L[1].b = Lt_b;
-		ptt->HuPo_L[1].style = 1;
-
-		/************************************************************************/
-		/*								Èı¼¶±ßÆÂ                                 */
-		/************************************************************************/
-		// µã1
-		ptt->HuPo_L[2].Hp[0].x =ptt->HuPo_L[1].Hp[2].x;
-		ptt->HuPo_L[2].Hp[0].y =ptt->HuPo_L[1].Hp[2].y;
-		ptt->HuPo_L[2].Hp[0].z =ptt->HuPo_L[1].Hp[2].z;
-
-		// µã2
-		L1 = L + Lt_h1*Lt_m1 + Lt_b + Lt_h2*Lt_m2 + Lt_b;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_L[2].Hp[1].x =x21;
-		ptt->HuPo_L[2].Hp[1].y =ptt->HuPo_L[2].Hp[0].y;
-		ptt->HuPo_L[2].Hp[1].z =z21;
-
-		// µã3
-		L1 = L + Lt_h1*Lt_m1 + Lt_b + Lt_h2*Lt_m2 + Lt_b + Lt_h3*Lt_m3;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_L[2].Hp[2].x = x21;
-		ptt->HuPo_L[2].Hp[2].y =y21 - m_Lj_Dh - Lt_h1 - Lt_h2 - Lt_h3;
-		ptt->HuPo_L[2].Hp[2].z =z21;
-
-		ptt->HuPo_L[2].m	 = Lt_m3;
-		ptt->HuPo_L[2].b = Lt_b;
-		ptt->HuPo_L[2].style = 2;
-
-		PtS_HuPo.Add(ptt);
-
-		long MN=PtS_HuPo.GetSize()-1;
-		PtS_HuPo.GetAt(MN)->TW_left=TW;
-		PtS_HuPo.GetAt(MN)->Lc=mLC;
-		PtS_HuPo.GetAt(MN)->strJDStyle=strJDstyle;
-
-	}// End ×ó²à±ßÆÂ
-
-
-	else if(LeftRight == 1) // ÓÒ²à±ßÆÂ
-	{
-
-		ptt=PtS_HuPo.GetAt(PtS_HuPo.GetSize()-1);
-
-		ptt->Huponums_R = 3;
-
-		/************************************************************************/
-		/*								Ò»¼¶±ßÆÂ                                 */
-		/************************************************************************/
-
-		// µã1
-		ptt->HuPo_R[0].Hp[0].x = tx0; /**/ ptt->HuPo_R[0].Hp[0].y = ty0;  /**/ ptt->HuPo_R[0].Hp[0].z = tz0;
-
-		// µã2
-		ptt->HuPo_R[0].Hp[1].x = tx1; /**/ ptt->HuPo_R[0].Hp[1].y = ty1;  /**/ ptt->HuPo_R[0].Hp[1].z = tz1;
-
-		// µã3
-		L1 = L + Lt_h1*Lt_m1;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_R[0].Hp[2].x = x22;
-		ptt->HuPo_R[0].Hp[2].y = y22 - m_Lj_Dh - Lt_h1; 
-		ptt->HuPo_R[0].Hp[2].z = z22;
-
-
-		// Ò»¼¶»¤ÆÂµÄ¸ß¶È¡¢±ßÆÂÆÂÂÊ¡¢±ßÆÂÀàĞÍ
-		ptt->HuPo_R[0].h = Lt_h1; /**/ ptt->HuPo_R[0].m = Lt_m1; /**/ ptt->HuPo_R[0].style = 0;
-
-
-
-		/************************************************************************/
-		/*								¶ş¼¶±ßÆÂ                                 */
-		/************************************************************************/
-		// µã1
-
-		// Ò»¼¶»¤ÆÂµÄ×îºó1¸öµã Óë ¶ş¼¶»¤ÆÂµÄµÚ1¸öµãÖØºÏ
-		ptt->HuPo_R[1].Hp[0].x = ptt->HuPo_R[0].Hp[2].x;
-		ptt->HuPo_R[1].Hp[0].y = ptt->HuPo_R[0].Hp[2].y;
-		ptt->HuPo_R[1].Hp[0].z = ptt->HuPo_R[0].Hp[2].z;
-
-
-		// µã2
-		L1 = L + Lt_h1*Lt_m1 + Lt_b;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_R[1].Hp[1].x =x22;
-		ptt->HuPo_R[1].Hp[1].y =ptt->HuPo_R[1].Hp[0].y;
-		ptt->HuPo_R[1].Hp[1].z =z22;
-
-		// µã3
-		L1 = L + Lt_h1*Lt_m1 + Lt_b + Lt_h2*Lt_m2;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_R[1].Hp[2].x = x22;
-		ptt->HuPo_R[1].Hp[2].y = y22 - m_Lj_Dh - Lt_h1 - Lt_h2;
-		ptt->HuPo_R[1].Hp[2].z = z22;
-
-		// ¶ş¼¶»¤ÆÂµÄ¸ß¶È¡¢±ßÆÂÆÂÂÊ¡¢±ßÆÂÆ½Ì¨¿í¶È¡¢±ßÆÂÀàĞÍ
-		ptt->HuPo_R[1].h = Lt_h2;
-		ptt->HuPo_R[1].m = Lt_m2;
-		ptt->HuPo_R[1].b = Lt_b;
-		ptt->HuPo_R[1].style = 1;
-
-		/************************************************************************/
-		/*								Èı¼¶±ßÆÂ                                 */
-		/************************************************************************/
-
-		// µã1
-		ptt->HuPo_R[2].Hp[0].x =ptt->HuPo_R[1].Hp[2].x;
-		ptt->HuPo_R[2].Hp[0].y =ptt->HuPo_R[1].Hp[2].y;
-		ptt->HuPo_R[2].Hp[0].z =ptt->HuPo_R[1].Hp[2].z;
-
-		// µã2
-		L1 = L + Lt_h1*Lt_m1 + Lt_b + Lt_h2*Lt_m2 + Lt_b;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_R[2].Hp[1].x =x22;
-		ptt->HuPo_R[2].Hp[1].y =ptt->HuPo_R[2].Hp[0].y;
-		ptt->HuPo_R[2].Hp[1].z =z22;
-
-		// µã3
-		L1 = L + Lt_h1*Lt_m1 + Lt_b + Lt_h2*Lt_m2 + Lt_b + Lt_h3*Lt_m3;
-		Get3DCorrdinate(x1,y1,z1,x2,y2,z2,dx,dz,L1,&x11,&y11,&z11,&x12,&y12,&z12,&x21,&y21,&z21,&x22,&y22,&z22,&mangle);
-		ptt->HuPo_R[2].Hp[2].x = x22;
-		ptt->HuPo_R[2].Hp[2].y =y22 - m_Lj_Dh - Lt_h1 - Lt_h2 - Lt_h3;
-		ptt->HuPo_R[2].Hp[2].z =z22;
-
-		ptt->HuPo_R[2].m	 = Lt_m3;
-		ptt->HuPo_R[2].b = Lt_b;
-		ptt->HuPo_R[2].style = 2;
-
-		long MN=PtS_HuPo.GetSize()-1;
-		PtS_HuPo.GetAt(MN)->TW_right=TW;
-
-
-	}// End ÓÒ²à±ßÆÂ
-
-	// ----------------------------------------------------------
+void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, double y2, double z2, \
+                                float L, float h0, double x0, double z0, int TW, int LeftRight, \
+                                double tx0, double ty0, double tz0, double tx1, double ty1, double tz1, double mLC, CString strJDstyle) {
+    double x11, y11, z11, x12, y12, z12;
+    double x21, y21, z21, x22, y22, z22;
+    float L1, mangle;
+    float dx = x2 - x1;
+    float dz = z2 - z1;
+    PLuQianHuPo ptt;
+    ptt = new LuQianHuPo;
+    float m_Lj_Dh = 0.6;// ç¢´è‚©è‡³ç¢´è„šçš„é«˜åº¦
+    //æ ¹æ®è§„èŒƒè®¾ç½®çš„ è·¯å ¤ æŠ¤å¡æ•°å€¼
+    float Lt_h1 = 6;        //1çº§è¾¹å¡å¡é«˜
+    float Lt_h2 = 12;       //2çº§è¾¹å¡å¡é«˜
+    float Lt_m1 = 1.5;      //1çº§è¾¹å¡å¡ç‡
+    float Lt_m2 = 1.75;     //2çº§è¾¹å¡å¡ç‡
+    float Lt_b = 2.0;       //è¾¹å¡å¹³å°å®½åº¦
+    float Lt_h3 = ty0 - Lt_h1 - Lt_h2;      //2çº§è¾¹å¡å¡é«˜
+    float Lt_m3 = 0.45;                     //1çº§è¾¹å¡å¡ç‡
+    // ----------------------------------------------------------
+    if (LeftRight == -1) {  // å·¦ä¾§è¾¹å¡
+        ptt->Huponums_L = 3;
+        /************************************************************************/
+        /*                              ä¸€çº§è¾¹å¡                                 */
+        /************************************************************************/
+        // ç‚¹1
+        ptt->HuPo_L[0].Hp[0].x = tx0; /**/ ptt->HuPo_L[0].Hp[0].y = ty0;  /**/ ptt->HuPo_L[0].Hp[0].z = tz0;
+        // ç‚¹2
+        ptt->HuPo_L[0].Hp[1].x = tx1; /**/ ptt->HuPo_L[0].Hp[1].y = ty1;  /**/ ptt->HuPo_L[0].Hp[1].z = tz1;
+        // ç‚¹3
+        L1 = L + Lt_h1 * Lt_m1;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_L[0].Hp[2].x = x21;
+        ptt->HuPo_L[0].Hp[2].y = y21 - m_Lj_Dh - Lt_h1;
+        ptt->HuPo_L[0].Hp[2].z = z21;
+        // ä¸€çº§æŠ¤å¡çš„é«˜åº¦ã€è¾¹å¡å¡ç‡ã€è¾¹å¡ç±»å‹
+        ptt->HuPo_L[0].h = Lt_h1; /**/ ptt->HuPo_L[0].m = Lt_m1; /**/ ptt->HuPo_L[0].style = 0;
+        /************************************************************************/
+        /*                              äºŒçº§è¾¹å¡                                 */
+        /************************************************************************/
+        // ç‚¹1
+        // ä¸€çº§æŠ¤å¡çš„æœ€å1ä¸ªç‚¹ ä¸ äºŒçº§æŠ¤å¡çš„ç¬¬1ä¸ªç‚¹é‡åˆ
+        ptt->HuPo_L[1].Hp[0].x = ptt->HuPo_L[0].Hp[2].x;
+        ptt->HuPo_L[1].Hp[0].y = ptt->HuPo_L[0].Hp[2].y;
+        ptt->HuPo_L[1].Hp[0].z = ptt->HuPo_L[0].Hp[2].z;
+        // ç‚¹2
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_L[1].Hp[1].x = x21;
+        ptt->HuPo_L[1].Hp[1].y = ptt->HuPo_L[1].Hp[0].y;
+        ptt->HuPo_L[1].Hp[1].z = z21;
+        // ç‚¹3
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b + Lt_h2 * Lt_m2;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_L[1].Hp[2].x = x21;
+        ptt->HuPo_L[1].Hp[2].y = y21 - m_Lj_Dh - Lt_h1 - Lt_h2;
+        ptt->HuPo_L[1].Hp[2].z = z21;
+        // äºŒçº§æŠ¤å¡çš„é«˜åº¦ã€è¾¹å¡å¡ç‡ã€è¾¹å¡å¹³å°å®½åº¦ã€è¾¹å¡ç±»å‹
+        ptt->HuPo_L[1].h = Lt_h2;
+        ptt->HuPo_L[1].m = Lt_m2;
+        ptt->HuPo_L[1].b = Lt_b;
+        ptt->HuPo_L[1].style = 1;
+        /************************************************************************/
+        /*                              ä¸‰çº§è¾¹å¡                                 */
+        /************************************************************************/
+        // ç‚¹1
+        ptt->HuPo_L[2].Hp[0].x = ptt->HuPo_L[1].Hp[2].x;
+        ptt->HuPo_L[2].Hp[0].y = ptt->HuPo_L[1].Hp[2].y;
+        ptt->HuPo_L[2].Hp[0].z = ptt->HuPo_L[1].Hp[2].z;
+        // ç‚¹2
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b + Lt_h2 * Lt_m2 + Lt_b;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_L[2].Hp[1].x = x21;
+        ptt->HuPo_L[2].Hp[1].y = ptt->HuPo_L[2].Hp[0].y;
+        ptt->HuPo_L[2].Hp[1].z = z21;
+        // ç‚¹3
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b + Lt_h2 * Lt_m2 + Lt_b + Lt_h3 * Lt_m3;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_L[2].Hp[2].x = x21;
+        ptt->HuPo_L[2].Hp[2].y = y21 - m_Lj_Dh - Lt_h1 - Lt_h2 - Lt_h3;
+        ptt->HuPo_L[2].Hp[2].z = z21;
+        ptt->HuPo_L[2].m     = Lt_m3;
+        ptt->HuPo_L[2].b = Lt_b;
+        ptt->HuPo_L[2].style = 2;
+        PtS_HuPo.Add(ptt);
+        long MN = PtS_HuPo.GetSize() - 1;
+        PtS_HuPo.GetAt(MN)->TW_left = TW;
+        PtS_HuPo.GetAt(MN)->Lc = mLC;
+        PtS_HuPo.GetAt(MN)->strJDStyle = strJDstyle;
+    }// End å·¦ä¾§è¾¹å¡
+    else if (LeftRight == 1) { // å³ä¾§è¾¹å¡
+        ptt = PtS_HuPo.GetAt(PtS_HuPo.GetSize() - 1);
+        ptt->Huponums_R = 3;
+        /************************************************************************/
+        /*                              ä¸€çº§è¾¹å¡                                 */
+        /************************************************************************/
+        // ç‚¹1
+        ptt->HuPo_R[0].Hp[0].x = tx0; /**/ ptt->HuPo_R[0].Hp[0].y = ty0;  /**/ ptt->HuPo_R[0].Hp[0].z = tz0;
+        // ç‚¹2
+        ptt->HuPo_R[0].Hp[1].x = tx1; /**/ ptt->HuPo_R[0].Hp[1].y = ty1;  /**/ ptt->HuPo_R[0].Hp[1].z = tz1;
+        // ç‚¹3
+        L1 = L + Lt_h1 * Lt_m1;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_R[0].Hp[2].x = x22;
+        ptt->HuPo_R[0].Hp[2].y = y22 - m_Lj_Dh - Lt_h1;
+        ptt->HuPo_R[0].Hp[2].z = z22;
+        // ä¸€çº§æŠ¤å¡çš„é«˜åº¦ã€è¾¹å¡å¡ç‡ã€è¾¹å¡ç±»å‹
+        ptt->HuPo_R[0].h = Lt_h1; /**/ ptt->HuPo_R[0].m = Lt_m1; /**/ ptt->HuPo_R[0].style = 0;
+        /************************************************************************/
+        /*                              äºŒçº§è¾¹å¡                                 */
+        /************************************************************************/
+        // ç‚¹1
+        // ä¸€çº§æŠ¤å¡çš„æœ€å1ä¸ªç‚¹ ä¸ äºŒçº§æŠ¤å¡çš„ç¬¬1ä¸ªç‚¹é‡åˆ
+        ptt->HuPo_R[1].Hp[0].x = ptt->HuPo_R[0].Hp[2].x;
+        ptt->HuPo_R[1].Hp[0].y = ptt->HuPo_R[0].Hp[2].y;
+        ptt->HuPo_R[1].Hp[0].z = ptt->HuPo_R[0].Hp[2].z;
+        // ç‚¹2
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_R[1].Hp[1].x = x22;
+        ptt->HuPo_R[1].Hp[1].y = ptt->HuPo_R[1].Hp[0].y;
+        ptt->HuPo_R[1].Hp[1].z = z22;
+        // ç‚¹3
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b + Lt_h2 * Lt_m2;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_R[1].Hp[2].x = x22;
+        ptt->HuPo_R[1].Hp[2].y = y22 - m_Lj_Dh - Lt_h1 - Lt_h2;
+        ptt->HuPo_R[1].Hp[2].z = z22;
+        // äºŒçº§æŠ¤å¡çš„é«˜åº¦ã€è¾¹å¡å¡ç‡ã€è¾¹å¡å¹³å°å®½åº¦ã€è¾¹å¡ç±»å‹
+        ptt->HuPo_R[1].h = Lt_h2;
+        ptt->HuPo_R[1].m = Lt_m2;
+        ptt->HuPo_R[1].b = Lt_b;
+        ptt->HuPo_R[1].style = 1;
+        /************************************************************************/
+        /*                              ä¸‰çº§è¾¹å¡                                 */
+        /************************************************************************/
+        // ç‚¹1
+        ptt->HuPo_R[2].Hp[0].x = ptt->HuPo_R[1].Hp[2].x;
+        ptt->HuPo_R[2].Hp[0].y = ptt->HuPo_R[1].Hp[2].y;
+        ptt->HuPo_R[2].Hp[0].z = ptt->HuPo_R[1].Hp[2].z;
+        // ç‚¹2
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b + Lt_h2 * Lt_m2 + Lt_b;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_R[2].Hp[1].x = x22;
+        ptt->HuPo_R[2].Hp[1].y = ptt->HuPo_R[2].Hp[0].y;
+        ptt->HuPo_R[2].Hp[1].z = z22;
+        // ç‚¹3
+        L1 = L + Lt_h1 * Lt_m1 + Lt_b + Lt_h2 * Lt_m2 + Lt_b + Lt_h3 * Lt_m3;
+        Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
+        ptt->HuPo_R[2].Hp[2].x = x22;
+        ptt->HuPo_R[2].Hp[2].y = y22 - m_Lj_Dh - Lt_h1 - Lt_h2 - Lt_h3;
+        ptt->HuPo_R[2].Hp[2].z = z22;
+        ptt->HuPo_R[2].m     = Lt_m3;
+        ptt->HuPo_R[2].b = Lt_b;
+        ptt->HuPo_R[2].style = 2;
+        long MN = PtS_HuPo.GetSize() - 1;
+        PtS_HuPo.GetAt(MN)->TW_right = TW;
+    }// End å³ä¾§è¾¹å¡
+    // ----------------------------------------------------------
 }
 
 
 
 
 /************************************************************************/
-/* Function:  ¼ÆËã±ßÆÂµãÓëµØÃæÏßµÄ½»µã×ø±ê									*/
+/* Function:  è®¡ç®—è¾¹å¡ç‚¹ä¸åœ°é¢çº¿çš„äº¤ç‚¹åæ ‡                                  */
 /************************************************************************/
-void CDesingScheme::GetBpJD(float H0, float Afla, float mangle, double x0, double z0, int bsignTW, int mLeftRight, double *tx, double *ty, double *tz)
-{
-	double xx,zz;
-	float L=0.1;
-	float h1=-999;
-	float hNew=-9999;
-	float m_bc=0.2;//
-	float DerC=0.05; //0.05
-	while(fabs(h1-hNew)>DerC) 
-	{
-		h1=H0-bsignTW*L*sin(Afla);
-		hNew=GetH(L,Afla,mangle,x0,z0,mLeftRight,&xx,&zz); //¶ÔÓ¦µÄµØÃæ¸ß³Ì
-	
-		if(bsignTW==-1)
-		{
-			if(h1-hNew>0) //Èç¹û³¬³öÁËµØÃæ
-			{
-				hNew=h1;
-			}
-			else //»¹ÊÇµÍÓÚµØÃæÏß
-			{
-				L=L*1.1;
-			}
-		}
-		else  if(bsignTW==1)
-		{
-			if(h1-hNew<0)
-			{
-				hNew=h1;
-			}
-			else
-			{
-				L=L*1.1;
-			}
-		}
-	}
-	if(fabs(h1-hNew)<DerC)	
-	{
-		if(mLeftRight==-1)
-		{
-			*tx=xx;
-			*ty=hNew;
-			*tz=zz;
-		}
-		else  
-		{
-			*tx=xx;
-			*ty=hNew;
-			*tz=zz;               
-		}
-	}
+void CDesingScheme::GetBpJD(float H0, float Afla, float mangle, double x0, double z0, int bsignTW, int mLeftRight, double* tx, double* ty, double* tz) {
+    double xx, zz;
+    float L = 0.1;
+    float h1 = -999;
+    float hNew = -9999;
+    float m_bc = 0.2; //
+    float DerC = 0.05; //0.05
+    while (fabs(h1 - hNew) > DerC) {
+        h1 = H0 - bsignTW * L * sin(Afla);
+        hNew = GetH(L, Afla, mangle, x0, z0, mLeftRight, &xx, &zz); //å¯¹åº”çš„åœ°é¢é«˜ç¨‹
+        if (bsignTW == -1) {
+            if (h1 - hNew > 0) { //å¦‚æœè¶…å‡ºäº†åœ°é¢
+                hNew = h1;
+            } else { //è¿˜æ˜¯ä½äºåœ°é¢çº¿
+                L = L * 1.1;
+            }
+        } else  if (bsignTW == 1) {
+            if (h1 - hNew < 0) {
+                hNew = h1;
+            } else {
+                L = L * 1.1;
+            }
+        }
+    }
+    if (fabs(h1 - hNew) < DerC) {
+        if (mLeftRight == -1) {
+            *tx = xx;
+            *ty = hNew;
+            *tz = zz;
+        } else {
+            *tx = xx;
+            *ty = hNew;
+            *tz = zz;
+        }
+    }
 }
 
-float CDesingScheme::GetH(float L, float Afla, float mAngle,double x0,double z0,int mLeftRight,double *xx,double *zz)
-{
-	double x,z;
-	float peita;
-
-    
-	if(mAngle>=0 && mAngle<=PAI/2.0) 
-	{
-		peita=PAI/2-mAngle;
-		x=mLeftRight*L*cos(Afla)*cos(peita)+x0;
-		z=mLeftRight*L*cos(Afla)*sin(peita)+z0;
-	}
-	else if(mAngle>PAI/2.0 && mAngle<=PAI)	
-	{
-		peita=mAngle-PAI/2;
-		x=mLeftRight*L*cos(Afla)*cos(peita)+x0;
-		z=-mLeftRight*L*cos(Afla)*sin(peita)+z0;
-	}
-	else if(mAngle>PAI&& mAngle<=PAI*3/2.0)	
-	{
-		peita=PAI*3.0/2-mAngle;
-		x=-mLeftRight*L*cos(Afla)*cos(peita)+x0;
-		z=-mLeftRight*L*cos(Afla)*sin(peita)+z0;
-	}
-	else if(mAngle>PAI*3/2.0&& mAngle<=PAI*2.0)	
-	{
-		peita=mAngle-PAI*3.0/2;
-		x=-mLeftRight*L*cos(Afla)*cos(peita)+x0;
-		z=mLeftRight*L*cos(Afla)*sin(peita)+z0;
-	}
-
-	
-	float mh = GetHeightValue(x,-z);
-
-
-	*xx=x;
-	*zz=z;
-	return mh;
-	
+float CDesingScheme::GetH(float L, float Afla, float mAngle, double x0, double z0, int mLeftRight, double* xx, double* zz) {
+    double x, z;
+    float peita;
+    if (mAngle >= 0 && mAngle <= PAI / 2.0) {
+        peita = PAI / 2 - mAngle;
+        x = mLeftRight * L * cos(Afla) * cos(peita) + x0;
+        z = mLeftRight * L * cos(Afla) * sin(peita) + z0;
+    } else if (mAngle > PAI / 2.0 && mAngle <= PAI) {
+        peita = mAngle - PAI / 2;
+        x = mLeftRight * L * cos(Afla) * cos(peita) + x0;
+        z = -mLeftRight * L * cos(Afla) * sin(peita) + z0;
+    } else if (mAngle > PAI && mAngle <= PAI * 3 / 2.0) {
+        peita = PAI * 3.0 / 2 - mAngle;
+        x = -mLeftRight * L * cos(Afla) * cos(peita) + x0;
+        z = -mLeftRight * L * cos(Afla) * sin(peita) + z0;
+    } else if (mAngle > PAI * 3 / 2.0 && mAngle <= PAI * 2.0) {
+        peita = mAngle - PAI * 3.0 / 2;
+        x = -mLeftRight * L * cos(Afla) * cos(peita) + x0;
+        z = mLeftRight * L * cos(Afla) * sin(peita) + z0;
+    }
+    float mh = GetHeightValue(x, -z);
+    *xx = x;
+    *zz = z;
+    return mh;
 }
 
-float CDesingScheme::GetHeightValue(float x, float z)
-{
-	float CameraX = x/MAP_SCALE;					// ¼ÆËãÔÚÄÄÒ»ÁĞ
-	float CameraZ =-z/MAP_SCALE;						// ¼ÆËãÔÚÄÄÒ»ĞĞ
-	int Col0 = int(CameraX);						// ¿éµÄÁĞºÅ
-	int Row0 = int(CameraZ);						// ¿éµÄĞĞºÅ
-	int Col1 = Col0 + 1;							// ÏàÁÚÁĞ
-	int Row1 = Row0 + 1;							// ÏàÁÚ¿é
-	if (Col1 > MAP_W)	Col1 = 0;					// ÏàÁÚÁĞ´óÓÚµØ¿éÊı£¬È¡Ê×ÁĞ
-	if (Row1 > MAP_W)	Row1 = 0;					// ÏàÁÚĞĞ´óÓÚµØ¿éÊı£¬È¡Ê×ĞĞ
-
-	
-	
-	float h00=g_terrain[Col0 + Row0*MAP_W][1];		// »ñÈ¡¿éËÄ½ÇµÄ¸ß¶È
-	float h01=g_terrain[Col1 + Row0*MAP_W][1];
-	float h11=g_terrain[Col1 + Row1*MAP_W][1];
-	float h10=g_terrain[Col0 + Row1*MAP_W][1];
-
-	float tx =CameraX - int(CameraX);				// Çó¿éÄÚXÆ«ÒÆÎ»ÖÃ
-	float ty =CameraZ - int(CameraZ);				// Çó¿éÄÚZÆ«ÒÆÎ»ÖÃ
-
-	float txty = tx * ty;							// ÒÔÏÂÎªË«ÏßĞÔ²åÖµ£¨ÄÚ²å£©¼ÆËã
-
-	// ·µ»Ø²åÖµ¼ÆËãÖµ£¬ÎªËùÇóµãµÄ¸ß¶È
-	return h00*(1.0f-ty-tx+txty) + h01*(tx-txty) + h11*txty + h10*(ty-txty);			
+float CDesingScheme::GetHeightValue(float x, float z) {
+    float CameraX = x / MAP_SCALE;                  // è®¡ç®—åœ¨å“ªä¸€åˆ—
+    float CameraZ = -z / MAP_SCALE;                     // è®¡ç®—åœ¨å“ªä¸€è¡Œ
+    int Col0 = int(CameraX);                        // å—çš„åˆ—å·
+    int Row0 = int(CameraZ);                        // å—çš„è¡Œå·
+    int Col1 = Col0 + 1;                            // ç›¸é‚»åˆ—
+    int Row1 = Row0 + 1;                            // ç›¸é‚»å—
+    if (Col1 > MAP_W)   Col1 = 0;                   // ç›¸é‚»åˆ—å¤§äºåœ°å—æ•°ï¼Œå–é¦–åˆ—
+    if (Row1 > MAP_W)   Row1 = 0;                   // ç›¸é‚»è¡Œå¤§äºåœ°å—æ•°ï¼Œå–é¦–è¡Œ
+    float h00 = g_terrain[Col0 + Row0 * MAP_W][1];  // è·å–å—å››è§’çš„é«˜åº¦
+    float h01 = g_terrain[Col1 + Row0 * MAP_W][1];
+    float h11 = g_terrain[Col1 + Row1 * MAP_W][1];
+    float h10 = g_terrain[Col0 + Row1 * MAP_W][1];
+    float tx = CameraX - int(CameraX);              // æ±‚å—å†…Xåç§»ä½ç½®
+    float ty = CameraZ - int(CameraZ);              // æ±‚å—å†…Zåç§»ä½ç½®
+    float txty = tx * ty;                           // ä»¥ä¸‹ä¸ºåŒçº¿æ€§æ’å€¼ï¼ˆå†…æ’ï¼‰è®¡ç®—
+    // è¿”å›æ’å€¼è®¡ç®—å€¼ï¼Œä¸ºæ‰€æ±‚ç‚¹çš„é«˜åº¦
+    return h00 * (1.0f - ty - tx + txty) + h01 * (tx - txty) + h11 * txty + h10 * (ty - txty);
 }
 
 
 /************************************************************************/
-/* Function: ¼ÆËã±ßÆÂµÄÌîÍÚÀàĞÍ											*/
+/* Function: è®¡ç®—è¾¹å¡çš„å¡«æŒ–ç±»å‹                                         */
 /************************************************************************/
-int CDesingScheme::GetTW(double x, double z, float H)
-{
-	int mTW;
-	double tx1=x;
-	double ty1=-z;
-	
-	
-	float mh = GetHeightValue(tx1,ty1);
-
-	
-
-	if(fabs(H-mh)<=0.001) //Èç¹ûÂ·»ùÃæµãµÄ¸ß³ÌÓë´¹Ö±ÕıÏÂ·½µÄµØÃæµã¸ß³ÌÖ®²î<=0.001
-		mTW=0; //ÈÏÎªÊÇÌîÍÚÆ½ºâµã(¼´ÌîÍÚ0µã)
-	else if(H<mh) 
-		mTW=-1;  //<´¹Ö±ÕıÏÂ·½µÄµØÃæµã¸ß³Ì,ÎªÂ·Çµ
-	else
-		mTW=1;  //>´¹Ö±ÕıÏÂ·½µÄµØÃæµã¸ß³Ì,ÎªÂ·µÌ
-
-	return mTW;  //·µ»Ø¼ÆËãµÄ±ßÆÂÌîÍÚÀàĞÍ
-
+int CDesingScheme::GetTW(double x, double z, float H) {
+    int mTW;
+    double tx1 = x;
+    double ty1 = -z;
+    float mh = GetHeightValue(tx1, ty1);
+    if (fabs(H - mh) <= 0.001) //å¦‚æœè·¯åŸºé¢ç‚¹çš„é«˜ç¨‹ä¸å‚ç›´æ­£ä¸‹æ–¹çš„åœ°é¢ç‚¹é«˜ç¨‹ä¹‹å·®<=0.001
+        mTW = 0; //è®¤ä¸ºæ˜¯å¡«æŒ–å¹³è¡¡ç‚¹(å³å¡«æŒ–0ç‚¹)
+    else if (H < mh)
+        mTW = -1; //<å‚ç›´æ­£ä¸‹æ–¹çš„åœ°é¢ç‚¹é«˜ç¨‹,ä¸ºè·¯å ‘
+    else
+        mTW = 1; //>å‚ç›´æ­£ä¸‹æ–¹çš„åœ°é¢ç‚¹é«˜ç¨‹,ä¸ºè·¯å ¤
+    return mTW;  //è¿”å›è®¡ç®—çš„è¾¹å¡å¡«æŒ–ç±»å‹
 }
 
 
 /************************************************************************/
-/* Function: ¼ÆËã2¶Ëºá¶ÏÃæÉÏµÄµã×ø±ê										*/
+/* Function: è®¡ç®—2ç«¯æ¨ªæ–­é¢ä¸Šçš„ç‚¹åæ ‡                                        */
 /************************************************************************/
-void CDesingScheme::CalculateFillFacePoints(vector<Railway3DCordinate> &rcVector2, vector<Railway3DCordinate> &rcVector1)										
-{		
-	Railway3DCordinate rc2;//Ãæ2
-	Railway3DCordinate rc1;//Ãæ1
-
-	//1------------------------------------------------------------
-	int a = PtS_Railway3D.GetSize();
-	int railway3D_bIndex = 0;
-	int railway3D_eIndex = a - 1;
-
-	rc1.x1 = PtS_Railway3D[railway3D_bIndex]->x1;
-	rc1.y1 = PtS_Railway3D[railway3D_bIndex]->y1;
-	rc1.z1 = PtS_Railway3D[railway3D_bIndex]->z1;
-
-	rc1.x2 = PtS_Railway3D[railway3D_bIndex]->x2;
-	rc1.y2 = PtS_Railway3D[railway3D_bIndex]->y2;
-	rc1.z2 = PtS_Railway3D[railway3D_bIndex]->z2;
-
-
-	rcVector1.push_back(rc1);
-
-
-	rc2.x1 = PtS_Railway3D[railway3D_eIndex]->x1;
-	rc2.y1 = PtS_Railway3D[railway3D_eIndex]->y1;
-	rc2.z1 = PtS_Railway3D[railway3D_eIndex]->z1;
-
-	rc2.x2 = PtS_Railway3D[railway3D_eIndex]->x2;
-	rc2.y2 = PtS_Railway3D[railway3D_eIndex]->y2;
-	rc2.z2 = PtS_Railway3D[railway3D_eIndex]->z2;
-
-	rcVector2.push_back(rc2);
-
-
-	//2------------------------------------------------------------
-	int b = PtS_RailwayLj3D.GetSize();
-
-	int railwayLj3D_bIndex = 0;
-	int railwayLj3D_eIndex = b - 1;
-
-
-
-	rc1.x1 = PtS_RailwayLj3D[railwayLj3D_bIndex]->x1;
-	rc1.y1 = PtS_RailwayLj3D[railwayLj3D_bIndex]->y1;
-	rc1.z1 = PtS_RailwayLj3D[railwayLj3D_bIndex]->z1;
-
-	rc1.x2 = PtS_RailwayLj3D[railwayLj3D_bIndex]->x2;
-	rc1.y2 = PtS_RailwayLj3D[railwayLj3D_bIndex]->y2;
-	rc1.z2 = PtS_RailwayLj3D[railwayLj3D_bIndex]->z2;
-
-
-	rcVector1.push_back(rc1);
-
-
-	rc2.x1 = PtS_RailwayLj3D[railwayLj3D_eIndex]->x1;
-	rc2.y1 = PtS_RailwayLj3D[railwayLj3D_eIndex]->y1;
-	rc2.z1 = PtS_RailwayLj3D[railwayLj3D_eIndex]->z1;
-
-	rc2.x2 = PtS_RailwayLj3D[railwayLj3D_eIndex]->x2;
-	rc2.y2 = PtS_RailwayLj3D[railwayLj3D_eIndex]->y2;
-	rc2.z2 = PtS_RailwayLj3D[railwayLj3D_eIndex]->z2;
-
-	rcVector2.push_back(rc2);
-
-	//3------------------------------------------------------------
-	int c = PtS_RailwayLjToBP3D.GetSize();
-
-	int railwayLjToBP3D_bIndex = 0;
-	int railwayLjToBP3D_eIndex = b - 1;
-
-	rc1.x1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->x1;
-	rc1.y1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->y1;
-	rc1.z1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->z1;
-
-	rc1.x2 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->x2;
-	rc1.y2 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->y2;
-	rc1.z2 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->z2;
-
-	rcVector1.push_back(rc1);
-
-
-	rc2.x1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_eIndex]->x1;
-	rc2.y1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_eIndex]->y1;
-	rc2.z1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_eIndex]->z1;
-
-	rc2.x2 = PtS_RailwayLjToBP3D[railwayLjToBP3D_eIndex]->x2;
-	rc2.y2 = PtS_RailwayLjToBP3D[railwayLjToBP3D_eIndex]->y2;
-	rc2.z2 = PtS_RailwayLjToBP3D[railwayLjToBP3D_eIndex]->z2;
-
-	rcVector2.push_back(rc2);
-
-	//------------------------------------------------------------
-
-		
-
-	// »¤ÆÂ¼ÆËã¶ÏÃæ¸÷µã
-
-	int d = PtS_HuPo.GetSize();
-
-	int hp_bIndex = 0;
-	int hp_eInde = d - 1;
-
-	int i,j;
-	// Ãæ1-------------------------------------------------------
-	for(i=1;i<3;++i)
-	{
-		if(i<2)
-		{
-			for(j=0;j<2;++j)
-			{
-				rc1.x1 = PtS_HuPo[hp_bIndex]->HuPo_L[i].Hp[j].x;
-				rc1.y1 = PtS_HuPo[hp_bIndex]->HuPo_L[i].Hp[j].y;
-				rc1.z1 = PtS_HuPo[hp_bIndex]->HuPo_L[i].Hp[j].z;
-
-				rc1.x2 = PtS_HuPo[hp_bIndex]->HuPo_R[i].Hp[j].x;
-				rc1.y2 = PtS_HuPo[hp_bIndex]->HuPo_R[i].Hp[j].y;
-				rc1.z2 = PtS_HuPo[hp_bIndex]->HuPo_R[i].Hp[j].z;
-
-				rcVector1.push_back(rc1);
-			}	
-		}
-		else if(i == 2)
-		{
-			for(j=0;j<3;++j)
-			{
-				rc1.x1 = PtS_HuPo[hp_bIndex]->HuPo_L[i].Hp[j].x;
-				rc1.y1 = PtS_HuPo[hp_bIndex]->HuPo_L[i].Hp[j].y;
-				rc1.z1 = PtS_HuPo[hp_bIndex]->HuPo_L[i].Hp[j].z;
-
-				rc1.x2 = PtS_HuPo[hp_bIndex]->HuPo_R[i].Hp[j].x;
-				rc1.y2 = PtS_HuPo[hp_bIndex]->HuPo_R[i].Hp[j].y;
-				rc1.z2 = PtS_HuPo[hp_bIndex]->HuPo_R[i].Hp[j].z;
-
-				rcVector1.push_back(rc1);
-			}	
-		}
-
-	}
-	// Ãæ2--------------------------------------------------
-	for(i=1;i<3;++i)
-	{
-		if(i<2)
-		{
-			for(j=0;j<2;++j)
-			{
-				rc2.x1 = PtS_HuPo[hp_eInde]->HuPo_L[i].Hp[j].x;
-				rc2.y1 = PtS_HuPo[hp_eInde]->HuPo_L[i].Hp[j].y;
-				rc2.z1 = PtS_HuPo[hp_eInde]->HuPo_L[i].Hp[j].z;
-
-				rc2.x2 = PtS_HuPo[hp_eInde]->HuPo_R[i].Hp[j].x;
-				rc2.y2 = PtS_HuPo[hp_eInde]->HuPo_R[i].Hp[j].y;
-				rc2.z2 = PtS_HuPo[hp_eInde]->HuPo_R[i].Hp[j].z;
-
-				rcVector2.push_back(rc2);
-			}	
-		}
-		else if(i == 2)
-		{
-			for(j=0;j<3;++j)
-			{
-				rc2.x1 = PtS_HuPo[hp_eInde]->HuPo_L[i].Hp[j].x;
-				rc2.y1 = PtS_HuPo[hp_eInde]->HuPo_L[i].Hp[j].y;
-				rc2.z1 = PtS_HuPo[hp_eInde]->HuPo_L[i].Hp[j].z;
-
-				rc2.x2 = PtS_HuPo[hp_eInde]->HuPo_R[i].Hp[j].x;
-				rc2.y2 = PtS_HuPo[hp_eInde]->HuPo_R[i].Hp[j].y;
-				rc2.z2 = PtS_HuPo[hp_eInde]->HuPo_R[i].Hp[j].z;
-
-				rcVector2.push_back(rc2);
-			}	
-		}	
-	}
+void CDesingScheme::CalculateFillFacePoints(vector<Railway3DCordinate>& rcVector2, vector<Railway3DCordinate>& rcVector1) {
+    Railway3DCordinate rc2;//é¢2
+    Railway3DCordinate rc1;//é¢1
+    //1------------------------------------------------------------
+    int a = PtS_Railway3D.GetSize();
+    int railway3D_bIndex = 0;
+    int railway3D_eIndex = a - 1;
+    rc1.x1 = PtS_Railway3D[railway3D_bIndex]->x1;
+    rc1.y1 = PtS_Railway3D[railway3D_bIndex]->y1;
+    rc1.z1 = PtS_Railway3D[railway3D_bIndex]->z1;
+    rc1.x2 = PtS_Railway3D[railway3D_bIndex]->x2;
+    rc1.y2 = PtS_Railway3D[railway3D_bIndex]->y2;
+    rc1.z2 = PtS_Railway3D[railway3D_bIndex]->z2;
+    rcVector1.push_back(rc1);
+    rc2.x1 = PtS_Railway3D[railway3D_eIndex]->x1;
+    rc2.y1 = PtS_Railway3D[railway3D_eIndex]->y1;
+    rc2.z1 = PtS_Railway3D[railway3D_eIndex]->z1;
+    rc2.x2 = PtS_Railway3D[railway3D_eIndex]->x2;
+    rc2.y2 = PtS_Railway3D[railway3D_eIndex]->y2;
+    rc2.z2 = PtS_Railway3D[railway3D_eIndex]->z2;
+    rcVector2.push_back(rc2);
+    //2------------------------------------------------------------
+    int b = PtS_RailwayLj3D.GetSize();
+    int railwayLj3D_bIndex = 0;
+    int railwayLj3D_eIndex = b - 1;
+    rc1.x1 = PtS_RailwayLj3D[railwayLj3D_bIndex]->x1;
+    rc1.y1 = PtS_RailwayLj3D[railwayLj3D_bIndex]->y1;
+    rc1.z1 = PtS_RailwayLj3D[railwayLj3D_bIndex]->z1;
+    rc1.x2 = PtS_RailwayLj3D[railwayLj3D_bIndex]->x2;
+    rc1.y2 = PtS_RailwayLj3D[railwayLj3D_bIndex]->y2;
+    rc1.z2 = PtS_RailwayLj3D[railwayLj3D_bIndex]->z2;
+    rcVector1.push_back(rc1);
+    rc2.x1 = PtS_RailwayLj3D[railwayLj3D_eIndex]->x1;
+    rc2.y1 = PtS_RailwayLj3D[railwayLj3D_eIndex]->y1;
+    rc2.z1 = PtS_RailwayLj3D[railwayLj3D_eIndex]->z1;
+    rc2.x2 = PtS_RailwayLj3D[railwayLj3D_eIndex]->x2;
+    rc2.y2 = PtS_RailwayLj3D[railwayLj3D_eIndex]->y2;
+    rc2.z2 = PtS_RailwayLj3D[railwayLj3D_eIndex]->z2;
+    rcVector2.push_back(rc2);
+    //3------------------------------------------------------------
+    int c = PtS_RailwayLjToBP3D.GetSize();
+    int railwayLjToBP3D_bIndex = 0;
+    int railwayLjToBP3D_eIndex = b - 1;
+    rc1.x1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->x1;
+    rc1.y1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->y1;
+    rc1.z1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->z1;
+    rc1.x2 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->x2;
+    rc1.y2 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->y2;
+    rc1.z2 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->z2;
+    rcVector1.push_back(rc1);
+    rc2.x1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_eIndex]->x1;
+    rc2.y1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_eIndex]->y1;
+    rc2.z1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_eIndex]->z1;
+    rc2.x2 = PtS_RailwayLjToBP3D[railwayLjToBP3D_eIndex]->x2;
+    rc2.y2 = PtS_RailwayLjToBP3D[railwayLjToBP3D_eIndex]->y2;
+    rc2.z2 = PtS_RailwayLjToBP3D[railwayLjToBP3D_eIndex]->z2;
+    rcVector2.push_back(rc2);
+    //------------------------------------------------------------
+    // æŠ¤å¡è®¡ç®—æ–­é¢å„ç‚¹
+    int d = PtS_HuPo.GetSize();
+    int hp_bIndex = 0;
+    int hp_eInde = d - 1;
+    int i, j;
+    // é¢1-------------------------------------------------------
+    for (i = 1; i < 3; ++i) {
+        if (i < 2) {
+            for (j = 0; j < 2; ++j) {
+                rc1.x1 = PtS_HuPo[hp_bIndex]->HuPo_L[i].Hp[j].x;
+                rc1.y1 = PtS_HuPo[hp_bIndex]->HuPo_L[i].Hp[j].y;
+                rc1.z1 = PtS_HuPo[hp_bIndex]->HuPo_L[i].Hp[j].z;
+                rc1.x2 = PtS_HuPo[hp_bIndex]->HuPo_R[i].Hp[j].x;
+                rc1.y2 = PtS_HuPo[hp_bIndex]->HuPo_R[i].Hp[j].y;
+                rc1.z2 = PtS_HuPo[hp_bIndex]->HuPo_R[i].Hp[j].z;
+                rcVector1.push_back(rc1);
+            }
+        } else if (i == 2) {
+            for (j = 0; j < 3; ++j) {
+                rc1.x1 = PtS_HuPo[hp_bIndex]->HuPo_L[i].Hp[j].x;
+                rc1.y1 = PtS_HuPo[hp_bIndex]->HuPo_L[i].Hp[j].y;
+                rc1.z1 = PtS_HuPo[hp_bIndex]->HuPo_L[i].Hp[j].z;
+                rc1.x2 = PtS_HuPo[hp_bIndex]->HuPo_R[i].Hp[j].x;
+                rc1.y2 = PtS_HuPo[hp_bIndex]->HuPo_R[i].Hp[j].y;
+                rc1.z2 = PtS_HuPo[hp_bIndex]->HuPo_R[i].Hp[j].z;
+                rcVector1.push_back(rc1);
+            }
+        }
+    }
+    // é¢2--------------------------------------------------
+    for (i = 1; i < 3; ++i) {
+        if (i < 2) {
+            for (j = 0; j < 2; ++j) {
+                rc2.x1 = PtS_HuPo[hp_eInde]->HuPo_L[i].Hp[j].x;
+                rc2.y1 = PtS_HuPo[hp_eInde]->HuPo_L[i].Hp[j].y;
+                rc2.z1 = PtS_HuPo[hp_eInde]->HuPo_L[i].Hp[j].z;
+                rc2.x2 = PtS_HuPo[hp_eInde]->HuPo_R[i].Hp[j].x;
+                rc2.y2 = PtS_HuPo[hp_eInde]->HuPo_R[i].Hp[j].y;
+                rc2.z2 = PtS_HuPo[hp_eInde]->HuPo_R[i].Hp[j].z;
+                rcVector2.push_back(rc2);
+            }
+        } else if (i == 2) {
+            for (j = 0; j < 3; ++j) {
+                rc2.x1 = PtS_HuPo[hp_eInde]->HuPo_L[i].Hp[j].x;
+                rc2.y1 = PtS_HuPo[hp_eInde]->HuPo_L[i].Hp[j].y;
+                rc2.z1 = PtS_HuPo[hp_eInde]->HuPo_L[i].Hp[j].z;
+                rc2.x2 = PtS_HuPo[hp_eInde]->HuPo_R[i].Hp[j].x;
+                rc2.y2 = PtS_HuPo[hp_eInde]->HuPo_R[i].Hp[j].y;
+                rc2.z2 = PtS_HuPo[hp_eInde]->HuPo_R[i].Hp[j].z;
+                rcVector2.push_back(rc2);
+            }
+        }
+    }
 }
 

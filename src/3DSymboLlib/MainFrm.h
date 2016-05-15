@@ -1,5 +1,5 @@
-
-// MainFrm.h : CMainFrame ÀàµÄ½Ó¿Ú
+ï»¿
+// MainFrm.h : CMainFrame ç±»çš„æ¥å£
 //
 
 #pragma once
@@ -8,57 +8,50 @@
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
 
-class CMainFrame : public CFrameWndEx
-{
-	
-protected: // ½ö´ÓĞòÁĞ»¯´´½¨
-	CMainFrame();
-	DECLARE_DYNCREATE(CMainFrame)
+class CMainFrame : public CFrameWndEx {
 
-// ÌØĞÔ
-public:
+  protected: // ä»…ä»åºåˆ—åŒ–åˆ›å»º
+    CMainFrame();
+    DECLARE_DYNCREATE(CMainFrame)
 
-// ²Ù×÷
-public:
+    // é‡å†™
+  public:
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+    virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL);
 
-// ÖØĞ´
-public:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL);
-
-// ÊµÏÖ
-public:
-	virtual ~CMainFrame();
+    // å®ç°
+  public:
+    virtual ~CMainFrame();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+    virtual void AssertValid() const;
+    virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:  // ¿Ø¼şÌõÇ¶Èë³ÉÔ±
-	CMFCMenuBar       m_wndMenuBar;
-	CMFCToolBar       m_wndToolBar;
-	CMFCStatusBar     m_wndStatusBar;
-	CMFCToolBarImages m_UserImages;
-	CFileView         m_wndFileView;
-	CClassView        m_wndClassView;
-	COutputWnd        m_wndOutput;
-	CPropertiesWnd    m_wndProperties;
+  protected:  // æ§ä»¶æ¡åµŒå…¥æˆå‘˜
+    CMFCMenuBar       m_wndMenuBar;
+    CMFCToolBar       m_wndToolBar;
+    CMFCStatusBar     m_wndStatusBar;
+    CMFCToolBarImages m_UserImages;
+    CFileView         m_wndFileView;
+    CClassView        m_wndClassView;
+    COutputWnd        m_wndOutput;
+    CPropertiesWnd    m_wndProperties;
 
-// Éú³ÉµÄÏûÏ¢Ó³Éäº¯Êı
-protected:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnViewCustomize();
-	afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);
-	afx_msg void OnApplicationLook(UINT id);
-	afx_msg void OnUpdateApplicationLook(CCmdUI* pCmdUI);
-	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
-	DECLARE_MESSAGE_MAP()
+    // ç”Ÿæˆçš„æ¶ˆæ¯æ˜ å°„å‡½æ•°
+  protected:
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnViewCustomize();
+    afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);
+    afx_msg void OnApplicationLook(UINT id);
+    afx_msg void OnUpdateApplicationLook(CCmdUI* pCmdUI);
+    afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
+    DECLARE_MESSAGE_MAP()
 
-	BOOL CreateDockingWindows();
-	void SetDockingWindowIcons(BOOL bHiColorIcons);
+    BOOL CreateDockingWindows();
+    void SetDockingWindowIcons(BOOL bHiColorIcons);
 
-public:
-	void Set_BarText(int index, CString strText);
+  public:
+    void Set_BarText(int index, CString strText);
 };
 
 

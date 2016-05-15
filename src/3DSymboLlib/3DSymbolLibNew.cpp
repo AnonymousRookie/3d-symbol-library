@@ -1,5 +1,5 @@
-
-// 3DSymbolLibNew.cpp : ¶¨ÒåÓ¦ÓÃ³ÌĞòµÄÀàĞĞÎª¡£
+ï»¿
+// 3DSymbolLibNew.cpp : å®šä¹‰åº”ç”¨ç¨‹åºçš„ç±»è¡Œä¸ºã€‚
 //
 
 #include "stdafx.h"
@@ -19,355 +19,267 @@
 // CMy3DSymbolLibNewApp
 
 BEGIN_MESSAGE_MAP(CMy3DSymbolLibNewApp, CWinAppEx)
-	ON_COMMAND(ID_APP_ABOUT, &CMy3DSymbolLibNewApp::OnAppAbout)
-	// »ùÓÚÎÄ¼şµÄ±ê×¼ÎÄµµÃüÁî
-	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
-	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
-	// ±ê×¼´òÓ¡ÉèÖÃÃüÁî
-	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
+    ON_COMMAND(ID_APP_ABOUT, &CMy3DSymbolLibNewApp::OnAppAbout)
+    // åŸºäºæ–‡ä»¶çš„æ ‡å‡†æ–‡æ¡£å‘½ä»¤
+    ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
+    ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
+    // æ ‡å‡†æ‰“å°è®¾ç½®å‘½ä»¤
+    ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
 
-// CMy3DSymbolLibNewApp ¹¹Ôì
+// CMy3DSymbolLibNewApp æ„é€ 
 
-CMy3DSymbolLibNewApp::CMy3DSymbolLibNewApp()
-{
-	m_bHiColorIcons = TRUE;
-
-	// Ö§³ÖÖØĞÂÆô¶¯¹ÜÀíÆ÷
-	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_ALL_ASPECTS;
+CMy3DSymbolLibNewApp::CMy3DSymbolLibNewApp() {
+    m_bHiColorIcons = TRUE;
+    // æ”¯æŒé‡æ–°å¯åŠ¨ç®¡ç†å™¨
+    m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_ALL_ASPECTS;
 #ifdef _MANAGED
-	// Èç¹ûÓ¦ÓÃ³ÌĞòÊÇÀûÓÃ¹«¹²ÓïÑÔÔËĞĞÊ±Ö§³Ö(/clr)¹¹½¨µÄ£¬Ôò:
-	//     1) ±ØĞëÓĞ´Ë¸½¼ÓÉèÖÃ£¬¡°ÖØĞÂÆô¶¯¹ÜÀíÆ÷¡±Ö§³Ö²ÅÄÜÕı³£¹¤×÷¡£
-	//     2) ÔÚÄúµÄÏîÄ¿ÖĞ£¬Äú±ØĞë°´ÕÕÉú³ÉË³ĞòÏò System.Windows.Forms Ìí¼ÓÒıÓÃ¡£
-	System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
+    // å¦‚æœåº”ç”¨ç¨‹åºæ˜¯åˆ©ç”¨å…¬å…±è¯­è¨€è¿è¡Œæ—¶æ”¯æŒ(/clr)æ„å»ºçš„ï¼Œåˆ™:
+    //     1) å¿…é¡»æœ‰æ­¤é™„åŠ è®¾ç½®ï¼Œâ€œé‡æ–°å¯åŠ¨ç®¡ç†å™¨â€æ”¯æŒæ‰èƒ½æ­£å¸¸å·¥ä½œã€‚
+    //     2) åœ¨æ‚¨çš„é¡¹ç›®ä¸­ï¼Œæ‚¨å¿…é¡»æŒ‰ç…§ç”Ÿæˆé¡ºåºå‘ System.Windows.Forms æ·»åŠ å¼•ç”¨ã€‚
+    System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
 #endif
-
-	// TODO: ½«ÒÔÏÂÓ¦ÓÃ³ÌĞò ID ×Ö·û´®Ìæ»»ÎªÎ¨Ò»µÄ ID ×Ö·û´®£»½¨ÒéµÄ×Ö·û´®¸ñÊ½
-	//Îª CompanyName.ProductName.SubProduct.VersionInformation
-	SetAppID(_T("3DSymbolLibNew.AppID.NoVersion"));
-
-	// TODO: ÔÚ´Ë´¦Ìí¼Ó¹¹Ôì´úÂë£¬
-	// ½«ËùÓĞÖØÒªµÄ³õÊ¼»¯·ÅÖÃÔÚ InitInstance ÖĞ
+    // TODO: å°†ä»¥ä¸‹åº”ç”¨ç¨‹åº ID å­—ç¬¦ä¸²æ›¿æ¢ä¸ºå”¯ä¸€çš„ ID å­—ç¬¦ä¸²ï¼›å»ºè®®çš„å­—ç¬¦ä¸²æ ¼å¼
+    //ä¸º CompanyName.ProductName.SubProduct.VersionInformation
+    SetAppID(_T("3DSymbolLibNew.AppID.NoVersion"));
+    // TODO: åœ¨æ­¤å¤„æ·»åŠ æ„é€ ä»£ç ï¼Œ
+    // å°†æ‰€æœ‰é‡è¦çš„åˆå§‹åŒ–æ”¾ç½®åœ¨ InitInstance ä¸­
 }
 
-// Î¨Ò»µÄÒ»¸ö CMy3DSymbolLibNewApp ¶ÔÏó
+// å”¯ä¸€çš„ä¸€ä¸ª CMy3DSymbolLibNewApp å¯¹è±¡
 
 CMy3DSymbolLibNewApp theApp;
 
 
-// CMy3DSymbolLibNewApp ³õÊ¼»¯
+// CMy3DSymbolLibNewApp åˆå§‹åŒ–
 
-BOOL CMy3DSymbolLibNewApp::InitInstance()
-{
-	// Èç¹ûÒ»¸öÔËĞĞÔÚ Windows XP ÉÏµÄÓ¦ÓÃ³ÌĞòÇåµ¥Ö¸¶¨Òª
-	// Ê¹ÓÃ ComCtl32.dll °æ±¾ 6 »ò¸ü¸ß°æ±¾À´ÆôÓÃ¿ÉÊÓ»¯·½Ê½£¬
-	//ÔòĞèÒª InitCommonControlsEx()¡£·ñÔò£¬½«ÎŞ·¨´´½¨´°¿Ú¡£
-	INITCOMMONCONTROLSEX InitCtrls;
-	InitCtrls.dwSize = sizeof(InitCtrls);
-	// ½«ËüÉèÖÃÎª°üÀ¨ËùÓĞÒªÔÚÓ¦ÓÃ³ÌĞòÖĞÊ¹ÓÃµÄ
-	// ¹«¹²¿Ø¼şÀà¡£
-	InitCtrls.dwICC = ICC_WIN95_CLASSES;
-	InitCommonControlsEx(&InitCtrls);
+BOOL CMy3DSymbolLibNewApp::InitInstance() {
+    // å¦‚æœä¸€ä¸ªè¿è¡Œåœ¨ Windows XP ä¸Šçš„åº”ç”¨ç¨‹åºæ¸…å•æŒ‡å®šè¦
+    // ä½¿ç”¨ ComCtl32.dll ç‰ˆæœ¬ 6 æˆ–æ›´é«˜ç‰ˆæœ¬æ¥å¯ç”¨å¯è§†åŒ–æ–¹å¼ï¼Œ
+    //åˆ™éœ€è¦ InitCommonControlsEx()ã€‚å¦åˆ™ï¼Œå°†æ— æ³•åˆ›å»ºçª—å£ã€‚
+    INITCOMMONCONTROLSEX InitCtrls;
+    InitCtrls.dwSize = sizeof(InitCtrls);
+    // å°†å®ƒè®¾ç½®ä¸ºåŒ…æ‹¬æ‰€æœ‰è¦åœ¨åº”ç”¨ç¨‹åºä¸­ä½¿ç”¨çš„
+    // å…¬å…±æ§ä»¶ç±»ã€‚
+    InitCtrls.dwICC = ICC_WIN95_CLASSES;
+    InitCommonControlsEx(&InitCtrls);
+    CWinAppEx::InitInstance();
+    // åˆå§‹åŒ– OLE åº“
+    if (!AfxOleInit()) {
+        AfxMessageBox(IDP_OLE_INIT_FAILED);
+        return FALSE;
+    }
+    AfxEnableControlContainer();
+    EnableTaskbarInteraction(FALSE);
+    // ä½¿ç”¨ RichEdit æ§ä»¶éœ€è¦  AfxInitRichEdit2()
+    // AfxInitRichEdit2();
+    // æ ‡å‡†åˆå§‹åŒ–
+    // å¦‚æœæœªä½¿ç”¨è¿™äº›åŠŸèƒ½å¹¶å¸Œæœ›å‡å°
+    // æœ€ç»ˆå¯æ‰§è¡Œæ–‡ä»¶çš„å¤§å°ï¼Œåˆ™åº”ç§»é™¤ä¸‹åˆ—
+    // ä¸éœ€è¦çš„ç‰¹å®šåˆå§‹åŒ–ä¾‹ç¨‹
+    // æ›´æ”¹ç”¨äºå­˜å‚¨è®¾ç½®çš„æ³¨å†Œè¡¨é¡¹
+    // TODO: åº”é€‚å½“ä¿®æ”¹è¯¥å­—ç¬¦ä¸²ï¼Œ
+    // ä¾‹å¦‚ä¿®æ”¹ä¸ºå…¬å¸æˆ–ç»„ç»‡å
+    SetRegistryKey(_T("ä¸‰ç»´ç¬¦å·åº“"));
+    LoadStdProfileSettings(4);  // åŠ è½½æ ‡å‡† INI æ–‡ä»¶é€‰é¡¹(åŒ…æ‹¬ MRU)
+    // æœ€è¿‘æ–‡ä»¶åˆ—è¡¨
+    if (m_pRecentFileList != NULL) {
+        int nMRUSize = m_pRecentFileList->GetSize();
+        CString strMRUFile = "";
+        g_strRecentOpenedFileArray.RemoveAll();
+        // å°†MRUåˆ—è¡¨é‡Œçš„å·¥ç¨‹æ–‡ä»¶æå–å‡ºæ¥
+        for (int i = 0; i < nMRUSize; ++i) {
+            strMRUFile = m_pRecentFileList->m_arrNames[i];
+            if (strMRUFile != "") {
+                g_strRecentOpenedFileArray.Add(strMRUFile);
+            }
+        }
+    }
+    //InitContextMenuManager();
+    InitKeyboardManager();
+    InitTooltipManager();
+    CMFCToolTipInfo ttParams;
+    ttParams.m_bVislManagerTheme = TRUE;
+    theApp.GetTooltipManager()->SetTooltipParams(AFX_TOOLTIP_TYPE_ALL,
+            RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
+    // æ³¨å†Œåº”ç”¨ç¨‹åºçš„æ–‡æ¡£æ¨¡æ¿ã€‚æ–‡æ¡£æ¨¡æ¿
+    // å°†ç”¨ä½œæ–‡æ¡£ã€æ¡†æ¶çª—å£å’Œè§†å›¾ä¹‹é—´çš„è¿æ¥
+    CSingleDocTemplate* pDocTemplate;
+    pDocTemplate = new CSingleDocTemplate(
+        IDR_MAINFRAME,
+        RUNTIME_CLASS(CMy3DSymbolLibNewDoc),
+        RUNTIME_CLASS(CMainFrame),       // ä¸» SDI æ¡†æ¶çª—å£
+        RUNTIME_CLASS(CMy3DSymbolLibNewView));
+    if (!pDocTemplate)
+        return FALSE;
+    AddDocTemplate(pDocTemplate);
+    // åˆ†ææ ‡å‡† shell å‘½ä»¤ã€DDEã€æ‰“å¼€æ–‡ä»¶æ“ä½œçš„å‘½ä»¤è¡Œ
+    CCommandLineInfo cmdInfo;
+    ParseCommandLine(cmdInfo);
+    // è°ƒåº¦åœ¨å‘½ä»¤è¡Œä¸­æŒ‡å®šçš„å‘½ä»¤ã€‚å¦‚æœ
+    // ç”¨ /RegServerã€/Registerã€/Unregserver æˆ– /Unregister å¯åŠ¨åº”ç”¨ç¨‹åºï¼Œåˆ™è¿”å› FALSEã€‚
+    if (!ProcessShellCommand(cmdInfo))
+        return FALSE;
+    // å”¯ä¸€çš„ä¸€ä¸ªçª—å£å·²åˆå§‹åŒ–ï¼Œå› æ­¤æ˜¾ç¤ºå®ƒå¹¶å¯¹å…¶è¿›è¡Œæ›´æ–°
+    //m_pMainWnd->ShowWindow(SW_SHOW);
+    //m_pMainWnd->UpdateWindow();
+    m_pMainWnd->ShowWindow(SW_SHOWMAXIMIZED);
+    m_pMainWnd->UpdateWindow();
+    // ä»…å½“å…·æœ‰åç¼€æ—¶æ‰è°ƒç”¨ DragAcceptFiles
+    //  åœ¨ SDI åº”ç”¨ç¨‹åºä¸­ï¼Œè¿™åº”åœ¨ ProcessShellCommand ä¹‹åå‘ç”Ÿ
+    //åˆå§‹åŒ–GID+
+    GdiplusStartupInput gdiplusStartupInput;
+    GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
+    // [ADD]
+    //==============================================================
+    // è¯»å–ç³»ç»Ÿè®¾ç½®é…ç½®æ–‡ä»¶
+    //==============================================================
+    char systemConfigureDir[256];
+    GetCurrentDirectoryA(256, systemConfigureDir);
+    g_systemConfigureFile = strcat(systemConfigureDir, "\\system.ini");
+    // CString msg;
+    // msg.Format("%s",g_systemConfigureFile.c_str());
+    // AfxMessageBox(msg);
+    CFileFind systemConfigureFinder;
+    BOOL isSystemConfigureFind = systemConfigureFinder.FindFile(g_systemConfigureFile.c_str());
+    if (!isSystemConfigureFind) {
+        MessageBox(NULL, "Can not find system configure file!", "warning", MB_OK);
+    }
+    CString tmpPath;
+    ::GetPrivateProfileStringA("SceneDataPath", "path", "error", tmpPath.GetBuffer(MAX_SIZE), MAX_SIZE, g_systemConfigureFile.c_str());
+    g_sceneDataPath = tmpPath.GetBuffer(0);
+    tmpPath.ReleaseBuffer();
+    //==============================================================
+    //==============================================================
+    // è¯»å–ç¬¦å·é…ç½®æ–‡ä»¶
+    //==============================================================
+    /*char symbolsConfigureDir[256];
+    GetCurrentDirectoryA(256,symbolsConfigureDir);
+    g_symbolConfigureFile = strcat(symbolsConfigureDir,"\\symbols.xml");
 
-	CWinAppEx::InitInstance();
-
-
-	// ³õÊ¼»¯ OLE ¿â
-	if (!AfxOleInit())
-	{
-		AfxMessageBox(IDP_OLE_INIT_FAILED);
-		return FALSE;
-	}
-
-	AfxEnableControlContainer();
-
-	EnableTaskbarInteraction(FALSE);
-
-	// Ê¹ÓÃ RichEdit ¿Ø¼şĞèÒª  AfxInitRichEdit2()	
-	// AfxInitRichEdit2();
-
-	// ±ê×¼³õÊ¼»¯
-	// Èç¹ûÎ´Ê¹ÓÃÕâĞ©¹¦ÄÜ²¢Ï£Íû¼õĞ¡
-	// ×îÖÕ¿ÉÖ´ĞĞÎÄ¼şµÄ´óĞ¡£¬ÔòÓ¦ÒÆ³ıÏÂÁĞ
-	// ²»ĞèÒªµÄÌØ¶¨³õÊ¼»¯Àı³Ì
-	// ¸ü¸ÄÓÃÓÚ´æ´¢ÉèÖÃµÄ×¢²á±íÏî
-	// TODO: Ó¦ÊÊµ±ĞŞ¸Ä¸Ã×Ö·û´®£¬
-	// ÀıÈçĞŞ¸ÄÎª¹«Ë¾»ò×éÖ¯Ãû
-	SetRegistryKey(_T("ÈıÎ¬·ûºÅ¿â"));
-	LoadStdProfileSettings(4);  // ¼ÓÔØ±ê×¼ INI ÎÄ¼şÑ¡Ïî(°üÀ¨ MRU)
-
-	
-
-	// ×î½üÎÄ¼şÁĞ±í
-	if(m_pRecentFileList != NULL)
-	{
-		int nMRUSize = m_pRecentFileList->GetSize();
-		CString strMRUFile = "";
-		
-		g_strRecentOpenedFileArray.RemoveAll();
-		// ½«MRUÁĞ±íÀïµÄ¹¤³ÌÎÄ¼şÌáÈ¡³öÀ´
-		for(int i=0; i<nMRUSize; ++i)
-		{
-			strMRUFile = m_pRecentFileList->m_arrNames[i];
-			 
-			if(strMRUFile != "")
-			{
-				g_strRecentOpenedFileArray.Add(strMRUFile);
-			}
-		}
-	}
-
-
-
-	//InitContextMenuManager();
-
-	InitKeyboardManager();
-
-	InitTooltipManager();
-	CMFCToolTipInfo ttParams;
-	ttParams.m_bVislManagerTheme = TRUE;
-	theApp.GetTooltipManager()->SetTooltipParams(AFX_TOOLTIP_TYPE_ALL,
-		RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
-
-	// ×¢²áÓ¦ÓÃ³ÌĞòµÄÎÄµµÄ£°å¡£ÎÄµµÄ£°å
-	// ½«ÓÃ×÷ÎÄµµ¡¢¿ò¼Ü´°¿ÚºÍÊÓÍ¼Ö®¼äµÄÁ¬½Ó
-	CSingleDocTemplate* pDocTemplate;
-	pDocTemplate = new CSingleDocTemplate(
-		IDR_MAINFRAME,
-		RUNTIME_CLASS(CMy3DSymbolLibNewDoc),
-		RUNTIME_CLASS(CMainFrame),       // Ö÷ SDI ¿ò¼Ü´°¿Ú
-		RUNTIME_CLASS(CMy3DSymbolLibNewView));
-	if (!pDocTemplate)
-		return FALSE;
-	AddDocTemplate(pDocTemplate);
-
-
-	// ·ÖÎö±ê×¼ shell ÃüÁî¡¢DDE¡¢´ò¿ªÎÄ¼ş²Ù×÷µÄÃüÁîĞĞ
-	CCommandLineInfo cmdInfo;
-	ParseCommandLine(cmdInfo);
-
-
-
-	// µ÷¶ÈÔÚÃüÁîĞĞÖĞÖ¸¶¨µÄÃüÁî¡£Èç¹û
-	// ÓÃ /RegServer¡¢/Register¡¢/Unregserver »ò /Unregister Æô¶¯Ó¦ÓÃ³ÌĞò£¬Ôò·µ»Ø FALSE¡£
-	if (!ProcessShellCommand(cmdInfo))
-		return FALSE;
-
-	// Î¨Ò»µÄÒ»¸ö´°¿ÚÒÑ³õÊ¼»¯£¬Òò´ËÏÔÊ¾Ëü²¢¶ÔÆä½øĞĞ¸üĞÂ
-	//m_pMainWnd->ShowWindow(SW_SHOW);
-	//m_pMainWnd->UpdateWindow();
-	m_pMainWnd->ShowWindow(SW_SHOWMAXIMIZED);
-	m_pMainWnd->UpdateWindow();
-	// ½öµ±¾ßÓĞºó×ºÊ±²Åµ÷ÓÃ DragAcceptFiles
-	//  ÔÚ SDI Ó¦ÓÃ³ÌĞòÖĞ£¬ÕâÓ¦ÔÚ ProcessShellCommand Ö®ºó·¢Éú
-
-	//³õÊ¼»¯GID+
-	GdiplusStartupInput gdiplusStartupInput;   
-	GdiplusStartup( &m_gdiplusToken,&gdiplusStartupInput,NULL );
-
-
-
-	// [ADD]
-
-	//==============================================================
-	// ¶ÁÈ¡ÏµÍ³ÉèÖÃÅäÖÃÎÄ¼ş
-	//==============================================================
-	char systemConfigureDir[256];
-	GetCurrentDirectoryA(256,systemConfigureDir);
-	g_systemConfigureFile = strcat(systemConfigureDir,"\\system.ini");
-	
-
-	// CString msg;
-	// msg.Format("%s",g_systemConfigureFile.c_str());
-	// AfxMessageBox(msg);
-
-
-	CFileFind systemConfigureFinder;
-	BOOL isSystemConfigureFind = systemConfigureFinder.FindFile(g_systemConfigureFile.c_str());
-	
-
-	if(!isSystemConfigureFind)
-	{
-		MessageBox(NULL,"Can not find system configure file!","warning",MB_OK);
-	}
-
-	CString tmpPath;
-	::GetPrivateProfileStringA("SceneDataPath","path","error",tmpPath.GetBuffer(MAX_SIZE),MAX_SIZE,g_systemConfigureFile.c_str());
-
-	g_sceneDataPath = tmpPath.GetBuffer(0);
-
-	tmpPath.ReleaseBuffer();
-
-	//==============================================================
-	
-	//==============================================================
-	// ¶ÁÈ¡·ûºÅÅäÖÃÎÄ¼ş
-	//==============================================================
-	
-	/*char symbolsConfigureDir[256];
-	GetCurrentDirectoryA(256,symbolsConfigureDir);
-	g_symbolConfigureFile = strcat(symbolsConfigureDir,"\\symbols.xml");
-
-	CFileFind symbolConfigureFinder;
-	BOOL isSymbolConfigureFind = symbolConfigureFinder.FindFile(g_symbolConfigureFile.c_str());
-	if(!isSymbolConfigureFind)
-	{
-		MessageBox(NULL,"Can not symbols.xml!","warning",MB_OK);
-	}*/
-
-
-	char symbolsConfigureDir[256];
-	//GetCurrentDirectoryA(256,symbolsConfigureDir);
-
-	strcpy(symbolsConfigureDir, g_sceneDataPath.c_str());
-
-	//g_symbolConfigureFile = strcat(symbolsConfigureDir,"\\SymbolLibrary\\symbols.xml");
-	
-	g_point_symbolConfigureFile = strcat(symbolsConfigureDir,"\\SymbolLibrary\\point.plib");
-	g_line_symbolConfigureFile = strcat(symbolsConfigureDir,"\\SymbolLibrary\\line.llib");
-	g_area_symbolConfigureFile = strcat(symbolsConfigureDir,"\\SymbolLibrary\\area.alib");
-
-	CFileFind symbolConfigureFinder;
-	BOOL isSymbolConfigureFind = symbolConfigureFinder.FindFile(g_point_symbolConfigureFile.c_str());
-	if(!isSymbolConfigureFind)
-	{
-		MessageBox(NULL,"Can not point.plib!","warning",MB_OK);
-	}
-	//==============================================================
-	// ½«XMLÎÄ¼şÖĞµÄĞÅÏ¢¶ÁÈëÈ«¾ÖlistÖĞ
-	//==============================================================
-	CoInitialize(NULL); // ³õÊ¼»¯COM¡£
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	CComPtr<IXMLDOMDocument> spDoc; //DOM
-	spDoc.CoCreateInstance(CLSID_DOMDocument);
-	VARIANT_BOOL vb;
-	
-	spDoc->load(CComVariant(g_point_symbolConfigureFile.c_str()), &vb); //¼ÓÔØXMLÎÄ¼ş
-	CComPtr<IXMLDOMElement> spRootEle;
-	spDoc->get_documentElement(&spRootEle); //¸ù½Úµã
-
-	CComPtr<IXMLDOMNodeList> spNodeList[5];
-
-	string tmp[5];
-	for(int i=0;i<g_modelKindNumber;++i)
-	{
-		tmp[i] = g_modelTree[i]._noteDirectory;
-	}
-
-	for(int i=0;i<g_modelKindNumber;++i)
-	{
-		spRootEle->selectNodes(_bstr_t(tmp[i].c_str()),&spNodeList[i]);
-
-		long nLen;//×Ó½ÚµãÊı
-		spNodeList[i]->get_length(&nLen); //×Ó½ÚµãÊı
-		for (long j = 0; j != nLen; ++j) //±éÀú×Ó½Úµã
-		{
-			CComPtr<IXMLDOMNode> spNode;
-			spNodeList[i]->get_item(j, &spNode);
-			BSTR text;
-			spNode->get_text(&text);
-
-			list<string>::iterator iter;
-
-			string tmpStr = (_bstr_t)(text);
-
-			iter = find(g_modelList[i].begin(),g_modelList[i].end(),tmpStr);
-			if(iter == g_modelList[i].end())
-			{
-				g_modelList[i].push_back(tmpStr);
-			}
-		}
-	}
-	
-	CoUninitialize();
-
-	//==============================================================
-
-
-
-	// ĞÂ½¨¹¤³Ì  OR  ´ò¿ª¹¤³Ì
-	CProjectFileSetting prjFileSetDlg;
-	prjFileSetDlg.DoModal();
-
-	
-	
-	return TRUE;
+    CFileFind symbolConfigureFinder;
+    BOOL isSymbolConfigureFind = symbolConfigureFinder.FindFile(g_symbolConfigureFile.c_str());
+    if(!isSymbolConfigureFind)
+    {
+        MessageBox(NULL,"Can not symbols.xml!","warning",MB_OK);
+    }*/
+    char symbolsConfigureDir[256];
+    //GetCurrentDirectoryA(256,symbolsConfigureDir);
+    strcpy(symbolsConfigureDir, g_sceneDataPath.c_str());
+    //g_symbolConfigureFile = strcat(symbolsConfigureDir,"\\SymbolLibrary\\symbols.xml");
+    g_point_symbolConfigureFile = strcat(symbolsConfigureDir, "\\SymbolLibrary\\point.plib");
+    g_line_symbolConfigureFile = strcat(symbolsConfigureDir, "\\SymbolLibrary\\line.llib");
+    g_area_symbolConfigureFile = strcat(symbolsConfigureDir, "\\SymbolLibrary\\area.alib");
+    CFileFind symbolConfigureFinder;
+    BOOL isSymbolConfigureFind = symbolConfigureFinder.FindFile(g_point_symbolConfigureFile.c_str());
+    if (!isSymbolConfigureFind) {
+        MessageBox(NULL, "Can not point.plib!", "warning", MB_OK);
+    }
+    //==============================================================
+    // å°†XMLæ–‡ä»¶ä¸­çš„ä¿¡æ¯è¯»å…¥å…¨å±€listä¸­
+    //==============================================================
+    CoInitialize(NULL); // åˆå§‹åŒ–COMã€‚
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    CComPtr<IXMLDOMDocument> spDoc; //DOM
+    spDoc.CoCreateInstance(CLSID_DOMDocument);
+    VARIANT_BOOL vb;
+    spDoc->load(CComVariant(g_point_symbolConfigureFile.c_str()), &vb); //åŠ è½½XMLæ–‡ä»¶
+    CComPtr<IXMLDOMElement> spRootEle;
+    spDoc->get_documentElement(&spRootEle); //æ ¹èŠ‚ç‚¹
+    CComPtr<IXMLDOMNodeList> spNodeList[5];
+    string tmp[5];
+    for (int i = 0; i < g_modelKindNumber; ++i) {
+        tmp[i] = g_modelTree[i]._noteDirectory;
+    }
+    for (int i = 0; i < g_modelKindNumber; ++i) {
+        spRootEle->selectNodes(_bstr_t(tmp[i].c_str()), &spNodeList[i]);
+        long nLen;//å­èŠ‚ç‚¹æ•°
+        spNodeList[i]->get_length(&nLen); //å­èŠ‚ç‚¹æ•°
+        for (long j = 0; j != nLen; ++j) { //éå†å­èŠ‚ç‚¹
+            CComPtr<IXMLDOMNode> spNode;
+            spNodeList[i]->get_item(j, &spNode);
+            BSTR text;
+            spNode->get_text(&text);
+            list<string>::iterator iter;
+            string tmpStr = (_bstr_t)(text);
+            iter = find(g_modelList[i].begin(), g_modelList[i].end(), tmpStr);
+            if (iter == g_modelList[i].end()) {
+                g_modelList[i].push_back(tmpStr);
+            }
+        }
+    }
+    CoUninitialize();
+    //==============================================================
+    // æ–°å»ºå·¥ç¨‹  OR  æ‰“å¼€å·¥ç¨‹
+    CProjectFileSetting prjFileSetDlg;
+    prjFileSetDlg.DoModal();
+    return TRUE;
 }
 
-int CMy3DSymbolLibNewApp::ExitInstance()
-{
-	//TODO: ´¦Àí¿ÉÄÜÒÑÌí¼ÓµÄ¸½¼Ó×ÊÔ´
-	GdiplusShutdown( m_gdiplusToken ); 
-
-	AfxOleTerm(FALSE);
-
-	return CWinAppEx::ExitInstance();
+int CMy3DSymbolLibNewApp::ExitInstance() {
+    //TODO: å¤„ç†å¯èƒ½å·²æ·»åŠ çš„é™„åŠ èµ„æº
+    GdiplusShutdown(m_gdiplusToken);
+    AfxOleTerm(FALSE);
+    return CWinAppEx::ExitInstance();
 }
 
-// CMy3DSymbolLibNewApp ÏûÏ¢´¦Àí³ÌĞò
+// CMy3DSymbolLibNewApp æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 
-// ÓÃÓÚÓ¦ÓÃ³ÌĞò¡°¹ØÓÚ¡±²Ëµ¥ÏîµÄ CAboutDlg ¶Ô»°¿ò
+// ç”¨äºåº”ç”¨ç¨‹åºâ€œå…³äºâ€èœå•é¡¹çš„ CAboutDlg å¯¹è¯æ¡†
 
-class CAboutDlg : public CDialogEx
-{
-public:
-	CAboutDlg();
+class CAboutDlg : public CDialogEx {
+  public:
+    CAboutDlg();
 
-// ¶Ô»°¿òÊı¾İ
-	enum { IDD = IDD_ABOUTBOX };
+    // å¯¹è¯æ¡†æ•°æ®
+    enum { IDD = IDD_ABOUTBOX };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+  protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
 
-// ÊµÏÖ
-protected:
-	DECLARE_MESSAGE_MAP()
+    // å®ç°
+  protected:
+    DECLARE_MESSAGE_MAP()
 };
 
-CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
-{
+CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD) {
 }
 
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialogEx::DoDataExchange(pDX);
+void CAboutDlg::DoDataExchange(CDataExchange* pDX) {
+    CDialogEx::DoDataExchange(pDX);
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
-// ÓÃÓÚÔËĞĞ¶Ô»°¿òµÄÓ¦ÓÃ³ÌĞòÃüÁî
-void CMy3DSymbolLibNewApp::OnAppAbout()
-{
-	CAboutDlg aboutDlg;
-	aboutDlg.DoModal();
+// ç”¨äºè¿è¡Œå¯¹è¯æ¡†çš„åº”ç”¨ç¨‹åºå‘½ä»¤
+void CMy3DSymbolLibNewApp::OnAppAbout() {
+    CAboutDlg aboutDlg;
+    aboutDlg.DoModal();
 }
 
-// CMy3DSymbolLibNewApp ×Ô¶¨Òå¼ÓÔØ/±£´æ·½·¨
+// CMy3DSymbolLibNewApp è‡ªå®šä¹‰åŠ è½½/ä¿å­˜æ–¹æ³•
 
-void CMy3DSymbolLibNewApp::PreLoadState()
-{
-	BOOL bNameValid;
-	CString strName;
-	bNameValid = strName.LoadString(IDS_EDIT_MENU);
-	ASSERT(bNameValid);
-	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
-	bNameValid = strName.LoadString(IDS_EXPLORER);
-	ASSERT(bNameValid);
-	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EXPLORER);
+void CMy3DSymbolLibNewApp::PreLoadState() {
+    BOOL bNameValid;
+    CString strName;
+    bNameValid = strName.LoadString(IDS_EDIT_MENU);
+    ASSERT(bNameValid);
+    GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
+    bNameValid = strName.LoadString(IDS_EXPLORER);
+    ASSERT(bNameValid);
+    GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EXPLORER);
 }
 
-void CMy3DSymbolLibNewApp::LoadCustomState()
-{
+void CMy3DSymbolLibNewApp::LoadCustomState() {
 }
 
-void CMy3DSymbolLibNewApp::SaveCustomState()
-{
+void CMy3DSymbolLibNewApp::SaveCustomState() {
 }
 
-// CMy3DSymbolLibNewApp ÏûÏ¢´¦Àí³ÌĞò
+// CMy3DSymbolLibNewApp æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 
 

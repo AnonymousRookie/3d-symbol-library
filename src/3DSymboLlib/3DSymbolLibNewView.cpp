@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #ifndef SHARED_HANDLERS
 #include "3DSymbolLibNew.h"
 #endif
@@ -16,7 +16,7 @@
 #include "AreaClassification.h"
 
 
-extern t3DModel g_3DModel[MODEL_NUM_MAX];	
+extern t3DModel g_3DModel[MODEL_NUM_MAX];
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -27,193 +27,176 @@ extern t3DModel g_3DModel[MODEL_NUM_MAX];
 IMPLEMENT_DYNCREATE(CMy3DSymbolLibNewView, CView)
 
 BEGIN_MESSAGE_MAP(CMy3DSymbolLibNewView, CView)
-	// ±ê×¼´òÓ¡ÃüÁî
-	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CMy3DSymbolLibNewView::OnFilePrintPreview)
-	ON_WM_CONTEXTMENU()
-	ON_WM_RBUTTONUP()
-	ON_COMMAND(ID_SPACEQUERY_SET, &CMy3DSymbolLibNewView::OnSpacequerySet)
-	ON_WM_CREATE()
-	ON_WM_DESTROY()
-	ON_WM_SIZE()
-	ON_COMMAND(ID_CONTOUR_TERRAIN_IMPORT, &CMy3DSymbolLibNewView::OnContourTerrainImport)
-	ON_WM_CHAR()
-	ON_COMMAND(ID_SKYBOX_TEX, &CMy3DSymbolLibNewView::OnSkyboxTex)
-	ON_UPDATE_COMMAND_UI(ID_DRAWMODE_LINE, &CMy3DSymbolLibNewView::OnUpdateDrawmodeLine)
-	ON_COMMAND(ID_DRAWMODE_RENDER, &CMy3DSymbolLibNewView::OnDrawmodeRender)
-	ON_UPDATE_COMMAND_UI(ID_DRAWMODE_RENDER, &CMy3DSymbolLibNewView::OnUpdateDrawmodeRender)
-	ON_UPDATE_COMMAND_UI(ID_DRAWMODE_TEXTURE, &CMy3DSymbolLibNewView::OnUpdateDrawmodeTexture)
-	ON_COMMAND(ID_DRAWMODE_LINE, &CMy3DSymbolLibNewView::OnDrawmodeLine)
-	ON_COMMAND(ID_DRAWMODE_TEXTURE, &CMy3DSymbolLibNewView::OnDrawmodeTexture)
-	ON_COMMAND(ID_QUERY_COORDINATE, &CMy3DSymbolLibNewView::OnQueryCoordinate)
-	ON_UPDATE_COMMAND_UI(ID_QUERY_COORDINATE, &CMy3DSymbolLibNewView::OnUpdateQueryCoordinate)
-	ON_COMMAND(ID_QUERY_DISTENCE, &CMy3DSymbolLibNewView::OnQueryDistence)
-	ON_UPDATE_COMMAND_UI(ID_QUERY_DISTENCE, &CMy3DSymbolLibNewView::OnUpdateQueryDistence)
-	ON_WM_LBUTTONDOWN()
-	ON_WM_RBUTTONDOWN()
-	ON_WM_KEYDOWN()
-	ON_WM_MOUSEMOVE()
-	ON_COMMAND(ID_CAMERA_PARAM_SET, &CMy3DSymbolLibNewView::OnCameraParamSet)
-	ON_COMMAND(ID_PATH_MANUINPUT, &CMy3DSymbolLibNewView::OnPathManuinput)
-	ON_COMMAND(ID_FLPPATH_INTERPOLATION, &CMy3DSymbolLibNewView::OnFlppathInterpolation)
-	ON_COMMAND(ID_FLYPATH_SAVE, &CMy3DSymbolLibNewView::OnFlypathSave)
-	ON_COMMAND(ID_FLY_OPENPATH, &CMy3DSymbolLibNewView::OnFlyOpenpath)
-	ON_COMMAND(ID_FLY_ONOFFPATH, &CMy3DSymbolLibNewView::OnFlyOnoffpath)
-	ON_UPDATE_COMMAND_UI(ID_FLY_ONOFFPATH, &CMy3DSymbolLibNewView::OnUpdateFlyOnoffpath)
-	ON_COMMAND(ID_FLY_STATICHEIGHT, &CMy3DSymbolLibNewView::OnFlyStaticheight)
-	ON_UPDATE_COMMAND_UI(ID_FLY_STATICHEIGHT, &CMy3DSymbolLibNewView::OnUpdateFlyStaticheight)
-	ON_WM_TIMER()
-	ON_COMMAND(ID_FLY_ROUTINEHEIGHT, &CMy3DSymbolLibNewView::OnFlyRoutineheight)
-	ON_UPDATE_COMMAND_UI(ID_FLY_ROUTINEHEIGHT, &CMy3DSymbolLibNewView::OnUpdateFlyRoutineheight)
-	ON_COMMAND(ID_FLY_PLAYPAUSE, &CMy3DSymbolLibNewView::OnFlyPlaypause)
-	ON_UPDATE_COMMAND_UI(ID_FLY_PLAYPAUSE, &CMy3DSymbolLibNewView::OnUpdateFlyPlaypause)
-	ON_COMMAND(ID_FLY_STOP, &CMy3DSymbolLibNewView::OnFlyStop)
-	ON_COMMAND(ID_FLY_ONESTEP, &CMy3DSymbolLibNewView::OnFlyOnestep)
-	ON_COMMAND(ID_FLY_VIEW_ENLARGE, &CMy3DSymbolLibNewView::OnFlyViewEnlarge)
-	ON_COMMAND(ID_FLY_VIEW_SMALL, &CMy3DSymbolLibNewView::OnFlyViewSmall)
-	ON_COMMAND(ID_FLY_HEIGHT_UP, &CMy3DSymbolLibNewView::OnFlyHeightUp)
-	ON_COMMAND(ID_FLY_HEIGHT_DOWN, &CMy3DSymbolLibNewView::OnFlyHeightDown)
-	ON_COMMAND(ID_FLY_VIEW_UP, &CMy3DSymbolLibNewView::OnFlyViewUp)
-	ON_COMMAND(ID_FLY_VIEW_DOWN, &CMy3DSymbolLibNewView::OnFlyViewDown)
-	ON_COMMAND(ID_FLY_SPEED_UP, &CMy3DSymbolLibNewView::OnFlySpeedUp)
-	ON_COMMAND(ID_FLY_SPEED_DOWN, &CMy3DSymbolLibNewView::OnFlySpeedDown)
-	ON_COMMAND(ID_3DS_MODEL_LOAD, &CMy3DSymbolLibNewView::On3dsModelLoad)
-	ON_COMMAND(ID_3DS_MODEL_SELECT_SET, &CMy3DSymbolLibNewView::On3dsModelSelectSet)
-	ON_UPDATE_COMMAND_UI(ID_3DS_MODEL_SELECT_SET, &CMy3DSymbolLibNewView::OnUpdate3dsModelSelectSet)
-	ON_WM_LBUTTONUP()
-	ON_COMMAND(ID_3DS_MODEL_MOUSE_MOVE, &CMy3DSymbolLibNewView::On3dsModelMouseMove)
-	ON_UPDATE_COMMAND_UI(ID_3DS_MODEL_MOUSE_MOVE, &CMy3DSymbolLibNewView::OnUpdate3dsModelMouseMove)
-	ON_COMMAND(ID_TREE_LOAD, &CMy3DSymbolLibNewView::OnTreeLoad)
-	ON_COMMAND(ID_CITY_SYMBOL_LOAD, &CMy3DSymbolLibNewView::OnCitySymbolLoad)
-	ON_COMMAND(ID_WEATHER_LOAD, &CMy3DSymbolLibNewView::OnWeatherLoad)
-	ON_COMMAND(ID_3D_TREE_LOAD, &CMy3DSymbolLibNewView::On3dTreeLoad)
-	ON_WM_MOUSEWHEEL()
-	ON_WM_SETCURSOR()
-	ON_COMMAND(ID_SCENE_LOAD, &CMy3DSymbolLibNewView::OnSceneLoad)
-	ON_COMMAND(ID_SCENE_SAVE, &CMy3DSymbolLibNewView::OnSceneSave)
-	ON_COMMAND(ID_MODEL_MOVE, &CMy3DSymbolLibNewView::OnModelMove)
-	ON_COMMAND(ID_MODEL_PARAM, &CMy3DSymbolLibNewView::OnModelParam)
-	ON_COMMAND(ID_MODEL_SCALE, &CMy3DSymbolLibNewView::OnModelScale)
-	ON_COMMAND(ID_CONFIGURE_SYMBOL_LIST, &CMy3DSymbolLibNewView::OnConfigureSymbolList)
-	ON_COMMAND(ID_SYSTEM_SETTING, &CMy3DSymbolLibNewView::OnSystemSetting)
-	ON_COMMAND(ID_CLOSE_CURRENT_SCENE, &CMy3DSymbolLibNewView::OnCloseCurrentScene)
-	ON_COMMAND(ID_MODEL_DELETE, &CMy3DSymbolLibNewView::OnModelDelete)
-	ON_COMMAND(ID_MENU_BUILD3DLINEMODLE, &CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle)
-	ON_COMMAND(ID_MENU_LINEDESIGN, &CMy3DSymbolLibNewView::OnMenuLinedesign)
-	ON_UPDATE_COMMAND_UI(ID_MENU_LINEDESIGN, &CMy3DSymbolLibNewView::OnUpdateMenuLinedesign)
-	ON_MESSAGE(WM_GOODBYE,&CMy3DSymbolLibNewView::OnGoodBye)
-	ON_COMMAND(ID_MENU_CLEAR_LINES, &CMy3DSymbolLibNewView::OnMenuClearLines)
-	ON_COMMAND(ID_SCENE_NEW, &CMy3DSymbolLibNewView::OnSceneNew)
-	ON_COMMAND(ID_FILE_SAVE_AS, &CMy3DSymbolLibNewView::OnSceneSaveAs)
-	ON_COMMAND(ID_MENU_LINE_ADD, &CMy3DSymbolLibNewView::OnMenuLineAdd)
-	ON_COMMAND(ID_MENU_LINE_FUSE, &CMy3DSymbolLibNewView::OnMenuLineFuse)
-	ON_UPDATE_COMMAND_UI(ID_MENU_LINE_ADD, &CMy3DSymbolLibNewView::OnUpdateMenuLineAdd)
-	ON_COMMAND(ID_MENU_ADD_LINE_WIDTH, &CMy3DSymbolLibNewView::OnMenuAddLineWidth)
-	ON_COMMAND(ID_MENU_ADD_AREA_SLIB, &CMy3DSymbolLibNewView::OnMenuAddAreaSlib)
-	ON_UPDATE_COMMAND_UI(ID_MENU_ADD_AREA_SLIB, &CMy3DSymbolLibNewView::OnUpdateMenuAddAreaSlib)
-	ON_COMMAND(ID_MENU_AREA_FUSE, &CMy3DSymbolLibNewView::OnMenuAreaFuse)
-	ON_COMMAND(ID_MENU_ADD_POINT_SYMBOL, &CMy3DSymbolLibNewView::OnMenuAddPointSymbol)
-	ON_COMMAND(ID_MENU_ADD_POINT_3DSMAX, &CMy3DSymbolLibNewView::OnMenuAddPoint3dsmax)
-	ON_COMMAND(ID_MENU_ADD_POINT_2D_IMG, &CMy3DSymbolLibNewView::OnMenuAddPoint2dImg)
-	ON_COMMAND(ID_MENU_ADD_POINT_3D_IMG, &CMy3DSymbolLibNewView::OnMenuAddPoint3dImg)
-	ON_MESSAGE(WM_PROJECT_SET_OK, &CMy3DSymbolLibNewView::OnProjectSetted)
-	ON_COMMAND(ID_MENU_UPDATE_AREA_TEXTURE, &CMy3DSymbolLibNewView::OnMenuUpdateAreaTexture)
-	ON_COMMAND(ID_MENU_AREA_DELETE, &CMy3DSymbolLibNewView::OnMenuAreaDelete)
+    // æ ‡å‡†æ‰“å°å‘½ä»¤
+    ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
+    ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
+    ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CMy3DSymbolLibNewView::OnFilePrintPreview)
+    ON_WM_CONTEXTMENU()
+    ON_WM_RBUTTONUP()
+    ON_COMMAND(ID_SPACEQUERY_SET, &CMy3DSymbolLibNewView::OnSpacequerySet)
+    ON_WM_CREATE()
+    ON_WM_DESTROY()
+    ON_WM_SIZE()
+    ON_COMMAND(ID_CONTOUR_TERRAIN_IMPORT, &CMy3DSymbolLibNewView::OnContourTerrainImport)
+    ON_WM_CHAR()
+    ON_COMMAND(ID_SKYBOX_TEX, &CMy3DSymbolLibNewView::OnSkyboxTex)
+    ON_UPDATE_COMMAND_UI(ID_DRAWMODE_LINE, &CMy3DSymbolLibNewView::OnUpdateDrawmodeLine)
+    ON_COMMAND(ID_DRAWMODE_RENDER, &CMy3DSymbolLibNewView::OnDrawmodeRender)
+    ON_UPDATE_COMMAND_UI(ID_DRAWMODE_RENDER, &CMy3DSymbolLibNewView::OnUpdateDrawmodeRender)
+    ON_UPDATE_COMMAND_UI(ID_DRAWMODE_TEXTURE, &CMy3DSymbolLibNewView::OnUpdateDrawmodeTexture)
+    ON_COMMAND(ID_DRAWMODE_LINE, &CMy3DSymbolLibNewView::OnDrawmodeLine)
+    ON_COMMAND(ID_DRAWMODE_TEXTURE, &CMy3DSymbolLibNewView::OnDrawmodeTexture)
+    ON_COMMAND(ID_QUERY_COORDINATE, &CMy3DSymbolLibNewView::OnQueryCoordinate)
+    ON_UPDATE_COMMAND_UI(ID_QUERY_COORDINATE, &CMy3DSymbolLibNewView::OnUpdateQueryCoordinate)
+    ON_COMMAND(ID_QUERY_DISTENCE, &CMy3DSymbolLibNewView::OnQueryDistence)
+    ON_UPDATE_COMMAND_UI(ID_QUERY_DISTENCE, &CMy3DSymbolLibNewView::OnUpdateQueryDistence)
+    ON_WM_LBUTTONDOWN()
+    ON_WM_RBUTTONDOWN()
+    ON_WM_KEYDOWN()
+    ON_WM_MOUSEMOVE()
+    ON_COMMAND(ID_CAMERA_PARAM_SET, &CMy3DSymbolLibNewView::OnCameraParamSet)
+    ON_COMMAND(ID_PATH_MANUINPUT, &CMy3DSymbolLibNewView::OnPathManuinput)
+    ON_COMMAND(ID_FLPPATH_INTERPOLATION, &CMy3DSymbolLibNewView::OnFlppathInterpolation)
+    ON_COMMAND(ID_FLYPATH_SAVE, &CMy3DSymbolLibNewView::OnFlypathSave)
+    ON_COMMAND(ID_FLY_OPENPATH, &CMy3DSymbolLibNewView::OnFlyOpenpath)
+    ON_COMMAND(ID_FLY_ONOFFPATH, &CMy3DSymbolLibNewView::OnFlyOnoffpath)
+    ON_UPDATE_COMMAND_UI(ID_FLY_ONOFFPATH, &CMy3DSymbolLibNewView::OnUpdateFlyOnoffpath)
+    ON_COMMAND(ID_FLY_STATICHEIGHT, &CMy3DSymbolLibNewView::OnFlyStaticheight)
+    ON_UPDATE_COMMAND_UI(ID_FLY_STATICHEIGHT, &CMy3DSymbolLibNewView::OnUpdateFlyStaticheight)
+    ON_WM_TIMER()
+    ON_COMMAND(ID_FLY_ROUTINEHEIGHT, &CMy3DSymbolLibNewView::OnFlyRoutineheight)
+    ON_UPDATE_COMMAND_UI(ID_FLY_ROUTINEHEIGHT, &CMy3DSymbolLibNewView::OnUpdateFlyRoutineheight)
+    ON_COMMAND(ID_FLY_PLAYPAUSE, &CMy3DSymbolLibNewView::OnFlyPlaypause)
+    ON_UPDATE_COMMAND_UI(ID_FLY_PLAYPAUSE, &CMy3DSymbolLibNewView::OnUpdateFlyPlaypause)
+    ON_COMMAND(ID_FLY_STOP, &CMy3DSymbolLibNewView::OnFlyStop)
+    ON_COMMAND(ID_FLY_ONESTEP, &CMy3DSymbolLibNewView::OnFlyOnestep)
+    ON_COMMAND(ID_FLY_VIEW_ENLARGE, &CMy3DSymbolLibNewView::OnFlyViewEnlarge)
+    ON_COMMAND(ID_FLY_VIEW_SMALL, &CMy3DSymbolLibNewView::OnFlyViewSmall)
+    ON_COMMAND(ID_FLY_HEIGHT_UP, &CMy3DSymbolLibNewView::OnFlyHeightUp)
+    ON_COMMAND(ID_FLY_HEIGHT_DOWN, &CMy3DSymbolLibNewView::OnFlyHeightDown)
+    ON_COMMAND(ID_FLY_VIEW_UP, &CMy3DSymbolLibNewView::OnFlyViewUp)
+    ON_COMMAND(ID_FLY_VIEW_DOWN, &CMy3DSymbolLibNewView::OnFlyViewDown)
+    ON_COMMAND(ID_FLY_SPEED_UP, &CMy3DSymbolLibNewView::OnFlySpeedUp)
+    ON_COMMAND(ID_FLY_SPEED_DOWN, &CMy3DSymbolLibNewView::OnFlySpeedDown)
+    ON_COMMAND(ID_3DS_MODEL_LOAD, &CMy3DSymbolLibNewView::On3dsModelLoad)
+    ON_COMMAND(ID_3DS_MODEL_SELECT_SET, &CMy3DSymbolLibNewView::On3dsModelSelectSet)
+    ON_UPDATE_COMMAND_UI(ID_3DS_MODEL_SELECT_SET, &CMy3DSymbolLibNewView::OnUpdate3dsModelSelectSet)
+    ON_WM_LBUTTONUP()
+    ON_COMMAND(ID_3DS_MODEL_MOUSE_MOVE, &CMy3DSymbolLibNewView::On3dsModelMouseMove)
+    ON_UPDATE_COMMAND_UI(ID_3DS_MODEL_MOUSE_MOVE, &CMy3DSymbolLibNewView::OnUpdate3dsModelMouseMove)
+    ON_COMMAND(ID_TREE_LOAD, &CMy3DSymbolLibNewView::OnTreeLoad)
+    ON_COMMAND(ID_CITY_SYMBOL_LOAD, &CMy3DSymbolLibNewView::OnCitySymbolLoad)
+    ON_COMMAND(ID_WEATHER_LOAD, &CMy3DSymbolLibNewView::OnWeatherLoad)
+    ON_COMMAND(ID_3D_TREE_LOAD, &CMy3DSymbolLibNewView::On3dTreeLoad)
+    ON_WM_MOUSEWHEEL()
+    ON_WM_SETCURSOR()
+    ON_COMMAND(ID_SCENE_LOAD, &CMy3DSymbolLibNewView::OnSceneLoad)
+    ON_COMMAND(ID_SCENE_SAVE, &CMy3DSymbolLibNewView::OnSceneSave)
+    ON_COMMAND(ID_MODEL_MOVE, &CMy3DSymbolLibNewView::OnModelMove)
+    ON_COMMAND(ID_MODEL_PARAM, &CMy3DSymbolLibNewView::OnModelParam)
+    ON_COMMAND(ID_MODEL_SCALE, &CMy3DSymbolLibNewView::OnModelScale)
+    ON_COMMAND(ID_CONFIGURE_SYMBOL_LIST, &CMy3DSymbolLibNewView::OnConfigureSymbolList)
+    ON_COMMAND(ID_SYSTEM_SETTING, &CMy3DSymbolLibNewView::OnSystemSetting)
+    ON_COMMAND(ID_CLOSE_CURRENT_SCENE, &CMy3DSymbolLibNewView::OnCloseCurrentScene)
+    ON_COMMAND(ID_MODEL_DELETE, &CMy3DSymbolLibNewView::OnModelDelete)
+    ON_COMMAND(ID_MENU_BUILD3DLINEMODLE, &CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle)
+    ON_COMMAND(ID_MENU_LINEDESIGN, &CMy3DSymbolLibNewView::OnMenuLinedesign)
+    ON_UPDATE_COMMAND_UI(ID_MENU_LINEDESIGN, &CMy3DSymbolLibNewView::OnUpdateMenuLinedesign)
+    ON_MESSAGE(WM_GOODBYE, &CMy3DSymbolLibNewView::OnGoodBye)
+    ON_COMMAND(ID_MENU_CLEAR_LINES, &CMy3DSymbolLibNewView::OnMenuClearLines)
+    ON_COMMAND(ID_SCENE_NEW, &CMy3DSymbolLibNewView::OnSceneNew)
+    ON_COMMAND(ID_FILE_SAVE_AS, &CMy3DSymbolLibNewView::OnSceneSaveAs)
+    ON_COMMAND(ID_MENU_LINE_ADD, &CMy3DSymbolLibNewView::OnMenuLineAdd)
+    ON_COMMAND(ID_MENU_LINE_FUSE, &CMy3DSymbolLibNewView::OnMenuLineFuse)
+    ON_UPDATE_COMMAND_UI(ID_MENU_LINE_ADD, &CMy3DSymbolLibNewView::OnUpdateMenuLineAdd)
+    ON_COMMAND(ID_MENU_ADD_LINE_WIDTH, &CMy3DSymbolLibNewView::OnMenuAddLineWidth)
+    ON_COMMAND(ID_MENU_ADD_AREA_SLIB, &CMy3DSymbolLibNewView::OnMenuAddAreaSlib)
+    ON_UPDATE_COMMAND_UI(ID_MENU_ADD_AREA_SLIB, &CMy3DSymbolLibNewView::OnUpdateMenuAddAreaSlib)
+    ON_COMMAND(ID_MENU_AREA_FUSE, &CMy3DSymbolLibNewView::OnMenuAreaFuse)
+    ON_COMMAND(ID_MENU_ADD_POINT_SYMBOL, &CMy3DSymbolLibNewView::OnMenuAddPointSymbol)
+    ON_COMMAND(ID_MENU_ADD_POINT_3DSMAX, &CMy3DSymbolLibNewView::OnMenuAddPoint3dsmax)
+    ON_COMMAND(ID_MENU_ADD_POINT_2D_IMG, &CMy3DSymbolLibNewView::OnMenuAddPoint2dImg)
+    ON_COMMAND(ID_MENU_ADD_POINT_3D_IMG, &CMy3DSymbolLibNewView::OnMenuAddPoint3dImg)
+    ON_MESSAGE(WM_PROJECT_SET_OK, &CMy3DSymbolLibNewView::OnProjectSetted)
+    ON_COMMAND(ID_MENU_UPDATE_AREA_TEXTURE, &CMy3DSymbolLibNewView::OnMenuUpdateAreaTexture)
+    ON_COMMAND(ID_MENU_AREA_DELETE, &CMy3DSymbolLibNewView::OnMenuAreaDelete)
 END_MESSAGE_MAP()
 
-// CMy3DSymbolLibNewView ¹¹Ôì/Îö¹¹
+// CMy3DSymbolLibNewView æ„é€ /ææ„
 
-CMy3DSymbolLibNewView::CMy3DSymbolLibNewView()
-{
-	bIsSelect3DModel = false;
-	bIsMouseMove3DModel = false;
-
-	
+CMy3DSymbolLibNewView::CMy3DSymbolLibNewView() {
+    bIsSelect3DModel = false;
+    bIsMouseMove3DModel = false;
 }
 
-CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView()
-{
-	// Empty
+CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView() {
+    // Empty
 }
 
-BOOL CMy3DSymbolLibNewView::PreCreateWindow(CREATESTRUCT& cs)
-{
-	// TODO: ÔÚ´Ë´¦Í¨¹ıĞŞ¸Ä
-	//  CREATESTRUCT cs À´ĞŞ¸Ä´°¿ÚÀà»òÑùÊ½
-	return CView::PreCreateWindow(cs);
+BOOL CMy3DSymbolLibNewView::PreCreateWindow(CREATESTRUCT& cs) {
+    // TODO: åœ¨æ­¤å¤„é€šè¿‡ä¿®æ”¹
+    //  CREATESTRUCT cs æ¥ä¿®æ”¹çª—å£ç±»æˆ–æ ·å¼
+    return CView::PreCreateWindow(cs);
 }
 
-// CMy3DSymbolLibNewView »æÖÆ
-void CMy3DSymbolLibNewView::OnDraw(CDC* pDC)
-{
-	CMy3DSymbolLibNewDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
-
-	// TODO: ÔÚ´Ë´¦Îª±¾»úÊı¾İÌí¼Ó»æÖÆ´úÂë
-	wglMakeCurrent( pDC->m_hDC, m_hRC );// Ê¹ RC Óëµ±Ç° DC Ïà¹ØÁª
-	DrawScene(); // ³¡¾°»æÖÆ
-	glFlush();	
-	::SwapBuffers(m_pDC->GetSafeHdc());	//½»»»»º³åÇø	 
+// CMy3DSymbolLibNewView ç»˜åˆ¶
+void CMy3DSymbolLibNewView::OnDraw(CDC* pDC) {
+    CMy3DSymbolLibNewDoc* pDoc = GetDocument();
+    ASSERT_VALID(pDoc);
+    if (!pDoc)
+        return;
+    // TODO: åœ¨æ­¤å¤„ä¸ºæœ¬æœºæ•°æ®æ·»åŠ ç»˜åˆ¶ä»£ç 
+    wglMakeCurrent(pDC->m_hDC, m_hRC);  // ä½¿ RC ä¸å½“å‰ DC ç›¸å…³è”
+    DrawScene(); // åœºæ™¯ç»˜åˆ¶
+    glFlush();
+    ::SwapBuffers(m_pDC->GetSafeHdc()); //äº¤æ¢ç¼“å†²åŒº
 }
 
-// CMy3DSymbolLibNewView ´òÓ¡
-void CMy3DSymbolLibNewView::OnFilePrintPreview()
-{
+// CMy3DSymbolLibNewView æ‰“å°
+void CMy3DSymbolLibNewView::OnFilePrintPreview() {
 #ifndef SHARED_HANDLERS
-	AFXPrintPreview(this);
+    AFXPrintPreview(this);
 #endif
 }
 
-BOOL CMy3DSymbolLibNewView::OnPreparePrinting(CPrintInfo* pInfo)
-{
-	// Ä¬ÈÏ×¼±¸
-	return DoPreparePrinting(pInfo);
+BOOL CMy3DSymbolLibNewView::OnPreparePrinting(CPrintInfo* pInfo) {
+    // é»˜è®¤å‡†å¤‡
+    return DoPreparePrinting(pInfo);
 }
 
-void CMy3DSymbolLibNewView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-	// TODO: Ìí¼Ó¶îÍâµÄ´òÓ¡Ç°½øĞĞµÄ³õÊ¼»¯¹ı³Ì
+void CMy3DSymbolLibNewView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
+    // TODO: æ·»åŠ é¢å¤–çš„æ‰“å°å‰è¿›è¡Œçš„åˆå§‹åŒ–è¿‡ç¨‹
 }
 
-void CMy3DSymbolLibNewView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-	// TODO: Ìí¼Ó´òÓ¡ºó½øĞĞµÄÇåÀí¹ı³Ì
+void CMy3DSymbolLibNewView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
+    // TODO: æ·»åŠ æ‰“å°åè¿›è¡Œçš„æ¸…ç†è¿‡ç¨‹
 }
 
-void CMy3DSymbolLibNewView::OnRButtonUp(UINT /* nFlags */, CPoint point)
-{
-	//m_bRbtnDown = false;
-
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
+void CMy3DSymbolLibNewView::OnRButtonUp(UINT /* nFlags */, CPoint point) {
+    //m_bRbtnDown = false;
+    ClientToScreen(&point);
+    OnContextMenu(this, point);
 }
 
-void CMy3DSymbolLibNewView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
-{
-	//#ifndef SHARED_HANDLERS
-	//	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
-	//#endif
+void CMy3DSymbolLibNewView::OnContextMenu(CWnd* /* pWnd */, CPoint point) {
+    //#ifndef SHARED_HANDLERS
+    //  theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
+    //#endif
 }
 
-// CMy3DSymbolLibNewView Õï¶Ï
+// CMy3DSymbolLibNewView è¯Šæ–­
 #ifdef _DEBUG
-void CMy3DSymbolLibNewView::AssertValid() const
-{
-	CView::AssertValid();
+void CMy3DSymbolLibNewView::AssertValid() const {
+    CView::AssertValid();
 }
 
-void CMy3DSymbolLibNewView::Dump(CDumpContext& dc) const
-{
-	CView::Dump(dc);
+void CMy3DSymbolLibNewView::Dump(CDumpContext& dc) const {
+    CView::Dump(dc);
 }
 
-CMy3DSymbolLibNewDoc* CMy3DSymbolLibNewView::GetDocument() const // ·Çµ÷ÊÔ°æ±¾ÊÇÄÚÁªµÄ
-{
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CMy3DSymbolLibNewDoc)));
-	return (CMy3DSymbolLibNewDoc*)m_pDocument;
+CMy3DSymbolLibNewDoc* CMy3DSymbolLibNewView::GetDocument() const { // éè°ƒè¯•ç‰ˆæœ¬æ˜¯å†…è”çš„
+    ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CMy3DSymbolLibNewDoc)));
+    return (CMy3DSymbolLibNewDoc*)m_pDocument;
 }
 #endif //_DEBUG
 
@@ -221,5295 +204,4191 @@ CMy3DSymbolLibNewDoc* CMy3DSymbolLibNewView::GetDocument() const // ·Çµ÷ÊÔ°æ±¾ÊÇ
 
 
 /************************************************************************/
-/* Function: ³õÊ¼»¯Ïà¹Ø±äÁ¿												*/
+/* Function: åˆå§‹åŒ–ç›¸å…³å˜é‡                                             */
 /************************************************************************/
-void CMy3DSymbolLibNewView::InitData()
-{
-	glActiveTextureARB = NULL;
-	glMultiTexCoord2fARB = NULL;	
-
-	m_ViewWideNarrow = 0.0f;							//³õÊ¼·ÉĞĞÊÓ¿Ú¿íÕ­±äÁ¿ 
-
-	hwnd = GetSafeHwnd(); 
-	CDC *pDestDC = CDC::FromHandle(::GetDC(hwnd));
-	m_SCREEN_WIDTH = pDestDC->GetDeviceCaps(HORZRES);	//ÆÁÄ»¿í¶È
-	m_SCREEN_HEIGHT = pDestDC->GetDeviceCaps(VERTRES);	//ÆÁÄ»¸ß¶È
-	m_near = 1;											//¹Û²ìµãÓë½ü²à¼ô²ÃÆ½ÃæµÄ¾àÀë
-	m_far = 5000 ;										// ¹Û²ìµãÓëÔ¶²à¼ô²ÃÆ½ÃæµÄ¾àÀë
-
-	m_shizxLength = 2 ;									// ²éÑ¯±êÖ¾Ê®×ÖÏß³¤¶È
-	m_shuzxHeight = 2 ;									// ²éÑ¯±êÖ¾ÊúÖ±Ïß¸ß¶È
-	m_QueryLineWidth = 1 ;								// ²éÑ¯±êÖ¾ÏßµÄ¿í¶È
-	m_QueryColorR = 255 ;								// ²éÑ¯±êÖ¾ÏßµÄÑÕÉ«(ºì)
-	m_QueryColorG = 0 ;									// ²éÑ¯±êÖ¾ÏßµÄÑÕÉ«(ÂÌ)
-	m_QueryColorB = 0 ;									// ²éÑ¯±êÖ¾ÏßµÄÑÕÉ«(À¶)
-	m_bSearchDistencePtNums=0;
-
-	// äÖÈ¾Ä£Ê½
-	m_Drawmode = 3;
-
-	iTerrainType = 0;  
-	iSkyBoxLoaded = false;
-	g_isTerrainInit = false;
-
-	//Ïà»ú²ÎÊıÏòÉÏÊ¸Á¿
-	m_vUp.x = 0; 
-	m_vUp.y = 1;
-	m_vUp.z = 0;
-
-	m_viewdegree = 0 ; // ³õÊ¼ÊÓ½ÇÔöÁ¿ 
-	m_viewHeight = m_oldviewHeight = 88 ; // Ïà»ú³õÊ¼¸ß¶È
-
-	m_vEyePosition.x = 334;
-	m_vEyePosition.z = -384;
-	m_vEyePosition.y = 88;
-
-	g_Angle = 6;						// ÊÓµã·½Î»½Ç³õÖµ		
-	g_elev = 0;							// ¸©Ñö½Ç³õÊ¼Öµ
-	gao = 1.8; 
-
-	rad_xz = float (PAI_D180* g_Angle);	// ¼ÆËã×óÓÒĞı×ª½Ç¶È
-
-	m_vLook.x = m_vEyePosition.x + 100 * cos(rad_xz);
-	m_vLook.z = m_vEyePosition.z + 100 * sin(rad_xz);
-	m_vLook.y = m_vEyePosition.y + g_elev;
-
-	m_Step_X = 5.0;		//Ïà»úÔÚX·½ÏòÒÆ¶¯µÄ²½³¤³õÊ¼Öµ(Êó±ê¿ØÖÆ)
-	m_Step_Z = 5.0;		//Ïà»úÔÚZ·½ÏòÒÆ¶¯µÄ²½³¤³õÊ¼Öµ(Êó±ê¿ØÖÆ)
-	m_xTrans = 0;		//ÔÚX·½ÏòÉÏÒÆ¶¯µÄ²½³¤(¼üÅÌ¿ØÖÆ)
-	m_zTrans = 0;		//ÔÚZ·½ÏòÉÏÒÆ¶¯µÄ²½³¤(¼üÅÌ¿ØÖÆ)
-
-	derAngleY = 500.0f;
-	derAngleZ = 4000.0f;
-
-	derDisScale = 1.5;
-
-	m_PathFlag = FALSE;
-
-	m_flyspeed = 1000;
-	m_maxHeight = -9999;
-	m_minHeight = 9999;
-
-	m_ViewUpDown = 0;
-	m_FlyPause = FALSE;
-
-	m_fly_start_pause_Enable = FALSE;  // ÔİÍ£/¿ªÊ¼ÊÇ·ñÉúĞ§
-
-	//Ö¸±±Õë³õÊ¼Ö¸Ïò½Ç¶È(90¶È,¼´±íÊ¾Õı±±·½Ïò,ÔÚÈıÎ¬¿Õ¼äÖĞÔòÖ¸ÏòZÔ±¸º·½Ïò,¼´Ö¸ÏòÆÁÄ»ÀïÃæ)
-	m_NorthPtangle = 90;
-
-	m_bShowbreviary = TRUE;
-
-	m_i3DModelNum = 0;
-
-	m_3ds = new CLoad3DS();
-
-	m_bMouseMove3DModelPtNums = 0;
-
-
-	m_iTreeModelNum = 0;
-	m_i3DTreeModelNum = 0;
-
-	m_iCitySymbolModelNum = 0;
-
-
-	bIsWeatherLoad = false;
-
-	IsSearchPoint = false;
-
-	// Ñ¡ÖĞÄ£ĞÍÏß¿òÑÕÉ« ³õÊ¼Îªºì£¬Ñ¡ÖĞÊ±½øĞĞ ºì °×ÉÁË¸Ğ§¹û
-	wireR = 1;
-	wireG = 0;
-	wireB = 0;
-
-	m_bFlash = false;
-
-	m_bMouseMoveSelect = false;
-
-	m_mouseShape = MOUSE_SHAPE_SLECT;
-
-	m_bSecneConfig = false;
-
-	// Ñ¡ÖĞµÄÄ£ĞÍµÄid
-	m_selectedModelID = -1;
-	m_OperateType = -1;
-
-	m_QueryType = -1;
-
-	// checkbox,ÊÇ·ñÍ¨¹ıÊó±êÉèÖÃÄ£ĞÍ°Ú·ÅÎ»ÖÃ
-	m_isSetXYByMouse = 0;
-
-
-	initLines();// ³õÊ¼»¯ÏßÂ·Êı¾İ
-
-
-
-
-	// [160220]
-	// ³õÊ¼»¯¸÷ÖÖµãÄ£ĞÍËùÔÚÂ·¾¶
-	m_3DModelFolder		= "3DModel";
-	m_CitySymbolFolder	= "CitySymbol";
-	m_TreeModelFolder	= "TreeModel";
-
-
-
-
-	//[160119]
-	m_LineEdit_pointNum = 0;
-
-
-	fuse_Flag = FALSE;
-
-
-	// [160209]
-	m_Area_pointNum = 0;
-
-	Area_fuse_Flag = FALSE;
-
-
-	// ÊÇ·ñ´æÔÚÒÑ´ò¿ªµÄ·ûºÅÎÄ¼ş
-	exist_point_flag = FALSE;
-	exist_line_flag = FALSE;
-	exist_area_flag = FALSE;
-
-
-	m_CurrentProjectName = "";
-	m_PointSymbolFile = "0";  m_LineSymbolFile = "0";	m_AreaSymbolFile = "0";
-
-
-
-
-
+void CMy3DSymbolLibNewView::InitData() {
+    glActiveTextureARB = NULL;
+    glMultiTexCoord2fARB = NULL;
+    m_ViewWideNarrow = 0.0f;                            //åˆå§‹é£è¡Œè§†å£å®½çª„å˜é‡
+    hwnd = GetSafeHwnd();
+    CDC* pDestDC = CDC::FromHandle(::GetDC(hwnd));
+    m_SCREEN_WIDTH = pDestDC->GetDeviceCaps(HORZRES);   //å±å¹•å®½åº¦
+    m_SCREEN_HEIGHT = pDestDC->GetDeviceCaps(VERTRES);  //å±å¹•é«˜åº¦
+    m_near = 1;                                         //è§‚å¯Ÿç‚¹ä¸è¿‘ä¾§å‰ªè£å¹³é¢çš„è·ç¦»
+    m_far = 5000 ;                                      // è§‚å¯Ÿç‚¹ä¸è¿œä¾§å‰ªè£å¹³é¢çš„è·ç¦»
+    m_shizxLength = 2 ;                                 // æŸ¥è¯¢æ ‡å¿—åå­—çº¿é•¿åº¦
+    m_shuzxHeight = 2 ;                                 // æŸ¥è¯¢æ ‡å¿—ç«–ç›´çº¿é«˜åº¦
+    m_QueryLineWidth = 1 ;                              // æŸ¥è¯¢æ ‡å¿—çº¿çš„å®½åº¦
+    m_QueryColorR = 255 ;                               // æŸ¥è¯¢æ ‡å¿—çº¿çš„é¢œè‰²(çº¢)
+    m_QueryColorG = 0 ;                                 // æŸ¥è¯¢æ ‡å¿—çº¿çš„é¢œè‰²(ç»¿)
+    m_QueryColorB = 0 ;                                 // æŸ¥è¯¢æ ‡å¿—çº¿çš„é¢œè‰²(è“)
+    m_bSearchDistencePtNums = 0;
+    // æ¸²æŸ“æ¨¡å¼
+    m_Drawmode = 3;
+    iTerrainType = 0;
+    iSkyBoxLoaded = false;
+    g_isTerrainInit = false;
+    //ç›¸æœºå‚æ•°å‘ä¸ŠçŸ¢é‡
+    m_vUp.x = 0;
+    m_vUp.y = 1;
+    m_vUp.z = 0;
+    m_viewdegree = 0 ; // åˆå§‹è§†è§’å¢é‡
+    m_viewHeight = m_oldviewHeight = 88 ; // ç›¸æœºåˆå§‹é«˜åº¦
+    m_vEyePosition.x = 334;
+    m_vEyePosition.z = -384;
+    m_vEyePosition.y = 88;
+    g_Angle = 6;                        // è§†ç‚¹æ–¹ä½è§’åˆå€¼
+    g_elev = 0;                         // ä¿¯ä»°è§’åˆå§‹å€¼
+    gao = 1.8;
+    rad_xz = float (PAI_D180 * g_Angle); // è®¡ç®—å·¦å³æ—‹è½¬è§’åº¦
+    m_vLook.x = m_vEyePosition.x + 100 * cos(rad_xz);
+    m_vLook.z = m_vEyePosition.z + 100 * sin(rad_xz);
+    m_vLook.y = m_vEyePosition.y + g_elev;
+    m_Step_X = 5.0;     //ç›¸æœºåœ¨Xæ–¹å‘ç§»åŠ¨çš„æ­¥é•¿åˆå§‹å€¼(é¼ æ ‡æ§åˆ¶)
+    m_Step_Z = 5.0;     //ç›¸æœºåœ¨Zæ–¹å‘ç§»åŠ¨çš„æ­¥é•¿åˆå§‹å€¼(é¼ æ ‡æ§åˆ¶)
+    m_xTrans = 0;       //åœ¨Xæ–¹å‘ä¸Šç§»åŠ¨çš„æ­¥é•¿(é”®ç›˜æ§åˆ¶)
+    m_zTrans = 0;       //åœ¨Zæ–¹å‘ä¸Šç§»åŠ¨çš„æ­¥é•¿(é”®ç›˜æ§åˆ¶)
+    derAngleY = 500.0f;
+    derAngleZ = 4000.0f;
+    derDisScale = 1.5;
+    m_PathFlag = FALSE;
+    m_flyspeed = 1000;
+    m_maxHeight = -9999;
+    m_minHeight = 9999;
+    m_ViewUpDown = 0;
+    m_FlyPause = FALSE;
+    m_fly_start_pause_Enable = FALSE;  // æš‚åœ/å¼€å§‹æ˜¯å¦ç”Ÿæ•ˆ
+    //æŒ‡åŒ—é’ˆåˆå§‹æŒ‡å‘è§’åº¦(90åº¦,å³è¡¨ç¤ºæ­£åŒ—æ–¹å‘,åœ¨ä¸‰ç»´ç©ºé—´ä¸­åˆ™æŒ‡å‘Zå‘˜è´Ÿæ–¹å‘,å³æŒ‡å‘å±å¹•é‡Œé¢)
+    m_NorthPtangle = 90;
+    m_bShowbreviary = TRUE;
+    m_i3DModelNum = 0;
+    m_3ds = new CLoad3DS();
+    m_bMouseMove3DModelPtNums = 0;
+    m_iTreeModelNum = 0;
+    m_i3DTreeModelNum = 0;
+    m_iCitySymbolModelNum = 0;
+    bIsWeatherLoad = false;
+    IsSearchPoint = false;
+    // é€‰ä¸­æ¨¡å‹çº¿æ¡†é¢œè‰² åˆå§‹ä¸ºçº¢ï¼Œé€‰ä¸­æ—¶è¿›è¡Œ çº¢ ç™½é—ªçƒæ•ˆæœ
+    wireR = 1;
+    wireG = 0;
+    wireB = 0;
+    m_bFlash = false;
+    m_bMouseMoveSelect = false;
+    m_mouseShape = MOUSE_SHAPE_SLECT;
+    m_bSecneConfig = false;
+    // é€‰ä¸­çš„æ¨¡å‹çš„id
+    m_selectedModelID = -1;
+    m_OperateType = -1;
+    m_QueryType = -1;
+    // checkbox,æ˜¯å¦é€šè¿‡é¼ æ ‡è®¾ç½®æ¨¡å‹æ‘†æ”¾ä½ç½®
+    m_isSetXYByMouse = 0;
+    initLines();// åˆå§‹åŒ–çº¿è·¯æ•°æ®
+    // [160220]
+    // åˆå§‹åŒ–å„ç§ç‚¹æ¨¡å‹æ‰€åœ¨è·¯å¾„
+    m_3DModelFolder     = "3DModel";
+    m_CitySymbolFolder  = "CitySymbol";
+    m_TreeModelFolder   = "TreeModel";
+    //[160119]
+    m_LineEdit_pointNum = 0;
+    fuse_Flag = FALSE;
+    // [160209]
+    m_Area_pointNum = 0;
+    Area_fuse_Flag = FALSE;
+    // æ˜¯å¦å­˜åœ¨å·²æ‰“å¼€çš„ç¬¦å·æ–‡ä»¶
+    exist_point_flag = FALSE;
+    exist_line_flag = FALSE;
+    exist_area_flag = FALSE;
+    m_CurrentProjectName = "";
+    m_PointSymbolFile = "0";
+    m_LineSymbolFile = "0";
+    m_AreaSymbolFile = "0";
 }
 
 
 /************************************************************************/
-/* Function: ³õÊ¼»¯ÏßÂ·Êı¾İ												*/
+/* Function: åˆå§‹åŒ–çº¿è·¯æ•°æ®                                             */
 /************************************************************************/
-void CMy3DSymbolLibNewView::initLines()
-{
-	//========================================================== 
-
-	b_haveMadeRail3DwayList=FALSE;	//ÊÇ·ñÒÑ¾­ÓĞÈıÎ¬ÏßÂ·ÏÔÊ¾ÁĞ±í(Í¸ÊÓÍ¶Ó°Ä£Ê½ÏÂ)
-	m_Railway.m_Railway_width=5.0;	//Â·»ù¶ÏÃæ×Ü¿í¶È
-	m_Railway.m_Lj_width=0.8;		//Â·¼ç¿í¶È
-	m_Railway.m_GuiMianToLujianWidth=0.6;//²ê¼çÖÁ²ê½ÅµÄ¸ß¶È
-	m_Railway.m_Lj_Dh=m_Railway.m_GuiMianToLujianWidth*(1/1.75);//Ìú¹ìµ½²ê¼çµÄ¾àÀë
-	m_Railway.m_TieGui_width=1.435;//Ìú¹ì¼ä¾à	
-
-	//==========================================================
-
-	// Ñ¡ÏßãĞÖµÉè¶¨(¾àÀë,¼Ğ½Ç)
-
-	// ÓÃÓÚ¼ÆËã2µãÖ®¼äÏß¶Î³¤¶È
-	last_x = 0, last_y = 0, last_z = 0;
-	pre_x  = 0, pre_y  = 0, pre_z = 0;
-	// ÓÃÓÚ¼ÆËã2Ïß¶Î¼ä¼Ğ½Ç	
-	v1_begin.Set(0,0,0); v1_end.Set(0,0,0);
-	v2_begin.Set(0,0,0); v2_end.Set(0,0,0);
-	// ¼ÇÂ¼µãµÄ¸öÊı
-	p_count = 0;	
-
-
-	m_distance_between_2_points = 0.0;
-	m_pre_distance = 0.0;
+void CMy3DSymbolLibNewView::initLines() {
+    //==========================================================
+    b_haveMadeRail3DwayList = FALSE; //æ˜¯å¦å·²ç»æœ‰ä¸‰ç»´çº¿è·¯æ˜¾ç¤ºåˆ—è¡¨(é€è§†æŠ•å½±æ¨¡å¼ä¸‹)
+    m_Railway.m_Railway_width = 5.0; //è·¯åŸºæ–­é¢æ€»å®½åº¦
+    m_Railway.m_Lj_width = 0.8;     //è·¯è‚©å®½åº¦
+    m_Railway.m_GuiMianToLujianWidth = 0.6; //ç¢´è‚©è‡³ç¢´è„šçš„é«˜åº¦
+    m_Railway.m_Lj_Dh = m_Railway.m_GuiMianToLujianWidth * (1 / 1.75); //é“è½¨åˆ°ç¢´è‚©çš„è·ç¦»
+    m_Railway.m_TieGui_width = 1.435; //é“è½¨é—´è·
+    //==========================================================
+    // é€‰çº¿é˜ˆå€¼è®¾å®š(è·ç¦»,å¤¹è§’)
+    // ç”¨äºè®¡ç®—2ç‚¹ä¹‹é—´çº¿æ®µé•¿åº¦
+    last_x = 0, last_y = 0, last_z = 0;
+    pre_x  = 0, pre_y  = 0, pre_z = 0;
+    // ç”¨äºè®¡ç®—2çº¿æ®µé—´å¤¹è§’
+    v1_begin.Set(0, 0, 0);
+    v1_end.Set(0, 0, 0);
+    v2_begin.Set(0, 0, 0);
+    v2_end.Set(0, 0, 0);
+    // è®°å½•ç‚¹çš„ä¸ªæ•°
+    p_count = 0;
+    m_distance_between_2_points = 0.0;
+    m_pre_distance = 0.0;
 }
 
 
-BOOL CMy3DSymbolLibNewView::InitializeOpenGL(CDC *pDC)
-{
-	//½øĞĞopenglµÄ³õÊ¼»¯¹¤×÷
-	m_pDC=pDC; 
-	//Ê×ÏÈ°ÑDCµÄÏóËØ¸ñÊ½µ÷ÕûÎªÖ¸¶¨µÄ¸ñÊ½£¬ÒÔ±ãºóÃæ¶ÔDCµÄÊ¹ÓÃ
-	SetupPixelFormat(); 
-	//¸ù¾İDCÀ´´´½¨RC
-	m_hRC=::wglCreateContext(m_pDC->GetSafeHdc()); 
-	//ÉèÖÃµ±Ç°µÄRC£¬ÒÔºóµÄ»­Í¼²Ù×÷¶¼»­ÔÚm_pDCÖ¸ÏòµÄDCÉÏ
-	::wglMakeCurrent(m_pDC->GetSafeHdc() , m_hRC); 
-
-	//ÅĞ¶Ïµ±Ç°ÏµÍ³µÄOpenGL°æ±¾ÊÇ·ñÖ§³Ö¶àÖØÎÆÀíÀ©Õ¹  ÅĞ¶ÏÏÔ¿¨ÊÇ·ñÖ§³Ö¸ÃÀ©Õ¹
-	glActiveTextureARB		= (PFNGLACTIVETEXTUREARBPROC)		wglGetProcAddress("glActiveTextureARB");
-	glMultiTexCoord2fARB	= (PFNGLMULTITEXCOORD2FARBPROC)		wglGetProcAddress("glMultiTexCoord2fARB");
-	if(!glActiveTextureARB || !glMultiTexCoord2fARB)
-	{
-		//MessageBox("µ±Ç°OpenGL°æ±¾½ÏµÍ£¬²»Ö§³Ö¶àÖØÎÆÀí\nÀ©Õ¹¹¦ÄÜ£¬ÇëÏÂÔØ°²×°ĞÂµÄ°æ±¾£¡" ,  "¶àÖØÎÆÀíÀ©Õ¹´íÎó" ,  MB_ICONSTOP);
-		return FALSE;
-	} 
-
-	return TRUE;
+BOOL CMy3DSymbolLibNewView::InitializeOpenGL(CDC* pDC) {
+    // è¿›è¡Œopenglçš„åˆå§‹åŒ–å·¥ä½œ
+    m_pDC = pDC;
+    // é¦–å…ˆæŠŠDCçš„è±¡ç´ æ ¼å¼è°ƒæ•´ä¸ºæŒ‡å®šçš„æ ¼å¼ï¼Œä»¥ä¾¿åé¢å¯¹DCçš„ä½¿ç”¨
+    SetupPixelFormat();
+    // æ ¹æ®DCæ¥åˆ›å»ºRC
+    m_hRC =::wglCreateContext(m_pDC->GetSafeHdc());
+    // è®¾ç½®å½“å‰çš„RCï¼Œä»¥åçš„ç”»å›¾æ“ä½œéƒ½ç”»åœ¨m_pDCæŒ‡å‘çš„DCä¸Š
+    ::wglMakeCurrent(m_pDC->GetSafeHdc() , m_hRC);
+    // åˆ¤æ–­å½“å‰ç³»ç»Ÿçš„OpenGLç‰ˆæœ¬æ˜¯å¦æ”¯æŒå¤šé‡çº¹ç†æ‰©å±•  åˆ¤æ–­æ˜¾å¡æ˜¯å¦æ”¯æŒè¯¥æ‰©å±•
+    glActiveTextureARB      = (PFNGLACTIVETEXTUREARBPROC)       wglGetProcAddress("glActiveTextureARB");
+    glMultiTexCoord2fARB    = (PFNGLMULTITEXCOORD2FARBPROC)     wglGetProcAddress("glMultiTexCoord2fARB");
+    if (!glActiveTextureARB || !glMultiTexCoord2fARB) {
+        // MessageBox("å½“å‰OpenGLç‰ˆæœ¬è¾ƒä½ï¼Œä¸æ”¯æŒå¤šé‡çº¹ç†\næ‰©å±•åŠŸèƒ½ï¼Œè¯·ä¸‹è½½å®‰è£…æ–°çš„ç‰ˆæœ¬ï¼" ,  "å¤šé‡çº¹ç†æ‰©å±•é”™è¯¯" ,  MB_ICONSTOP);
+        return FALSE;
+    }
+    return TRUE;
 }
 
 
-BOOL CMy3DSymbolLibNewView::SetupPixelFormat()
-{
-	//³õÊ¼»¯ÏóËØ¸ñÊ½ÒÔ¼°Ñ¡È¡ºÏÊÊµÄ¸ñÊ½À´´´½¨RC
-	PIXELFORMATDESCRIPTOR pfd = { 
-		sizeof(PIXELFORMATDESCRIPTOR) ,  // pfd½á¹¹µÄ´óĞ¡ 
-		1 ,  // °æ±¾ºÅ
-		PFD_DRAW_TO_WINDOW | // Ö§³ÖÔÚ´°¿ÚÖĞ»æÍ¼ 
-		PFD_SUPPORT_OPENGL | // Ö§³Ö OpenGL 
-		PFD_DOUBLEBUFFER| // Ë«»º´æÄ£Ê½
-		PFD_STEREO |  //Ö§³ÖÁ¢ÌåÄ£Ê½
-		PFD_TYPE_RGBA ,  // RGBA ÑÕÉ«Ä£Ê½ 
-		24 ,  // 24 Î»ÑÕÉ«Éî¶È
-		0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  // ºöÂÔÑÕÉ«Î» 
-		0 ,  // Ã»ÓĞ·ÇÍ¸Ã÷¶È»º´æ 
-		0 ,  // ºöÂÔÒÆÎ»Î» 
-		0 ,  // ÎŞÀÛ¼Ó»º´æ 
-		0 ,  0 ,  0 ,  0 ,  // ºöÂÔÀÛ¼ÓÎ» 
-		32 ,  // 32 Î»Éî¶È»º´æ 
-		0 ,  // ÎŞÄ£°å»º´æ 
-		0 ,  // ÎŞ¸¨Öú»º´æ 
-		PFD_MAIN_PLANE ,  // Ö÷²ã 
-		0 ,  // ±£Áô 
-		0 ,  0 ,  0 // ºöÂÔ²ã , ¿É¼ûĞÔºÍËğ»ÙÑÚÄ£ 
-	}; 
-	//ÔÚDCÖĞÑ¡ÔñºÏÊÊµÄÏóËØ¸ñÊ½²¢·µ»ØË÷ÒıºÅ
-	int pixelformat;
-	pixelformat=::ChoosePixelFormat(m_pDC->GetSafeHdc() , &pfd);
-	if (pixelformat==0)
-	{
-		MessageBox("Ñ¡ÔñÏñËØ¸ñÊ½Ê§°Ü!" , "ÉèÖÃÏñËØ¸ñÊ½" , MB_ICONERROR);
-		return FALSE;
-	}
-	//ÉèÖÃÖ¸¶¨ÏóËØ¸ñÊ½
-	if (::SetPixelFormat(m_pDC->GetSafeHdc() , pixelformat , &pfd)==FALSE)
-	{
-		MessageBox("ÉèÖÃÏñËØ¸ñÊ½Ê§°Ü!" , "ÉèÖÃÏñËØ¸ñÊ½" , MB_ICONERROR);
-		return FALSE;
-	}
-
-	//²âÊÔµ±Ç°ÉèÖÃºÍÓ²¼şÏÔ¿¨ÊÇ·ñÖ§³ÖÁ¢ÌåÄ£Ê½
-	unsigned char ucTest;
-	glGetBooleanv (GL_STEREO ,  &ucTest);  
-	if (!ucTest) 
-	{
-		return 1;
-	}
-
-	if((pfd.dwFlags & PFD_STEREO)==0)
-		bStereoAvailable=FALSE ; // ÏÔ¿¨²»Ö§³ÖÁ¢ÌåÄ£Ê½
-	else
-		bStereoAvailable=TRUE;
-
-	CString stt[5];
-	if(bStereoAvailable==FALSE) //Èç¹ûÏÔ¿¨²»Ö§³ÖÁ¢ÌåÄ£Ê½£¬¸ø³ö¿ÉÄÜµÄ´íÎóÔ­Òò
-	{
-		stt[0]="¢Ù.Í¼ĞÎ¿¨²»Ö§³ÖÁ¢Ìå»º³å;\n";
-		stt[1]="¢Ú.Í¼ĞÎ¿¨Çı¶¯³ÌĞò²»Ö§³ÖÁ¢Ìå»º³å;\n";
-		stt[2]="¢Û.Ö»ÓĞÔÚÌØ¶¨µÄ½âÎö¶È»òË¢ĞÂÂÊÉèÖÃÏÂ , ²Å¿ÉÒÔÖ§³ÖÁ¢Ìå»º³å;\n";
-		stt[3]="¢Ü.Á¢Ìå»º³åĞèÒªÌØ¶¨µÄÇı¶¯ÅäÖÃÒÔ¼¤»î;";
-		stt[4].Format("Á¢ÌåÄ£Ê½Î´±»½ÓÊÜ.¿ÉÄÜÓĞÒÔÏÂÔ­Òò:\n%s%s%s%s" , stt[0] , stt[1] , stt[2] , stt[3]);
-		MessageBox(stt[4] , "Á¢ÌåÄ£Ê½ÉèÖÃ" , MB_ICONINFORMATION);
-	}
-	return TRUE;
+BOOL CMy3DSymbolLibNewView::SetupPixelFormat() {
+    // åˆå§‹åŒ–è±¡ç´ æ ¼å¼ä»¥åŠé€‰å–åˆé€‚çš„æ ¼å¼æ¥åˆ›å»ºRC
+    PIXELFORMATDESCRIPTOR pfd = {
+        sizeof(PIXELFORMATDESCRIPTOR) ,  // pfdç»“æ„çš„å¤§å°
+        1 ,  // ç‰ˆæœ¬å·
+        PFD_DRAW_TO_WINDOW | // æ”¯æŒåœ¨çª—å£ä¸­ç»˜å›¾
+        PFD_SUPPORT_OPENGL | // æ”¯æŒ OpenGL
+        PFD_DOUBLEBUFFER | // åŒç¼“å­˜æ¨¡å¼
+        PFD_STEREO |  //æ”¯æŒç«‹ä½“æ¨¡å¼
+        PFD_TYPE_RGBA ,  // RGBA é¢œè‰²æ¨¡å¼
+        24 ,  // 24 ä½é¢œè‰²æ·±åº¦
+        0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  // å¿½ç•¥é¢œè‰²ä½
+        0 ,  // æ²¡æœ‰éé€æ˜åº¦ç¼“å­˜
+        0 ,  // å¿½ç•¥ç§»ä½ä½
+        0 ,  // æ— ç´¯åŠ ç¼“å­˜
+        0 ,  0 ,  0 ,  0 ,  // å¿½ç•¥ç´¯åŠ ä½
+        32 ,  // 32 ä½æ·±åº¦ç¼“å­˜
+        0 ,  // æ— æ¨¡æ¿ç¼“å­˜
+        0 ,  // æ— è¾…åŠ©ç¼“å­˜
+        PFD_MAIN_PLANE ,  // ä¸»å±‚
+        0 ,  // ä¿ç•™
+        0 ,  0 ,  0 // å¿½ç•¥å±‚ , å¯è§æ€§å’ŒæŸæ¯æ©æ¨¡
+    };
+    // åœ¨DCä¸­é€‰æ‹©åˆé€‚çš„è±¡ç´ æ ¼å¼å¹¶è¿”å›ç´¢å¼•å·
+    int pixelformat;
+    pixelformat =::ChoosePixelFormat(m_pDC->GetSafeHdc() , &pfd);
+    if (pixelformat == 0) {
+        MessageBox("é€‰æ‹©åƒç´ æ ¼å¼å¤±è´¥!" , "è®¾ç½®åƒç´ æ ¼å¼" , MB_ICONERROR);
+        return FALSE;
+    }
+    // è®¾ç½®æŒ‡å®šè±¡ç´ æ ¼å¼
+    if (::SetPixelFormat(m_pDC->GetSafeHdc() , pixelformat , &pfd) == FALSE) {
+        MessageBox("è®¾ç½®åƒç´ æ ¼å¼å¤±è´¥!" , "è®¾ç½®åƒç´ æ ¼å¼" , MB_ICONERROR);
+        return FALSE;
+    }
+    // æµ‹è¯•å½“å‰è®¾ç½®å’Œç¡¬ä»¶æ˜¾å¡æ˜¯å¦æ”¯æŒç«‹ä½“æ¨¡å¼
+    unsigned char ucTest;
+    glGetBooleanv(GL_STEREO ,  &ucTest);
+    if (!ucTest) {
+        return 1;
+    }
+    if ((pfd.dwFlags & PFD_STEREO) == 0)
+        bStereoAvailable = FALSE ; // æ˜¾å¡ä¸æ”¯æŒç«‹ä½“æ¨¡å¼
+    else
+        bStereoAvailable = TRUE;
+    CString stt[5];
+    if (bStereoAvailable == FALSE) { // å¦‚æœæ˜¾å¡ä¸æ”¯æŒç«‹ä½“æ¨¡å¼ï¼Œç»™å‡ºå¯èƒ½çš„é”™è¯¯åŸå› 
+        stt[0] = "â‘ .å›¾å½¢å¡ä¸æ”¯æŒç«‹ä½“ç¼“å†²;\n";
+        stt[1] = "â‘¡.å›¾å½¢å¡é©±åŠ¨ç¨‹åºä¸æ”¯æŒç«‹ä½“ç¼“å†²;\n";
+        stt[2] = "â‘¢.åªæœ‰åœ¨ç‰¹å®šçš„è§£æåº¦æˆ–åˆ·æ–°ç‡è®¾ç½®ä¸‹ , æ‰å¯ä»¥æ”¯æŒç«‹ä½“ç¼“å†²;\n";
+        stt[3] = "â‘£.ç«‹ä½“ç¼“å†²éœ€è¦ç‰¹å®šçš„é©±åŠ¨é…ç½®ä»¥æ¿€æ´»;";
+        stt[4].Format("ç«‹ä½“æ¨¡å¼æœªè¢«æ¥å—.å¯èƒ½æœ‰ä»¥ä¸‹åŸå› :\n%s%s%s%s" , stt[0] , stt[1] , stt[2] , stt[3]);
+        MessageBox(stt[4] , "ç«‹ä½“æ¨¡å¼è®¾ç½®" , MB_ICONINFORMATION);
+    }
+    return TRUE;
 }
 
 
-int CMy3DSymbolLibNewView::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if (CView::OnCreate(lpCreateStruct) == -1)
-		return -1;
-
-	// TODO:  ÔÚ´ËÌí¼ÓÄú×¨ÓÃµÄ´´½¨´úÂë
-	pMain =(CMainFrame *)AfxGetApp()->m_pMainWnd;
-
-	// »ñÈ¡¿Í»§ÇøµÄÉè±¸ÃèÊö±í
-	m_pDC=new CClientDC(this); 
-
-	// ³õÊ¼»¯OpenGL
-	InitializeOpenGL(m_pDC);
-	InitData();
-
-	InitList() ; // ³õÊ¼»¯ÏÔÊ¾ÁĞ±í	
-
-
-
-
-	return 0;
+int CMy3DSymbolLibNewView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+    if (CView::OnCreate(lpCreateStruct) == -1)
+        return -1;
+    // TODO:  åœ¨æ­¤æ·»åŠ æ‚¨ä¸“ç”¨çš„åˆ›å»ºä»£ç 
+    pMain = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    // è·å–å®¢æˆ·åŒºçš„è®¾å¤‡æè¿°è¡¨
+    m_pDC = new CClientDC(this);
+    // åˆå§‹åŒ–OpenGL
+    InitializeOpenGL(m_pDC);
+    InitData();
+    InitList() ; // åˆå§‹åŒ–æ˜¾ç¤ºåˆ—è¡¨
+    return 0;
 }
 
 
-void CMy3DSymbolLibNewView::OnDestroy()
-{
-	ShowCursor(TRUE);	                        //´ò¿ªÊó±ê
-	if(wglGetCurrentContext() != NULL)
-	{
-		wglMakeCurrent(m_pDC->m_hDC,NULL);		//ÊÍ·ÅÓëm_hDC¶ÔÓ¦µÄRC
-	}
-	if(m_hRC != NULL)
-	{
-		wglDeleteContext(m_hRC);				// É¾³ıRC
-	}
-	if(m_pDC)
-		delete m_pDC;							//ÊÍ·Åµ±Ç°viewÓµÓĞµÄDC
-	CView::OnDestroy();
+void CMy3DSymbolLibNewView::OnDestroy() {
+    ShowCursor(TRUE);                           // æ‰“å¼€é¼ æ ‡
+    if (wglGetCurrentContext() != NULL) {
+        wglMakeCurrent(m_pDC->m_hDC, NULL);     // é‡Šæ”¾ä¸m_hDCå¯¹åº”çš„RC
+    }
+    if (m_hRC != NULL) {
+        wglDeleteContext(m_hRC);                // åˆ é™¤RC
+    }
+    if (m_pDC)
+        delete m_pDC;                           // é‡Šæ”¾å½“å‰viewæ‹¥æœ‰çš„DC
+    CView::OnDestroy();
 }
 
 
-void CMy3DSymbolLibNewView::OnSize(UINT nType, int cx, int cy)
-{
-	CView::OnSize(nType, cx, cy);
-
-	if(cy>0)
-	{
-		WinViewX = cx ;								// ÊÓ¿Ú¿í¶È
-		WinViewY = cy ;								// ÊÓ¿Ú¸ß¶È
-		glViewport(0 , 0 , cx , cy);				// ÉèÖÃÊÓ¿Ú´óĞ¡
-		float m_aspectRatio = (float)cx/(float)cy ; // ÊÓ¿ÚµÄºá×İ±ÈÀı
-		glMatrixMode(GL_PROJECTION);				// ½«µ±Ç°¾ØÕóÉèÖÃÎªÍ¶Ó°¾ØÕó,Ö¸Ã÷µ±Ç°¾ØÕóÎªGL_PROJECTION 
-		glLoadIdentity();							// ½«µ±Ç°¾ØÕóÖÃ»»Îªµ¥Î»Õó        
-		gluPerspective(50.0 + m_ViewWideNarrow , m_aspectRatio , m_near , m_far);// fovy=50.0 + m_ViewWideNarrow , ÊÇÊÓÒ°½Ç¶È
-		glMatrixMode(GL_MODELVIEW);					// ½«µ±Ç°¾ØÕóÉèÖÃÎªÄ£ĞÍ¾ØÕó		
-		glLoadIdentity();							// ½«µ±Ç°¾ØÕóÖÃ»»Îªµ¥Î»Õó 
-	}		
+void CMy3DSymbolLibNewView::OnSize(UINT nType, int cx, int cy) {
+    CView::OnSize(nType, cx, cy);
+    if (cy > 0) {
+        WinViewX = cx ;                             // è§†å£å®½åº¦
+        WinViewY = cy ;                             // è§†å£é«˜åº¦
+        glViewport(0 , 0 , cx , cy);                // è®¾ç½®è§†å£å¤§å°
+        float m_aspectRatio = (float)cx / (float)cy ; // è§†å£çš„æ¨ªçºµæ¯”ä¾‹
+        glMatrixMode(GL_PROJECTION);                // å°†å½“å‰çŸ©é˜µè®¾ç½®ä¸ºæŠ•å½±çŸ©é˜µ,æŒ‡æ˜å½“å‰çŸ©é˜µä¸ºGL_PROJECTION
+        glLoadIdentity();                           // å°†å½“å‰çŸ©é˜µç½®æ¢ä¸ºå•ä½é˜µ
+        gluPerspective(50.0 + m_ViewWideNarrow , m_aspectRatio , m_near , m_far);// fovy=50.0 + m_ViewWideNarrow , æ˜¯è§†é‡è§’åº¦
+        glMatrixMode(GL_MODELVIEW);                 // å°†å½“å‰çŸ©é˜µè®¾ç½®ä¸ºæ¨¡å‹çŸ©é˜µ
+        glLoadIdentity();                           // å°†å½“å‰çŸ©é˜µç½®æ¢ä¸ºå•ä½é˜µ
+    }
 }
 
 
 /************************************************************************/
-/* Function: µ¼ÈëµÈ¸ßÏßµØĞÎÊı¾İºÍÎÆÀí										*/
+/* Function: å¯¼å…¥ç­‰é«˜çº¿åœ°å½¢æ•°æ®å’Œçº¹ç†                                       */
 /************************************************************************/
-void CMy3DSymbolLibNewView::OnContourTerrainImport()
-{
-	TerrainImportContour dlg;
-	if(dlg.DoModal()==IDOK)
-	{
-		terrainTexFileName = dlg.m_TerrainContoureTex;
-		terrainContourFileName = dlg.m_TerrainContour;
-		LoadTerrainTex(terrainTexFileName, terrainContourFileName);
-	}
+void CMy3DSymbolLibNewView::OnContourTerrainImport() {
+    TerrainImportContour dlg;
+    if (dlg.DoModal() == IDOK) {
+        terrainTexFileName = dlg.m_TerrainContoureTex;
+        terrainContourFileName = dlg.m_TerrainContour;
+        LoadTerrainTex(terrainTexFileName, terrainContourFileName);
+    }
 }
 
-// Ìì¿ÕºĞ ÎÆÀí µ÷ÈëÎ»Í¼µ½¼ÆËã»úÄÚ´ætexture£¬Ö»ÄÜÓÃÓÚ8Î»£¨256É«£©µÄbmpÍ¼ĞÎ ,ÌìÆøÔ¤±¨
-bool CMy3DSymbolLibNewView::LoadT8(char *filename, GLuint &texture)	
-{
-	AUX_RGBImageRec *pImage = NULL;
-	pImage = auxDIBImageLoad(filename);			// ×°ÈëÎ»Í¼
-	if(pImage == NULL)	return false;			// Î»Í¼Ã»×°Èë£¬·µ»Ø´íÎó
-	glGenTextures(1, &texture);					// Éú³ÉÌùÍ¼£¨ÎÆÀí£©
-	glBindTexture    (GL_TEXTURE_2D,texture);			
-	gluBuild2DMipmaps(GL_TEXTURE_2D,4,  
-		pImage->sizeX,									
-		pImage->sizeY,									
-		GL_RGB, GL_UNSIGNED_BYTE,
-		pImage->data								
-		);
-	free(pImage->data);							// ÊÍ·ÅÎ»Í¼Êı¾İÕ¼¾İµÄÄÚ´æ×ÊÔ´
-	free(pImage);	
-	return true;
+// å¤©ç©ºç›’ çº¹ç† è°ƒå…¥ä½å›¾åˆ°è®¡ç®—æœºå†…å­˜textureï¼Œåªèƒ½ç”¨äº8ä½ï¼ˆ256è‰²ï¼‰çš„bmpå›¾å½¢ ,å¤©æ°”é¢„æŠ¥
+bool CMy3DSymbolLibNewView::LoadT8(char* filename, GLuint& texture) {
+    AUX_RGBImageRec* pImage = NULL;
+    pImage = auxDIBImageLoad(filename);         // è£…å…¥ä½å›¾
+    if (pImage == NULL)  return false;          // ä½å›¾æ²¡è£…å…¥ï¼Œè¿”å›é”™è¯¯
+    glGenTextures(1, &texture);                 // ç”Ÿæˆè´´å›¾ï¼ˆçº¹ç†ï¼‰
+    glBindTexture(GL_TEXTURE_2D, texture);
+    gluBuild2DMipmaps(GL_TEXTURE_2D, 4,
+                      pImage->sizeX,
+                      pImage->sizeY,
+                      GL_RGB, GL_UNSIGNED_BYTE,
+                      pImage->data
+                     );
+    free(pImage->data);                         // é‡Šæ”¾ä½å›¾æ•°æ®å æ®çš„å†…å­˜èµ„æº
+    free(pImage);
+    return true;
 }
 
 
 /************************************************************************/
-/* Function: µ÷µÈ¸ßÏßµØÊÆÍ¼												*/
+/* Function: è°ƒç­‰é«˜çº¿åœ°åŠ¿å›¾                                             */
 /************************************************************************/
-unsigned char * CMy3DSymbolLibNewView::LoadBit(char *filename, BITMAPINFOHEADER *bitmap)
-{
-	FILE *filePtr;												// ¶¨ÒåÎ»Í¼½á¹¹
-	BITMAPFILEHEADER  Header;									// ¶¨ÒåÎ»Í¼Ö¸Õë
-	unsigned char    *Image;									// Í¼ĞÎ»º´æÇø
-	unsigned int      imageIdx = 0;								// Í¼ĞÎË÷Òı
-	unsigned char     tempRGB;									// ½»»»±äÁ¿
-	filePtr = fopen(filename, "rb");							// ¶ÁÎÄ¼ş
-	if (filePtr == NULL)    return NULL;						// ¶ÁÎÄ¼ş³ö´í·µ»Ø
-	fread(&Header, sizeof(BITMAPFILEHEADER), 1, filePtr);		// ¶ÁÎ»Í¼½á¹¹
-	if (Header.bfType != BITMAP_ID)								// ²»ÊÇBMPÎ»Í¼
-	{		
-		fclose(filePtr);										// ¹Ø±ÕÎÄ¼ş
-		return NULL;											// ·µ»Ø¿Õ
-	}
-	fread(bitmap, sizeof(BITMAPINFOHEADER), 1, filePtr);		// ¶ÁÎ»Í¼½á¹¹
-	fseek(filePtr, Header.bfOffBits, SEEK_SET);					// ÒÆ¶¯ÎÄ¼şÖ¸Õëµ½Êı¾İÇø
-	Image = (unsigned char*)malloc(bitmap->biSizeImage);			// ÉêÇëÍ¼ĞÎÇø
-	if (!Image)													// ÉêÇëÍ¼ĞÎÇøÊ§°Ü
-	{ 
-		free(Image);											// ÊÍ·ÅÍ¼ĞÎÇø
-		fclose(filePtr);										// ¹Ø±ÕÎÄ¼ş
-		return NULL;											// ·µ»Ø¿Õ
-	}
-	fread(Image, 1, bitmap->biSizeImage, filePtr);				// ½«Í¼ĞÎÊı¾İ¶ÁÈë
-	if (Image == NULL)											// Êı¾İ¶ÁÈëÎª¿Õ
-	{ 
-		fclose(filePtr);										// ¹Ø±ÕÎÄ¼ş
-		return NULL;											// ·µ»Ø¿Õ
-	}
-	for (imageIdx = 0; imageIdx < bitmap->biSizeImage; imageIdx+=3)
-	{ 
-		tempRGB = Image[imageIdx];
-		Image[imageIdx] = Image[imageIdx + 2];
-		Image[imageIdx + 2] = tempRGB;
-	}															// ½»»»Êı¾İ
-	fclose(filePtr);											// ¹Ø±ÕÎÄ¼ş
-	return Image;												// ·µ»ØÍ¼ĞÎÊı¾İ
+unsigned char* CMy3DSymbolLibNewView::LoadBit(char* filename, BITMAPINFOHEADER* bitmap) {
+    FILE* filePtr;                                              // å®šä¹‰ä½å›¾ç»“æ„
+    BITMAPFILEHEADER  Header;                                   // å®šä¹‰ä½å›¾æŒ‡é’ˆ
+    unsigned char*    Image;                                    // å›¾å½¢ç¼“å­˜åŒº
+    unsigned int      imageIdx = 0;                             // å›¾å½¢ç´¢å¼•
+    unsigned char     tempRGB;                                  // äº¤æ¢å˜é‡
+    filePtr = fopen(filename, "rb");                            // è¯»æ–‡ä»¶
+    if (filePtr == NULL)    return NULL;                        // è¯»æ–‡ä»¶å‡ºé”™è¿”å›
+    fread(&Header, sizeof(BITMAPFILEHEADER), 1, filePtr);       // è¯»ä½å›¾ç»“æ„
+    if (Header.bfType != BITMAP_ID) {                           // ä¸æ˜¯BMPä½å›¾
+        fclose(filePtr);                                        // å…³é—­æ–‡ä»¶
+        return NULL;                                            // è¿”å›ç©º
+    }
+    fread(bitmap, sizeof(BITMAPINFOHEADER), 1, filePtr);        // è¯»ä½å›¾ç»“æ„
+    fseek(filePtr, Header.bfOffBits, SEEK_SET);                 // ç§»åŠ¨æ–‡ä»¶æŒ‡é’ˆåˆ°æ•°æ®åŒº
+    Image = (unsigned char*)malloc(bitmap->biSizeImage);            // ç”³è¯·å›¾å½¢åŒº
+    if (!Image) {                                               // ç”³è¯·å›¾å½¢åŒºå¤±è´¥
+        free(Image);                                            // é‡Šæ”¾å›¾å½¢åŒº
+        fclose(filePtr);                                        // å…³é—­æ–‡ä»¶
+        return NULL;                                            // è¿”å›ç©º
+    }
+    fread(Image, 1, bitmap->biSizeImage, filePtr);              // å°†å›¾å½¢æ•°æ®è¯»å…¥
+    if (Image == NULL) {                                        // æ•°æ®è¯»å…¥ä¸ºç©º
+        fclose(filePtr);                                        // å…³é—­æ–‡ä»¶
+        return NULL;                                            // è¿”å›ç©º
+    }
+    for (imageIdx = 0; imageIdx < bitmap->biSizeImage; imageIdx += 3) {
+        tempRGB = Image[imageIdx];
+        Image[imageIdx] = Image[imageIdx + 2];
+        Image[imageIdx + 2] = tempRGB;
+    }                                                           // äº¤æ¢æ•°æ®
+    fclose(filePtr);                                            // å…³é—­æ–‡ä»¶
+    return Image;                                               // è¿”å›å›¾å½¢æ•°æ®
 }
 
 
-void CMy3DSymbolLibNewView::InitTerrain()
-{
-	int index = 0;
-	int Vertex;
-	for (int z = 0; z < MAP_W; z++)
-		for (int x = 0; x < MAP_W; x++)									// MAP_WÊÇµØĞÎ¿éÊı£¬32ĞĞ£¬32ÁĞµÄ·½ĞÎµØĞÎ
-		{
-			Vertex = z * MAP_W + x;
-			g_terrain [Vertex][0] = float(x)*MAP_SCALE;					// µØÓòÊı×é 3Î¬£¬MAP_SCALEÊÇ±ß³¤
-			g_terrain [Vertex][1] = (float)(g_imageData[Vertex*3] / 3);	// µØÓòÊı×é 3Î¬ »Ò¶ÈµÈ¸ßÏßÉú³É¸ß¶ÈÍ¼£¬ÔÚModelobj³õÊ¼»¯¾Í¸³ÖµÁË
-				
-			
-			g_terrain [Vertex][2] = -float(z)*MAP_SCALE;					// µØÓòÊı×é 3Î¬
-
-			g_texcoord[Vertex][0] = (float) x;							// Ë÷ÒıÊı×é2Î¬£¬Ö¸Ê¾ÇúÃæÌùÍ¼µÄÆ½Ãæ×ø±ê
-			g_texcoord[Vertex][1] = (float) z;	
-
-			g_index [index++] = Vertex;									// ¶¥µãÊı×é1Î¬£¬ÇúÃæ¶¥µã£¬Ò»Î¬¶¥µãÊı×é¼Ó¿ìÏÔÊ¾
-			g_index [index++] = Vertex + MAP_W;
-
-			// »ñÈ¡µØĞÎ¸ß¶È¼«Öµ
-			if(m_maxHeight < g_terrain [Vertex][1]) m_maxHeight = g_terrain [Vertex][1];
-			if(m_minHeight > g_terrain [Vertex][1]) m_minHeight = g_terrain [Vertex][1];
-
-			g_max_height = m_maxHeight; // ±£´æ×î´ó¸ß³ÌÖµµ½È«¾Ö±äÁ¿ÖĞ
-		}
-		
-		// ¶¥µãÊı×é  µÚÒ»²½ ÆôÓÃÊı×é
-		glEnableClientState(GL_VERTEX_ARRAY);					// ÔÊĞíÊ¹ÓÃµØÓòÊı×é
-		// ¶¥µãÊı×é  µÚ¶ş²½ ÖÆ¶¨Êı×éÊı¾İ
-		glVertexPointer    (3,GL_FLOAT,0,g_terrain);			// ×°ÈëµØÓòÊı¾İ
-
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);			// ÔÊĞíÊ¹ÓÃË÷ÒıÊı×é
-		glTexCoordPointer  (2,GL_FLOAT,0,g_texcoord);			// ×°ÈëË÷ÒıÊı×é
-}
-
-   
-/************************************************************************/
-/* Function: ÈıÎ¬µØĞÎ»æÖÆ	,ÀûÓÃglDrawElements¿ìËÙ»æÖÆÅÅÁĞºÃµÄ¶¥µãµØĞÎ		*/
-/************************************************************************/
-void CMy3DSymbolLibNewView::DrawTerrain()
-{	
-	//glShadeModelº¯ÊıÓÃÀ´ÉèÖÃÒõÓ°µÄĞ§¹û£¬GL_SMOOTHÎªÄ¬ÈÏÖµ£¬±íÊ¾Æ½»¬ÒõÓ°Ğ§¹û£»
-	glShadeModel(GL_SMOOTH);
-	SetDrawMode();	
-	glMatrixMode(GL_PROJECTION); 
-	glLoadIdentity();          
-	
-
-	gluPerspective(50.0 + m_ViewWideNarrow , (float)WinViewX/(float)WinViewY , m_near , m_far);		
-	glMatrixMode(GL_MODELVIEW); // ¶¨Òå¾ØÕóÎªÄ£ĞÍÄ£ĞÍ¾ØÕó
-	glLoadIdentity();			// ½«µ±Ç°¾ØÕóÖÃ»»Îªµ¥Î»¾ØÕó       	
-	/*glClearDepthº¯ÊıÉèÖÃÉî¶È»º³åÇøµÄ£¬ËüµÄº¬Òå¾ÍÔÚOpenGL´°¿Ú»æÖÆµÄÍ¼ĞÎÉîÈëµ½ÆÁÄ»ÖĞµÄ³Ì¶È£¬
-	Éî¶ÈµÄÒâÒå¾ÍÊÇÔÚÈıÎ¬¿Õ¼äÖĞµÄz×ø±êµÄÊıÖµ£¬zÈ¡0Ê±±íÊ¾ÔÚÆ½ÃæÉÏ£¬Äã¾Í¿´²»µ½´°¿ÚÖĞµÄÍ¼ĞÎÁË£¬
-	ËùÒÔ¸ºÖµÔ½Ğ¡£¬Ô½Ô¶Àë´°¿ÚÆ½ÃæÏòÀï£¬ËµÃ÷´°¿ÚÖĞµÄÍ¼ĞÎÀëÎÒÃÇ¹Û²ìÕßµÄ¾àÀë±äÔ¶ÁË£»*/
-	glClearDepth(1.0f);			// ÉèÖÃ³õÊ¼»¯Éî¶È»º´æÖµ
-	glEnable(GL_DEPTH_TEST);	// ÆôÓÃÉî¶È²âÊÔ
-	glDepthFunc(GL_LESS);		// ÔÚµ÷ÓÃglEnable(GL_DEPTH_TEST); ¿ªÆôÕâ¸ö¹¦ÄÜÒÔºó£¬µ±Éî¶È±ä»¯Ğ¡ÓÚµ±Ç°Éî¶ÈÖµÊ±£¬¸üĞÂÉî¶ÈÖµ¡£
-	SetCamra();
-	glViewport(0 ,  0 ,  WinViewX ,  WinViewY); //ÉèÖÃÊÓ¿Ú´óĞ¡ºÍÎ»ÖÃ
-	glBindTexture(GL_TEXTURE_2D, texTerrain);
-	glTexEnvf    (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-	for (int z = 0; z < MAP_W-1; z++)
-	{
-		glDrawElements(GL_TRIANGLE_STRIP,MAP_W*2,GL_UNSIGNED_INT,&g_index[z*MAP_W*2]); 
-	}
-
-
-	if(m_bShowbreviary==TRUE)	// ÏÔÊ¾ËõÂÔÊÓÍ¼
-	{
-		glViewport	   (WinViewX*5/6 ,  WinViewY*5/6 , WinViewX/6 ,  WinViewY/6);
-		glBindTexture  (GL_TEXTURE_2D, texTerrain);
-		glTexEnvf      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-		for (int z = 0; z < MAP_W-1; z++)
-		{
-			// ¶¥µãÊı×é  µÚÈı²½ äÖÈ¾
-			glDrawElements(GL_TRIANGLE_STRIP,MAP_W*2,GL_UNSIGNED_INT,&g_index[z*MAP_W*2]);   
-		}
-		glViewport(0, 0, WinViewX, WinViewY); // ÖØĞÂÉèÖÃÊÓ¿Ú´óĞ¡
-	}
-
-
-
- 
+void CMy3DSymbolLibNewView::InitTerrain() {
+    int index = 0;
+    int Vertex;
+    for (int z = 0; z < MAP_W; z++)
+        for (int x = 0; x < MAP_W; x++) {                               // MAP_Wæ˜¯åœ°å½¢å—æ•°ï¼Œ32è¡Œï¼Œ32åˆ—çš„æ–¹å½¢åœ°å½¢
+            Vertex = z * MAP_W + x;
+            g_terrain [Vertex][0] = float(x) * MAP_SCALE;               // åœ°åŸŸæ•°ç»„ 3ç»´ï¼ŒMAP_SCALEæ˜¯è¾¹é•¿
+            g_terrain [Vertex][1] = (float)(g_imageData[Vertex * 3] / 3); // åœ°åŸŸæ•°ç»„ 3ç»´ ç°åº¦ç­‰é«˜çº¿ç”Ÿæˆé«˜åº¦å›¾ï¼Œåœ¨Modelobjåˆå§‹åŒ–å°±èµ‹å€¼äº†
+            g_terrain [Vertex][2] = -float(z) * MAP_SCALE;                  // åœ°åŸŸæ•°ç»„ 3ç»´
+            g_texcoord[Vertex][0] = (float) x;                          // ç´¢å¼•æ•°ç»„2ç»´ï¼ŒæŒ‡ç¤ºæ›²é¢è´´å›¾çš„å¹³é¢åæ ‡
+            g_texcoord[Vertex][1] = (float) z;
+            g_index [index++] = Vertex;                                 // é¡¶ç‚¹æ•°ç»„1ç»´ï¼Œæ›²é¢é¡¶ç‚¹ï¼Œä¸€ç»´é¡¶ç‚¹æ•°ç»„åŠ å¿«æ˜¾ç¤º
+            g_index [index++] = Vertex + MAP_W;
+            // è·å–åœ°å½¢é«˜åº¦æå€¼
+            if (m_maxHeight < g_terrain [Vertex][1]) m_maxHeight = g_terrain [Vertex][1];
+            if (m_minHeight > g_terrain [Vertex][1]) m_minHeight = g_terrain [Vertex][1];
+            g_max_height = m_maxHeight; // ä¿å­˜æœ€å¤§é«˜ç¨‹å€¼åˆ°å…¨å±€å˜é‡ä¸­
+        }
+    // é¡¶ç‚¹æ•°ç»„  ç¬¬ä¸€æ­¥ å¯ç”¨æ•°ç»„
+    glEnableClientState(GL_VERTEX_ARRAY);                   // å…è®¸ä½¿ç”¨åœ°åŸŸæ•°ç»„
+    // é¡¶ç‚¹æ•°ç»„  ç¬¬äºŒæ­¥ åˆ¶å®šæ•°ç»„æ•°æ®
+    glVertexPointer(3, GL_FLOAT, 0, g_terrain);             // è£…å…¥åœ°åŸŸæ•°æ®
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);            // å…è®¸ä½¿ç”¨ç´¢å¼•æ•°ç»„
+    glTexCoordPointer(2, GL_FLOAT, 0, g_texcoord);          // è£…å…¥ç´¢å¼•æ•°ç»„
 }
 
 
 /************************************************************************/
-/* Function: »ñÈ¡µØÃæ¸ß¶È													*/
+/* Function: ä¸‰ç»´åœ°å½¢ç»˜åˆ¶   ,åˆ©ç”¨glDrawElementså¿«é€Ÿç»˜åˆ¶æ’åˆ—å¥½çš„é¡¶ç‚¹åœ°å½¢     */
 /************************************************************************/
-float CMy3DSymbolLibNewView::GetHeight(float x, float z)
-{
-	float CameraX = x/MAP_SCALE;					// ¼ÆËãÔÚÄÄÒ»ÁĞ
-	float CameraZ =-z/MAP_SCALE;						// ¼ÆËãÔÚÄÄÒ»ĞĞ
-	int Col0 = int(CameraX);						// ¿éµÄÁĞºÅ
-	int Row0 = int(CameraZ);						// ¿éµÄĞĞºÅ
-	int Col1 = Col0 + 1;							// ÏàÁÚÁĞ
-	int Row1 = Row0 + 1;							// ÏàÁÚ¿é
-	if (Col1 > MAP_W)	Col1 = 0;					// ÏàÁÚÁĞ´óÓÚµØ¿éÊı£¬È¡Ê×ÁĞ
-	if (Row1 > MAP_W)	Row1 = 0;					// ÏàÁÚĞĞ´óÓÚµØ¿éÊı£¬È¡Ê×ĞĞ
-
-	float h00=g_terrain[Col0 + Row0*MAP_W][1];		// »ñÈ¡¿éËÄ½ÇµÄ¸ß¶È
-	float h01=g_terrain[Col1 + Row0*MAP_W][1];
-	float h11=g_terrain[Col1 + Row1*MAP_W][1];
-	float h10=g_terrain[Col0 + Row1*MAP_W][1];
-
-	float tx =CameraX - int(CameraX);				// Çó¿éÄÚXÆ«ÒÆÎ»ÖÃ
-	float ty =CameraZ - int(CameraZ);				// Çó¿éÄÚZÆ«ÒÆÎ»ÖÃ
-
-	float txty = tx * ty;							// ÒÔÏÂÎªË«ÏßĞÔ²åÖµ£¨ÄÚ²å£©¼ÆËã
-
-	// ·µ»Ø²åÖµ¼ÆËãÖµ£¬ÎªËùÇóµãµÄ¸ß¶È
-	return h00*(1.0f-ty-tx+txty) + h01*(tx-txty) + h11*txty + h10*(ty-txty);						
-}
-
-void CMy3DSymbolLibNewView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	// TODO: ÔÚ´ËÌí¼ÓÏûÏ¢´¦Àí³ÌĞò´úÂëºÍ/»òµ÷ÓÃÄ¬ÈÏÖµ
-	if(nChar =='W'|| nChar =='w'){
-		m_Drawmode = 1;
-	}
-	if(nChar =='F'|| nChar =='f'){
-		m_Drawmode = 2;
-	}
-	if(nChar =='T'|| nChar =='t'){
-		m_Drawmode = 3;
-	}
-	Invalidate(FALSE);
-	CView::OnChar(nChar, nRepCnt, nFlags);
-}
-
-/********************************************************/
-/* Function:ÉèÖÃ»æÍ¼Ä£Ê½									*/
-/********************************************************/
-void  CMy3DSymbolLibNewView::SetDrawMode()
-{
-	switch(m_Drawmode)//»æÖÆÄ£Ê½ 
-	{
-	case 1://Ïß¿òÄ£Ê½
-		glDisable(GL_TEXTURE_2D) ; // ¹Ø±ÕÎÆÀí¹¦ÄÜ
-		glPolygonMode(GL_FRONT_AND_BACK , GL_LINE);
-		break;
-	case 2://äÖÔÎÄ£Ê½
-		glDisable(GL_TEXTURE_2D) ; // ¿ªÆôÎÆÀí¹¦ÄÜ
-		glPolygonMode(GL_FRONT_AND_BACK , GL_FILL);
-		break;
-	case 3://ÎÆÀíÄ£Ê½
-		glEnable(GL_TEXTURE_2D) ; // ¿ªÆôÎÆÀí¹¦ÄÜ
-		glPolygonMode(GL_FRONT_AND_BACK , GL_FILL);
-		break;
-	}
+void CMy3DSymbolLibNewView::DrawTerrain() {
+    //glShadeModelå‡½æ•°ç”¨æ¥è®¾ç½®é˜´å½±çš„æ•ˆæœï¼ŒGL_SMOOTHä¸ºé»˜è®¤å€¼ï¼Œè¡¨ç¤ºå¹³æ»‘é˜´å½±æ•ˆæœï¼›
+    glShadeModel(GL_SMOOTH);
+    SetDrawMode();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(50.0 + m_ViewWideNarrow , (float)WinViewX / (float)WinViewY , m_near , m_far);
+    glMatrixMode(GL_MODELVIEW); // å®šä¹‰çŸ©é˜µä¸ºæ¨¡å‹æ¨¡å‹çŸ©é˜µ
+    glLoadIdentity();           // å°†å½“å‰çŸ©é˜µç½®æ¢ä¸ºå•ä½çŸ©é˜µ
+    /*glClearDepthå‡½æ•°è®¾ç½®æ·±åº¦ç¼“å†²åŒºçš„ï¼Œå®ƒçš„å«ä¹‰å°±åœ¨OpenGLçª—å£ç»˜åˆ¶çš„å›¾å½¢æ·±å…¥åˆ°å±å¹•ä¸­çš„ç¨‹åº¦ï¼Œ
+    æ·±åº¦çš„æ„ä¹‰å°±æ˜¯åœ¨ä¸‰ç»´ç©ºé—´ä¸­çš„zåæ ‡çš„æ•°å€¼ï¼Œzå–0æ—¶è¡¨ç¤ºåœ¨å¹³é¢ä¸Šï¼Œä½ å°±çœ‹ä¸åˆ°çª—å£ä¸­çš„å›¾å½¢äº†ï¼Œ
+    æ‰€ä»¥è´Ÿå€¼è¶Šå°ï¼Œè¶Šè¿œç¦»çª—å£å¹³é¢å‘é‡Œï¼Œè¯´æ˜çª—å£ä¸­çš„å›¾å½¢ç¦»æˆ‘ä»¬è§‚å¯Ÿè€…çš„è·ç¦»å˜è¿œäº†ï¼›*/
+    glClearDepth(1.0f);         // è®¾ç½®åˆå§‹åŒ–æ·±åº¦ç¼“å­˜å€¼
+    glEnable(GL_DEPTH_TEST);    // å¯ç”¨æ·±åº¦æµ‹è¯•
+    glDepthFunc(GL_LESS);       // åœ¨è°ƒç”¨glEnable(GL_DEPTH_TEST); å¼€å¯è¿™ä¸ªåŠŸèƒ½ä»¥åï¼Œå½“æ·±åº¦å˜åŒ–å°äºå½“å‰æ·±åº¦å€¼æ—¶ï¼Œæ›´æ–°æ·±åº¦å€¼ã€‚
+    SetCamra();
+    glViewport(0 ,  0 ,  WinViewX ,  WinViewY); //è®¾ç½®è§†å£å¤§å°å’Œä½ç½®
+    glBindTexture(GL_TEXTURE_2D, texTerrain);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+    for (int z = 0; z < MAP_W - 1; z++) {
+        glDrawElements(GL_TRIANGLE_STRIP, MAP_W * 2, GL_UNSIGNED_INT, &g_index[z * MAP_W * 2]);
+    }
+    if (m_bShowbreviary == TRUE) { // æ˜¾ç¤ºç¼©ç•¥è§†å›¾
+        glViewport(WinViewX * 5 / 6 ,  WinViewY * 5 / 6 , WinViewX / 6 ,  WinViewY / 6);
+        glBindTexture(GL_TEXTURE_2D, texTerrain);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+        for (int z = 0; z < MAP_W - 1; z++) {
+            // é¡¶ç‚¹æ•°ç»„  ç¬¬ä¸‰æ­¥ æ¸²æŸ“
+            glDrawElements(GL_TRIANGLE_STRIP, MAP_W * 2, GL_UNSIGNED_INT, &g_index[z * MAP_W * 2]);
+        }
+        glViewport(0, 0, WinViewX, WinViewY); // é‡æ–°è®¾ç½®è§†å£å¤§å°
+    }
 }
 
 
+/************************************************************************/
+/* Function: è·å–åœ°é¢é«˜åº¦                                                   */
+/************************************************************************/
+float CMy3DSymbolLibNewView::GetHeight(float x, float z) {
+    float CameraX = x / MAP_SCALE;                  // è®¡ç®—åœ¨å“ªä¸€åˆ—
+    float CameraZ = -z / MAP_SCALE;                     // è®¡ç®—åœ¨å“ªä¸€è¡Œ
+    int Col0 = int(CameraX);                        // å—çš„åˆ—å·
+    int Row0 = int(CameraZ);                        // å—çš„è¡Œå·
+    int Col1 = Col0 + 1;                            // ç›¸é‚»åˆ—
+    int Row1 = Row0 + 1;                            // ç›¸é‚»å—
+    if (Col1 > MAP_W)   Col1 = 0;                   // ç›¸é‚»åˆ—å¤§äºåœ°å—æ•°ï¼Œå–é¦–åˆ—
+    if (Row1 > MAP_W)   Row1 = 0;                   // ç›¸é‚»è¡Œå¤§äºåœ°å—æ•°ï¼Œå–é¦–è¡Œ
+    float h00 = g_terrain[Col0 + Row0 * MAP_W][1];  // è·å–å—å››è§’çš„é«˜åº¦
+    float h01 = g_terrain[Col1 + Row0 * MAP_W][1];
+    float h11 = g_terrain[Col1 + Row1 * MAP_W][1];
+    float h10 = g_terrain[Col0 + Row1 * MAP_W][1];
+    float tx = CameraX - int(CameraX);              // æ±‚å—å†…Xåç§»ä½ç½®
+    float ty = CameraZ - int(CameraZ);              // æ±‚å—å†…Zåç§»ä½ç½®
+    float txty = tx * ty;                           // ä»¥ä¸‹ä¸ºåŒçº¿æ€§æ’å€¼ï¼ˆå†…æ’ï¼‰è®¡ç®—
+    // è¿”å›æ’å€¼è®¡ç®—å€¼ï¼Œä¸ºæ‰€æ±‚ç‚¹çš„é«˜åº¦
+    return h00 * (1.0f - ty - tx + txty) + h01 * (tx - txty) + h11 * txty + h10 * (ty - txty);
+}
+
+void CMy3DSymbolLibNewView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
+    // TODO: åœ¨æ­¤æ·»åŠ æ¶ˆæ¯å¤„ç†ç¨‹åºä»£ç å’Œ/æˆ–è°ƒç”¨é»˜è®¤å€¼
+    if (nChar == 'W' || nChar == 'w') {
+        m_Drawmode = 1;
+    }
+    if (nChar == 'F' || nChar == 'f') {
+        m_Drawmode = 2;
+    }
+    if (nChar == 'T' || nChar == 't') {
+        m_Drawmode = 3;
+    }
+    Invalidate(FALSE);
+    CView::OnChar(nChar, nRepCnt, nFlags);
+}
+
 /********************************************************/
-/* Function:³¡¾°»æÖÆ										*/
+/* Function:è®¾ç½®ç»˜å›¾æ¨¡å¼                                    */
 /********************************************************/
-void CMy3DSymbolLibNewView::DrawScene()
-{
-	glClearColor(0.53, 0.81, 0.92, 0.0);				// ÉèÖÃË¢ĞÂ±³¾°É«SkyBlue: 135,206,235
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);	// Ë¢ĞÂ±³¾°
-	glLoadIdentity();									// ÖØÖÃµ±Ç°µÄÄ£ĞÍ¹Û²ì¾ØÕó
-	SetDrawMode();
-
-	if(m_vEyePosition.x <  MAP_SCALE){			
-		m_vEyePosition.x = MAP_SCALE;
-	}
-	if(m_vEyePosition.x > (MAP_W-2) * MAP_SCALE)	{
-		m_vEyePosition.x = (MAP_W-2) * MAP_SCALE;
-	}
-	if(m_vEyePosition.z < -(MAP_W-2) * MAP_SCALE){
-		m_vEyePosition.z = -(MAP_W-2) * MAP_SCALE;
-	}
-	if(m_vEyePosition.z > -MAP_SCALE){
-		m_vEyePosition.z = -MAP_SCALE;
-	}
-
-	SetCamra();
-
-	
-
-	if(iTerrainType != 0)
-	{
-		if(iSkyBoxLoaded){
-			DrawSky();
-		}
-		
-		DrawClock();			// »æÖÆÖ¸±±Õë
-		DrawTerrain();
-		DrawFlyPath();
-		DrawRailwaythesme();	// »æÖÆÌúÂ·
-
-		if(m_QueryType==QUERY_COORDINATE || m_QueryType==QUERY_DISTENCE || m_QueryType==SELECTLINE
-			|| m_QueryType==LINE_ADD //Line
-			|| m_QueryType==AREA_ADD //Area
-		){
-			DrawSearchPoint();	// »æÖÆ¿Õ¼ä²éÑ¯±êÖ¾ 
-		}
-
-
-		//[160120]
-		if(fuse_Flag)
-		{
-			DrawJDLine(Line_a_JD_vector, Line_b_JD_vector);
-		}
-
-
-		if(Area_fuse_Flag)
-		{
-			int tmp_size = m_Area4_Array.GetSize();
-
-			for(int i=0; i<tmp_size; ++i)
-			{
-				/*	Area_4 tmp_area4;
-				tmp_area4.pt1 = m_Area4_Array[i]->pt1;
-				tmp_area4.pt2 = m_Area4_Array[i]->pt2;
-				tmp_area4.pt3 = m_Area4_Array[i]->pt3;
-				tmp_area4.pt4 = m_Area4_Array[i]->pt4;
-
-
-				tmp_area4.LocalTrianglesVecotr1 = m_Area4_Array[i]->LocalTrianglesVecotr1;
-				tmp_area4.LocalTrianglesVecotr1_1 = m_Area4_Array[i]->LocalTrianglesVecotr1_1;
-				tmp_area4.LocalTrianglesVecotr2 = m_Area4_Array[i]->LocalTrianglesVecotr2;
-				tmp_area4.LocalTrianglesVecotr2_1 = m_Area4_Array[i]->LocalTrianglesVecotr2_1;
-
-				tmp_area4.LocalTrianglesVecotr_last = m_Area4_Array[i]->LocalTrianglesVecotr_last;
-				tmp_area4.TrianglesInPolygonVecotr = m_Area4_Array[i]->TrianglesInPolygonVecotr;
-				
-				Area_Triangled(tmp_area4);
-				*/
-
-				if(m_Area4_Array[i]->deleted != 1)
-				{
-					Area_Triangled( m_Area4_Array[i]);
-				}
-				
-			}
-			
-		}
-
-
-		// ---------------------------------------------------------
-
-		// ÏÔÊ¾¾°¹ÛÊ÷
-		glPushMatrix();
-		if(m_TreeModel.GetSize() > 0)
-		{
-			for(int i =0; i < m_TreeModel.GetSize(); i++)
-			{
-				ShowTree(i);
-			}
-		}
-		glPopMatrix();
-		// ---------------------------------------------------------
-
-		// ÏÔÊ¾3D¾°¹ÛÊ÷
-		glPushMatrix();
-		if(m_3DTreeModel.GetSize() > 0)
-		{
-			for(int i =0; i < m_3DTreeModel.GetSize(); i++)
-			{
-				Show3DTree(i);
-			}
-		}
-		glPopMatrix();
-		// ---------------------------------------------------------
-
-		// ÏÔÊ¾³ÇÊĞ·ûºÅ
-		glPushMatrix();
-		if(m_CitySymbolModel.GetSize() > 0)
-		{
-			for(int i =0; i < m_CitySymbolModel.GetSize(); i++)
-			{
-				ShowCitySymbol(i);
-			}
-		}
-		glPopMatrix();
-		// ---------------------------------------------------------
-		glPushMatrix();
-		if(bIsWeatherLoad)
-		{
-			ShowWeather();
-		}
-		glPopMatrix();
-		// ---------------------------------------------------------
-		glPushMatrix();
-		glPushAttrib(GL_CURRENT_COLOR);
-			
-		if(m_3DModel.GetSize() > 0)
-		{ 
-			for(int i = 0; i < m_3DModel.GetSize(); i++)
-					
-				if(m_3DModel.GetAt(i)->isDeleted == false)
-				{
-					Draw3DModel(m_3DModel.GetAt(i));
-				}	
-		}
-		glPopAttrib();
-		glPopMatrix();
-		// ---------------------------------------------------------
-		if(m_flypathPtIndex > 0)
-		{
-			TextFlyHelp();
-		}
-	} 
-
-	GLfloat light_position[] = {m_vEyePosition.x,300,m_vEyePosition.z-100};
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-	GLfloat lightAmbient[] = {0.5, 0.5, 0.5, 1.0};
-	GLfloat lightDiffuse[]   = {1.0, 1.0, 1.0, 1.0};
-	GLfloat lightSpecular[] = {0, 0, 0, 1.0};
-	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpecular);
-
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_COLOR_MATERIAL);
+void  CMy3DSymbolLibNewView::SetDrawMode() {
+    switch (m_Drawmode) { // ç»˜åˆ¶æ¨¡å¼
+        case 1:  // çº¿æ¡†æ¨¡å¼
+            glDisable(GL_TEXTURE_2D) ; // å…³é—­çº¹ç†åŠŸèƒ½
+            glPolygonMode(GL_FRONT_AND_BACK , GL_LINE);
+            break;
+        case 2:  // æ¸²æ™•æ¨¡å¼
+            glDisable(GL_TEXTURE_2D) ; // å¼€å¯çº¹ç†åŠŸèƒ½
+            glPolygonMode(GL_FRONT_AND_BACK , GL_FILL);
+            break;
+        case 3:  // çº¹ç†æ¨¡å¼
+            glEnable(GL_TEXTURE_2D) ; // å¼€å¯çº¹ç†åŠŸèƒ½
+            glPolygonMode(GL_FRONT_AND_BACK , GL_FILL);
+            break;
+    }
 }
 
 
 /********************************************************/
-/* Function:Ìì¿ÕºĞÎÆÀíµ¼ÈëÒÔ¼°²ÎÊıÉèÖÃ						*/
+/* Function:åœºæ™¯ç»˜åˆ¶                                        */
 /********************************************************/
-void CMy3DSymbolLibNewView::OnSkyboxTex()
-{
-	CSkyBoxTexLoad dlg;
-	if(dlg.DoModal()==IDOK)
-	{
-		g_texSkyBoxFlieNameTP = dlg.m_SkyBoxTexTP; 
-		g_texSkyBoxFlieNameLF = dlg.m_SkyBoxTexLF; 
-		g_texSkyBoxFlieNameBK = dlg.m_SkyBoxTexBK; 
-		g_texSkyBoxFlieNameRT = dlg.m_SkyBoxTexRT; 
-		g_texSkyBoxFlieNameFR = dlg.m_SkyBoxTexFR; 
-		LoadSkyBoxTex(g_texSkyBoxFlieNameTP, g_texSkyBoxFlieNameLF, g_texSkyBoxFlieNameBK, g_texSkyBoxFlieNameRT, g_texSkyBoxFlieNameFR);
-	}
-}
+void CMy3DSymbolLibNewView::DrawScene() {
+    glClearColor(0.53, 0.81, 0.92, 0.0);                // è®¾ç½®åˆ·æ–°èƒŒæ™¯è‰²SkyBlue: 135,206,235
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // åˆ·æ–°èƒŒæ™¯
+    glLoadIdentity();                                   // é‡ç½®å½“å‰çš„æ¨¡å‹è§‚å¯ŸçŸ©é˜µ
+    SetDrawMode();
+    if (m_vEyePosition.x <  MAP_SCALE) {
+        m_vEyePosition.x = MAP_SCALE;
+    }
+    if (m_vEyePosition.x > (MAP_W - 2) * MAP_SCALE)    {
+        m_vEyePosition.x = (MAP_W - 2) * MAP_SCALE;
+    }
+    if (m_vEyePosition.z < -(MAP_W - 2) * MAP_SCALE) {
+        m_vEyePosition.z = -(MAP_W - 2) * MAP_SCALE;
+    }
+    if (m_vEyePosition.z > -MAP_SCALE) {
+        m_vEyePosition.z = -MAP_SCALE;
+    }
+    SetCamra();
+    if (iTerrainType != 0) {
+        if (iSkyBoxLoaded) {
+            DrawSky();
+        }
+        DrawClock();            // ç»˜åˆ¶æŒ‡åŒ—é’ˆ
+        DrawTerrain();
+        DrawFlyPath();
+        DrawRailwaythesme();    // ç»˜åˆ¶é“è·¯
+        if (m_QueryType == QUERY_COORDINATE || m_QueryType == QUERY_DISTENCE || m_QueryType == SELECTLINE
+                || m_QueryType == LINE_ADD  //Line
+                || m_QueryType == AREA_ADD  //Area
+           ) {
+            DrawSearchPoint();  // ç»˜åˆ¶ç©ºé—´æŸ¥è¯¢æ ‡å¿—
+        }
+        // [160120]
+        if (fuse_Flag) {
+            DrawJDLine(Line_a_JD_vector, Line_b_JD_vector);
+        }
+        if (Area_fuse_Flag) {
+            int tmp_size = m_Area4_Array.GetSize();
+            for (int i = 0; i < tmp_size; ++i) {
+                /*  Area_4 tmp_area4;
+                tmp_area4.pt1 = m_Area4_Array[i]->pt1;
+                tmp_area4.pt2 = m_Area4_Array[i]->pt2;
+                tmp_area4.pt3 = m_Area4_Array[i]->pt3;
+                tmp_area4.pt4 = m_Area4_Array[i]->pt4;
 
 
-/********************************************************/
-/* Function:Éú³ÉÌì¿Õ										*/
-/********************************************************/
-void CMy3DSymbolLibNewView::CreateSkyBox()
-{	
-	glPushMatrix(); 
+                tmp_area4.LocalTrianglesVecotr1 = m_Area4_Array[i]->LocalTrianglesVecotr1;
+                tmp_area4.LocalTrianglesVecotr1_1 = m_Area4_Array[i]->LocalTrianglesVecotr1_1;
+                tmp_area4.LocalTrianglesVecotr2 = m_Area4_Array[i]->LocalTrianglesVecotr2;
+                tmp_area4.LocalTrianglesVecotr2_1 = m_Area4_Array[i]->LocalTrianglesVecotr2_1;
 
-	int a = 3, wi =3, he=1, le=3;
-	float width =MAP*wi;
-	float height=MAP*he;
-	float length=MAP*le;
+                tmp_area4.LocalTrianglesVecotr_last = m_Area4_Array[i]->LocalTrianglesVecotr_last;
+                tmp_area4.TrianglesInPolygonVecotr = m_Area4_Array[i]->TrianglesInPolygonVecotr;
 
-	int x0 = MAP - width / 2;
-	int x1 = MAP + width / 2;
-
-	int y0 = MAP/a - height / 3;
-	int y1 = MAP/a + height / 3;
-
-	int z0 = -MAP - length / 2;
-	int z1 = -MAP + length / 2;
-
-	// ÉèÖÃBACKÎÆÀí²ÎÊı
-	glBindTexture  (GL_TEXTURE_2D, g_texSkyBox[BK]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);  
-
-	// ¿ªÊ¼»æÖÆ
-	glBegin(GL_QUADS);		
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x1, y0, z0);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x1, y1, z0); 
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x0, y1, z0);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x0, y0, z0);		
-	glEnd();
-
-	// ÉèÖÃFRONT²¿·ÖµÄÎÆÀí²ÎÊı
-	glBindTexture  (GL_TEXTURE_2D, g_texSkyBox[FR]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	// ¿ªÊ¼»æÖÆ
-	glBegin(GL_QUADS);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x0, y0, z1);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x0, y1, z1);
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x1, y1, z1); 
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x1, y0, z1);
-	glEnd();
-
-	// ÉèÖÃTOP²¿·ÖµÄÎÆÀí²ÎÊı
-	glBindTexture  (GL_TEXTURE_2D, g_texSkyBox[TP]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	// ¿ªÊ¼»æÖÆ
-	glBegin(GL_QUADS);		
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x0, y1, z1);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x0, y1, z0);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x1, y1, z0);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x1, y1, z1);  
-	glEnd();
-
-	// ÉèÖÃLEFT²¿·ÖµÄÎÆÀí²ÎÊı
-	glBindTexture  (GL_TEXTURE_2D, g_texSkyBox[LF]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	// ¿ªÊ¼»æÖÆ
-	glBegin(GL_QUADS);		
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x0, y1, z0);	
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x0, y1, z1); 
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x0, y0, z1);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x0, y0, z0);		
-	glEnd();
-
-	// ÉèÖÃRIGHT²¿·ÖµÄÎÆÀí²ÎÊı
-	glBindTexture  (GL_TEXTURE_2D, g_texSkyBox[RT]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	// ¿ªÊ¼»æÖÆ
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(x1, y0, z0);
-	glTexCoord2f(1.0f, 0.0f); glVertex3f(x1, y0, z1);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(x1, y1, z1); 
-	glTexCoord2f(0.0f, 1.0f); glVertex3f(x1, y1, z0);
-	glEnd();
-	glPopMatrix();
-}
-
-void CMy3DSymbolLibNewView::SkyBoxTexture(UINT textur)
-{	
-	glBindTexture  (GL_TEXTURE_2D, textur);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-}
-
-void CMy3DSymbolLibNewView::OnDrawmodeLine()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	m_Drawmode = 1;
-	Invalidate(FALSE);
-}
-
-void CMy3DSymbolLibNewView::OnUpdateDrawmodeLine(CCmdUI *pCmdUI)
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî¸üĞÂÓÃ»§½çÃæ´¦Àí³ÌĞò´úÂë
-	pCmdUI->SetCheck(m_Drawmode == 1);//¸ù¾İm_ViewTypeÖµÊÇ·ñÉèÖÃÑ¡ÖĞ±êÖ¾
-}
-
-void CMy3DSymbolLibNewView::OnDrawmodeRender()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	m_Drawmode = 2;
-	Invalidate(FALSE);
-}
-
-void CMy3DSymbolLibNewView::OnUpdateDrawmodeRender(CCmdUI *pCmdUI)
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî¸üĞÂÓÃ»§½çÃæ´¦Àí³ÌĞò´úÂë
-	pCmdUI->SetCheck(m_Drawmode == 2);//¸ù¾İm_ViewTypeÖµÊÇ·ñÉèÖÃÑ¡ÖĞ±êÖ¾
-}
-
-void CMy3DSymbolLibNewView::OnDrawmodeTexture()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	m_Drawmode = 3;
-	Invalidate(FALSE);
-}
-
-void CMy3DSymbolLibNewView::OnUpdateDrawmodeTexture(CCmdUI *pCmdUI)
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî¸üĞÂÓÃ»§½çÃæ´¦Àí³ÌĞò´úÂë
-	pCmdUI->SetCheck(m_Drawmode == 3);//¸ù¾İm_ViewTypeÖµÊÇ·ñÉèÖÃÑ¡ÖĞ±êÖ¾
+                Area_Triangled(tmp_area4);
+                */
+                if (m_Area4_Array[i]->deleted != 1) {
+                    Area_Triangled(m_Area4_Array[i]);
+                }
+            }
+        }
+        // ---------------------------------------------------------
+        // æ˜¾ç¤ºæ™¯è§‚æ ‘
+        glPushMatrix();
+        if (m_TreeModel.GetSize() > 0) {
+            for (int i = 0; i < m_TreeModel.GetSize(); i++) {
+                ShowTree(i);
+            }
+        }
+        glPopMatrix();
+        // ---------------------------------------------------------
+        // æ˜¾ç¤º3Dæ™¯è§‚æ ‘
+        glPushMatrix();
+        if (m_3DTreeModel.GetSize() > 0) {
+            for (int i = 0; i < m_3DTreeModel.GetSize(); i++) {
+                Show3DTree(i);
+            }
+        }
+        glPopMatrix();
+        // ---------------------------------------------------------
+        // æ˜¾ç¤ºåŸå¸‚ç¬¦å·
+        glPushMatrix();
+        if (m_CitySymbolModel.GetSize() > 0) {
+            for (int i = 0; i < m_CitySymbolModel.GetSize(); i++) {
+                ShowCitySymbol(i);
+            }
+        }
+        glPopMatrix();
+        // ---------------------------------------------------------
+        glPushMatrix();
+        if (bIsWeatherLoad) {
+            ShowWeather();
+        }
+        glPopMatrix();
+        // ---------------------------------------------------------
+        glPushMatrix();
+        glPushAttrib(GL_CURRENT_COLOR);
+        if (m_3DModel.GetSize() > 0) {
+            for (int i = 0; i < m_3DModel.GetSize(); i++)
+                if (m_3DModel.GetAt(i)->isDeleted == false) {
+                    Draw3DModel(m_3DModel.GetAt(i));
+                }
+        }
+        glPopAttrib();
+        glPopMatrix();
+        // ---------------------------------------------------------
+        if (m_flypathPtIndex > 0) {
+            TextFlyHelp();
+        }
+    }
+    GLfloat light_position[] = {m_vEyePosition.x, 300, m_vEyePosition.z - 100};
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    GLfloat lightAmbient[] = {0.5, 0.5, 0.5, 1.0};
+    GLfloat lightDiffuse[]   = {1.0, 1.0, 1.0, 1.0};
+    GLfloat lightSpecular[] = {0, 0, 0, 1.0};
+    glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpecular);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_COLOR_MATERIAL);
 }
 
 
 /********************************************************/
-/* Function:¿Õ¼ä²éÑ¯±êÖ¾ÉèÖÃ								*/
+/* Function:å¤©ç©ºç›’çº¹ç†å¯¼å…¥ä»¥åŠå‚æ•°è®¾ç½®                      */
 /********************************************************/
-void CMy3DSymbolLibNewView::OnSpacequerySet() 
-{
-	CSpaceSearchSet dlg;
-
-	dlg.m_shizxLength = m_shizxLength;		// ²éÑ¯±êÖ¾Ê®×ÖÏß³¤¶È
-	dlg.m_shuzxHeight = m_shuzxHeight;		// ²éÑ¯±êÖ¾ÊúÖ±Ïß¸ß¶È
-	dlg.m_QueryLineWidth = m_QueryLineWidth;// ²éÑ¯±êÖ¾ÏßµÄ¿í¶È
-	dlg.m_QueryColorR = m_QueryColorR;		// ²éÑ¯±êÖ¾ÏßµÄÑÕÉ«(ºì)
-	dlg.m_QueryColorG = m_QueryColorG;		// ²éÑ¯±êÖ¾ÏßµÄÑÕÉ«(ÂÌ)
-	dlg.m_QueryColorB = m_QueryColorB;		// ²éÑ¯±êÖ¾ÏßµÄÑÕÉ«(À¶)
-	if(dlg.DoModal() == IDOK)
-	{
-		m_shizxLength = dlg.m_shizxLength;				// µÃµ½ĞÂÉèÖÃµÄ²éÑ¯±êÖ¾Ê®×ÖÏß³¤¶È
-		m_shuzxHeight = dlg.m_shuzxHeight;				// µÃµ½ĞÂÉèÖÃµÄ²éÑ¯±êÖ¾ÊúÖ±Ïß¸ß¶È
-		m_QueryLineWidth = dlg.m_QueryLineWidth + 1;	// µÃµ½ĞÂÉèÖÃµÄ²éÑ¯±êÖ¾ÏßµÄ¿í¶È£¬ÏÂ±ê´Ó0¿ªÊ¼
-		m_QueryColorR = dlg.m_QueryColorR;				// µÃµ½ĞÂÉèÖÃµÄ²éÑ¯±êÖ¾ÏßµÄÑÕÉ«(ºì)
-		m_QueryColorG = dlg.m_QueryColorG;				// µÃµ½ĞÂÉèÖÃµÄ²éÑ¯±êÖ¾ÏßµÄÑÕÉ«(ÂÌ)
-		m_QueryColorB = dlg.m_QueryColorB;				// µÃµ½ĞÂÉèÖÃµÄ//²éÑ¯±êÖ¾ÏßµÄÑÕÉ«(À¶)
-	}	
+void CMy3DSymbolLibNewView::OnSkyboxTex() {
+    CSkyBoxTexLoad dlg;
+    if (dlg.DoModal() == IDOK) {
+        g_texSkyBoxFlieNameTP = dlg.m_SkyBoxTexTP;
+        g_texSkyBoxFlieNameLF = dlg.m_SkyBoxTexLF;
+        g_texSkyBoxFlieNameBK = dlg.m_SkyBoxTexBK;
+        g_texSkyBoxFlieNameRT = dlg.m_SkyBoxTexRT;
+        g_texSkyBoxFlieNameFR = dlg.m_SkyBoxTexFR;
+        LoadSkyBoxTex(g_texSkyBoxFlieNameTP, g_texSkyBoxFlieNameLF, g_texSkyBoxFlieNameBK, g_texSkyBoxFlieNameRT, g_texSkyBoxFlieNameFR);
+    }
 }
 
 
 /********************************************************/
-/* Function: ²éÑ¯ÈıÎ¬×ø±ê									*/
+/* Function:ç”Ÿæˆå¤©ç©º                                        */
 /********************************************************/
-void CMy3DSymbolLibNewView::OnQueryCoordinate()
-{
-	if(m_QueryType==QUERY_COORDINATE){	// Èç¹ûµ±Ç°ÒÑ¾­ÊÇ²éÑ¯ÈıÎ¬×ø±ê×´Ì¬£¬Ôò¹Ø±Õ
-		m_QueryType = -1;
-	}
-	else{								// Èç¹ûµ±Ç°ÒÑ¾­²»ÊÇ²éÑ¯ÈıÎ¬×ø±ê×´Ì¬£¬Ôò´ò¿ª
-		m_QueryType = QUERY_COORDINATE;
-	}
-	m_OperateType = -1;
+void CMy3DSymbolLibNewView::CreateSkyBox() {
+    glPushMatrix();
+    int a = 3, wi = 3, he = 1, le = 3;
+    float width = MAP * wi;
+    float height = MAP * he;
+    float length = MAP * le;
+    int x0 = MAP - width / 2;
+    int x1 = MAP + width / 2;
+    int y0 = MAP / a - height / 3;
+    int y1 = MAP / a + height / 3;
+    int z0 = -MAP - length / 2;
+    int z1 = -MAP + length / 2;
+    // è®¾ç½®BACKçº¹ç†å‚æ•°
+    glBindTexture(GL_TEXTURE_2D, g_texSkyBox[BK]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // å¼€å§‹ç»˜åˆ¶
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(x1, y0, z0);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(x1, y1, z0);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(x0, y1, z0);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(x0, y0, z0);
+    glEnd();
+    // è®¾ç½®FRONTéƒ¨åˆ†çš„çº¹ç†å‚æ•°
+    glBindTexture(GL_TEXTURE_2D, g_texSkyBox[FR]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // å¼€å§‹ç»˜åˆ¶
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(x0, y0, z1);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(x0, y1, z1);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(x1, y1, z1);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(x1, y0, z1);
+    glEnd();
+    // è®¾ç½®TOPéƒ¨åˆ†çš„çº¹ç†å‚æ•°
+    glBindTexture(GL_TEXTURE_2D, g_texSkyBox[TP]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // å¼€å§‹ç»˜åˆ¶
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(x0, y1, z1);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(x0, y1, z0);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(x1, y1, z0);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(x1, y1, z1);
+    glEnd();
+    // è®¾ç½®LEFTéƒ¨åˆ†çš„çº¹ç†å‚æ•°
+    glBindTexture(GL_TEXTURE_2D, g_texSkyBox[LF]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // å¼€å§‹ç»˜åˆ¶
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(x0, y1, z0);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(x0, y1, z1);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(x0, y0, z1);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(x0, y0, z0);
+    glEnd();
+    // è®¾ç½®RIGHTéƒ¨åˆ†çš„çº¹ç†å‚æ•°
+    glBindTexture(GL_TEXTURE_2D, g_texSkyBox[RT]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // å¼€å§‹ç»˜åˆ¶
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(x1, y0, z0);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(x1, y0, z1);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(x1, y1, z1);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(x1, y1, z0);
+    glEnd();
+    glPopMatrix();
+}
+
+void CMy3DSymbolLibNewView::SkyBoxTexture(UINT textur) {
+    glBindTexture(GL_TEXTURE_2D, textur);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+}
+
+void CMy3DSymbolLibNewView::OnDrawmodeLine() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    m_Drawmode = 1;
+    Invalidate(FALSE);
+}
+
+void CMy3DSymbolLibNewView::OnUpdateDrawmodeLine(CCmdUI* pCmdUI) {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤æ›´æ–°ç”¨æˆ·ç•Œé¢å¤„ç†ç¨‹åºä»£ç 
+    pCmdUI->SetCheck(m_Drawmode == 1);//æ ¹æ®m_ViewTypeå€¼æ˜¯å¦è®¾ç½®é€‰ä¸­æ ‡å¿—
+}
+
+void CMy3DSymbolLibNewView::OnDrawmodeRender() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    m_Drawmode = 2;
+    Invalidate(FALSE);
+}
+
+void CMy3DSymbolLibNewView::OnUpdateDrawmodeRender(CCmdUI* pCmdUI) {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤æ›´æ–°ç”¨æˆ·ç•Œé¢å¤„ç†ç¨‹åºä»£ç 
+    pCmdUI->SetCheck(m_Drawmode == 2);//æ ¹æ®m_ViewTypeå€¼æ˜¯å¦è®¾ç½®é€‰ä¸­æ ‡å¿—
+}
+
+void CMy3DSymbolLibNewView::OnDrawmodeTexture() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    m_Drawmode = 3;
+    Invalidate(FALSE);
+}
+
+void CMy3DSymbolLibNewView::OnUpdateDrawmodeTexture(CCmdUI* pCmdUI) {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤æ›´æ–°ç”¨æˆ·ç•Œé¢å¤„ç†ç¨‹åºä»£ç 
+    pCmdUI->SetCheck(m_Drawmode == 3);//æ ¹æ®m_ViewTypeå€¼æ˜¯å¦è®¾ç½®é€‰ä¸­æ ‡å¿—
 }
 
 
 /********************************************************/
-/* Function: ÉèÖÃÊÇ·ñÑ¡ÖĞ×´Ì¬								*/
+/* Function:ç©ºé—´æŸ¥è¯¢æ ‡å¿—è®¾ç½®                                */
 /********************************************************/
-void CMy3DSymbolLibNewView::OnUpdateQueryCoordinate(CCmdUI *pCmdUI)
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî¸üĞÂÓÃ»§½çÃæ´¦Àí³ÌĞò´úÂë
-	pCmdUI->SetCheck(m_QueryType==QUERY_COORDINATE);
+void CMy3DSymbolLibNewView::OnSpacequerySet() {
+    CSpaceSearchSet dlg;
+    dlg.m_shizxLength = m_shizxLength;      // æŸ¥è¯¢æ ‡å¿—åå­—çº¿é•¿åº¦
+    dlg.m_shuzxHeight = m_shuzxHeight;      // æŸ¥è¯¢æ ‡å¿—ç«–ç›´çº¿é«˜åº¦
+    dlg.m_QueryLineWidth = m_QueryLineWidth;  // æŸ¥è¯¢æ ‡å¿—çº¿çš„å®½åº¦
+    dlg.m_QueryColorR = m_QueryColorR;      // æŸ¥è¯¢æ ‡å¿—çº¿çš„é¢œè‰²(çº¢)
+    dlg.m_QueryColorG = m_QueryColorG;      // æŸ¥è¯¢æ ‡å¿—çº¿çš„é¢œè‰²(ç»¿)
+    dlg.m_QueryColorB = m_QueryColorB;      // æŸ¥è¯¢æ ‡å¿—çº¿çš„é¢œè‰²(è“)
+    if (dlg.DoModal() == IDOK) {
+        m_shizxLength = dlg.m_shizxLength;              // å¾—åˆ°æ–°è®¾ç½®çš„æŸ¥è¯¢æ ‡å¿—åå­—çº¿é•¿åº¦
+        m_shuzxHeight = dlg.m_shuzxHeight;              // å¾—åˆ°æ–°è®¾ç½®çš„æŸ¥è¯¢æ ‡å¿—ç«–ç›´çº¿é«˜åº¦
+        m_QueryLineWidth = dlg.m_QueryLineWidth + 1;    // å¾—åˆ°æ–°è®¾ç½®çš„æŸ¥è¯¢æ ‡å¿—çº¿çš„å®½åº¦ï¼Œä¸‹æ ‡ä»0å¼€å§‹
+        m_QueryColorR = dlg.m_QueryColorR;              // å¾—åˆ°æ–°è®¾ç½®çš„æŸ¥è¯¢æ ‡å¿—çº¿çš„é¢œè‰²(çº¢)
+        m_QueryColorG = dlg.m_QueryColorG;              // å¾—åˆ°æ–°è®¾ç½®çš„æŸ¥è¯¢æ ‡å¿—çº¿çš„é¢œè‰²(ç»¿)
+        m_QueryColorB = dlg.m_QueryColorB;              // å¾—åˆ°æ–°è®¾ç½®çš„//æŸ¥è¯¢æ ‡å¿—çº¿çš„é¢œè‰²(è“)
+    }
 }
 
-void CMy3DSymbolLibNewView::OnQueryDistence()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	if(m_QueryType == QUERY_DISTENCE){	//Èç¹ûµ±Ç°ÒÑ¾­ÊÇ²éÑ¯¿Õ¼ä¾àÀë×´Ì¬£¬Ôò¹Ø±Õ
-		m_QueryType = -1;
-	}
-	else{								// Èç¹ûµ±Ç°²»ÊÇ²éÑ¯¿Õ¼ä¾àÀë×´Ì¬£¬Ôò¹Ø±Õ£¬Ôò´ò¿ª
-		m_QueryType = QUERY_DISTENCE;
-	}
+
+/********************************************************/
+/* Function: æŸ¥è¯¢ä¸‰ç»´åæ ‡                                   */
+/********************************************************/
+void CMy3DSymbolLibNewView::OnQueryCoordinate() {
+    if (m_QueryType == QUERY_COORDINATE) {  // å¦‚æœå½“å‰å·²ç»æ˜¯æŸ¥è¯¢ä¸‰ç»´åæ ‡çŠ¶æ€ï¼Œåˆ™å…³é—­
+        m_QueryType = -1;
+    } else {                            // å¦‚æœå½“å‰å·²ç»ä¸æ˜¯æŸ¥è¯¢ä¸‰ç»´åæ ‡çŠ¶æ€ï¼Œåˆ™æ‰“å¼€
+        m_QueryType = QUERY_COORDINATE;
+    }
+    m_OperateType = -1;
 }
 
-void CMy3DSymbolLibNewView::OnUpdateQueryDistence(CCmdUI *pCmdUI)
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî¸üĞÂÓÃ»§½çÃæ´¦Àí³ÌĞò´úÂë
-	pCmdUI->SetCheck(m_QueryType==QUERY_DISTENCE);
+
+/********************************************************/
+/* Function: è®¾ç½®æ˜¯å¦é€‰ä¸­çŠ¶æ€                               */
+/********************************************************/
+void CMy3DSymbolLibNewView::OnUpdateQueryCoordinate(CCmdUI* pCmdUI) {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤æ›´æ–°ç”¨æˆ·ç•Œé¢å¤„ç†ç¨‹åºä»£ç 
+    pCmdUI->SetCheck(m_QueryType == QUERY_COORDINATE);
+}
+
+void CMy3DSymbolLibNewView::OnQueryDistence() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    if (m_QueryType == QUERY_DISTENCE) {  // å¦‚æœå½“å‰å·²ç»æ˜¯æŸ¥è¯¢ç©ºé—´è·ç¦»çŠ¶æ€ï¼Œåˆ™å…³é—­
+        m_QueryType = -1;
+    } else {                            // å¦‚æœå½“å‰ä¸æ˜¯æŸ¥è¯¢ç©ºé—´è·ç¦»çŠ¶æ€ï¼Œåˆ™å…³é—­ï¼Œåˆ™æ‰“å¼€
+        m_QueryType = QUERY_DISTENCE;
+    }
+}
+
+void CMy3DSymbolLibNewView::OnUpdateQueryDistence(CCmdUI* pCmdUI) {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤æ›´æ–°ç”¨æˆ·ç•Œé¢å¤„ç†ç¨‹åºä»£ç 
+    pCmdUI->SetCheck(m_QueryType == QUERY_DISTENCE);
 }
 
 
 
 
 /********************************************************/
-/* Function: ÆÁÄ»×ø±ê ==> ÈıÎ¬×ø±ê						*/
+/* Function: å±å¹•åæ ‡ ==> ä¸‰ç»´åæ ‡                      */
 /********************************************************/
-void CMy3DSymbolLibNewView::ScreenToGL(CPoint point)
-{
-	int mouse_x=point.x;
-	int mouse_y=point.y;
-
-	GLint viewport[4];
-	GLdouble modelview[16] , projection[16];
-	GLdouble wx , wy , wz;
-	float winX , winY , winZ;
-
-	glPushMatrix();
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-	glGetDoublev(GL_PROJECTION_MATRIX, projection);
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	glPopMatrix();
-
-	winX=(float)mouse_x;
-	winY=(float)viewport[3]-(float)mouse_y-1;
-	glReadPixels(mouse_x, int(winY), 1, 1, 
-		GL_DEPTH_COMPONENT , GL_FLOAT , 
-		&winZ);// »ñÈ¡Éî¶ÈÖµ£¬Ö»ÓĞÔÚÓĞäÖÈ¾µÄµØ·½²ÅÄÜ×¼È·»ñÈ¡£¬Ò»µ©Ã»ÓĞäÖÈ¾µã¾Í²»ÄÜ»ñÈ¡ÕıÈ·Öµ
-
-	// Äæ±ä»»ºÍÄ£Äâ±ä»»
-	gluUnProject((GLdouble)winX, (GLdouble)winY, (GLdouble)winZ, modelview, projection, viewport, &wx, &wy, &wz);
-
-	// 3D×ø±êµã·¶Î§ÏŞÖÆ
-	if(wx<  MAP_SCALE){		
-		wx =  MAP_SCALE;         // X±ß
-	}
-	if(wx> (MAP_W-1)*MAP_SCALE){
-		wx = (MAP_W-1)*MAP_SCALE;// X±ß
-	}
-	if(wz<-(MAP_W-1)*MAP_SCALE){
-		wz =-(MAP_W-1)*MAP_SCALE;// Z±ß
-	}
-	if(wz> -MAP_SCALE){	
-		wz = -MAP_SCALE;         // Z±ß
-	}
-
-	CMainFrame *pMainFrame=(CMainFrame*)GetParent(); 
-	CString strText; 
-
-	// ÔÚ×´Ì¬À¸Ö¸Ê¾Æ÷ÉÏÏÔÊ¾Ïà¹ØĞÅÏ¢(Êó±êËùµã»÷´¦ÔÚÈıÎ¬³¡¾°ÖĞµÄ×ø±ê)
-	strText.Format("Êó±ê×ø±ê:x=%.3f , y=%.3f , z=%.3f" , wx  , wy , wz);
-	pMainFrame->Set_BarText(4 , strText);  
-	
-
-	CString tt;
-
-	if(winZ>=0 && winZ<1.0) 
-	{
-		if(m_isSetXYByMouse)	//Í¨¹ıÊó±êÉèÖÃÄ£ĞÍ°Ú·ÅÎ»ÖÃ
-		{
-			pt1[0]=wx;pt1[1]=wy;pt1[2]=wz;
-			if(paramSet_modeless_dlg)
-			{
-				paramSet_modeless_dlg->xPos = pt1[0];
-				paramSet_modeless_dlg->zPos = pt1[2];
-				::PostMessage(paramSet_modeless_dlg->GetSafeHwnd(),WM_UPDATE_EDIT_XY,0,0);
-			}
-			
-		}
-
-		if(m_QueryType==QUERY_COORDINATE)//²éÑ¯ÈıÎ¬×ø±ê
-		{
-			tt.Format("µ±Ç°×ø±ê(x,y,z)=(%.3f,%.3f,%.3f)",wx,wy,-wz);	
-			pt1[0]=wx;pt1[1]=wy;pt1[2]=wz;							//²éÑ¯»ñµÃµÄÈıÎ¬´óµØ×ø±ê 
-			Invalidate(FALSE);
-			MessageBox(tt,"ÈıÎ¬×ø±ê²éÑ¯",MB_ICONINFORMATION);		//¸ø³ö×ø±ê²éÑ¯ĞÅÏ¢
-			IsSearchPoint = true;
-		}
-		else if(m_QueryType==QUERY_DISTENCE)	// ²éÑ¯¿Õ¼ä¾àÀë
-		{
-			if(	m_bSearchDistencePtNums>=2){	// Èç¹ûÑ¡ÔñµãÊı2¸ö£¬¹éÁã
-				m_bSearchDistencePtNums=0;
-			}
-			m_bSearchDistencePtNums++ ;			// Ñ¡ÔñµãÊı + 1
-			
-			if(m_bSearchDistencePtNums==1){		// Èç¹ûÖ»Ñ¡ÔñÁË1¸öµã
-				pt1[0]=wx;pt1[1]=wy;pt1[2]=wz;	// ½«ÈıÎ¬µã×ø±ê´æ´¢µ½Êı×é pt1[] ÀïÃæ
-			}
-			else								// Ñ¡ÔñÁËÁ½¸öµã£¬Ôò±íÊ¾¿ÉÒÔ¼ÆËã¿Õ¼ä¾àÀëÁË		 		
-			{
-				pt2[0]=wx;pt2[1]=wy;pt2[2]=wz;	// ½«ÈıÎ¬µã×ø±ê´æ´¢µ½Êı×é pt2[] ÀïÃæ
-
-				//¼ÆËã¾àÀë
-				double mdistence;
-				mdistence=sqrt((pt2[0]-pt1[0])*(pt2[0]-pt1[0])+(pt2[1]-pt1[1])*(pt2[1]-pt1[1])+(pt2[2]-pt1[2])*(pt2[2]-pt1[2])); 
-				tt.Format("Á½µãÎª:\n(x1,y1,z1)=(%.3f,%.3f,%.3f)\n(x2,y2,z2)=(%.3f,%.3f,%.3f)\n¾àÀëDis=%.3f", pt1[0],pt1[1],pt1[2],pt2[0],pt2[1],pt2[2],mdistence);
-			}
-
-			Invalidate(FALSE);
-			MessageBox(tt,"ÈıÎ¬¾àÀë²éÑ¯",MB_ICONINFORMATION);		//¸ø³ö¾àÀë²éÑ¯ĞÅÏ¢
-		}
-
-		//[160119] Ïß±à¼­  Ìí¼ÓÏß
-		else if(m_QueryType == LINE_ADD)
-		{ 
-			m_LineEdit_pointNum++ ;			// Ñ¡ÔñµãÊı + 1
-
-			if(m_LineEdit_pointNum==1){		// Èç¹ûÖ»Ñ¡ÔñÁË1¸öµã
-				m_line.pt1._x = wx; 
-				m_line.pt1._y = wy;
-				m_line.pt1._z = wz; 
-			}
-			else if(m_LineEdit_pointNum==2)						 		
-			{
-				m_line.pt2._x = wx; 
-				m_line.pt2._y = wy;
-				m_line.pt2._z = wz;
-			}
-
-			if(	m_LineEdit_pointNum >= 2 ){	// Èç¹ûÑ¡ÔñµãÊı2¸ö£¬¹éÁã
-				m_LineEdit_pointNum=0;
-
-				PLine3 line = new Line3;
-				line->pt1 = m_line.pt1;
-				line->pt2 = m_line.pt2;
-
-				m_LinesArray.Add(line);
-			}
-		}
-
-		// [160209]Ñ¡È¡Ãæ·ûºÅÉÏµÄµã
-		else if(m_QueryType == AREA_ADD)
-		{
-			m_Area_pointNum++ ;			// Ñ¡ÔñµãÊı + 1
-
-			if(m_Area_pointNum == 1){
-				m_area4_forScreenRecord.pt1._x = wx; 
-				m_area4_forScreenRecord.pt1._y = wy;
-				m_area4_forScreenRecord.pt1._z = wz; 
-			}
-			else if(m_Area_pointNum == 2)						 		
-			{
-				m_area4_forScreenRecord.pt2._x = wx; 
-				m_area4_forScreenRecord.pt2._y = wy;
-				m_area4_forScreenRecord.pt2._z = wz;
-			}
-			else if(m_Area_pointNum == 3)						 		
-			{
-				m_area4_forScreenRecord.pt3._x = wx; 
-				m_area4_forScreenRecord.pt3._y = wy;
-				m_area4_forScreenRecord.pt3._z = wz;
-			}
-			else if(m_Area_pointNum == 4)						 		
-			{
-				m_area4_forScreenRecord.pt4._x = wx; 
-				m_area4_forScreenRecord.pt4._y = wy;
-				m_area4_forScreenRecord.pt4._z = wz;
-			}
-
-			if(	m_Area_pointNum >= 4 ){	// Èç¹ûÑ¡ÔñµãÊı4¸ö£¬¹éÁã
-				m_Area_pointNum = 0;
-
-				PArea_4 area = new Area_4;
-				area->pt1 = m_area4_forScreenRecord.pt1;
-				area->pt2 = m_area4_forScreenRecord.pt2;
-				area->pt3 = m_area4_forScreenRecord.pt3;
-				area->pt4 = m_area4_forScreenRecord.pt4;
-
-				area->area_texture = "";
-				area->deleted = 0;
-
-				m_Area4_Array.Add(area);
-				
-			}
-		}
-		
-		//Èç¹ûÊÇÈıÎ¬Ñ¡ÏßÉè¼Æ
-		else if(m_QueryType==SELECTLINE) 
-		{
-			PCordinate ppt = new Cordinate;
-
-			float tmpH = 0;							// (x,z)´¦¸ß³ÌÖµ
-
-			float *pDegree = new float(0);			// Í¨¹ıº¯Êı²ÎÊı·µ»Ø¼Ğ½ÇµÄÖµ
-
-			const float threshold_distance = 100.0f;// 2µã¼ä×î¶Ì¾àÀë
-			
-			
-			// 2Ïß¶Î¼ä×îĞ¡¼Ğ½Ç
-			const float threshold_degree = 20;
-
-			CString warningMsg;						// ÌáÊ¾ĞÅÏ¢
-
-			if((ppt==NULL)) 
-			{  
-				AfxMessageBox( "Failed to add a new ppt"); 
-				return ;        
-			}
-			if(1)
-			{
-				// ¼ÇÂ¼Éè¼Æ½»µãÈıÎ¬×ø±ê	
-				ppt->x = wx;
-				// ÉèÖÃ(x,z)´¦µÄ¸ß³ÌÖµ
-				tmpH = 70;
-
-				ppt->y = tmpH;
-				
-				ppt->z = wz;	
-			}
-
-
-			tmpH = GetHeight(wx,wz);
-			if(m_maxHeight - tmpH < 10)
-			{
-				warningMsg.Format(_T("´Ë´¦µØÊÆÌ«¸ß,ÇëÖØĞÂÑ¡È¡!"));
-				AfxMessageBox(warningMsg);
-			}
-			else
-			{
-				// Éè¼ÆÏßÂ·Ê±È·±£2¶Ëµã¼äµÄ¾àÀë > threshold_distance
-				if(p_count == 0)
-				{
-					pre_x = ppt->x; pre_y = tmpH; pre_z = ppt->z;
-					fun(ppt);
-					p_count++;
-				}
-				else if(p_count>=1)
-				{
-					if(m_distance_between_2_points > threshold_distance)
-					{
-						m_pre_distance = m_distance_between_2_points;
-					}
-					last_x = ppt->x; last_y = tmpH; last_z = ppt->z;
-					m_distance_between_2_points = (float)sqrt((last_x-pre_x)*(last_x-pre_x) + (last_y-pre_y)*(last_y-pre_y) + (last_z-pre_z)*(last_z-pre_z));
-					if(m_distance_between_2_points > threshold_distance) // ¾àÀëãĞÖµ
-					{
-						if(p_count == 1)
-						{
-							fun(ppt);
-							p_count++;
-
-							v1_end.x = pre_x; v1_end.y = 0; v1_end.z = pre_z;
-							v1_begin.x = last_x; v1_begin.y = 0; v1_begin.z = last_z;
-
-							pre_x = ppt->x; pre_y = tmpH; pre_z = ppt->z;
-						}
-						else
-						{
-							v2_begin = v1_begin;
-							v2_end.x = last_x; v2_end.y = 0; v2_end.z = last_z;
-
-							// ¼ÆËã2¸öÏòÁ¿Ö®¼äµÄ¼Ğ½Ç, Í¨¹ıÖ¸Õë×÷º¯Êı²ÎÊı·µ»Ø
-							getDegreeBetween2Vectors(v1_begin,v1_end,v2_begin,v2_end,pDegree);
-
-							if(*pDegree > threshold_degree) // ¼Ğ½ÇãĞÖµ
-							{
-								v1_end.x = pre_x; v1_end.y = 0; v1_end.z = pre_z;
-								v1_begin.x = last_x; v1_begin.y = 0; v1_begin.z = last_z;
-
-
-								float min_distance_between_2_lines = (m_pre_distance < m_distance_between_2_points ? m_pre_distance : m_distance_between_2_points);
-								
-								if(*pDegree < 30)
-								{
-									m_Curve_R = 15;
-									m_Curve_L0 = 1;
-								}
-								else
-								{
-									m_Curve_R = min_distance_between_2_lines * tan((*pDegree / 2.13)*PAI / 180);
-									m_Curve_L0 = 6*m_Curve_R / 100;
-									if(m_Curve_L0 < 1)
-										m_Curve_L0 = 1;
-								}
-
-
-								fun(ppt);
-
-								pre_x = ppt->x; pre_y = tmpH; pre_z = ppt->z;
-							}
-							else // ¼Ğ½ÇãĞÖµ
-							{
-								warningMsg.Format(_T("Degree = %f¶È > %f¶È\nÏßÂ·×ª½ÇÌ«´ó,ÇëÖØĞÂÑ¡Ôñ!"),180-*pDegree,180-threshold_degree);
-								AfxMessageBox(warningMsg,MB_OK,MB_ICONEXCLAMATION );
-							}
-						}	
-					}
-					else // ¾àÀëãĞÖµ
-					{
-						warningMsg.Format(_T("Distance = %f < %f\nÁ½µãÖ®¼ä¾àÀëÌ«¶Ì,ÇëÖØĞÂÑ¡Ôñ!"),m_distance_between_2_points,threshold_distance);
-						AfxMessageBox(warningMsg,MB_OK,MB_ICONEXCLAMATION );
-					}
-				}
-			}
-
-		}// End ÈıÎ¬Ñ¡ÏßÉè¼Æ
-
-		// ----------------------------------------------------------
-
-		// Èç¹ûÊÇÉèÖÃ·ÉĞĞÂ·¾¶
-		else if(m_QueryType==SELECTFLYPATH)							
-		{
-			PCordinate ppt = new Cordinate;  
-			ppt->x=wx;ppt->y=wy;ppt->z=wz;							//¼ÇÂ¼·ÉĞĞÂ·¾¶µÄÈıÎ¬×ø±ê
-			m_FlayPath.Add(ppt);									//½«·ÉĞĞÂ·¾¶µÄÈıÎ¬×ø±ê´æ´¢µ½Êı×ém_FlayPath 
-			Invalidate(FALSE);
-		} 	  
-		if(m_OperateType == SELECT)									// Èç¹ûÊÇÑ¡Ôñ3DÄ£ĞÍ
-		{ 
-			//ÉäÏßÑ¡Ôñ¹¦ÄÜ
-			GLfloat  winX, winY; 
-			GLdouble posX, posY, posZ; 
-			CRect re;
-			GetWindowRect(&re); 
-			int screenHeight = re.Height(),screenWidth = re.Width();//ÆÁÄ»¿íºÍ¸ß
-
-			//±ä»»Òª»æÍ¼º¯ÊıÀïµÄË³ĞòÒ»Ñù£¬·ñÔò×ø±ê×ª»»»á²úÉú´íÎó
-			winX = point.x; 
-			winY = screenHeight - point.y;
-			//»ñÈ¡ÏñËØ¶ÔÓ¦µÄÇ°²Ã¼ôÃæµÄµã×ø±ê
-			int bResult = gluUnProject(winX, winY, 0.0, modelview, projection, viewport, &posX, &posY, &posZ); 
-			CVector3 nearPoint;
-			nearPoint.x = posX; 
-			nearPoint.y = posY; 
-			nearPoint.z = posZ;
-
-			//»ñÈ¡ÏñËØ¶ÔÓ¦µÄºó²Ã¼ôÃæµÄµã×ø±ê
-			bResult = gluUnProject(winX, winY, 1.0, modelview, projection, viewport, &posX, &posY, &posZ); 
-			CVector3 farPoint;
-			farPoint.x = posX; 
-			farPoint.y = posY; 
-			farPoint.z = posZ;
-
-			CVector3 n_vector,resultP;
-				 
-			//cal the vector of ray
-			n_vector.x=farPoint.x-nearPoint.x;
-			n_vector.y=farPoint.y-nearPoint.y;
-			n_vector.z=farPoint.z-nearPoint.z; 
-
-			JudgeRayIntersect(nearPoint, n_vector, resultP); 
-
-			Invalidate(FALSE);
-		}
-		else if(m_OperateType == MOVE)					// Êó±êÒÆ¶¯3DÄ£ĞÍ
-		{ 			
-			if(	m_bMouseMove3DModelPtNums>=2)			// Èç¹ûÑ¡ÔñµãÊı2¸ö£¬¹éÁã
-				m_bMouseMove3DModelPtNums=0;
-
-			m_bMouseMove3DModelPtNums++ ;				// Ñ¡ÔñµãÊı + 1
-
-			if(m_bMouseMove3DModelPtNums == 1)			// Èç¹ûÖ»Ñ¡ÔñÁË1¸öµã
-			{
-				// JudgeRayIntersect(nearPoint, n_vector, resultP);
-				PCordinate ppt = new Cordinate;  
-				ppt->x=wx; ppt->y=wy; ppt->z=wz;			// ÈıÎ¬×ø±ê
-
-				// ±éÀúËùÓĞµÄ3DÄ£ĞÍ,ÅĞ¶ÏÊÇ·ñÔÚ·¶Î§ÄÚ
-				// ÔÚÒÆ¶¯Ä£ĞÍÊ±£¬±£ÕÏ³õÊ¼Êó±êÎ»ÖÃÔÚÄ£ĞÍ·¶Î§ÄÚ£¬ÕâÑùÓĞÀûÓÚ¿ØÖÆÄ£ĞÍÎ»ÖÃ
-				// ÉäÏßÑ¡Ôñ¹¦ÄÜ
-				GLfloat  winX, winY; 
-				GLdouble posX, posY, posZ; 
-				CRect re;
-				GetWindowRect(&re); 
-				int screenHeight = re.Height(),screenWidth = re.Width();//ÆÁÄ»¿íºÍ¸ß
-
-				//±ä»»Òª»æÍ¼º¯ÊıÀïµÄË³ĞòÒ»Ñù£¬·ñÔò×ø±ê×ª»»»á²úÉú´íÎó
-
-				winX = point.x; 
-				winY = screenHeight - point.y;
-				//»ñÈ¡ÏñËØ¶ÔÓ¦µÄÇ°²Ã¼ôÃæµÄµã×ø±ê
-				int bResult = gluUnProject(winX, winY, 0.0, modelview, projection, viewport, &posX, &posY, &posZ); 
-				CVector3 nearPoint;
-				nearPoint.x = posX; 
-				nearPoint.y = posY; 
-				nearPoint.z = posZ;
-
-				//»ñÈ¡ÏñËØ¶ÔÓ¦µÄºó²Ã¼ôÃæµÄµã×ø±ê
-				bResult = gluUnProject(winX, winY, 1.0, modelview, projection, viewport, &posX, &posY, &posZ); 
-				CVector3 farPoint;
-				farPoint.x = posX; 
-				farPoint.y = posY; 
-				farPoint.z = posZ;
-
-				CVector3 n_vector,resultP;
-					 
-				//cal the vector of ray
-				n_vector.x = farPoint.x-nearPoint.x;
-				n_vector.y = farPoint.y-nearPoint.y;
-				n_vector.z = farPoint.z-nearPoint.z; 
-
-				JudgeRayIntersect(nearPoint, n_vector, resultP);  
-				if( m_selectedModelID != -1)
-				{
-					pt1[0]=wx;pt1[1]=wy;pt1[2]=wz;					// ½«ÈıÎ¬µã×ø±ê´æ´¢µ½Êı×é pt1[] ÀïÃæ
-				}
-				else
-				{
-				m_bMouseMove3DModelPtNums = 0;
-				}
-			}
-			else if(m_selectedModelID != -1)							// Ñ¡ÔñÁËÁ½¸öµã£¬Ôò±íÊ¾¿ÉÒÔ¼ÆËã¿Õ¼ä¾àÀëÁË		 		
-			{
-				// m_modelMoveID
-				pt2[0]=wx;pt2[1]=wy;pt2[2]=wz;						// ½«ÈıÎ¬µã×ø±ê´æ´¢µ½Êı×é pt2[] ÀïÃæ
-
-				double deltX = (pt2[0] - pt1[0]) / derDisScale;		// 400ÊÇÃô¸ĞÖµÏµÊı£¬Êı×ÖÔ½´ó£¬Ã¿´ÎÒÆ¶¯¾àÀë¾ÍÔ½Ğ¡
-				double deltZ = (pt2[2] - pt1[2]) / derDisScale;		// ÉèÖÃ¶¯Ì¬ĞŞ¸ÄÏµÊı
-
-				m_3DModel.GetAt(m_selectedModelID)->posX += deltX;
-				m_3DModel.GetAt(m_selectedModelID)->posZ += deltZ;
-
-				m_selectedModelID = -1;
-			}
-
-			Invalidate(FALSE);
-		}  
-
-		// ---------------------------------------
-
-		// Êó±êËõ·Å3DÄ£ĞÍ
-		else if(m_OperateType == SCALE)					
-		{
-			m_selectedModelID = -1;
-
-			//ÉäÏßÑ¡Ôñ¹¦ÄÜ
-			GLfloat  winX, winY; 
-			GLdouble posX, posY, posZ; 
-			CRect re;
-			GetWindowRect(&re); 
-			int screenHeight = re.Height(),screenWidth = re.Width();//ÆÁÄ»¿íºÍ¸ß
-
-			//±ä»»Òª»æÍ¼º¯ÊıÀïµÄË³ĞòÒ»Ñù£¬·ñÔò×ø±ê×ª»»»á²úÉú´íÎó
-			winX = point.x; 
-			winY = screenHeight - point.y;
-			//»ñÈ¡ÏñËØ¶ÔÓ¦µÄÇ°²Ã¼ôÃæµÄµã×ø±ê
-			int bResult = gluUnProject(winX, winY, 0.0, modelview, projection, viewport, &posX, &posY, &posZ); 
-			CVector3 nearPoint;
-			nearPoint.x = posX; 
-			nearPoint.y = posY; 
-			nearPoint.z = posZ;
-			//»ñÈ¡ÏñËØ¶ÔÓ¦µÄºó²Ã¼ôÃæµÄµã×ø±ê
-			bResult = gluUnProject(winX, winY, 1.0, modelview, projection, viewport, &posX, &posY, &posZ); 
-			CVector3 farPoint;
-			farPoint.x = posX; 
-			farPoint.y = posY; 
-			farPoint.z = posZ;
-
-			CVector3 n_vector,resultP;
-			 
-			//cal the vector of ray
-			n_vector.x=farPoint.x-nearPoint.x;
-			n_vector.y=farPoint.y-nearPoint.y;
-			n_vector.z=farPoint.z-nearPoint.z; 
-
-			JudgeRayIntersect(nearPoint, n_vector, resultP); 
-		}
-	}
-
-	else if(!m_bMouseMoveSelect)
-	{
-		MessageBox("Êó±êÑ¡Ôñµã²»¹»¾«È· , Çë¾«È·Ñ¡Ôñµã!");
-		m_bSearchDistencePtNums = 0;
-	}
+void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
+    int mouse_x = point.x;
+    int mouse_y = point.y;
+    GLint viewport[4];
+    GLdouble modelview[16] , projection[16];
+    GLdouble wx , wy , wz;
+    float winX , winY , winZ;
+    glPushMatrix();
+    glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+    glGetDoublev(GL_PROJECTION_MATRIX, projection);
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    glPopMatrix();
+    winX = (float)mouse_x;
+    winY = (float)viewport[3] - (float)mouse_y - 1;
+    glReadPixels(mouse_x, int(winY), 1, 1,
+                 GL_DEPTH_COMPONENT , GL_FLOAT ,
+                 &winZ);  // è·å–æ·±åº¦å€¼ï¼Œåªæœ‰åœ¨æœ‰æ¸²æŸ“çš„åœ°æ–¹æ‰èƒ½å‡†ç¡®è·å–ï¼Œä¸€æ—¦æ²¡æœ‰æ¸²æŸ“ç‚¹å°±ä¸èƒ½è·å–æ­£ç¡®å€¼
+    // é€†å˜æ¢å’Œæ¨¡æ‹Ÿå˜æ¢
+    gluUnProject((GLdouble)winX, (GLdouble)winY, (GLdouble)winZ, modelview, projection, viewport, &wx, &wy, &wz);
+    // 3Dåæ ‡ç‚¹èŒƒå›´é™åˆ¶
+    if (wx <  MAP_SCALE) {
+        wx =  MAP_SCALE;         // Xè¾¹
+    }
+    if (wx > (MAP_W - 1)*MAP_SCALE) {
+        wx = (MAP_W - 1) * MAP_SCALE;  // Xè¾¹
+    }
+    if (wz < -(MAP_W - 1)*MAP_SCALE) {
+        wz = -(MAP_W - 1) * MAP_SCALE;  // Zè¾¹
+    }
+    if (wz > -MAP_SCALE) {
+        wz = -MAP_SCALE;         // Zè¾¹
+    }
+    CMainFrame* pMainFrame = (CMainFrame*)GetParent();
+    CString strText;
+    // åœ¨çŠ¶æ€æ æŒ‡ç¤ºå™¨ä¸Šæ˜¾ç¤ºç›¸å…³ä¿¡æ¯(é¼ æ ‡æ‰€ç‚¹å‡»å¤„åœ¨ä¸‰ç»´åœºæ™¯ä¸­çš„åæ ‡)
+    strText.Format("é¼ æ ‡åæ ‡:x=%.3f , y=%.3f , z=%.3f" , wx  , wy , wz);
+    pMainFrame->Set_BarText(4 , strText);
+    CString tt;
+    if (winZ >= 0 && winZ < 1.0) {
+        if (m_isSetXYByMouse) {  //é€šè¿‡é¼ æ ‡è®¾ç½®æ¨¡å‹æ‘†æ”¾ä½ç½®
+            pt1[0] = wx;
+            pt1[1] = wy;
+            pt1[2] = wz;
+            if (paramSet_modeless_dlg) {
+                paramSet_modeless_dlg->xPos = pt1[0];
+                paramSet_modeless_dlg->zPos = pt1[2];
+                ::PostMessage(paramSet_modeless_dlg->GetSafeHwnd(), WM_UPDATE_EDIT_XY, 0, 0);
+            }
+        }
+        if (m_QueryType == QUERY_COORDINATE) {  // æŸ¥è¯¢ä¸‰ç»´åæ ‡
+            tt.Format("å½“å‰åæ ‡(x,y,z)=(%.3f,%.3f,%.3f)", wx, wy, -wz);
+            pt1[0] = wx;
+            pt1[1] = wy;
+            pt1[2] = wz;                        // æŸ¥è¯¢è·å¾—çš„ä¸‰ç»´å¤§åœ°åæ ‡
+            Invalidate(FALSE);
+            MessageBox(tt, "ä¸‰ç»´åæ ‡æŸ¥è¯¢", MB_ICONINFORMATION);     // ç»™å‡ºåæ ‡æŸ¥è¯¢ä¿¡æ¯
+            IsSearchPoint = true;
+        } else if (m_QueryType == QUERY_DISTENCE) { // æŸ¥è¯¢ç©ºé—´è·ç¦»
+            if (m_bSearchDistencePtNums >= 2) { // å¦‚æœé€‰æ‹©ç‚¹æ•°2ä¸ªï¼Œå½’é›¶
+                m_bSearchDistencePtNums = 0;
+            }
+            m_bSearchDistencePtNums++ ;         // é€‰æ‹©ç‚¹æ•° + 1
+            if (m_bSearchDistencePtNums == 1) { // å¦‚æœåªé€‰æ‹©äº†1ä¸ªç‚¹
+                pt1[0] = wx;
+                pt1[1] = wy;
+                pt1[2] = wz;  // å°†ä¸‰ç»´ç‚¹åæ ‡å­˜å‚¨åˆ°æ•°ç»„ pt1[] é‡Œé¢
+            } else {                            // é€‰æ‹©äº†ä¸¤ä¸ªç‚¹ï¼Œåˆ™è¡¨ç¤ºå¯ä»¥è®¡ç®—ç©ºé—´è·ç¦»äº†
+                pt2[0] = wx;
+                pt2[1] = wy;
+                pt2[2] = wz;  // å°†ä¸‰ç»´ç‚¹åæ ‡å­˜å‚¨åˆ°æ•°ç»„ pt2[] é‡Œé¢
+                // è®¡ç®—è·ç¦»
+                double mdistence;
+                mdistence = sqrt((pt2[0] - pt1[0]) * (pt2[0] - pt1[0]) + (pt2[1] - pt1[1]) * (pt2[1] - pt1[1]) + (pt2[2] - pt1[2]) * (pt2[2] - pt1[2]));
+                tt.Format("ä¸¤ç‚¹ä¸º:\n(x1,y1,z1)=(%.3f,%.3f,%.3f)\n(x2,y2,z2)=(%.3f,%.3f,%.3f)\nè·ç¦»Dis=%.3f", pt1[0], pt1[1], pt1[2], pt2[0], pt2[1], pt2[2], mdistence);
+            }
+            Invalidate(FALSE);
+            MessageBox(tt, "ä¸‰ç»´è·ç¦»æŸ¥è¯¢", MB_ICONINFORMATION);     // ç»™å‡ºè·ç¦»æŸ¥è¯¢ä¿¡æ¯
+        }
+        // [160119] çº¿ç¼–è¾‘  æ·»åŠ çº¿
+        else if (m_QueryType == LINE_ADD) {
+            m_LineEdit_pointNum++ ;         // é€‰æ‹©ç‚¹æ•° + 1
+            if (m_LineEdit_pointNum == 1) {  // å¦‚æœåªé€‰æ‹©äº†1ä¸ªç‚¹
+                m_line.pt1._x = wx;
+                m_line.pt1._y = wy;
+                m_line.pt1._z = wz;
+            } else if (m_LineEdit_pointNum == 2) {
+                m_line.pt2._x = wx;
+                m_line.pt2._y = wy;
+                m_line.pt2._z = wz;
+            }
+            if (m_LineEdit_pointNum >= 2) {  // å¦‚æœé€‰æ‹©ç‚¹æ•°2ä¸ªï¼Œå½’é›¶
+                m_LineEdit_pointNum = 0;
+                PLine3 line = new Line3;
+                line->pt1 = m_line.pt1;
+                line->pt2 = m_line.pt2;
+                m_LinesArray.Add(line);
+            }
+        }
+        // [160209]é€‰å–é¢ç¬¦å·ä¸Šçš„ç‚¹
+        else if (m_QueryType == AREA_ADD) {
+            m_Area_pointNum++ ;         // é€‰æ‹©ç‚¹æ•° + 1
+            if (m_Area_pointNum == 1) {
+                m_area4_forScreenRecord.pt1._x = wx;
+                m_area4_forScreenRecord.pt1._y = wy;
+                m_area4_forScreenRecord.pt1._z = wz;
+            } else if (m_Area_pointNum == 2) {
+                m_area4_forScreenRecord.pt2._x = wx;
+                m_area4_forScreenRecord.pt2._y = wy;
+                m_area4_forScreenRecord.pt2._z = wz;
+            } else if (m_Area_pointNum == 3) {
+                m_area4_forScreenRecord.pt3._x = wx;
+                m_area4_forScreenRecord.pt3._y = wy;
+                m_area4_forScreenRecord.pt3._z = wz;
+            } else if (m_Area_pointNum == 4) {
+                m_area4_forScreenRecord.pt4._x = wx;
+                m_area4_forScreenRecord.pt4._y = wy;
+                m_area4_forScreenRecord.pt4._z = wz;
+            }
+            if (m_Area_pointNum >= 4) {  // å¦‚æœé€‰æ‹©ç‚¹æ•°4ä¸ªï¼Œå½’é›¶
+                m_Area_pointNum = 0;
+                PArea_4 area = new Area_4;
+                area->pt1 = m_area4_forScreenRecord.pt1;
+                area->pt2 = m_area4_forScreenRecord.pt2;
+                area->pt3 = m_area4_forScreenRecord.pt3;
+                area->pt4 = m_area4_forScreenRecord.pt4;
+                area->area_texture = "";
+                area->deleted = 0;
+                m_Area4_Array.Add(area);
+            }
+        }
+        // å¦‚æœæ˜¯ä¸‰ç»´é€‰çº¿è®¾è®¡
+        else if (m_QueryType == SELECTLINE) {
+            PCordinate ppt = new Cordinate;
+            float tmpH = 0;                         // (x,z)å¤„é«˜ç¨‹å€¼
+            float* pDegree = new float(0);          // é€šè¿‡å‡½æ•°å‚æ•°è¿”å›å¤¹è§’çš„å€¼
+            const float threshold_distance = 100.0f;// 2ç‚¹é—´æœ€çŸ­è·ç¦»
+            // 2çº¿æ®µé—´æœ€å°å¤¹è§’
+            const float threshold_degree = 20;
+            CString warningMsg;                     // æç¤ºä¿¡æ¯
+            if ((ppt == NULL)) {
+                AfxMessageBox("Failed to add a new ppt");
+                return ;
+            }
+            if (1) {
+                // è®°å½•è®¾è®¡äº¤ç‚¹ä¸‰ç»´åæ ‡
+                ppt->x = wx;
+                // è®¾ç½®(x,z)å¤„çš„é«˜ç¨‹å€¼
+                tmpH = 70;
+                ppt->y = tmpH;
+                ppt->z = wz;
+            }
+            tmpH = GetHeight(wx, wz);
+            if (m_maxHeight - tmpH < 10) {
+                warningMsg.Format(_T("æ­¤å¤„åœ°åŠ¿å¤ªé«˜,è¯·é‡æ–°é€‰å–!"));
+                AfxMessageBox(warningMsg);
+            } else {
+                // è®¾è®¡çº¿è·¯æ—¶ç¡®ä¿2ç«¯ç‚¹é—´çš„è·ç¦» > threshold_distance
+                if (p_count == 0) {
+                    pre_x = ppt->x;
+                    pre_y = tmpH;
+                    pre_z = ppt->z;
+                    fun(ppt);
+                    p_count++;
+                } else if (p_count >= 1) {
+                    if (m_distance_between_2_points > threshold_distance) {
+                        m_pre_distance = m_distance_between_2_points;
+                    }
+                    last_x = ppt->x;
+                    last_y = tmpH;
+                    last_z = ppt->z;
+                    m_distance_between_2_points = (float)sqrt((last_x - pre_x) * (last_x - pre_x) + (last_y - pre_y) * (last_y - pre_y) + (last_z - pre_z) * (last_z - pre_z));
+                    if (m_distance_between_2_points > threshold_distance) { // è·ç¦»é˜ˆå€¼
+                        if (p_count == 1) {
+                            fun(ppt);
+                            p_count++;
+                            v1_end.x = pre_x;
+                            v1_end.y = 0;
+                            v1_end.z = pre_z;
+                            v1_begin.x = last_x;
+                            v1_begin.y = 0;
+                            v1_begin.z = last_z;
+                            pre_x = ppt->x;
+                            pre_y = tmpH;
+                            pre_z = ppt->z;
+                        } else {
+                            v2_begin = v1_begin;
+                            v2_end.x = last_x;
+                            v2_end.y = 0;
+                            v2_end.z = last_z;
+                            // è®¡ç®—2ä¸ªå‘é‡ä¹‹é—´çš„å¤¹è§’, é€šè¿‡æŒ‡é’ˆä½œå‡½æ•°å‚æ•°è¿”å›
+                            getDegreeBetween2Vectors(v1_begin, v1_end, v2_begin, v2_end, pDegree);
+                            if (*pDegree > threshold_degree) { // å¤¹è§’é˜ˆå€¼
+                                v1_end.x = pre_x;
+                                v1_end.y = 0;
+                                v1_end.z = pre_z;
+                                v1_begin.x = last_x;
+                                v1_begin.y = 0;
+                                v1_begin.z = last_z;
+                                float min_distance_between_2_lines = (m_pre_distance < m_distance_between_2_points ? m_pre_distance : m_distance_between_2_points);
+                                if (*pDegree < 30) {
+                                    m_Curve_R = 15;
+                                    m_Curve_L0 = 1;
+                                } else {
+                                    m_Curve_R = min_distance_between_2_lines * tan((*pDegree / 2.13) * PAI / 180);
+                                    m_Curve_L0 = 6 * m_Curve_R / 100;
+                                    if (m_Curve_L0 < 1)
+                                        m_Curve_L0 = 1;
+                                }
+                                fun(ppt);
+                                pre_x = ppt->x;
+                                pre_y = tmpH;
+                                pre_z = ppt->z;
+                            } else {  // å¤¹è§’é˜ˆå€¼
+                                warningMsg.Format(_T("Degree = %fåº¦ > %fåº¦\nçº¿è·¯è½¬è§’å¤ªå¤§,è¯·é‡æ–°é€‰æ‹©!"), 180 - *pDegree, 180 - threshold_degree);
+                                AfxMessageBox(warningMsg, MB_OK, MB_ICONEXCLAMATION);
+                            }
+                        }
+                    } else {  // è·ç¦»é˜ˆå€¼
+                        warningMsg.Format(_T("Distance = %f < %f\nä¸¤ç‚¹ä¹‹é—´è·ç¦»å¤ªçŸ­,è¯·é‡æ–°é€‰æ‹©!"), m_distance_between_2_points, threshold_distance);
+                        AfxMessageBox(warningMsg, MB_OK, MB_ICONEXCLAMATION);
+                    }
+                }
+            }
+        }  // End ä¸‰ç»´é€‰çº¿è®¾è®¡
+        // ----------------------------------------------------------
+        // å¦‚æœæ˜¯è®¾ç½®é£è¡Œè·¯å¾„
+        else if (m_QueryType == SELECTFLYPATH) {
+            PCordinate ppt = new Cordinate;
+            ppt->x = wx;
+            ppt->y = wy;
+            ppt->z = wz;                        // è®°å½•é£è¡Œè·¯å¾„çš„ä¸‰ç»´åæ ‡
+            m_FlayPath.Add(ppt);                                    // å°†é£è¡Œè·¯å¾„çš„ä¸‰ç»´åæ ‡å­˜å‚¨åˆ°æ•°ç»„m_FlayPath
+            Invalidate(FALSE);
+        }
+        if (m_OperateType == SELECT) {                              // å¦‚æœæ˜¯é€‰æ‹©3Dæ¨¡å‹
+            //å°„çº¿é€‰æ‹©åŠŸèƒ½
+            GLfloat  winX, winY;
+            GLdouble posX, posY, posZ;
+            CRect re;
+            GetWindowRect(&re);
+            int screenHeight = re.Height(), screenWidth = re.Width();  //å±å¹•å®½å’Œé«˜
+            // å˜æ¢è¦ç»˜å›¾å‡½æ•°é‡Œçš„é¡ºåºä¸€æ ·ï¼Œå¦åˆ™åæ ‡è½¬æ¢ä¼šäº§ç”Ÿé”™è¯¯
+            winX = point.x;
+            winY = screenHeight - point.y;
+            // è·å–åƒç´ å¯¹åº”çš„å‰è£å‰ªé¢çš„ç‚¹åæ ‡
+            int bResult = gluUnProject(winX, winY, 0.0, modelview, projection, viewport, &posX, &posY, &posZ);
+            CVector3 nearPoint;
+            nearPoint.x = posX;
+            nearPoint.y = posY;
+            nearPoint.z = posZ;
+            // è·å–åƒç´ å¯¹åº”çš„åè£å‰ªé¢çš„ç‚¹åæ ‡
+            bResult = gluUnProject(winX, winY, 1.0, modelview, projection, viewport, &posX, &posY, &posZ);
+            CVector3 farPoint;
+            farPoint.x = posX;
+            farPoint.y = posY;
+            farPoint.z = posZ;
+            CVector3 n_vector, resultP;
+            // cal the vector of ray
+            n_vector.x = farPoint.x - nearPoint.x;
+            n_vector.y = farPoint.y - nearPoint.y;
+            n_vector.z = farPoint.z - nearPoint.z;
+            JudgeRayIntersect(nearPoint, n_vector, resultP);
+            Invalidate(FALSE);
+        } else if (m_OperateType == MOVE) {             // é¼ æ ‡ç§»åŠ¨3Dæ¨¡å‹
+            if (m_bMouseMove3DModelPtNums >= 2)          // å¦‚æœé€‰æ‹©ç‚¹æ•°2ä¸ªï¼Œå½’é›¶
+                m_bMouseMove3DModelPtNums = 0;
+            m_bMouseMove3DModelPtNums++ ;               // é€‰æ‹©ç‚¹æ•° + 1
+            if (m_bMouseMove3DModelPtNums == 1) {       // å¦‚æœåªé€‰æ‹©äº†1ä¸ªç‚¹
+                // JudgeRayIntersect(nearPoint, n_vector, resultP);
+                PCordinate ppt = new Cordinate;
+                ppt->x = wx;
+                ppt->y = wy;
+                ppt->z = wz;          // ä¸‰ç»´åæ ‡
+                // éå†æ‰€æœ‰çš„3Dæ¨¡å‹,åˆ¤æ–­æ˜¯å¦åœ¨èŒƒå›´å†…
+                // åœ¨ç§»åŠ¨æ¨¡å‹æ—¶ï¼Œä¿éšœåˆå§‹é¼ æ ‡ä½ç½®åœ¨æ¨¡å‹èŒƒå›´å†…ï¼Œè¿™æ ·æœ‰åˆ©äºæ§åˆ¶æ¨¡å‹ä½ç½®
+                // å°„çº¿é€‰æ‹©åŠŸèƒ½
+                GLfloat  winX, winY;
+                GLdouble posX, posY, posZ;
+                CRect re;
+                GetWindowRect(&re);
+                int screenHeight = re.Height(), screenWidth = re.Width();  //å±å¹•å®½å’Œé«˜
+                // å˜æ¢è¦ç»˜å›¾å‡½æ•°é‡Œçš„é¡ºåºä¸€æ ·ï¼Œå¦åˆ™åæ ‡è½¬æ¢ä¼šäº§ç”Ÿé”™è¯¯
+                winX = point.x;
+                winY = screenHeight - point.y;
+                // è·å–åƒç´ å¯¹åº”çš„å‰è£å‰ªé¢çš„ç‚¹åæ ‡
+                int bResult = gluUnProject(winX, winY, 0.0, modelview, projection, viewport, &posX, &posY, &posZ);
+                CVector3 nearPoint;
+                nearPoint.x = posX;
+                nearPoint.y = posY;
+                nearPoint.z = posZ;
+                // è·å–åƒç´ å¯¹åº”çš„åè£å‰ªé¢çš„ç‚¹åæ ‡
+                bResult = gluUnProject(winX, winY, 1.0, modelview, projection, viewport, &posX, &posY, &posZ);
+                CVector3 farPoint;
+                farPoint.x = posX;
+                farPoint.y = posY;
+                farPoint.z = posZ;
+                CVector3 n_vector, resultP;
+                // cal the vector of ray
+                n_vector.x = farPoint.x - nearPoint.x;
+                n_vector.y = farPoint.y - nearPoint.y;
+                n_vector.z = farPoint.z - nearPoint.z;
+                JudgeRayIntersect(nearPoint, n_vector, resultP);
+                if (m_selectedModelID != -1) {
+                    pt1[0] = wx;
+                    pt1[1] = wy;
+                    pt1[2] = wz;                // å°†ä¸‰ç»´ç‚¹åæ ‡å­˜å‚¨åˆ°æ•°ç»„ pt1[] é‡Œé¢
+                } else {
+                    m_bMouseMove3DModelPtNums = 0;
+                }
+            } else if (m_selectedModelID != -1) {                       // é€‰æ‹©äº†ä¸¤ä¸ªç‚¹ï¼Œåˆ™è¡¨ç¤ºå¯ä»¥è®¡ç®—ç©ºé—´è·ç¦»äº†
+                // m_modelMoveID
+                pt2[0] = wx;
+                pt2[1] = wy;
+                pt2[2] = wz;                    // å°†ä¸‰ç»´ç‚¹åæ ‡å­˜å‚¨åˆ°æ•°ç»„ pt2[] é‡Œé¢
+                double deltX = (pt2[0] - pt1[0]) / derDisScale;     // 400æ˜¯æ•æ„Ÿå€¼ç³»æ•°ï¼Œæ•°å­—è¶Šå¤§ï¼Œæ¯æ¬¡ç§»åŠ¨è·ç¦»å°±è¶Šå°
+                double deltZ = (pt2[2] - pt1[2]) / derDisScale;     // è®¾ç½®åŠ¨æ€ä¿®æ”¹ç³»æ•°
+                m_3DModel.GetAt(m_selectedModelID)->posX += deltX;
+                m_3DModel.GetAt(m_selectedModelID)->posZ += deltZ;
+                m_selectedModelID = -1;
+            }
+            Invalidate(FALSE);
+        }
+        // ---------------------------------------
+        // é¼ æ ‡ç¼©æ”¾3Dæ¨¡å‹
+        else if (m_OperateType == SCALE) {
+            m_selectedModelID = -1;
+            // å°„çº¿é€‰æ‹©åŠŸèƒ½
+            GLfloat  winX, winY;
+            GLdouble posX, posY, posZ;
+            CRect re;
+            GetWindowRect(&re);
+            int screenHeight = re.Height(), screenWidth = re.Width();  //å±å¹•å®½å’Œé«˜
+            // å˜æ¢è¦ç»˜å›¾å‡½æ•°é‡Œçš„é¡ºåºä¸€æ ·ï¼Œå¦åˆ™åæ ‡è½¬æ¢ä¼šäº§ç”Ÿé”™è¯¯
+            winX = point.x;
+            winY = screenHeight - point.y;
+            // è·å–åƒç´ å¯¹åº”çš„å‰è£å‰ªé¢çš„ç‚¹åæ ‡
+            int bResult = gluUnProject(winX, winY, 0.0, modelview, projection, viewport, &posX, &posY, &posZ);
+            CVector3 nearPoint;
+            nearPoint.x = posX;
+            nearPoint.y = posY;
+            nearPoint.z = posZ;
+            // è·å–åƒç´ å¯¹åº”çš„åè£å‰ªé¢çš„ç‚¹åæ ‡
+            bResult = gluUnProject(winX, winY, 1.0, modelview, projection, viewport, &posX, &posY, &posZ);
+            CVector3 farPoint;
+            farPoint.x = posX;
+            farPoint.y = posY;
+            farPoint.z = posZ;
+            CVector3 n_vector, resultP;
+            // cal the vector of ray
+            n_vector.x = farPoint.x - nearPoint.x;
+            n_vector.y = farPoint.y - nearPoint.y;
+            n_vector.z = farPoint.z - nearPoint.z;
+            JudgeRayIntersect(nearPoint, n_vector, resultP);
+        }
+    } else if (!m_bMouseMoveSelect) {
+        MessageBox("é¼ æ ‡é€‰æ‹©ç‚¹ä¸å¤Ÿç²¾ç¡® , è¯·ç²¾ç¡®é€‰æ‹©ç‚¹!");
+        m_bSearchDistencePtNums = 0;
+    }
 }
 
 
 
-void CMy3DSymbolLibNewView::ScreenToGL2(CPoint point, GLdouble &wx , GLdouble &wz)
-{
-	int mouse_x=point.x;
-	int mouse_y=point.y;
-
-	GLint viewport[4];
-	GLdouble modelview[16] , projection[16];
-	GLdouble  wy ;
-	float winX , winY , winZ;
-
-	glPushMatrix();
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-	glGetDoublev(GL_PROJECTION_MATRIX, projection);
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	glPopMatrix();
-
-	winX=(float)mouse_x;
-	winY=(float)viewport[3]-(float)mouse_y-1;
-	glReadPixels(mouse_x, int(winY), 1, 1, 
-		GL_DEPTH_COMPONENT , GL_FLOAT , 
-		&winZ);// »ñÈ¡Éî¶ÈÖµ£¬Ö»ÓĞÔÚÓĞäÖÈ¾µÄµØ·½²ÅÄÜ×¼È·»ñÈ¡£¬Ò»µ©Ã»ÓĞäÖÈ¾µã¾Í²»ÄÜ»ñÈ¡ÕıÈ·Öµ
-
-	// Äæ±ä»»ºÍÄ£Äâ±ä»»
-	gluUnProject((GLdouble)winX, (GLdouble)winY, (GLdouble)winZ, modelview, projection, viewport, &wx, &wy, &wz);
-
-	// 3D×ø±êµã·¶Î§ÏŞÖÆ
-	if(wx<  MAP_SCALE){		
-		wx =  MAP_SCALE;         // X±ß
-	}
-	if(wx> (MAP_W-1)*MAP_SCALE){
-		wx = (MAP_W-1)*MAP_SCALE;// X±ß
-	}
-	if(wz<-(MAP_W-1)*MAP_SCALE){
-		wz =-(MAP_W-1)*MAP_SCALE;// Z±ß
-	}
-	if(wz> -MAP_SCALE){	
-		wz = -MAP_SCALE;         // Z±ß
-	}
-
-	 
+void CMy3DSymbolLibNewView::ScreenToGL2(CPoint point, GLdouble& wx , GLdouble& wz) {
+    int mouse_x = point.x;
+    int mouse_y = point.y;
+    GLint viewport[4];
+    GLdouble modelview[16] , projection[16];
+    GLdouble  wy ;
+    float winX , winY , winZ;
+    glPushMatrix();
+    glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+    glGetDoublev(GL_PROJECTION_MATRIX, projection);
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    glPopMatrix();
+    winX = (float)mouse_x;
+    winY = (float)viewport[3] - (float)mouse_y - 1;
+    glReadPixels(mouse_x, int(winY), 1, 1,
+                 GL_DEPTH_COMPONENT , GL_FLOAT ,
+                 &winZ);  // è·å–æ·±åº¦å€¼ï¼Œåªæœ‰åœ¨æœ‰æ¸²æŸ“çš„åœ°æ–¹æ‰èƒ½å‡†ç¡®è·å–ï¼Œä¸€æ—¦æ²¡æœ‰æ¸²æŸ“ç‚¹å°±ä¸èƒ½è·å–æ­£ç¡®å€¼
+    // é€†å˜æ¢å’Œæ¨¡æ‹Ÿå˜æ¢
+    gluUnProject((GLdouble)winX, (GLdouble)winY, (GLdouble)winZ, modelview, projection, viewport, &wx, &wy, &wz);
+    // 3Dåæ ‡ç‚¹èŒƒå›´é™åˆ¶
+    if (wx <  MAP_SCALE) {
+        wx =  MAP_SCALE;         // Xè¾¹
+    }
+    if (wx > (MAP_W - 1)*MAP_SCALE) {
+        wx = (MAP_W - 1) * MAP_SCALE;  // Xè¾¹
+    }
+    if (wz < -(MAP_W - 1)*MAP_SCALE) {
+        wz = -(MAP_W - 1) * MAP_SCALE;  // Zè¾¹
+    }
+    if (wz > -MAP_SCALE) {
+        wz = -MAP_SCALE;         // Zè¾¹
+    }
 }
 
 /********************************************************/
-/* Function: ¼ÆËã2¸öÏòÁ¿Ö®¼äµÄ¼Ğ½Ç						*/
+/* Function: è®¡ç®—2ä¸ªå‘é‡ä¹‹é—´çš„å¤¹è§’                      */
 /********************************************************/
-void CMy3DSymbolLibNewView::getDegreeBetween2Vectors(CVector3 v1_Begin,CVector3 v1_End,
-			CVector3 v2_Begin,CVector3 v2_End, float *pDegreeRet/*·µ»Ø½á¹û*/)
-{
-	CVector3 v1 = v1_End - v1_Begin;
-	CVector3 v2 = v2_End - v2_Begin;
-
-	float dotProductRet = DotProduct(v1,v2);// µã»ı
-	float magnitudeV1 = Magnitude(v1);		// v1µÄÄ£
-	float magnitudeV2 = Magnitude(v2);		// v2µÄÄ£
-
-	float cosM = dotProductRet / (magnitudeV1*magnitudeV2);  
-	float angleAMB = acos(cosM) * 180 / PI;  
-	 
-	*pDegreeRet = angleAMB;
+void CMy3DSymbolLibNewView::getDegreeBetween2Vectors(CVector3 v1_Begin, CVector3 v1_End,
+        CVector3 v2_Begin, CVector3 v2_End, float* pDegreeRet/*è¿”å›ç»“æœ*/) {
+    CVector3 v1 = v1_End - v1_Begin;
+    CVector3 v2 = v2_End - v2_Begin;
+    float dotProductRet = DotProduct(v1, v2);  // ç‚¹ç§¯
+    float magnitudeV1 = Magnitude(v1);      // v1çš„æ¨¡
+    float magnitudeV2 = Magnitude(v2);      // v2çš„æ¨¡
+    float cosM = dotProductRet / (magnitudeV1 * magnitudeV2);
+    float angleAMB = acos(cosM) * 180 / PI;
+    *pDegreeRet = angleAMB;
 }
 
 
-void CMy3DSymbolLibNewView::fun(PCordinate ppt)
-{
-	m_oldlinePtnums=myDesingScheme.PtS_JD.GetSize();	//µ±Ç°ÏßÂ··½°¸Ô­ÓĞÉè¼Æ½»µãÊı
-
-	if(m_oldlinePtnums==0)								//Èç¹ûµ±Ç°ÏßÂ··½°¸Ã»ÓĞÉè¼Æ½»µã,¼´»¹Ã»ÓĞ½øĞĞ¸Ã·½°¸µÄÉè¼Æ
-	{
-		myDesingScheme.PtS_JD.Add(ppt);					//¼ÓÈëÉè¼Æ½»µãµ½PtS_JDÊı×é
-		m_linePtnums=myDesingScheme.PtS_JD.GetSize();	//µ±Ç°ÏßÂ··½°¸Ô­ÓĞÉè¼Æ½»µãÊı
-				
-		PLineCurve pTempCurveElements = new LineCurve;	//¶¨ÒåĞÂµÄ½»µã±äÁ¿
-		
-		//µÚÒ»¸öÉè¼Æ½»µã
-				
-		pTempCurveElements->fwj = 0.0;
-
-		double StartLC = 0;//...
-
-		//Ö±»ºÀï³Ì=·½°¸µÄÆğµãÀï³Ì   »ºÖ±Àï³Ì=·½°¸µÄÆğµãÀï³Ì
-		pTempCurveElements->ZH=pTempCurveElements->HZ = StartLC;
-
-		//»ºÔ²Àï³Ì=·½°¸µÄÆğµãÀï³Ì   Ô²»ºÀï³Ì=·½°¸µÄÆğµãÀï³Ì
-		pTempCurveElements->HY=pTempCurveElements->YH = StartLC;
-				
-		//×ªÏò½Ç¡¢ÇĞÏß³¤ºÍÇúÏß³¤=0
-		pTempCurveElements->Alfa=pTempCurveElements->T=pTempCurveElements->L=0;
-			
-		//ÇúÏß°ë¾¶¡¢Ğı×ªÀàĞÍ¡¢ÍâÊ¸Á¿¾à=0
-		pTempCurveElements->R=pTempCurveElements->RoateStyle=pTempCurveElements->E=0;
-				
-		//ÆÂ³¤¡¢»ººÍÇúÏß³¤¡¢Ô²ÇúÏß³¤¡¢¼ĞÖ±Ïß³¤=0
-		pTempCurveElements->P=pTempCurveElements->L0=pTempCurveElements->Ly=pTempCurveElements->Jzxc=0;
-
-		//½»µãÀï³Ì=·½°¸µÄÆğµãÀï³Ì
-		pTempCurveElements->JDLC = StartLC;
-
-		//½»µãID="JD0";
-		pTempCurveElements->ID="JD0";
-
-		pTempCurveElements->x=myDesingScheme.PtS_JD.GetAt(0)->x;			//½»µãµÄx×ø±ê				
-		pTempCurveElements->y=fabs(myDesingScheme.PtS_JD.GetAt(0)->z);	//½»µãµÄy×ø±ê				
-		pTempCurveElements->z=-myDesingScheme.PtS_JD.GetAt(0)->y;		//½»µãµÄz×ø±ê
-
-		//¼ÓÈë½»µãÔªËØµ½DCurveElementssÄ£°åÊı×éÖĞ
-		myDesingScheme.JDCurveElements.Add(pTempCurveElements);
-
-	}
-	else  //Èç¹ûµ±Ç°ÏßÂ··½°¸Éè¼Æ½»µãÊı>0,±íÊ¾ÒÑ¾­½øĞĞ¸Ã·½°¸µÄÉè¼Æ
-	{
-		if(m_linePtnums<=0){
-			m_linePtnums=myDesingScheme.PtS_JD.GetSize();
-		}
-		CString tt;
-		tt.Format("JD%d",m_linePtnums); //½»µãID×Ô¶¯Ôö¼Ó
-				
-		
-		if(m_oldlinePtnums == 1)
-		{
-			PLineCurve pTempCurveElements = new LineCurve; 
-					
-
-			pTempCurveElements->R = m_Curve_R; 		// ÇúÏß°ë¾¶
-			pTempCurveElements->L0 = m_Curve_L0; 	// »ººÍÇúÏß³¤
-
-			pTempCurveElements->ID = tt;
-			pTempCurveElements->P = (pTempCurveElements->L0*pTempCurveElements->L0)/(pTempCurveElements->R*24.0); 
-					
-			pTempCurveElements->x=ppt->x;
-			pTempCurveElements->y=-ppt->z;
-			pTempCurveElements->z=ppt->y;
-			myDesingScheme.JDCurveElements.Add(pTempCurveElements);
-			myDesingScheme.PtS_JD.Add(ppt);
-					
-			m_linePtnums=myDesingScheme.PtS_JD.GetSize();
-					
-			if(myDesingScheme.PtS_JD.GetSize()>1){
-				OnDraw(GetWindowDC());
-			}
-		}
-		else if(m_oldlinePtnums >= 2)
-		{
-
-			myDesingScheme.JDCurveElements[m_oldlinePtnums-1]->R = m_Curve_R;
-			myDesingScheme.JDCurveElements[m_oldlinePtnums-1]->L0 = m_Curve_L0;
-
-			PLineCurve pTempCurveElements = new LineCurve; 
-
-			pTempCurveElements->R = m_Curve_R; 		// ÇúÏß°ë¾¶
-			pTempCurveElements->L0 = m_Curve_L0; 	// »ººÍÇúÏß³¤
-
-			pTempCurveElements->ID = tt;				// ½»µãID
-			pTempCurveElements->P = (pTempCurveElements->L0*pTempCurveElements->L0)/(pTempCurveElements->R*24.0); 
-
-			pTempCurveElements->x=ppt->x;
-			pTempCurveElements->y=-ppt->z;
-			pTempCurveElements->z=ppt->y;
-			myDesingScheme.JDCurveElements.Add(pTempCurveElements);
-			myDesingScheme.PtS_JD.Add(ppt);
-
-			m_linePtnums=myDesingScheme.PtS_JD.GetSize();
-
-			if(myDesingScheme.PtS_JD.GetSize()>1){
-				OnDraw(GetWindowDC());
-			}
-		}
-	}
+void CMy3DSymbolLibNewView::fun(PCordinate ppt) {
+    m_oldlinePtnums = myDesingScheme.PtS_JD.GetSize();  // å½“å‰çº¿è·¯æ–¹æ¡ˆåŸæœ‰è®¾è®¡äº¤ç‚¹æ•°
+    if (m_oldlinePtnums == 0) {                         // å¦‚æœå½“å‰çº¿è·¯æ–¹æ¡ˆæ²¡æœ‰è®¾è®¡äº¤ç‚¹,å³è¿˜æ²¡æœ‰è¿›è¡Œè¯¥æ–¹æ¡ˆçš„è®¾è®¡
+        myDesingScheme.PtS_JD.Add(ppt);                 // åŠ å…¥è®¾è®¡äº¤ç‚¹åˆ°PtS_JDæ•°ç»„
+        m_linePtnums = myDesingScheme.PtS_JD.GetSize();  // å½“å‰çº¿è·¯æ–¹æ¡ˆåŸæœ‰è®¾è®¡äº¤ç‚¹æ•°
+        PLineCurve pTempCurveElements = new LineCurve;  // å®šä¹‰æ–°çš„äº¤ç‚¹å˜é‡
+        // ç¬¬ä¸€ä¸ªè®¾è®¡äº¤ç‚¹
+        pTempCurveElements->fwj = 0.0;
+        double StartLC = 0;//...
+        // ç›´ç¼“é‡Œç¨‹=æ–¹æ¡ˆçš„èµ·ç‚¹é‡Œç¨‹   ç¼“ç›´é‡Œç¨‹=æ–¹æ¡ˆçš„èµ·ç‚¹é‡Œç¨‹
+        pTempCurveElements->ZH = pTempCurveElements->HZ = StartLC;
+        // ç¼“åœ†é‡Œç¨‹=æ–¹æ¡ˆçš„èµ·ç‚¹é‡Œç¨‹   åœ†ç¼“é‡Œç¨‹=æ–¹æ¡ˆçš„èµ·ç‚¹é‡Œç¨‹
+        pTempCurveElements->HY = pTempCurveElements->YH = StartLC;
+        // è½¬å‘è§’ã€åˆ‡çº¿é•¿å’Œæ›²çº¿é•¿=0
+        pTempCurveElements->Alfa = pTempCurveElements->T = pTempCurveElements->L = 0;
+        // æ›²çº¿åŠå¾„ã€æ—‹è½¬ç±»å‹ã€å¤–çŸ¢é‡è·=0
+        pTempCurveElements->R = pTempCurveElements->RoateStyle = pTempCurveElements->E = 0;
+        // å¡é•¿ã€ç¼“å’Œæ›²çº¿é•¿ã€åœ†æ›²çº¿é•¿ã€å¤¹ç›´çº¿é•¿=0
+        pTempCurveElements->P = pTempCurveElements->L0 = pTempCurveElements->Ly = pTempCurveElements->Jzxc = 0;
+        // äº¤ç‚¹é‡Œç¨‹=æ–¹æ¡ˆçš„èµ·ç‚¹é‡Œç¨‹
+        pTempCurveElements->JDLC = StartLC;
+        // äº¤ç‚¹ID="JD0";
+        pTempCurveElements->ID = "JD0";
+        pTempCurveElements->x = myDesingScheme.PtS_JD.GetAt(0)->x;          // äº¤ç‚¹çš„xåæ ‡
+        pTempCurveElements->y = fabs(myDesingScheme.PtS_JD.GetAt(0)->z);  // äº¤ç‚¹çš„yåæ ‡
+        pTempCurveElements->z = -myDesingScheme.PtS_JD.GetAt(0)->y;     // äº¤ç‚¹çš„zåæ ‡
+        // åŠ å…¥äº¤ç‚¹å…ƒç´ åˆ°DCurveElementssæ¨¡æ¿æ•°ç»„ä¸­
+        myDesingScheme.JDCurveElements.Add(pTempCurveElements);
+    } else {  //å¦‚æœå½“å‰çº¿è·¯æ–¹æ¡ˆè®¾è®¡äº¤ç‚¹æ•°>0,è¡¨ç¤ºå·²ç»è¿›è¡Œè¯¥æ–¹æ¡ˆçš„è®¾è®¡
+        if (m_linePtnums <= 0) {
+            m_linePtnums = myDesingScheme.PtS_JD.GetSize();
+        }
+        CString tt;
+        tt.Format("JD%d", m_linePtnums);  // äº¤ç‚¹IDè‡ªåŠ¨å¢åŠ 
+        if (m_oldlinePtnums == 1) {
+            PLineCurve pTempCurveElements = new LineCurve;
+            pTempCurveElements->R = m_Curve_R;      // æ›²çº¿åŠå¾„
+            pTempCurveElements->L0 = m_Curve_L0;    // ç¼“å’Œæ›²çº¿é•¿
+            pTempCurveElements->ID = tt;
+            pTempCurveElements->P = (pTempCurveElements->L0 * pTempCurveElements->L0) / (pTempCurveElements->R * 24.0);
+            pTempCurveElements->x = ppt->x;
+            pTempCurveElements->y = -ppt->z;
+            pTempCurveElements->z = ppt->y;
+            myDesingScheme.JDCurveElements.Add(pTempCurveElements);
+            myDesingScheme.PtS_JD.Add(ppt);
+            m_linePtnums = myDesingScheme.PtS_JD.GetSize();
+            if (myDesingScheme.PtS_JD.GetSize() > 1) {
+                OnDraw(GetWindowDC());
+            }
+        } else if (m_oldlinePtnums >= 2) {
+            myDesingScheme.JDCurveElements[m_oldlinePtnums - 1]->R = m_Curve_R;
+            myDesingScheme.JDCurveElements[m_oldlinePtnums - 1]->L0 = m_Curve_L0;
+            PLineCurve pTempCurveElements = new LineCurve;
+            pTempCurveElements->R = m_Curve_R;      // æ›²çº¿åŠå¾„
+            pTempCurveElements->L0 = m_Curve_L0;    // ç¼“å’Œæ›²çº¿é•¿
+            pTempCurveElements->ID = tt;                // äº¤ç‚¹ID
+            pTempCurveElements->P = (pTempCurveElements->L0 * pTempCurveElements->L0) / (pTempCurveElements->R * 24.0);
+            pTempCurveElements->x = ppt->x;
+            pTempCurveElements->y = -ppt->z;
+            pTempCurveElements->z = ppt->y;
+            myDesingScheme.JDCurveElements.Add(pTempCurveElements);
+            myDesingScheme.PtS_JD.Add(ppt);
+            m_linePtnums = myDesingScheme.PtS_JD.GetSize();
+            if (myDesingScheme.PtS_JD.GetSize() > 1) {
+                OnDraw(GetWindowDC());
+            }
+        }
+    }
 }
 
 
-void CMy3DSymbolLibNewView::fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0)
-{
-	m_oldlinePtnums=myDesingScheme.PtS_JD.GetSize();	//µ±Ç°ÏßÂ··½°¸Ô­ÓĞÉè¼Æ½»µãÊı
-	
-	if(m_oldlinePtnums==0)								//Èç¹ûµ±Ç°ÏßÂ··½°¸Ã»ÓĞÉè¼Æ½»µã,¼´»¹Ã»ÓĞ½øĞĞ¸Ã·½°¸µÄÉè¼Æ
-	{
-		myDesingScheme.PtS_JD.Add(ppt);					//¼ÓÈëÉè¼Æ½»µãµ½PtS_JDÊı×é
-		m_linePtnums=myDesingScheme.PtS_JD.GetSize();	//µ±Ç°ÏßÂ··½°¸Ô­ÓĞÉè¼Æ½»µãÊı
-				
-		PLineCurve pTempCurveElements = new LineCurve;	//¶¨ÒåĞÂµÄ½»µã±äÁ¿
-		
-		//µÚÒ»¸öÉè¼Æ½»µã
-				
-		pTempCurveElements->fwj = 0.0;
-
-		double StartLC = 0;//...
-
-		//Ö±»ºÀï³Ì=·½°¸µÄÆğµãÀï³Ì   »ºÖ±Àï³Ì=·½°¸µÄÆğµãÀï³Ì
-		pTempCurveElements->ZH=pTempCurveElements->HZ = StartLC;
-
-		//»ºÔ²Àï³Ì=·½°¸µÄÆğµãÀï³Ì   Ô²»ºÀï³Ì=·½°¸µÄÆğµãÀï³Ì
-		pTempCurveElements->HY=pTempCurveElements->YH = StartLC;
-				
-		//×ªÏò½Ç¡¢ÇĞÏß³¤ºÍÇúÏß³¤=0
-		pTempCurveElements->Alfa=pTempCurveElements->T=pTempCurveElements->L=0;
-			
-		//ÇúÏß°ë¾¶¡¢Ğı×ªÀàĞÍ¡¢ÍâÊ¸Á¿¾à=0
-		pTempCurveElements->R=pTempCurveElements->RoateStyle=pTempCurveElements->E=0;
-				
-		//ÆÂ³¤¡¢»ººÍÇúÏß³¤¡¢Ô²ÇúÏß³¤¡¢¼ĞÖ±Ïß³¤=0
-		pTempCurveElements->P=pTempCurveElements->L0=pTempCurveElements->Ly=pTempCurveElements->Jzxc=0;
-
-		//½»µãÀï³Ì=·½°¸µÄÆğµãÀï³Ì
-		pTempCurveElements->JDLC = StartLC;
-
-		//½»µãID="JD0";
-		pTempCurveElements->ID="JD0";
-
-		pTempCurveElements->x=myDesingScheme.PtS_JD.GetAt(0)->x;			//½»µãµÄx×ø±ê				
-		pTempCurveElements->y=fabs(myDesingScheme.PtS_JD.GetAt(0)->z);	//½»µãµÄy×ø±ê				
-		pTempCurveElements->z=-myDesingScheme.PtS_JD.GetAt(0)->y;		//½»µãµÄz×ø±ê
-
-		//¼ÓÈë½»µãÔªËØµ½DCurveElementssÄ£°åÊı×éÖĞ
-		myDesingScheme.JDCurveElements.Add(pTempCurveElements);
-
-	}
-	else  //Èç¹ûµ±Ç°ÏßÂ··½°¸Éè¼Æ½»µãÊı>0,±íÊ¾ÒÑ¾­½øĞĞ¸Ã·½°¸µÄÉè¼Æ
-	{
-		if(m_linePtnums<=0){
-			m_linePtnums=myDesingScheme.PtS_JD.GetSize();
-		}
-		CString tt;
-		tt.Format("JD%d",m_linePtnums); //½»µãID×Ô¶¯Ôö¼Ó
-
-
-		if(1)
-		{
-			PLineCurve pTempCurveElements = new LineCurve; 
-					
-			pTempCurveElements->R = pcrl0->curve_R; 		// ÇúÏß°ë¾¶
-			pTempCurveElements->L0 = pcrl0->curve_L0; 	// »ººÍÇúÏß³¤
-
-			pTempCurveElements->ID = tt;
-			pTempCurveElements->P = (pTempCurveElements->L0*pTempCurveElements->L0)/(pTempCurveElements->R*24.0); 
-					
-			pTempCurveElements->x=ppt->x;
-			pTempCurveElements->y=-ppt->z;
-			pTempCurveElements->z=ppt->y;
-			myDesingScheme.JDCurveElements.Add(pTempCurveElements);
-			myDesingScheme.PtS_JD.Add(ppt);
-					
-			m_linePtnums=myDesingScheme.PtS_JD.GetSize();
-					
-			if(myDesingScheme.PtS_JD.GetSize()>1){
-				OnDraw(GetWindowDC());
-			}
-		}
-	}
+void CMy3DSymbolLibNewView::fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0) {
+    m_oldlinePtnums = myDesingScheme.PtS_JD.GetSize();  // å½“å‰çº¿è·¯æ–¹æ¡ˆåŸæœ‰è®¾è®¡äº¤ç‚¹æ•°
+    if (m_oldlinePtnums == 0) {                         // å¦‚æœå½“å‰çº¿è·¯æ–¹æ¡ˆæ²¡æœ‰è®¾è®¡äº¤ç‚¹,å³è¿˜æ²¡æœ‰è¿›è¡Œè¯¥æ–¹æ¡ˆçš„è®¾è®¡
+        myDesingScheme.PtS_JD.Add(ppt);                 // åŠ å…¥è®¾è®¡äº¤ç‚¹åˆ°PtS_JDæ•°ç»„
+        m_linePtnums = myDesingScheme.PtS_JD.GetSize();  // å½“å‰çº¿è·¯æ–¹æ¡ˆåŸæœ‰è®¾è®¡äº¤ç‚¹æ•°
+        PLineCurve pTempCurveElements = new LineCurve;  // å®šä¹‰æ–°çš„äº¤ç‚¹å˜é‡
+        // ç¬¬ä¸€ä¸ªè®¾è®¡äº¤ç‚¹
+        pTempCurveElements->fwj = 0.0;
+        double StartLC = 0;//...
+        // ç›´ç¼“é‡Œç¨‹=æ–¹æ¡ˆçš„èµ·ç‚¹é‡Œç¨‹   ç¼“ç›´é‡Œç¨‹=æ–¹æ¡ˆçš„èµ·ç‚¹é‡Œç¨‹
+        pTempCurveElements->ZH = pTempCurveElements->HZ = StartLC;
+        // ç¼“åœ†é‡Œç¨‹=æ–¹æ¡ˆçš„èµ·ç‚¹é‡Œç¨‹   åœ†ç¼“é‡Œç¨‹=æ–¹æ¡ˆçš„èµ·ç‚¹é‡Œç¨‹
+        pTempCurveElements->HY = pTempCurveElements->YH = StartLC;
+        // è½¬å‘è§’ã€åˆ‡çº¿é•¿å’Œæ›²çº¿é•¿=0
+        pTempCurveElements->Alfa = pTempCurveElements->T = pTempCurveElements->L = 0;
+        // æ›²çº¿åŠå¾„ã€æ—‹è½¬ç±»å‹ã€å¤–çŸ¢é‡è·=0
+        pTempCurveElements->R = pTempCurveElements->RoateStyle = pTempCurveElements->E = 0;
+        // å¡é•¿ã€ç¼“å’Œæ›²çº¿é•¿ã€åœ†æ›²çº¿é•¿ã€å¤¹ç›´çº¿é•¿=0
+        pTempCurveElements->P = pTempCurveElements->L0 = pTempCurveElements->Ly = pTempCurveElements->Jzxc = 0;
+        // äº¤ç‚¹é‡Œç¨‹=æ–¹æ¡ˆçš„èµ·ç‚¹é‡Œç¨‹
+        pTempCurveElements->JDLC = StartLC;
+        // äº¤ç‚¹ID="JD0";
+        pTempCurveElements->ID = "JD0";
+        pTempCurveElements->x = myDesingScheme.PtS_JD.GetAt(0)->x;          // äº¤ç‚¹çš„xåæ ‡
+        pTempCurveElements->y = fabs(myDesingScheme.PtS_JD.GetAt(0)->z);  // äº¤ç‚¹çš„yåæ ‡
+        pTempCurveElements->z = -myDesingScheme.PtS_JD.GetAt(0)->y;      // äº¤ç‚¹çš„zåæ ‡
+        // åŠ å…¥äº¤ç‚¹å…ƒç´ åˆ°DCurveElementssæ¨¡æ¿æ•°ç»„ä¸­
+        myDesingScheme.JDCurveElements.Add(pTempCurveElements);
+    } else {  // å¦‚æœå½“å‰çº¿è·¯æ–¹æ¡ˆè®¾è®¡äº¤ç‚¹æ•°>0,è¡¨ç¤ºå·²ç»è¿›è¡Œè¯¥æ–¹æ¡ˆçš„è®¾è®¡
+        if (m_linePtnums <= 0) {
+            m_linePtnums = myDesingScheme.PtS_JD.GetSize();
+        }
+        CString tt;
+        tt.Format("JD%d", m_linePtnums);  //äº¤ç‚¹IDè‡ªåŠ¨å¢åŠ 
+        if (1) {
+            PLineCurve pTempCurveElements = new LineCurve;
+            pTempCurveElements->R = pcrl0->curve_R;         // æ›²çº¿åŠå¾„
+            pTempCurveElements->L0 = pcrl0->curve_L0;   // ç¼“å’Œæ›²çº¿é•¿
+            pTempCurveElements->ID = tt;
+            pTempCurveElements->P = (pTempCurveElements->L0 * pTempCurveElements->L0) / (pTempCurveElements->R * 24.0);
+            pTempCurveElements->x = ppt->x;
+            pTempCurveElements->y = -ppt->z;
+            pTempCurveElements->z = ppt->y;
+            myDesingScheme.JDCurveElements.Add(pTempCurveElements);
+            myDesingScheme.PtS_JD.Add(ppt);
+            m_linePtnums = myDesingScheme.PtS_JD.GetSize();
+            if (myDesingScheme.PtS_JD.GetSize() > 1) {
+                OnDraw(GetWindowDC());
+            }
+        }
+    }
 }
 
 
 /********************************************************/
-/* Function: »æÖÆ¿Õ¼ä²éÑ¯±êÖ¾								*/
+/* Function: ç»˜åˆ¶ç©ºé—´æŸ¥è¯¢æ ‡å¿—                               */
 /********************************************************/
-void CMy3DSymbolLibNewView::DrawSearchPoint()
-{
-	glViewport(0, 0, WinViewX, WinViewY);												// ÖØĞÂÉèÖÃÊÓ¿Ú´óĞ¡
-
-	glPushAttrib(GL_CURRENT_BIT);														// ±£´æÏÖÓĞÑÕÉ«ÊôĞÔ
-	glDisable(GL_TEXTURE_2D);															// È¡ÏûÌùÍ¼
-	glPushMatrix();																		// Ñ¹Èë¶ÑÕ»
-	if(m_QueryType==QUERY_COORDINATE)													//ÈıÎ¬¿Õ¼ä×ø±ê²éÑ¯
-	{
-		if(pt1[0]!=-99999)
-		{
-			glLineWidth(m_QueryLineWidth);												// ÉèÖÃ²éÑ¯±êÖ¾Ïß¿í¶È
-			glColor3f(m_QueryColorR/255.0 , m_QueryColorG/255.0 , m_QueryColorB/255.0);	// ÉèÖÃ²éÑ¯±êÖ¾ÏßÑÕÉ«
-
-			//»æÖÆÊ®×ÖĞÍ²éÑ¯±êÖ¾Ïß
-			glBegin(GL_LINES);
-			glVertex3f(pt1[0]-m_shizxLength , pt1[1] , pt1[2]);
-			glVertex3f(pt1[0]+m_shizxLength , pt1[1] , pt1[2]);
-			glEnd();
-
-			glBegin(GL_LINES);
-			glVertex3f(pt1[0] , pt1[1] , pt1[2]-m_shizxLength);
-			glVertex3f(pt1[0] , pt1[1] , pt1[2]+m_shizxLength);
-			glEnd();
-
-			glBegin(GL_LINES);
-			glVertex3f(pt1[0] , pt1[1] , pt1[2]);
-			glVertex3f(pt1[0] , pt1[1]+m_shuzxHeight , pt1[2]);
-			glEnd();
-		}
-
-	}
-	else if(m_QueryType==QUERY_DISTENCE )			//ÈıÎ¬¿Õ¼ä¾àÀë²éÑ¯(ÔÚÑ¡ÔñÁ½¸ö¿Õ¼äµãÖ®ºó²ÅÄÜ¹»¼ÆËã¿Õ¼ä¾àÀë)
-	{
-		glLineWidth(m_QueryLineWidth) ;				// ÉèÖÃ²éÑ¯±êÖ¾Ïß¿í¶È
-		glColor3f(m_QueryColorR/255.0 , m_QueryColorG/255.0 , m_QueryColorB/255.0) ; // ÉèÖÃ²éÑ¯±êÖ¾ÏßÑÕÉ«
-
-		//»æÖÆÊ®×ÖĞÍ²éÑ¯±êÖ¾Ïß
-		glBegin(GL_LINES);
-		glVertex3f(pt1[0]-m_shizxLength , pt1[1] , pt1[2]);
-		glVertex3f(pt1[0]+m_shizxLength , pt1[1] , pt1[2]);
-		glEnd();
-
-		glBegin(GL_LINES);
-		glVertex3f(pt1[0] , pt1[1] , pt1[2]-m_shizxLength);
-		glVertex3f(pt1[0] , pt1[1] , pt1[2]+m_shizxLength);
-		glEnd();
-
-		glBegin(GL_LINES);
-		glVertex3f(pt1[0] , pt1[1] , pt1[2]);
-		glVertex3f(pt1[0] , pt1[1]+m_shuzxHeight , pt1[2]);
-		glEnd();
-
-		glBegin(GL_LINES);
-		glVertex3f(pt2[0]-m_shizxLength , pt2[1] , pt2[2]);
-		glVertex3f(pt2[0]+m_shizxLength , pt2[1] , pt2[2]);
-		glEnd();
-
-		glBegin(GL_LINES);
-		glVertex3f (pt2[0] , pt2[1] , pt2[2]-m_shizxLength);
-		glVertex3f (pt2[0] , pt2[1] , pt2[2]+m_shizxLength);
-		glEnd();
-
-		glBegin(GL_LINES);
-		glVertex3f(pt2[0] , pt2[1] , pt2[2]);
-		glVertex3f(pt2[0] , pt2[1]+m_shuzxHeight , pt2[2]);
-		glEnd();
-
-		glBegin(GL_LINES);
-		glVertex3f(pt1[0] , pt1[1] , pt1[2]);
-		glVertex3f(pt2[0] , pt2[1] , pt2[2]);
-		glEnd();
-
-		glLineWidth(1.0);
-	}
-	
-	// ÈıÎ¬Ñ¡Ïß×´Ì¬
-	else if(m_QueryType==SELECTLINE || myDesingScheme.PtS_JD.GetSize()>0 )
-	{
-		// »æÖÆÑ¡½á¹ı³ÌÖĞµÄÉè¼Æ½»µãÁ¬Ïß
-		m_oldlinePtnums = m_linePtnums;
-		glColor3f(0,0,1);
-		glLineWidth(2.0);
-		
-		for(int i=0;i<myDesingScheme.PtS_JD.GetSize()-1;i++)
-		{
-			DrawCenterLine(i,TRUE); // »æÖÆÏßÂ·ÖĞĞÄÏß
-		}
-
-		// »æÖÆ½»µã±êÖ¾
-		for(int j=0;j<=myDesingScheme.PtS_JD.GetSize()-1;++j)
-		{
-			glLineWidth(m_QueryLineWidth+1);											// ÉèÖÃ±êÖ¾Ïß¿í¶È
-			glColor3f(m_QueryColorR/255.0 , m_QueryColorG/255.0 , m_QueryColorB/255.0);	// ÉèÖÃ±êÖ¾ÏßÑÕÉ«
-
-			float tmp_x = myDesingScheme.PtS_JD[j]->x;
-			float tmp_z = myDesingScheme.PtS_JD[j]->z;
-			float tmp_y = GetHeight(tmp_x,tmp_z);
-			//»æÖÆÊ®×ÖĞÍ±êÖ¾Ïß
-			glBegin(GL_LINES);
-			glVertex3f(tmp_x-m_shizxLength ,tmp_y, tmp_z);
-			glVertex3f(tmp_x+m_shizxLength ,tmp_y, tmp_z);
-			glEnd();
-
-			glBegin(GL_LINES);
-			glVertex3f(tmp_x, tmp_y, tmp_z-m_shizxLength);
-			glVertex3f(tmp_x, tmp_y, tmp_z+m_shizxLength);
-			glEnd();
-
-			glBegin(GL_LINES);
-			glVertex3f(tmp_x, tmp_y, tmp_z);
-			glVertex3f(tmp_x, tmp_y+m_shuzxHeight, tmp_z);
-			glEnd();
-		}
-	}
-
-
-	//[160119]  »æÖÆÏß¶Î
-	else if( m_QueryType == LINE_ADD )	 
-	{
-		glLineWidth(3.0) ;				// ÉèÖÃ²éÑ¯±êÖ¾Ïß¿í¶È
-		glColor3f(m_QueryColorR/255.0 , m_QueryColorG/255.0 , m_QueryColorB/255.0) ; // ÉèÖÃ²éÑ¯±êÖ¾ÏßÑÕÉ«
-
-		for(int i=0;i<m_LinesArray.GetSize();++i)
-		{			
-			glBegin(GL_LINES);
-			glVertex3f(m_LinesArray[i]->pt1._x , m_LinesArray[i]->pt1._y , m_LinesArray[i]->pt1._z);
-			glVertex3f(m_LinesArray[i]->pt2._x , m_LinesArray[i]->pt2._y , m_LinesArray[i]->pt2._z);
-			glEnd();
-		}
-		glLineWidth(1.0);
-	}
-
-	//[160209] »æÖÆ4±ßĞÎ
-	else if( m_QueryType == AREA_ADD )	 
-	{
-		glLineWidth(3.0) ;				// ÉèÖÃ²éÑ¯±êÖ¾Ïß¿í¶È
-		glColor3f(0.3 , 0.6 , 0.5) ; // ÉèÖÃ²éÑ¯±êÖ¾ÏßÑÕÉ«
-
-
-		for(int i=0; i<m_Area4_Array.GetSize(); ++i)
-		{
-			if(m_Area4_Array[i]->deleted != 1)
-			{
-				glBegin(GL_QUADS);
-				glVertex3f(m_Area4_Array[i]->pt1._x , m_Area4_Array[i]->pt1._y , m_Area4_Array[i]->pt1._z);
-				glVertex3f(m_Area4_Array[i]->pt2._x , m_Area4_Array[i]->pt2._y , m_Area4_Array[i]->pt2._z);
-				glVertex3f(m_Area4_Array[i]->pt3._x , m_Area4_Array[i]->pt3._y , m_Area4_Array[i]->pt3._z);
-				glVertex3f(m_Area4_Array[i]->pt4._x , m_Area4_Array[i]->pt4._y , m_Area4_Array[i]->pt4._z);
-				glEnd();
-			}
-			
-
-		}
-		glLineWidth(1.0);
-	}
-
-
-
-
-
-	glPopMatrix();
-	glEnable(GL_TEXTURE_2D);
-	glPopAttrib();
+void CMy3DSymbolLibNewView::DrawSearchPoint() {
+    glViewport(0, 0, WinViewX, WinViewY);                                               // é‡æ–°è®¾ç½®è§†å£å¤§å°
+    glPushAttrib(GL_CURRENT_BIT);                                                       // ä¿å­˜ç°æœ‰é¢œè‰²å±æ€§
+    glDisable(GL_TEXTURE_2D);                                                           // å–æ¶ˆè´´å›¾
+    glPushMatrix();                                                                     // å‹å…¥å †æ ˆ
+    if (m_QueryType == QUERY_COORDINATE) {                                              //ä¸‰ç»´ç©ºé—´åæ ‡æŸ¥è¯¢
+        if (pt1[0] != -99999) {
+            glLineWidth(m_QueryLineWidth);                                              // è®¾ç½®æŸ¥è¯¢æ ‡å¿—çº¿å®½åº¦
+            glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0); // è®¾ç½®æŸ¥è¯¢æ ‡å¿—çº¿é¢œè‰²
+            // ç»˜åˆ¶åå­—å‹æŸ¥è¯¢æ ‡å¿—çº¿
+            glBegin(GL_LINES);
+            glVertex3f(pt1[0] - m_shizxLength , pt1[1] , pt1[2]);
+            glVertex3f(pt1[0] + m_shizxLength , pt1[1] , pt1[2]);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3f(pt1[0] , pt1[1] , pt1[2] - m_shizxLength);
+            glVertex3f(pt1[0] , pt1[1] , pt1[2] + m_shizxLength);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3f(pt1[0] , pt1[1] , pt1[2]);
+            glVertex3f(pt1[0] , pt1[1] + m_shuzxHeight , pt1[2]);
+            glEnd();
+        }
+    } else if (m_QueryType == QUERY_DISTENCE) {     // ä¸‰ç»´ç©ºé—´è·ç¦»æŸ¥è¯¢(åœ¨é€‰æ‹©ä¸¤ä¸ªç©ºé—´ç‚¹ä¹‹åæ‰èƒ½å¤Ÿè®¡ç®—ç©ºé—´è·ç¦»)
+        glLineWidth(m_QueryLineWidth) ;             // è®¾ç½®æŸ¥è¯¢æ ‡å¿—çº¿å®½åº¦
+        glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0) ; // è®¾ç½®æŸ¥è¯¢æ ‡å¿—çº¿é¢œè‰²
+        // ç»˜åˆ¶åå­—å‹æŸ¥è¯¢æ ‡å¿—çº¿
+        glBegin(GL_LINES);
+        glVertex3f(pt1[0] - m_shizxLength , pt1[1] , pt1[2]);
+        glVertex3f(pt1[0] + m_shizxLength , pt1[1] , pt1[2]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex3f(pt1[0] , pt1[1] , pt1[2] - m_shizxLength);
+        glVertex3f(pt1[0] , pt1[1] , pt1[2] + m_shizxLength);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex3f(pt1[0] , pt1[1] , pt1[2]);
+        glVertex3f(pt1[0] , pt1[1] + m_shuzxHeight , pt1[2]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex3f(pt2[0] - m_shizxLength , pt2[1] , pt2[2]);
+        glVertex3f(pt2[0] + m_shizxLength , pt2[1] , pt2[2]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex3f(pt2[0] , pt2[1] , pt2[2] - m_shizxLength);
+        glVertex3f(pt2[0] , pt2[1] , pt2[2] + m_shizxLength);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex3f(pt2[0] , pt2[1] , pt2[2]);
+        glVertex3f(pt2[0] , pt2[1] + m_shuzxHeight , pt2[2]);
+        glEnd();
+        glBegin(GL_LINES);
+        glVertex3f(pt1[0] , pt1[1] , pt1[2]);
+        glVertex3f(pt2[0] , pt2[1] , pt2[2]);
+        glEnd();
+        glLineWidth(1.0);
+    }
+    // ä¸‰ç»´é€‰çº¿çŠ¶æ€
+    else if (m_QueryType == SELECTLINE || myDesingScheme.PtS_JD.GetSize() > 0) {
+        // ç»˜åˆ¶é€‰ç»“è¿‡ç¨‹ä¸­çš„è®¾è®¡äº¤ç‚¹è¿çº¿
+        m_oldlinePtnums = m_linePtnums;
+        glColor3f(0, 0, 1);
+        glLineWidth(2.0);
+        for (int i = 0; i < myDesingScheme.PtS_JD.GetSize() - 1; i++) {
+            DrawCenterLine(i, TRUE); // ç»˜åˆ¶çº¿è·¯ä¸­å¿ƒçº¿
+        }
+        // ç»˜åˆ¶äº¤ç‚¹æ ‡å¿—
+        for (int j = 0; j <= myDesingScheme.PtS_JD.GetSize() - 1; ++j) {
+            glLineWidth(m_QueryLineWidth + 1);                                          // è®¾ç½®æ ‡å¿—çº¿å®½åº¦
+            glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0); // è®¾ç½®æ ‡å¿—çº¿é¢œè‰²
+            float tmp_x = myDesingScheme.PtS_JD[j]->x;
+            float tmp_z = myDesingScheme.PtS_JD[j]->z;
+            float tmp_y = GetHeight(tmp_x, tmp_z);
+            // ç»˜åˆ¶åå­—å‹æ ‡å¿—çº¿
+            glBegin(GL_LINES);
+            glVertex3f(tmp_x - m_shizxLength , tmp_y, tmp_z);
+            glVertex3f(tmp_x + m_shizxLength , tmp_y, tmp_z);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3f(tmp_x, tmp_y, tmp_z - m_shizxLength);
+            glVertex3f(tmp_x, tmp_y, tmp_z + m_shizxLength);
+            glEnd();
+            glBegin(GL_LINES);
+            glVertex3f(tmp_x, tmp_y, tmp_z);
+            glVertex3f(tmp_x, tmp_y + m_shuzxHeight, tmp_z);
+            glEnd();
+        }
+    }
+    // [160119]  ç»˜åˆ¶çº¿æ®µ
+    else if (m_QueryType == LINE_ADD) {
+        glLineWidth(3.0) ;              // è®¾ç½®æŸ¥è¯¢æ ‡å¿—çº¿å®½åº¦
+        glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0) ; // è®¾ç½®æŸ¥è¯¢æ ‡å¿—çº¿é¢œè‰²
+        for (int i = 0; i < m_LinesArray.GetSize(); ++i) {
+            glBegin(GL_LINES);
+            glVertex3f(m_LinesArray[i]->pt1._x , m_LinesArray[i]->pt1._y , m_LinesArray[i]->pt1._z);
+            glVertex3f(m_LinesArray[i]->pt2._x , m_LinesArray[i]->pt2._y , m_LinesArray[i]->pt2._z);
+            glEnd();
+        }
+        glLineWidth(1.0);
+    }
+    // [160209] ç»˜åˆ¶4è¾¹å½¢
+    else if (m_QueryType == AREA_ADD) {
+        glLineWidth(3.0) ;              // è®¾ç½®æŸ¥è¯¢æ ‡å¿—çº¿å®½åº¦
+        glColor3f(0.3 , 0.6 , 0.5) ;  // è®¾ç½®æŸ¥è¯¢æ ‡å¿—çº¿é¢œè‰²
+        for (int i = 0; i < m_Area4_Array.GetSize(); ++i) {
+            if (m_Area4_Array[i]->deleted != 1) {
+                glBegin(GL_QUADS);
+                glVertex3f(m_Area4_Array[i]->pt1._x , m_Area4_Array[i]->pt1._y , m_Area4_Array[i]->pt1._z);
+                glVertex3f(m_Area4_Array[i]->pt2._x , m_Area4_Array[i]->pt2._y , m_Area4_Array[i]->pt2._z);
+                glVertex3f(m_Area4_Array[i]->pt3._x , m_Area4_Array[i]->pt3._y , m_Area4_Array[i]->pt3._z);
+                glVertex3f(m_Area4_Array[i]->pt4._x , m_Area4_Array[i]->pt4._y , m_Area4_Array[i]->pt4._z);
+                glEnd();
+            }
+        }
+        glLineWidth(1.0);
+    }
+    glPopMatrix();
+    glEnable(GL_TEXTURE_2D);
+    glPopAttrib();
 }
 
-void CMy3DSymbolLibNewView::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	m_bmouseView = true;
-
-	// Í¨¹ıÊó±êÉèÖÃÄ£ĞÍ°Ú·ÅÎ»ÖÃ
-	if(m_isSetXYByMouse)
-	{
-		m_bmouseView = false;
-		m_oldMousePos=point;
-		ScreenToGL(point);
-	}
-		
-	if(m_QueryType == QUERY_COORDINATE)		// ¿Õ¼äÈıÎ¬×ø±ê²éÑ¯
-	{
-		m_bmouseView = false;
-		m_oldMousePos=point;
-		ScreenToGL(point);
-	}
-	else if(m_QueryType==QUERY_DISTENCE)	// ¿Õ¼ä¾àÀë²éÑ¯
-	{
-		m_bmouseView = false;				// ¹Ø±ÕÊó±ê¿ØÏà»úĞı×ª
-		m_oldMousePos=point;
-		ScreenToGL(point);
-	}
-	// ½øĞĞ·ÉĞĞÂ·¾¶Ñ¡Ôñ
-	else if(m_QueryType==SELECTFLYPATH)		
-	{
-		m_bmouseView=false;					// ¹Ø±ÕÊó±ê¿ØÏà»úĞı×ª
-		m_oldMousePos=point;
-		ScreenToGL(point);
-	}
-	// ½øĞĞÈıÎ¬Ñ¡ÏßÉè¼Æ
-	else if(m_QueryType==SELECTLINE) 
-	{
-		m_bmouseView=false;					// ¹Ø±ÕÊó±ê¿ØÏà»úĞı×ª
-		m_oldMousePos=point;
-		ScreenToGL(point); 
-	}
-
-	//[160119]Ïß±à¼­   Ìí¼ÓÏß
-	else if(m_QueryType==LINE_ADD)
-	{
-		m_bmouseView = false;				// ¹Ø±ÕÊó±ê¿ØÏà»úĞı×ª
-		m_oldMousePos=point;
-		ScreenToGL(point);
-	}
-	//[160209] Ìí¼ÓÃæ·ûºÅ 4±ßĞÎ
-	else if(m_QueryType == AREA_ADD)
-	{
-		m_bmouseView = false;				// ¹Ø±ÕÊó±ê¿ØÏà»úĞı×ª
-		m_oldMousePos=point;
-		ScreenToGL(point);
-	}
-
-	// ------------------------------------------
-
-	// ²Ù×÷3DSÄ£ĞÍ
-	if(m_OperateType == SELECT)	// Ñ¡ÖĞ3DSÄ£ĞÍ
-	{
-		m_bmouseView=false;
-		m_oldMousePos=point;
-		m_bIsLBtnDown = true;
-		ScreenToGL(point);
-	}
-	else if(m_OperateType == MOVE) // ÒÆ¶¯3DSÄ£ĞÍ
-	{
-		m_bmouseView=false;
-		m_oldMousePos=point; 
-		ScreenToGL(point);
-	}
-	else if(m_OperateType == SCALE) // Ëõ·Å3DSÄ£ĞÍ
-	{
-		m_bmouseView=false;
-		m_bIsLBtnDown = true;
-		ScreenToGL(point);
-	}		
-	// ------------------------------------------
-	CView::OnLButtonDown(nFlags, point);
+void CMy3DSymbolLibNewView::OnLButtonDown(UINT nFlags, CPoint point) {
+    m_bmouseView = true;
+    // é€šè¿‡é¼ æ ‡è®¾ç½®æ¨¡å‹æ‘†æ”¾ä½ç½®
+    if (m_isSetXYByMouse) {
+        m_bmouseView = false;
+        m_oldMousePos = point;
+        ScreenToGL(point);
+    }
+    if (m_QueryType == QUERY_COORDINATE) {  // ç©ºé—´ä¸‰ç»´åæ ‡æŸ¥è¯¢
+        m_bmouseView = false;
+        m_oldMousePos = point;
+        ScreenToGL(point);
+    } else if (m_QueryType == QUERY_DISTENCE) {  // ç©ºé—´è·ç¦»æŸ¥è¯¢
+        m_bmouseView = false;               // å…³é—­é¼ æ ‡æ§ç›¸æœºæ—‹è½¬
+        m_oldMousePos = point;
+        ScreenToGL(point);
+    }
+    // è¿›è¡Œé£è¡Œè·¯å¾„é€‰æ‹©
+    else if (m_QueryType == SELECTFLYPATH) {
+        m_bmouseView = false;               // å…³é—­é¼ æ ‡æ§ç›¸æœºæ—‹è½¬
+        m_oldMousePos = point;
+        ScreenToGL(point);
+    }
+    // è¿›è¡Œä¸‰ç»´é€‰çº¿è®¾è®¡
+    else if (m_QueryType == SELECTLINE) {
+        m_bmouseView = false;               // å…³é—­é¼ æ ‡æ§ç›¸æœºæ—‹è½¬
+        m_oldMousePos = point;
+        ScreenToGL(point);
+    }
+    // [160119]çº¿ç¼–è¾‘   æ·»åŠ çº¿
+    else if (m_QueryType == LINE_ADD) {
+        m_bmouseView = false;               // å…³é—­é¼ æ ‡æ§ç›¸æœºæ—‹è½¬
+        m_oldMousePos = point;
+        ScreenToGL(point);
+    }
+    // [160209] æ·»åŠ é¢ç¬¦å· 4è¾¹å½¢
+    else if (m_QueryType == AREA_ADD) {
+        m_bmouseView = false;               // å…³é—­é¼ æ ‡æ§ç›¸æœºæ—‹è½¬
+        m_oldMousePos = point;
+        ScreenToGL(point);
+    }
+    // ------------------------------------------
+    // æ“ä½œ3DSæ¨¡å‹
+    if (m_OperateType == SELECT) {  // é€‰ä¸­3DSæ¨¡å‹
+        m_bmouseView = false;
+        m_oldMousePos = point;
+        m_bIsLBtnDown = true;
+        ScreenToGL(point);
+    } else if (m_OperateType == MOVE) {  // ç§»åŠ¨3DSæ¨¡å‹
+        m_bmouseView = false;
+        m_oldMousePos = point;
+        ScreenToGL(point);
+    } else if (m_OperateType == SCALE) {  // ç¼©æ”¾3DSæ¨¡å‹
+        m_bmouseView = false;
+        m_bIsLBtnDown = true;
+        ScreenToGL(point);
+    }
+    // ------------------------------------------
+    CView::OnLButtonDown(nFlags, point);
 }
 
-void CMy3DSymbolLibNewView::OnRButtonDown(UINT nFlags, CPoint point)
-{
-	// µ±Êó±êÔÚÄ³¸öÄ£ĞÍÉÏ£¬°´ÏÂÊó±êÓÒ¼ü£¬µ¯³öÄ£ĞÍ¿ØÖÆ²Ëµ¥
-	if(m_OperateType == SELECT && !(m_pSelectedModelSet.empty()) && m_selectedModelID != -1)
-	{
-		if(m_3DModel.GetAt(m_selectedModelID)->isDeleted==false)
-		{
-			// ÓÒ¼ü¿ì½İ²Ëµ¥
-			CMenu menu;
-			menu.LoadMenu(IDR_POPUP_MODEL_SETTING);
-			CMenu *pPopUp = menu.GetSubMenu(0);
-			ClientToScreen(&point);
-			pPopUp->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
-		}
-	}
-	if(m_QueryType == QUERY_DISTENCE || m_QueryType == QUERY_COORDINATE)
-	{
-		m_QueryType = -1; // ¹Ø±ÕÈıÎ¬²éÑ¯					
-	}
-	if(m_OperateType == MOVE || m_OperateType == SCALE)
-	{
-		// µ±ÔÚmoveÄ£Ê½ÏÂÃæ½øĞĞÓÒ¼ü²Ù×÷£¬Ïàµ±ÓÚ»Øµ½ÒÆ¶¯²Ù×÷Ö®Ç°µÄ×´Ì¬½øĞĞ²Ù×÷
-		m_OperateType = SELECT;
-		m_selectedModelID = -1;
-	}
-
-
-
-	GLdouble wx = 0.0;
-	GLdouble wz = 0.0;
-	ScreenToGL2(point, wx, wz);
-
-	PPR_Point tmp_mp(wx, wz);
-
-	UpdateAreaTexture(tmp_mp, point);
-
-
-
-
-
-	Invalidate(FALSE);
-	CView::OnRButtonDown(nFlags, point);
+void CMy3DSymbolLibNewView::OnRButtonDown(UINT nFlags, CPoint point) {
+    // å½“é¼ æ ‡åœ¨æŸä¸ªæ¨¡å‹ä¸Šï¼ŒæŒ‰ä¸‹é¼ æ ‡å³é”®ï¼Œå¼¹å‡ºæ¨¡å‹æ§åˆ¶èœå•
+    if (m_OperateType == SELECT && !(m_pSelectedModelSet.empty()) && m_selectedModelID != -1) {
+        if (m_3DModel.GetAt(m_selectedModelID)->isDeleted == false) {
+            // å³é”®å¿«æ·èœå•
+            CMenu menu;
+            menu.LoadMenu(IDR_POPUP_MODEL_SETTING);
+            CMenu* pPopUp = menu.GetSubMenu(0);
+            ClientToScreen(&point);
+            pPopUp->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
+        }
+    }
+    if (m_QueryType == QUERY_DISTENCE || m_QueryType == QUERY_COORDINATE) {
+        m_QueryType = -1;  // å…³é—­ä¸‰ç»´æŸ¥è¯¢
+    }
+    if (m_OperateType == MOVE || m_OperateType == SCALE) {
+        // å½“åœ¨moveæ¨¡å¼ä¸‹é¢è¿›è¡Œå³é”®æ“ä½œï¼Œç›¸å½“äºå›åˆ°ç§»åŠ¨æ“ä½œä¹‹å‰çš„çŠ¶æ€è¿›è¡Œæ“ä½œ
+        m_OperateType = SELECT;
+        m_selectedModelID = -1;
+    }
+    GLdouble wx = 0.0;
+    GLdouble wz = 0.0;
+    ScreenToGL2(point, wx, wz);
+    PPR_Point tmp_mp(wx, wz);
+    UpdateAreaTexture(tmp_mp, point);
+    Invalidate(FALSE);
+    CView::OnRButtonDown(nFlags, point);
 }
 
-void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	m_keynumber = 0;
-	CVector3 vAxis;
-
-	switch (nChar)				// ¸ù¾İ°´¼ü×Ö·ûÀ´½øĞĞÏàÓ¦ÉèÖÃ
-	{
-	case VK_LEFT:  
-		m_keynumber = 3;
-		m_xTrans -= m_Step_X;	// ÔÚX·½ÏòÉÏÒÆ¶¯µÄ¾àÀëÀÛ¼Æ
-		Invalidate(FALSE);		// Ë¢ĞÂÈıÎ¬³¡¾°
-		break;
-	case VK_RIGHT:
-		m_keynumber = 4;
-		m_xTrans += m_Step_X;	// ÔÚX·½ÏòÉÏÒÆ¶¯µÄ¾àÀëÀÛ¼Æ
-		Invalidate(FALSE);		// Ë¢ĞÂÈıÎ¬³¡¾°
-		break;
-	case VK_UP:
-		// Ñ¡ÖĞÎïÌåÊ±¾Í½«ÎïÌå¸ß¶È±ä»¯
-		if(m_OperateType == SELECT)
-		{
-			for(int i = 0; i < m_3DModel.GetSize(); i++)
-			{
-				if(m_3DModel.GetAt(i)->modelSelected){
-					m_3DModel.GetAt(i)->posY++;
-				}
-			}
-		}
-		else
-		{
-			// ·ñÔò¾ÍÀ­½üÊÓÏß
-			m_zTrans -= m_Step_Z;	// ÔÚZ·½ÏòÉÏÒÆ¶¯µÄ¾àÀëÀÛ¼Æ
-			m_keynumber=1;
-		}			
-		Invalidate(FALSE);			// Ë¢ĞÂÈıÎ¬³¡¾°			
-		break;
-	case VK_DOWN:
-		// Ñ¡ÖĞÎïÌåÊ±¾Í½«ÎïÌå¸ß¶È±ä»¯
-		if(m_OperateType == SELECT)
-		{
-			for(int i = 0; i < m_3DModel.GetSize(); i++)
-			{
-				if(m_3DModel.GetAt(i)->modelSelected){
-					m_3DModel.GetAt(i)->posY--;
-				}
-			}
-		}
-		else
-		{
-			m_zTrans += m_Step_Z;	// ÔÚZ·½ÏòÉÏÒÆ¶¯µÄ¾àÀëÀÛ¼Æ
-			m_keynumber=2;
-		}
-		Invalidate(FALSE);			// Ë¢ĞÂÈıÎ¬³¡¾°
-		break;
-	case 'I':     
-		m_ViewWideNarrow += 1.0;	// ·ÉĞĞÊÓÒ°Ôö´ó,¿´¼û³¡¾°·¶Î§Ôö´óÁË,Ïàµ±ÓÚÏà»ú¾µÍ·ÏòÆÁÄ»Íâ·½ÏòÒÆ¶¯	
-		OnDraw (GetDC());			// Ë¢ĞÂÈıÎ¬³¡¾°
-		break;
-	case 'O':     
-		m_ViewWideNarrow -= 1.0;		// ·ÉĞĞÊÓÒ°¼õĞ¡,¿´¼û³¡¾°·¶Î§¼õĞ¡ÁË,Ïàµ±ÓÚÏà»ú¾µÍ·ÏòÆÁÄ»Àï·½ÏòÒÆ¶¯
-		OnDraw (GetDC());			// Ë¢ĞÂÈıÎ¬³¡¾°
-		break;
-	case 'J':     					// ¼ÓËÙ
-		//m_flyspeed -= 1;
-		//if(m_flyspeed<=1)
-		//	m_flyspeed=1;
-		//SetFLyTimer();			// ÉèÖÃ·ÉĞĞ¼ÆÊ±Æ÷
-		break;
-	case 'M':     				// ¼õËÙ
-		//m_flyspeed += 1;
-		//SetFLyTimer();			// ÉèÖÃ·ÉĞĞ¼ÆÊ±Æ÷
-		break;
-	case 'G':     
-		m_StaticHeight=m_StaticHeight*1.1;
-		OnDraw (GetDC());		// Ë¢ĞÂÈıÎ¬³¡¾°
-		break;
-	case 'B':     
-		m_StaticHeight=m_StaticHeight/1.1; // ¼õÉÙ¹Ì¶¨·ÉĞĞ¸ß¶È
-		OnDraw (GetDC());		// Ë¢ĞÂÈıÎ¬³¡¾°
-		break;
-	case VK_F2:					// ÏÔÊ¾ÂşÓÎÈÈ¼ü°ïÖú
-		DisplayHelp();					   
-		break;
-	case 'S':					// Í£Ö¹·ÉĞĞ
-		OnFlyStop();					   
-		break;
-	case 'P':					// ¿ªÊ¼/ÔİÍ£·ÉĞĞ
-		OnFlyPlaypause();					   
-		break;
-	case 'H':
-	case VK_PRIOR: // PgUp   ¸©Ñö½Ç
-		vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);		// ²æ»ı¼ÆËã
-		vAxis = Normalize(vAxis);									// vAxis¹éÒ»»¯
-		RotateView(20/derAngleZ, vAxis.x, vAxis.y, vAxis.z);		// Í¨¹ıÊó±ê¿ØÖÆÏà»úµÄĞı×ª(Ğı×ªÊÓ½Ç)
-		OnDraw(GetDC());
-		break;
-	case 'N':
-	case VK_NEXT: // PgDn	¸©Ñö½Ç
-		vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);		// ²æ»ı¼ÆËã
-		vAxis = Normalize(vAxis);									// vAxis¹éÒ»»¯
-		RotateView(-20/derAngleZ, vAxis.x, vAxis.y, vAxis.z);		// Í¨¹ıÊó±ê¿ØÖÆÏà»úµÄĞı×ª(Ğı×ªÊÓ½Ç)
-		OnDraw(GetDC());
-		break;
-	case 'R':// Ñ¡ÖĞÄ£ĞÍR¼üÈÆYÖáĞı×ª
-		for(int i = 0; i < m_3DModel.GetSize(); i++)
-		{
-			if(m_3DModel.GetAt(i)->modelSelected)
-				m_3DModel.GetAt(i)->rotY++;
-			if(m_3DModel.GetAt(i)->rotY >= 360)
-				m_3DModel.GetAt(i)->rotY = 0;
-		}
-		OnDraw(GetDC());
-		break;
-
-	case VK_HOME: // Ë³Ê±ÕëĞı×ª
-		vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);		// ²æ»ı¼ÆËã
-		vAxis = Normalize(vAxis);									// vAxis¹éÒ»»¯
-		RotateView(-50/derAngleZ,  0, 1, 0);		// Í¨¹ıÊó±ê¿ØÖÆÏà»úµÄĞı×ª(Ğı×ªÊÓ½Ç)
-		OnDraw(GetDC());
-		break;
-	case VK_END: // ÄæÊ±ÕëĞı×ª
-		vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);		// ²æ»ı¼ÆËã
-		vAxis = Normalize(vAxis);									// vAxis¹éÒ»»¯
-		RotateView(50/derAngleZ,  0, 1, 0);		// Í¨¹ıÊó±ê¿ØÖÆÏà»úµÄĞı×ª(Ğı×ªÊÓ½Ç)
-		OnDraw(GetDC());
-		break;
-
-
-	}
-	CamraUpdate();				// ÖØĞÂµ÷ÕûÏà»ú
-	m_keynumber = 0;			// »Ö¸´°´¼ü0Öµ
-
-	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+    m_keynumber = 0;
+    CVector3 vAxis;
+    switch (nChar) {            // æ ¹æ®æŒ‰é”®å­—ç¬¦æ¥è¿›è¡Œç›¸åº”è®¾ç½®
+        case VK_LEFT:
+            m_keynumber = 3;
+            m_xTrans -= m_Step_X;   // åœ¨Xæ–¹å‘ä¸Šç§»åŠ¨çš„è·ç¦»ç´¯è®¡
+            Invalidate(FALSE);      // åˆ·æ–°ä¸‰ç»´åœºæ™¯
+            break;
+        case VK_RIGHT:
+            m_keynumber = 4;
+            m_xTrans += m_Step_X;   // åœ¨Xæ–¹å‘ä¸Šç§»åŠ¨çš„è·ç¦»ç´¯è®¡
+            Invalidate(FALSE);      // åˆ·æ–°ä¸‰ç»´åœºæ™¯
+            break;
+        case VK_UP:
+            // é€‰ä¸­ç‰©ä½“æ—¶å°±å°†ç‰©ä½“é«˜åº¦å˜åŒ–
+            if (m_OperateType == SELECT) {
+                for (int i = 0; i < m_3DModel.GetSize(); i++) {
+                    if (m_3DModel.GetAt(i)->modelSelected) {
+                        m_3DModel.GetAt(i)->posY++;
+                    }
+                }
+            } else {
+                // å¦åˆ™å°±æ‹‰è¿‘è§†çº¿
+                m_zTrans -= m_Step_Z;   // åœ¨Zæ–¹å‘ä¸Šç§»åŠ¨çš„è·ç¦»ç´¯è®¡
+                m_keynumber = 1;
+            }
+            Invalidate(FALSE);          // åˆ·æ–°ä¸‰ç»´åœºæ™¯
+            break;
+        case VK_DOWN:
+            // é€‰ä¸­ç‰©ä½“æ—¶å°±å°†ç‰©ä½“é«˜åº¦å˜åŒ–
+            if (m_OperateType == SELECT) {
+                for (int i = 0; i < m_3DModel.GetSize(); i++) {
+                    if (m_3DModel.GetAt(i)->modelSelected) {
+                        m_3DModel.GetAt(i)->posY--;
+                    }
+                }
+            } else {
+                m_zTrans += m_Step_Z;   // åœ¨Zæ–¹å‘ä¸Šç§»åŠ¨çš„è·ç¦»ç´¯è®¡
+                m_keynumber = 2;
+            }
+            Invalidate(FALSE);          // åˆ·æ–°ä¸‰ç»´åœºæ™¯
+            break;
+        case 'I':
+            m_ViewWideNarrow += 1.0;    // é£è¡Œè§†é‡å¢å¤§,çœ‹è§åœºæ™¯èŒƒå›´å¢å¤§äº†,ç›¸å½“äºç›¸æœºé•œå¤´å‘å±å¹•å¤–æ–¹å‘ç§»åŠ¨
+            OnDraw(GetDC());            // åˆ·æ–°ä¸‰ç»´åœºæ™¯
+            break;
+        case 'O':
+            m_ViewWideNarrow -= 1.0;        // é£è¡Œè§†é‡å‡å°,çœ‹è§åœºæ™¯èŒƒå›´å‡å°äº†,ç›¸å½“äºç›¸æœºé•œå¤´å‘å±å¹•é‡Œæ–¹å‘ç§»åŠ¨
+            OnDraw(GetDC());            // åˆ·æ–°ä¸‰ç»´åœºæ™¯
+            break;
+        case 'J':                       // åŠ é€Ÿ
+            // m_flyspeed -= 1;
+            // if(m_flyspeed<=1)
+            //  m_flyspeed=1;
+            // SetFLyTimer();            // è®¾ç½®é£è¡Œè®¡æ—¶å™¨
+            break;
+        case 'M':                   // å‡é€Ÿ
+            // m_flyspeed += 1;
+            // SetFLyTimer();            // è®¾ç½®é£è¡Œè®¡æ—¶å™¨
+            break;
+        case 'G':
+            m_StaticHeight = m_StaticHeight * 1.1;
+            OnDraw(GetDC());        // åˆ·æ–°ä¸‰ç»´åœºæ™¯
+            break;
+        case 'B':
+            m_StaticHeight = m_StaticHeight / 1.1; // å‡å°‘å›ºå®šé£è¡Œé«˜åº¦
+            OnDraw(GetDC());        // åˆ·æ–°ä¸‰ç»´åœºæ™¯
+            break;
+        case VK_F2:                 // æ˜¾ç¤ºæ¼«æ¸¸çƒ­é”®å¸®åŠ©
+            DisplayHelp();
+            break;
+        case 'S':                   // åœæ­¢é£è¡Œ
+            OnFlyStop();
+            break;
+        case 'P':                   // å¼€å§‹/æš‚åœé£è¡Œ
+            OnFlyPlaypause();
+            break;
+        case 'H':
+        case VK_PRIOR: // PgUp   ä¿¯ä»°è§’
+            vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // å‰ç§¯è®¡ç®—
+            vAxis = Normalize(vAxis);                                   // vAxiså½’ä¸€åŒ–
+            RotateView(20 / derAngleZ, vAxis.x, vAxis.y, vAxis.z);      // é€šè¿‡é¼ æ ‡æ§åˆ¶ç›¸æœºçš„æ—‹è½¬(æ—‹è½¬è§†è§’)
+            OnDraw(GetDC());
+            break;
+        case 'N':
+        case VK_NEXT:  // PgDn   ä¿¯ä»°è§’
+            vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // å‰ç§¯è®¡ç®—
+            vAxis = Normalize(vAxis);                                   // vAxiså½’ä¸€åŒ–
+            RotateView(-20 / derAngleZ, vAxis.x, vAxis.y, vAxis.z);     // é€šè¿‡é¼ æ ‡æ§åˆ¶ç›¸æœºçš„æ—‹è½¬(æ—‹è½¬è§†è§’)
+            OnDraw(GetDC());
+            break;
+        case 'R':  // é€‰ä¸­æ¨¡å‹Ré”®ç»•Yè½´æ—‹è½¬
+            for (int i = 0; i < m_3DModel.GetSize(); i++) {
+                if (m_3DModel.GetAt(i)->modelSelected)
+                    m_3DModel.GetAt(i)->rotY++;
+                if (m_3DModel.GetAt(i)->rotY >= 360)
+                    m_3DModel.GetAt(i)->rotY = 0;
+            }
+            OnDraw(GetDC());
+            break;
+        case VK_HOME:  // é¡ºæ—¶é’ˆæ—‹è½¬
+            vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // å‰ç§¯è®¡ç®—
+            vAxis = Normalize(vAxis);                                   // vAxiså½’ä¸€åŒ–
+            RotateView(-50 / derAngleZ,  0, 1, 0);      // é€šè¿‡é¼ æ ‡æ§åˆ¶ç›¸æœºçš„æ—‹è½¬(æ—‹è½¬è§†è§’)
+            OnDraw(GetDC());
+            break;
+        case VK_END:  // é€†æ—¶é’ˆæ—‹è½¬
+            vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // å‰ç§¯è®¡ç®—
+            vAxis = Normalize(vAxis);                                   // vAxiså½’ä¸€åŒ–
+            RotateView(50 / derAngleZ,  0, 1, 0);   // é€šè¿‡é¼ æ ‡æ§åˆ¶ç›¸æœºçš„æ—‹è½¬(æ—‹è½¬è§†è§’)
+            OnDraw(GetDC());
+            break;
+    }
+    CamraUpdate();              // é‡æ–°è°ƒæ•´ç›¸æœº
+    m_keynumber = 0;            // æ¢å¤æŒ‰é”®0å€¼
+    CView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
 
 /****************************************************************/
-/* Function: ¸ù¾İÊó±êºÍ¼üÅÌÊµÏÖÈıÎ¬³¡¾°Ïà»úµÄÒÆ¶¯ºÍĞı×ª¿ØÖÆ			*/
+/* Function: æ ¹æ®é¼ æ ‡å’Œé”®ç›˜å®ç°ä¸‰ç»´åœºæ™¯ç›¸æœºçš„ç§»åŠ¨å’Œæ—‹è½¬æ§åˆ¶         */
 /****************************************************************/
-void CMy3DSymbolLibNewView::CamraUpdate()
-{
-	CVector3 vCross = CrossProduct(m_vLook - m_vEyePosition, m_vUp);// ²æ»ı¼ÆËã
-	m_vStrafe = Normalize(vCross);									// vCross¹éÒ»»¯
-	SetViewByMouse();												// Í¨¹ıÊó±êÊµÏÖÏà»ú¿ØÖÆ
-	CheckForMovement();												// Í¨¹ı¼üÅÌÊµÏÖÏà»ú¿ØÖÆ
-	m_vEyePosition.y+=(m_viewHeight-m_oldviewHeight);				// ĞÂµÄÏà»úÊÓµãy×ø±ê
-	m_oldviewHeight=m_viewHeight;									// ¼ÇÂ¼µ±Ç°Ïà»úÊÓµã¸ß¶È
+void CMy3DSymbolLibNewView::CamraUpdate() {
+    CVector3 vCross = CrossProduct(m_vLook - m_vEyePosition, m_vUp);  // å‰ç§¯è®¡ç®—
+    m_vStrafe = Normalize(vCross);                                  // vCrosså½’ä¸€åŒ–
+    SetViewByMouse();                                               // é€šè¿‡é¼ æ ‡å®ç°ç›¸æœºæ§åˆ¶
+    CheckForMovement();                                             // é€šè¿‡é”®ç›˜å®ç°ç›¸æœºæ§åˆ¶
+    m_vEyePosition.y += (m_viewHeight - m_oldviewHeight);           // æ–°çš„ç›¸æœºè§†ç‚¹yåæ ‡
+    m_oldviewHeight = m_viewHeight;                                 // è®°å½•å½“å‰ç›¸æœºè§†ç‚¹é«˜åº¦
 }
 
 
 /****************************************************************/
-/* Function: ÔÚXÖá·½ÏòÉÏÒÆ¶¯Ê±ÉèÖÃÏà»ú¹Û²ìµãºÍÊÓµã×ø±ê				*/
+/* Function: åœ¨Xè½´æ–¹å‘ä¸Šç§»åŠ¨æ—¶è®¾ç½®ç›¸æœºè§‚å¯Ÿç‚¹å’Œè§†ç‚¹åæ ‡              */
 /****************************************************************/
-void CMy3DSymbolLibNewView::MoveCameraX(float speed)
-{
-	m_vEyePosition.x += m_vStrafe.x * speed;						// Ïà»úÊÓµãxĞÂ×ø±ê
-	m_vEyePosition.z += m_vStrafe.z * speed;						// Ïà»úÊÓµãzĞÂ×ø±ê
-	m_vLook.x += m_vStrafe.x * speed;								// Ïà»ú¹Û²ìµãxĞÂ×ø±ê
-	m_vLook.z += m_vStrafe.z * speed;								// Ïà»ú¹Û²ìµãzĞÂ×ø±ê
+void CMy3DSymbolLibNewView::MoveCameraX(float speed) {
+    m_vEyePosition.x += m_vStrafe.x * speed;                        // ç›¸æœºè§†ç‚¹xæ–°åæ ‡
+    m_vEyePosition.z += m_vStrafe.z * speed;                        // ç›¸æœºè§†ç‚¹zæ–°åæ ‡
+    m_vLook.x += m_vStrafe.x * speed;                               // ç›¸æœºè§‚å¯Ÿç‚¹xæ–°åæ ‡
+    m_vLook.z += m_vStrafe.z * speed;                               // ç›¸æœºè§‚å¯Ÿç‚¹zæ–°åæ ‡
 }
 
 
 /****************************************************************/
-/* Function: ÔÚZÖá·½ÏòÉÏÒÆ¶¯Ê±ÉèÖÃÏà»ú¹Û²ìµãºÍÊÓµã×ø±ê				*/
+/* Function: åœ¨Zè½´æ–¹å‘ä¸Šç§»åŠ¨æ—¶è®¾ç½®ç›¸æœºè§‚å¯Ÿç‚¹å’Œè§†ç‚¹åæ ‡              */
 /****************************************************************/
-void CMy3DSymbolLibNewView::MoveCameraZ(float speed)
-{
-	CVector3 vVector = m_vLook - m_vEyePosition;						// Ïà»úÊÓµãÓë¹Û²ìµãÈıÎ¬×ø±ê²îÖµ
-	vVector = Normalize(vVector);									// Ïà»úÊÓµãÓë¹Û²ìµãÈıÎ¬×ø±ê²îÖµ¹éÒ»»¯
-	m_vEyePosition.x += vVector.x * speed;							// Ïà»úÊÓµãxĞÂ×ø±ê	
-	m_vEyePosition.z += vVector.z * speed;							// Ïà»úÊÓµãzĞÂ×ø±ê	
-	m_vLook.x += vVector.x * speed;									// Ïà»ú¹Û²ìµãxĞÂ×ø±ê
-	m_vLook.z += vVector.z * speed;									// Ïà»ú¹Û²ìµãzĞÂ×ø±ê
+void CMy3DSymbolLibNewView::MoveCameraZ(float speed) {
+    CVector3 vVector = m_vLook - m_vEyePosition;                        // ç›¸æœºè§†ç‚¹ä¸è§‚å¯Ÿç‚¹ä¸‰ç»´åæ ‡å·®å€¼
+    vVector = Normalize(vVector);                                   // ç›¸æœºè§†ç‚¹ä¸è§‚å¯Ÿç‚¹ä¸‰ç»´åæ ‡å·®å€¼å½’ä¸€åŒ–
+    m_vEyePosition.x += vVector.x * speed;                          // ç›¸æœºè§†ç‚¹xæ–°åæ ‡
+    m_vEyePosition.z += vVector.z * speed;                          // ç›¸æœºè§†ç‚¹zæ–°åæ ‡
+    m_vLook.x += vVector.x * speed;                                 // ç›¸æœºè§‚å¯Ÿç‚¹xæ–°åæ ‡
+    m_vLook.z += vVector.z * speed;                                 // ç›¸æœºè§‚å¯Ÿç‚¹zæ–°åæ ‡
 }
 
 
 /****************************************************************/
-/* Function: ¸ù¾İ¼üÅÌ°´¼üÖµÀ´ÖØĞÂÉèÖÃÏà»ú							*/
+/* Function: æ ¹æ®é”®ç›˜æŒ‰é”®å€¼æ¥é‡æ–°è®¾ç½®ç›¸æœº                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::CheckForMovement()
-{
-	if(m_keynumber ==1)												// ¡üÉÏ¼ıÍ·°´¼ü£¬Ïò³¡¾°ÍâÒÆ¶¯(ZÖáÕı·½Ïò)
-	{		
-		MoveCameraZ(m_Step_Z);										// ÔÚZÖá·½ÏòÉÏÒÆ¶¯Ê±ÉèÖÃÏà»ú¹Û²ìµãºÍÊÓµã×ø±ê
-	}
-
-	if(m_keynumber ==2) 											// ¡ıÏÂ¼ıÍ·°´¼ü£¬Ïò³¡¾°ÍâÒÆ¶¯(ZÖá¸º·½Ïò)
-	{
-		MoveCameraZ(-m_Step_Z);										// ÔÚZÖá·½ÏòÉÏÒÆ¶¯Ê±ÉèÖÃÏà»ú¹Û²ìµãºÍÊÓµã×ø±ê
-	}
-
-	if(m_keynumber ==3)												// ¡û×ó¼ıÍ·°´¼ü£¬Ïò×ó·½ÏòÒÆ¶¯³¡¾°(XÖá¸º·½Ïò)
-	{
-		MoveCameraX(-m_Step_X);										// ÔÚXÖá·½ÏòÉÏÒÆ¶¯Ê±ÉèÖÃÏà»ú¹Û²ìµãºÍÊÓµã×ø±ê
-	}
-
-	if(m_keynumber ==4)												// ¡úÓÒ¼ıÍ·°´¼ü£¬ÏòÓÒ·½ÏòÒÆ¶¯³¡¾°(XÖáÕı·½Ïò)
-	{
-		MoveCameraX(m_Step_X);										// ÔÚXÖá·½ÏòÉÏÒÆ¶¯Ê±ÉèÖÃÏà»ú¹Û²ìµãºÍÊÓµã×ø±ê
-	}
+void CMy3DSymbolLibNewView::CheckForMovement() {
+    if (m_keynumber == 1) {                                         // â†‘ä¸Šç®­å¤´æŒ‰é”®ï¼Œå‘åœºæ™¯å¤–ç§»åŠ¨(Zè½´æ­£æ–¹å‘)
+        MoveCameraZ(m_Step_Z);                                      // åœ¨Zè½´æ–¹å‘ä¸Šç§»åŠ¨æ—¶è®¾ç½®ç›¸æœºè§‚å¯Ÿç‚¹å’Œè§†ç‚¹åæ ‡
+    }
+    if (m_keynumber == 2) {                                         // â†“ä¸‹ç®­å¤´æŒ‰é”®ï¼Œå‘åœºæ™¯å¤–ç§»åŠ¨(Zè½´è´Ÿæ–¹å‘)
+        MoveCameraZ(-m_Step_Z);                                     // åœ¨Zè½´æ–¹å‘ä¸Šç§»åŠ¨æ—¶è®¾ç½®ç›¸æœºè§‚å¯Ÿç‚¹å’Œè§†ç‚¹åæ ‡
+    }
+    if (m_keynumber == 3) {                                         // â†å·¦ç®­å¤´æŒ‰é”®ï¼Œå‘å·¦æ–¹å‘ç§»åŠ¨åœºæ™¯(Xè½´è´Ÿæ–¹å‘)
+        MoveCameraX(-m_Step_X);                                     // åœ¨Xè½´æ–¹å‘ä¸Šç§»åŠ¨æ—¶è®¾ç½®ç›¸æœºè§‚å¯Ÿç‚¹å’Œè§†ç‚¹åæ ‡
+    }
+    if (m_keynumber == 4) {                                         // â†’å³ç®­å¤´æŒ‰é”®ï¼Œå‘å³æ–¹å‘ç§»åŠ¨åœºæ™¯(Xè½´æ­£æ–¹å‘)
+        MoveCameraX(m_Step_X);                                      // åœ¨Xè½´æ–¹å‘ä¸Šç§»åŠ¨æ—¶è®¾ç½®ç›¸æœºè§‚å¯Ÿç‚¹å’Œè§†ç‚¹åæ ‡
+    }
 }
 
 
 /****************************************************************/
-/* Function: ÉèÖÃÏà»ú											*/
+/* Function: è®¾ç½®ç›¸æœº                                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::SetCamra()
-{
-	gluLookAt(m_vEyePosition.x, m_vEyePosition.y, m_vEyePosition.z, 	// ÊÓµã
-		m_vLook.x, m_vLook.y, m_vLook.z, 								// Ä¿±êµã
-		m_vUp.x, m_vUp.y, m_vUp.z);										// ÊÓµã·½Ïò
-
-	CMainFrame *pMainFrame=(CMainFrame*)GetParent();
-	
-
-	CString strText;
-	float dy=m_vEyePosition.y-m_vLook.y;
-	float dz=fabs(m_vEyePosition.z-m_vLook.z);
-
-	if(fabs(dz)<=0.000001){
-		m_viewdegree=0;
-	}
-	else{
-		m_viewdegree=HDANGLE*atan(dy/dz);
-	}
-
-	// ÔÚ×´Ì¬À¸Ö¸Ê¾Æ÷ÉÏÏÔÊ¾Ïà¹ØĞÅÏ¢
-	static DWORD dwStart = 0;
-	static int nCount = 0;
-	nCount++;
-	DWORD dwNow = ::GetTickCount();	// ·µ»Ø´Ó³ÌĞòÆô¶¯µ½ÏÖÔÚËù¾­¹ıµÄºÁÃëÊı
-
-	if(dwNow-dwStart>=1000)			// Ã¿1Ãë¼ÆËãÒ»´ÎÖ¡ÂÊ
-	{
-		strText.Format("Ë¢ĞÂÆµÂÊ: %d FPS " , nCount , 0);
-		pMainFrame->Set_BarText(0 , strText);  
-		dwStart = dwNow;
-		nCount = 0;
-	}
-
-	strText.Format("¡¾¸©ÊÓ½Ç¡¿A=%.2f" , m_viewdegree);
-	pMainFrame->Set_BarText(1 , strText);  
-
-	strText.Format("ÊÓµã×ø±ê: X=%.3f , Y=%.3f , Z=%.3f" , m_vEyePosition.x  , m_vEyePosition.y , fabs(m_vEyePosition.z));
-	pMainFrame->Set_BarText(2 , strText);  
-
-	strText.Format("¹Û²ìµã×ø±ê: X=%.3f , Y=%.3f , Z=%.3f" , m_vLook.x  , m_vLook.y , fabs(m_vLook.z));
-	pMainFrame->Set_BarText(3 , strText);  
+void CMy3DSymbolLibNewView::SetCamra() {
+    gluLookAt(m_vEyePosition.x, m_vEyePosition.y, m_vEyePosition.z,     // è§†ç‚¹
+              m_vLook.x, m_vLook.y, m_vLook.z,                                // ç›®æ ‡ç‚¹
+              m_vUp.x, m_vUp.y, m_vUp.z);                                     // è§†ç‚¹æ–¹å‘
+    CMainFrame* pMainFrame = (CMainFrame*)GetParent();
+    CString strText;
+    float dy = m_vEyePosition.y - m_vLook.y;
+    float dz = fabs(m_vEyePosition.z - m_vLook.z);
+    if (fabs(dz) <= 0.000001) {
+        m_viewdegree = 0;
+    } else {
+        m_viewdegree = HDANGLE * atan(dy / dz);
+    }
+    // åœ¨çŠ¶æ€æ æŒ‡ç¤ºå™¨ä¸Šæ˜¾ç¤ºç›¸å…³ä¿¡æ¯
+    static DWORD dwStart = 0;
+    static int nCount = 0;
+    nCount++;
+    DWORD dwNow = ::GetTickCount();  // è¿”å›ä»ç¨‹åºå¯åŠ¨åˆ°ç°åœ¨æ‰€ç»è¿‡çš„æ¯«ç§’æ•°
+    if (dwNow - dwStart >= 1000) {  // æ¯1ç§’è®¡ç®—ä¸€æ¬¡å¸§ç‡
+        strText.Format("åˆ·æ–°é¢‘ç‡: %d FPS " , nCount , 0);
+        pMainFrame->Set_BarText(0 , strText);
+        dwStart = dwNow;
+        nCount = 0;
+    }
+    strText.Format("ã€ä¿¯è§†è§’ã€‘A=%.2f" , m_viewdegree);
+    pMainFrame->Set_BarText(1 , strText);
+    strText.Format("è§†ç‚¹åæ ‡: X=%.3f , Y=%.3f , Z=%.3f" , m_vEyePosition.x  , m_vEyePosition.y , fabs(m_vEyePosition.z));
+    pMainFrame->Set_BarText(2 , strText);
+    strText.Format("è§‚å¯Ÿç‚¹åæ ‡: X=%.3f , Y=%.3f , Z=%.3f" , m_vLook.x  , m_vLook.y , fabs(m_vLook.z));
+    pMainFrame->Set_BarText(3 , strText);
 }
 
-void CMy3DSymbolLibNewView::OnMouseMove(UINT nFlags, CPoint point)
-{
-	// ÉèÖÃÊó±êĞÎ×´
-	
-	// ÔÚÄ£ĞÍÑ¡ÔñÄ£Ê½ÏÂ±ä³ÉÊÖĞÍ
-	if(m_OperateType == SELECT)
-	{
-		m_selectedModelID = -1;
-
-		// Èç¹ûÔÚÑ¡ÔñÄ£Ê½ÏÂ£¬Êó±êÒÆ¶¯µ½µÄÎ»ÖÃÊ°È¡ÁËÄ³¸öµ±Ç°Ñ¡ÖĞÄ£ĞÍµÄÄ£ĞÍ£¬ÄÇ¾Í¸ü¸ÄÎªEditĞÍºÅµÄÊó±ê
-		if(!m_pSelectedModelSet.empty())
-		{
-			m_bMouseMoveSelect = true;
-			ScreenToGL(point);
-		}	
-		else
-			m_mouseShape = MOUSE_SHAPE_SLECT; 
-
-		if(m_mouseShape == MOUSE_SHAPE_SLECT)
-		{
-			HCURSOR hCur  =  LoadCursor(AfxGetInstanceHandle() , 
-				MAKEINTRESOURCE(IDC_CURSOR_SELECT));
-			::SetCursor(hCur);
-		}
-		else
-		{
-			HCURSOR hCur  =  LoadCursor(AfxGetInstanceHandle() , 
-				MAKEINTRESOURCE(IDC_CURSOR_EDIT));
-			::SetCursor(hCur);
-		}
-
-	}
-
-	if(m_bmouseView==TRUE)	// Èç¹ûÊó±ê¿ØÖÆ³¡¾°´ò¿ªÊ±
-	{
-		CamraUpdate();		// ¸ù¾İÊó±êºÍ¼üÅÌÊµÏÖÈıÎ¬³¡¾°Ïà»úµÄÒÆ¶¯ºÍĞı×ª¿ØÖÆ
-
-	}
-
-	Invalidate(FALSE);
-
-	CView::OnMouseMove(nFlags, point);
+void CMy3DSymbolLibNewView::OnMouseMove(UINT nFlags, CPoint point) {
+    // è®¾ç½®é¼ æ ‡å½¢çŠ¶
+    // åœ¨æ¨¡å‹é€‰æ‹©æ¨¡å¼ä¸‹å˜æˆæ‰‹å‹
+    if (m_OperateType == SELECT) {
+        m_selectedModelID = -1;
+        // å¦‚æœåœ¨é€‰æ‹©æ¨¡å¼ä¸‹ï¼Œé¼ æ ‡ç§»åŠ¨åˆ°çš„ä½ç½®æ‹¾å–äº†æŸä¸ªå½“å‰é€‰ä¸­æ¨¡å‹çš„æ¨¡å‹ï¼Œé‚£å°±æ›´æ”¹ä¸ºEditå‹å·çš„é¼ æ ‡
+        if (!m_pSelectedModelSet.empty()) {
+            m_bMouseMoveSelect = true;
+            ScreenToGL(point);
+        } else
+            m_mouseShape = MOUSE_SHAPE_SLECT;
+        if (m_mouseShape == MOUSE_SHAPE_SLECT) {
+            HCURSOR hCur  =  LoadCursor(AfxGetInstanceHandle() ,
+                                        MAKEINTRESOURCE(IDC_CURSOR_SELECT));
+            ::SetCursor(hCur);
+        } else {
+            HCURSOR hCur  =  LoadCursor(AfxGetInstanceHandle() ,
+                                        MAKEINTRESOURCE(IDC_CURSOR_EDIT));
+            ::SetCursor(hCur);
+        }
+    }
+    if (m_bmouseView == TRUE) {  // å¦‚æœé¼ æ ‡æ§åˆ¶åœºæ™¯æ‰“å¼€æ—¶
+        CamraUpdate();      // æ ¹æ®é¼ æ ‡å’Œé”®ç›˜å®ç°ä¸‰ç»´åœºæ™¯ç›¸æœºçš„ç§»åŠ¨å’Œæ—‹è½¬æ§åˆ¶
+    }
+    Invalidate(FALSE);
+    CView::OnMouseMove(nFlags, point);
 }
 
 
 /****************************************************************/
-/* Function: Í¨¹ıÊó±êÊµÏÖÏà»ú¿ØÖÆ									*/
+/* Function: é€šè¿‡é¼ æ ‡å®ç°ç›¸æœºæ§åˆ¶                                   */
 /****************************************************************/
-void CMy3DSymbolLibNewView::SetViewByMouse()
-{
-	if(m_bmouseView==false){		// Èç¹ûÊó±ê¿ØÖÆ³¡¾°¹Ø±ÕÊ±,·µ»Ø
-		return;
-	}
-
-	float angleY = 0.0f;							
-	float angleZ = 0.0f;							
-	static float currentRotX = 0.0f;
-
-	POINT mousePos;									
-	GetCursorPos(&mousePos);		// µÃµ½¹â±êµÄÎ»ÖÃ,ÒÔÆÁÄ»×ø±ê±íÊ¾,´æ´¢µ½mousePos±äÁ¿Àï			
-
-	//Èç¹ûÊó±ê×ø±êÃ»ÓĞ±ä»¯,·µ»Ø
-	if( (mousePos.x == m_oldMousePos.x) && (mousePos.y == m_oldMousePos.y) )
-		return;
-
-	/* ¶ÔÊó±êy×ø±êÇ°ºóÖ®²î½øĞĞËõĞ¡(ÕâÀïËõĞ¡500±¶,Õâ¸öÖµ¿É¸ù¾İÊµ¼ÊµØĞÎÉèÖÃ),Èç¹ûangleYÖµ
-	Ì«´ó,±íÊ¾¼´Ê¹Êó±êy×ø±êÇ°ºóÖ®²îºÜĞ¡,Ò²»áµ¼ÖÂÈıÎ¬µØĞÎ³¡¾°ÔÚY·½ÏòÉÏ±ä»¯ºÜ´ó */
-	angleY = (float)( (m_oldMousePos.x - mousePos.x) ) / derAngleY;
-
-	/* ¶ÔÊó±êz×ø±êÇ°ºóÖ®²î½øĞĞËõĞ¡(ÕâÀïËõĞ¡4000±¶,Õâ¸öÖµ¿É¸ù¾İÊµ¼ÊµØĞÎÉèÖÃ),Èç¹ûangleZÖµ
-	Ì«´ó,±íÊ¾¼´Ê¹Êó±êz×ø±êÇ°ºóÖ®²îºÜĞ¡,Ò²»áµ¼ÖÂÈıÎ¬µØĞÎ³¡¾°ÔÚZ·½ÏòÉÏ±ä»¯ºÜ´ó */
-	angleZ = (float)( (m_oldMousePos.y - mousePos.y) ) / derAngleZ;
-
-	currentRotX -= angleZ;  
-
-	if(angleY >=-360 && angleY <= 360 && angleZ >=-360 && angleY <= 360)
-	{
-		CVector3 vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);		// ²æ»ı¼ÆËã
-		vAxis = Normalize(vAxis);											// vAxis¹éÒ»»¯
-
-		RotateView(angleZ, vAxis.x, vAxis.y, vAxis.z);		// Í¨¹ıÊó±ê¿ØÖÆÏà»úµÄĞı×ª(Ğı×ªÊÓ½Ç)
-		RotateView(angleY, 0, 1, 0);						// Í¨¹ıÊó±ê¿ØÖÆÏà»úµÄĞı×ª(Ğı×ªÊÓ½Ç)
-	}
-
-	m_oldMousePos.x=mousePos.x;								// ¼ÇÂ¼µ±Ç°Êó±êx×ø±ê
-	m_oldMousePos.y=mousePos.y;								// ¼ÇÂ¼µ±Ç°Êó±êy×ø±ê
+void CMy3DSymbolLibNewView::SetViewByMouse() {
+    if (m_bmouseView == false) {    // å¦‚æœé¼ æ ‡æ§åˆ¶åœºæ™¯å…³é—­æ—¶,è¿”å›
+        return;
+    }
+    float angleY = 0.0f;
+    float angleZ = 0.0f;
+    static float currentRotX = 0.0f;
+    POINT mousePos;
+    GetCursorPos(&mousePos);        // å¾—åˆ°å…‰æ ‡çš„ä½ç½®,ä»¥å±å¹•åæ ‡è¡¨ç¤º,å­˜å‚¨åˆ°mousePoså˜é‡é‡Œ
+    // å¦‚æœé¼ æ ‡åæ ‡æ²¡æœ‰å˜åŒ–,è¿”å›
+    if ((mousePos.x == m_oldMousePos.x) && (mousePos.y == m_oldMousePos.y))
+        return;
+    /* å¯¹é¼ æ ‡yåæ ‡å‰åä¹‹å·®è¿›è¡Œç¼©å°(è¿™é‡Œç¼©å°500å€,è¿™ä¸ªå€¼å¯æ ¹æ®å®é™…åœ°å½¢è®¾ç½®),å¦‚æœangleYå€¼
+    å¤ªå¤§,è¡¨ç¤ºå³ä½¿é¼ æ ‡yåæ ‡å‰åä¹‹å·®å¾ˆå°,ä¹Ÿä¼šå¯¼è‡´ä¸‰ç»´åœ°å½¢åœºæ™¯åœ¨Yæ–¹å‘ä¸Šå˜åŒ–å¾ˆå¤§ */
+    angleY = (float)((m_oldMousePos.x - mousePos.x)) / derAngleY;
+    /* å¯¹é¼ æ ‡zåæ ‡å‰åä¹‹å·®è¿›è¡Œç¼©å°(è¿™é‡Œç¼©å°4000å€,è¿™ä¸ªå€¼å¯æ ¹æ®å®é™…åœ°å½¢è®¾ç½®),å¦‚æœangleZå€¼
+    å¤ªå¤§,è¡¨ç¤ºå³ä½¿é¼ æ ‡zåæ ‡å‰åä¹‹å·®å¾ˆå°,ä¹Ÿä¼šå¯¼è‡´ä¸‰ç»´åœ°å½¢åœºæ™¯åœ¨Zæ–¹å‘ä¸Šå˜åŒ–å¾ˆå¤§ */
+    angleZ = (float)((m_oldMousePos.y - mousePos.y)) / derAngleZ;
+    currentRotX -= angleZ;
+    if (angleY >= -360 && angleY <= 360 && angleZ >= -360 && angleY <= 360) {
+        CVector3 vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);     // å‰ç§¯è®¡ç®—
+        vAxis = Normalize(vAxis);                                           // vAxiså½’ä¸€åŒ–
+        RotateView(angleZ, vAxis.x, vAxis.y, vAxis.z);      // é€šè¿‡é¼ æ ‡æ§åˆ¶ç›¸æœºçš„æ—‹è½¬(æ—‹è½¬è§†è§’)
+        RotateView(angleY, 0, 1, 0);                        // é€šè¿‡é¼ æ ‡æ§åˆ¶ç›¸æœºçš„æ—‹è½¬(æ—‹è½¬è§†è§’)
+    }
+    m_oldMousePos.x = mousePos.x;                           // è®°å½•å½“å‰é¼ æ ‡xåæ ‡
+    m_oldMousePos.y = mousePos.y;                           // è®°å½•å½“å‰é¼ æ ‡yåæ ‡
 }
 
 
 /****************************************************************/
-/* Function: Í¨¹ıÊó±ê¿ØÖÆÏà»úµÄĞı×ª(Ğı×ªÊÓ½Ç)						*/
+/* Function: é€šè¿‡é¼ æ ‡æ§åˆ¶ç›¸æœºçš„æ—‹è½¬(æ—‹è½¬è§†è§’)                       */
 /****************************************************************/
-void CMy3DSymbolLibNewView::RotateView(float angle, float x, float y, float z)
-{
-	CVector3 vNewView;
-
-	CVector3 vView = m_vLook - m_vEyePosition;			// Ïà»úÊÓµãÓë¹Û²ìµãÈıÎ¬×ø±ê²îÖµ	
-
-	float cosTheta = (float)cos(angle);					// µÃµ½Ğı×ªÊÓ½ÇµÄcosº¯ÊıÖµ
-	float sinTheta = (float)sin(angle);					// µÃµ½Ğı×ªÊÓ½ÇµÄsinº¯ÊıÖµ
-
-	vNewView.x  = (cosTheta + (1 - cosTheta) * x * x)		* vView.x;
-	vNewView.x += ((1 - cosTheta) * x * y - z * sinTheta)	* vView.y;
-	vNewView.x += ((1 - cosTheta) * x * z + y * sinTheta)	* vView.z;
-
-	vNewView.y  = ((1 - cosTheta) * x * y + z * sinTheta)	* vView.x;
-	vNewView.y += (cosTheta + (1 - cosTheta) * y * y)		* vView.y;
-	vNewView.y += ((1 - cosTheta) * y * z - x * sinTheta)	* vView.z;
-
-	vNewView.z  = ((1 - cosTheta) * x * z - y * sinTheta)	* vView.x;
-	vNewView.z += ((1 - cosTheta) * y * z + x * sinTheta)	* vView.y;
-	vNewView.z += (cosTheta + (1 - cosTheta) * z * z)		* vView.z;
-
-	m_vLook = m_vEyePosition + vNewView;				// µÃµ½Ğı×ªºóµÄÏà»úÊÓµã×ø±ê
-
-	GetNorthPtangle();
+void CMy3DSymbolLibNewView::RotateView(float angle, float x, float y, float z) {
+    CVector3 vNewView;
+    CVector3 vView = m_vLook - m_vEyePosition;          // ç›¸æœºè§†ç‚¹ä¸è§‚å¯Ÿç‚¹ä¸‰ç»´åæ ‡å·®å€¼
+    float cosTheta = (float)cos(angle);                 // å¾—åˆ°æ—‹è½¬è§†è§’çš„coså‡½æ•°å€¼
+    float sinTheta = (float)sin(angle);                 // å¾—åˆ°æ—‹è½¬è§†è§’çš„sinå‡½æ•°å€¼
+    vNewView.x  = (cosTheta + (1 - cosTheta) * x * x)       * vView.x;
+    vNewView.x += ((1 - cosTheta) * x * y - z * sinTheta)   * vView.y;
+    vNewView.x += ((1 - cosTheta) * x * z + y * sinTheta)   * vView.z;
+    vNewView.y  = ((1 - cosTheta) * x * y + z * sinTheta)   * vView.x;
+    vNewView.y += (cosTheta + (1 - cosTheta) * y * y)       * vView.y;
+    vNewView.y += ((1 - cosTheta) * y * z - x * sinTheta)   * vView.z;
+    vNewView.z  = ((1 - cosTheta) * x * z - y * sinTheta)   * vView.x;
+    vNewView.z += ((1 - cosTheta) * y * z + x * sinTheta)   * vView.y;
+    vNewView.z += (cosTheta + (1 - cosTheta) * z * z)       * vView.z;
+    m_vLook = m_vEyePosition + vNewView;                // å¾—åˆ°æ—‹è½¬åçš„ç›¸æœºè§†ç‚¹åæ ‡
+    GetNorthPtangle();
 }
 
-void CMy3DSymbolLibNewView::OnCameraParamSet()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	CCameraParamSet dlg;
-	dlg.m_DerAngleY = derAngleY;
-	dlg.m_DerAngleZ = derAngleZ;
-	dlg.m_OriginDerAngleY = 500;	// derAngleY;
-	dlg.m_OriginDerAngleZ = 4000;	// derAngleZ;
-
-	if(dlg.DoModal() == IDOK)
-	{
-		derAngleY = dlg.m_DerAngleY;
-		derAngleZ = dlg.m_DerAngleZ;
-	}
+void CMy3DSymbolLibNewView::OnCameraParamSet() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    CCameraParamSet dlg;
+    dlg.m_DerAngleY = derAngleY;
+    dlg.m_DerAngleZ = derAngleZ;
+    dlg.m_OriginDerAngleY = 500;    // derAngleY;
+    dlg.m_OriginDerAngleZ = 4000;   // derAngleZ;
+    if (dlg.DoModal() == IDOK) {
+        derAngleY = dlg.m_DerAngleY;
+        derAngleZ = dlg.m_DerAngleZ;
+    }
 }
 
 
 /****************************************************************/
-/* Function: ÊÖ¶¯ÉèÖÃ·ÉĞĞÂ·¾¶										*/
+/* Function: æ‰‹åŠ¨è®¾ç½®é£è¡Œè·¯å¾„                                       */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnPathManuinput()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	m_ShowFlyPath=TRUE;				// ±êÊ¶ÊÇ·ñÏÔÊ¾·ÉĞĞÂ·¾¶
-	m_QueryType=SELECTFLYPATH;		// ½øĞĞ·ÉĞĞÂ·¾¶Ñ¡Ôñ
-	m_FlayPath.RemoveAll();			// ´æ´¢½øĞĞ·ÉĞĞÂ·¾¶×ø±êÊı×éÇå¿Õ
+void CMy3DSymbolLibNewView::OnPathManuinput() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    m_ShowFlyPath = TRUE;           // æ ‡è¯†æ˜¯å¦æ˜¾ç¤ºé£è¡Œè·¯å¾„
+    m_QueryType = SELECTFLYPATH;    // è¿›è¡Œé£è¡Œè·¯å¾„é€‰æ‹©
+    m_FlayPath.RemoveAll();         // å­˜å‚¨è¿›è¡Œé£è¡Œè·¯å¾„åæ ‡æ•°ç»„æ¸…ç©º
 }
 
 
 /****************************************************************/
-/* Function: »æÖÆ·ÉĞĞÂ·¾¶											*/
+/* Function: ç»˜åˆ¶é£è¡Œè·¯å¾„                                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::DrawFlyPath()
-{
-	//Èç¹ûÏÔÊ¾·ÉĞĞÂ·¾¶²¢ÇÒ·ÉĞĞÂ·¾¶×ø±êµãÊı>1,²Å»æÖÆ·ÉĞĞÂ·¾¶
-	if(m_ShowFlyPath==TRUE  && m_FlayPath.GetSize()>1)//½øĞĞ·ÉĞĞÂ·¾¶Ñ¡Ôñ
-	{
-		glPushAttrib(GL_CURRENT_BIT);// ±£´æÏÖÓĞÑÕÉ«ÊôĞÔ
-		
-
-		glPushMatrix();				// Ñ¹Èë¾ØÕó¶ÑÕ»
-		glDisable(GL_TEXTURE_2D);	// ¹Ø±ÕÎÆÀí(¼´·ÉĞĞÂ·¾¶²»²ÉÓÃÎÆÀí)
-		glLineWidth(10.0);			// ÉèÖÃ·ÉĞĞÂ·¾¶Ïß¿í
-		glColor3f(1,0,0);			// ÉèÖÃ·ÉĞĞÂ·¾¶ÑÕÉ«
-
-		glBegin(GL_LINE_STRIP);
-		for(int i=0;i<m_FlayPath.GetSize();i++){
-			glVertex3f(m_FlayPath.GetAt(i)->x, m_FlayPath.GetAt(i)->y, m_FlayPath.GetAt(i)->z);
-		}
-		glEnd();
-
-		glEnable(GL_TEXTURE_2D);	// ¿ªÆôÎÆÀí
-		glLineWidth(1.0);			// »Ö¸´Ïß¿í
-		glPopAttrib();					
-		
-		glPopMatrix();				// µ¯³ö¾ØÕó¶ÑÕ»
-	}
+void CMy3DSymbolLibNewView::DrawFlyPath() {
+    // å¦‚æœæ˜¾ç¤ºé£è¡Œè·¯å¾„å¹¶ä¸”é£è¡Œè·¯å¾„åæ ‡ç‚¹æ•°>1,æ‰ç»˜åˆ¶é£è¡Œè·¯å¾„
+    if (m_ShowFlyPath == TRUE  && m_FlayPath.GetSize() > 1) {  //è¿›è¡Œé£è¡Œè·¯å¾„é€‰æ‹©
+        glPushAttrib(GL_CURRENT_BIT);  // ä¿å­˜ç°æœ‰é¢œè‰²å±æ€§
+        glPushMatrix();             // å‹å…¥çŸ©é˜µå †æ ˆ
+        glDisable(GL_TEXTURE_2D);   // å…³é—­çº¹ç†(å³é£è¡Œè·¯å¾„ä¸é‡‡ç”¨çº¹ç†)
+        glLineWidth(10.0);          // è®¾ç½®é£è¡Œè·¯å¾„çº¿å®½
+        glColor3f(1, 0, 0);         // è®¾ç½®é£è¡Œè·¯å¾„é¢œè‰²
+        glBegin(GL_LINE_STRIP);
+        for (int i = 0; i < m_FlayPath.GetSize(); i++) {
+            glVertex3f(m_FlayPath.GetAt(i)->x, m_FlayPath.GetAt(i)->y, m_FlayPath.GetAt(i)->z);
+        }
+        glEnd();
+        glEnable(GL_TEXTURE_2D);    // å¼€å¯çº¹ç†
+        glLineWidth(1.0);           // æ¢å¤çº¿å®½
+        glPopAttrib();
+        glPopMatrix();              // å¼¹å‡ºçŸ©é˜µå †æ ˆ
+    }
 }
 
 
 /****************************************************************/
-/* Function: Â·¾¶×ø±ê²åÖµ											*/
+/* Function: è·¯å¾„åæ ‡æ’å€¼                                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlppathInterpolation() 
-{
-	int i;
-	
-	float m_InsertDdis=1;			// ²åÖµ¼ä¾à 
-
-	double x1,y1,z1,x2,y2,z2;
-	PCordinate ppt ;  
-
-	m_FlayPathTempPts.RemoveAll();	// ÁÙÊ±´æ´¢·ÉĞĞÂ·¾¶
-	for(i=0;i<m_FlayPath.GetSize()-1;i++)
-	{
-		x1=m_FlayPath.GetAt(i)->x;	// »ñÈ¡·ÉĞĞÂ·¾¶µ±Ç°µãµÄx×ø±ê
-		y1=m_FlayPath.GetAt(i)->y;	// »ñÈ¡·ÉĞĞÂ·¾¶µ±Ç°µãµÄy×ø±ê
-		z1=m_FlayPath.GetAt(i)->z;	// »ñÈ¡·ÉĞĞÂ·¾¶µ±Ç°µãµÄz×ø±ê
-
-		x2=m_FlayPath.GetAt(i+1)->x; // »ñÈ¡·ÉĞĞÂ·¾¶ÏÂÒ»µãµÄx×ø±ê
-		y2=m_FlayPath.GetAt(i+1)->y; // »ñÈ¡·ÉĞĞÂ·¾¶ÏÂÒ»µãµÄy×ø±ê
-		z2=m_FlayPath.GetAt(i+1)->z; // »ñÈ¡·ÉĞĞÂ·¾¶ÏÂÒ»µãµÄz×ø±ê
-
-		if(i==0) //Èç¹ûÊÇ·ÉĞĞÂ·¾¶µÄÆğÊ¼µã,Ôò¼ÇÂ¼
-		{
-			ppt = new Cordinate;
-			ppt->x=x1;
-			ppt->y=y1;
-			ppt->z=z1;
-			m_FlayPathTempPts.Add(ppt);
-		}
-
-		//¼ÆËã·ÉĞĞÂ·¾¶µ±Ç°µãÓëÏÂÒ»µãµÄ¾àÀë
-
-		double L = Dist(CVector3(x1,y1,z1),CVector3(x2,y2,z2));
-		int M=L/m_InsertDdis;			// ¼ÆËãÓ¦ÄÚ²åµÄ×ø±êµãÊı
-		for(int j=1;j<=M;j++)
-		{
-			//ÏßĞÔÄÚ²å¼ÆËã³öĞÂµÄÄÚ²åµãµÄÈıÎ¬×ø±ê
-			ppt = new Cordinate;
-			ppt->x=x1+j*m_InsertDdis/L*(x2-x1);
-			ppt->z=z1+j*m_InsertDdis/L*(z2-z1);
-			//ppt->y=GetHeight(ppt->x,-ppt->z);
-			ppt->y=y1+j*m_InsertDdis/L*(y2-y1);
-			m_FlayPathTempPts.Add(ppt); // ¼ÇÂ¼ÄÚ²åµã×ø±ê
-		}
-
-		ppt = new Cordinate;
-		ppt->x=x2;
-		ppt->y=y2;
-		ppt->z=z2;
-		m_FlayPathTempPts.Add(ppt);		// ½«·ÉĞĞÂ·¾¶ÏÂÒ»µãµÄ×ø±êÒ²¼ÇÂ¼ÔÚÄÚ
-
-	}
-
-	m_FlayPath.RemoveAll();				// ·ÉĞĞÂ·¾¶Êı×éÇå¿Õ
-	for(i=0;i<m_FlayPathTempPts.GetSize();i++)
-	{
-		ppt = new Cordinate;
-		ppt->x=m_FlayPathTempPts.GetAt(i)->x;
-		ppt->y=m_FlayPathTempPts.GetAt(i)->y;
-		ppt->z=m_FlayPathTempPts.GetAt(i)->z;
-		m_FlayPath.Add(ppt);			// ÖØĞÂÌî³ä·ÉĞĞÂ·¾¶Êı×é
-
-	}
-	Invalidate(FALSE);
-	MessageBox("Â·¾¶×ø±ê²åÖµÍê³É!","Â·¾¶×ø±ê²åÖµ",MB_ICONINFORMATION);	
+void CMy3DSymbolLibNewView::OnFlppathInterpolation() {
+    int i;
+    float m_InsertDdis = 1;         // æ’å€¼é—´è·
+    double x1, y1, z1, x2, y2, z2;
+    PCordinate ppt ;
+    m_FlayPathTempPts.RemoveAll();  // ä¸´æ—¶å­˜å‚¨é£è¡Œè·¯å¾„
+    for (i = 0; i < m_FlayPath.GetSize() - 1; i++) {
+        x1 = m_FlayPath.GetAt(i)->x;  // è·å–é£è¡Œè·¯å¾„å½“å‰ç‚¹çš„xåæ ‡
+        y1 = m_FlayPath.GetAt(i)->y;  // è·å–é£è¡Œè·¯å¾„å½“å‰ç‚¹çš„yåæ ‡
+        z1 = m_FlayPath.GetAt(i)->z;  // è·å–é£è¡Œè·¯å¾„å½“å‰ç‚¹çš„zåæ ‡
+        x2 = m_FlayPath.GetAt(i + 1)->x;  // è·å–é£è¡Œè·¯å¾„ä¸‹ä¸€ç‚¹çš„xåæ ‡
+        y2 = m_FlayPath.GetAt(i + 1)->y;  // è·å–é£è¡Œè·¯å¾„ä¸‹ä¸€ç‚¹çš„yåæ ‡
+        z2 = m_FlayPath.GetAt(i + 1)->z;  // è·å–é£è¡Œè·¯å¾„ä¸‹ä¸€ç‚¹çš„zåæ ‡
+        if (i == 0) {  // å¦‚æœæ˜¯é£è¡Œè·¯å¾„çš„èµ·å§‹ç‚¹,åˆ™è®°å½•
+            ppt = new Cordinate;
+            ppt->x = x1;
+            ppt->y = y1;
+            ppt->z = z1;
+            m_FlayPathTempPts.Add(ppt);
+        }
+        // è®¡ç®—é£è¡Œè·¯å¾„å½“å‰ç‚¹ä¸ä¸‹ä¸€ç‚¹çš„è·ç¦»
+        double L = Dist(CVector3(x1, y1, z1), CVector3(x2, y2, z2));
+        int M = L / m_InsertDdis;       // è®¡ç®—åº”å†…æ’çš„åæ ‡ç‚¹æ•°
+        for (int j = 1; j <= M; j++) {
+            // çº¿æ€§å†…æ’è®¡ç®—å‡ºæ–°çš„å†…æ’ç‚¹çš„ä¸‰ç»´åæ ‡
+            ppt = new Cordinate;
+            ppt->x = x1 + j * m_InsertDdis / L * (x2 - x1);
+            ppt->z = z1 + j * m_InsertDdis / L * (z2 - z1);
+            // ppt->y=GetHeight(ppt->x,-ppt->z);
+            ppt->y = y1 + j * m_InsertDdis / L * (y2 - y1);
+            m_FlayPathTempPts.Add(ppt);  // è®°å½•å†…æ’ç‚¹åæ ‡
+        }
+        ppt = new Cordinate;
+        ppt->x = x2;
+        ppt->y = y2;
+        ppt->z = z2;
+        m_FlayPathTempPts.Add(ppt);     // å°†é£è¡Œè·¯å¾„ä¸‹ä¸€ç‚¹çš„åæ ‡ä¹Ÿè®°å½•åœ¨å†…
+    }
+    m_FlayPath.RemoveAll();             // é£è¡Œè·¯å¾„æ•°ç»„æ¸…ç©º
+    for (i = 0; i < m_FlayPathTempPts.GetSize(); i++) {
+        ppt = new Cordinate;
+        ppt->x = m_FlayPathTempPts.GetAt(i)->x;
+        ppt->y = m_FlayPathTempPts.GetAt(i)->y;
+        ppt->z = m_FlayPathTempPts.GetAt(i)->z;
+        m_FlayPath.Add(ppt);            // é‡æ–°å¡«å……é£è¡Œè·¯å¾„æ•°ç»„
+    }
+    Invalidate(FALSE);
+    MessageBox("è·¯å¾„åæ ‡æ’å€¼å®Œæˆ!", "è·¯å¾„åæ ‡æ’å€¼", MB_ICONINFORMATION);
 }
 
 
 /****************************************************************/
-/* Function: ±£´æ·ÉĞĞÂ·¾¶											*/
+/* Function: ä¿å­˜é£è¡Œè·¯å¾„                                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlypathSave() 
-{
-	CString 	NeededFile;
-	char 		FileFilter[] = "·ÉĞĞÂ·¾¶(*.pth)|*.pth||";
-
-	//ÉèÖÃÎÄ¼ş¶Ô»°¿òÊôĞÔ
-	DWORD 		FileDialogFlag = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
-	CFileDialog FileDialogBoxFile(FALSE, NULL, 0, FileDialogFlag, FileFilter, this);
-	FileDialogBoxFile.m_ofn.lpstrTitle = "±£´æ·ÉĞĞÂ·¾¶ÎÄ¼ş";
-	char		FileName[200];
-
-	CString tt[3];
-	if( FileDialogBoxFile.DoModal() == IDOK ) //Èç¹û¶Ô»°¿ò³É¹û´ò¿ª
-	{	
-		NeededFile = FileDialogBoxFile.GetPathName(); //µÃµ½ÎÄ¼şÃû
-		sprintf(FileName, "%s", NeededFile);
-		if(strcmp(FileDialogBoxFile.GetFileExt(),"pth")!=0) 
-			strcat(FileName,".pth"); //Ìí¼Ó·ÉĞĞÂ·¾¶ÎÄ¼şÀ©Õ¹Ãû
-
-		if(FlyPathSave(FileName)) //Èç¹û·ÉĞĞÂ·¾¶±£´æ³É¹¦
-			MessageBox("Â·¾¶µã±£´æÍê±Ï","±£´æ·ÉĞĞÂ·¾¶",MB_ICONWARNING);
-
-	}		
-	Invalidate(FALSE);
-
+void CMy3DSymbolLibNewView::OnFlypathSave() {
+    CString     NeededFile;
+    char        FileFilter[] = "é£è¡Œè·¯å¾„(*.pth)|*.pth||";
+    // è®¾ç½®æ–‡ä»¶å¯¹è¯æ¡†å±æ€§
+    DWORD       FileDialogFlag = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
+    CFileDialog FileDialogBoxFile(FALSE, NULL, 0, FileDialogFlag, FileFilter, this);
+    FileDialogBoxFile.m_ofn.lpstrTitle = "ä¿å­˜é£è¡Œè·¯å¾„æ–‡ä»¶";
+    char        FileName[200];
+    CString tt[3];
+    if (FileDialogBoxFile.DoModal() == IDOK) {  // å¦‚æœå¯¹è¯æ¡†æˆæœæ‰“å¼€
+        NeededFile = FileDialogBoxFile.GetPathName();  // å¾—åˆ°æ–‡ä»¶å
+        sprintf(FileName, "%s", NeededFile);
+        if (strcmp(FileDialogBoxFile.GetFileExt(), "pth") != 0)
+            strcat(FileName, ".pth");  // æ·»åŠ é£è¡Œè·¯å¾„æ–‡ä»¶æ‰©å±•å
+        if (FlyPathSave(FileName))  // å¦‚æœé£è¡Œè·¯å¾„ä¿å­˜æˆåŠŸ
+            MessageBox("è·¯å¾„ç‚¹ä¿å­˜å®Œæ¯•", "ä¿å­˜é£è¡Œè·¯å¾„", MB_ICONWARNING);
+    }
+    Invalidate(FALSE);
 }
 
 
 /****************************************************************/
-/* Function: ·ÉĞĞÂ·¾¶±£´æ											*/
+/* Function: é£è¡Œè·¯å¾„ä¿å­˜                                           */
 /****************************************************************/
-int CMy3DSymbolLibNewView::FlyPathSave(char *pathfile)
-{
-	FILE	*fpw;
-	char	message[200];
-
-	if((fpw = fopen(pathfile, "w")) == NULL)			// Èç¹ûĞ´ÈëÎÄ¼şÊ§°Ü
-	{ 
-		sprintf(message, "ÎÄ¼ş %s ´´½¨ÎŞĞ§", pathfile);
-		MessageBox(message,"±£´æ·ÉĞĞÂ·¾¶×ø±êµ½ÎÄ¼ş",MB_ICONWARNING);
-		return 0;										// ·µ»ØÊ§°Ü
-	}
-
-	fprintf(fpw, "%d\n", m_FlayPath.GetSize());			// Ğ´Èë·ÉĞĞÂ·¾¶×ø±êµã×ÜÊı
-	for(int i=0;i<m_FlayPath.GetSize();i++)
-	{
-		// ÏòÎÄ¼şfpwĞ´Èë·ÉĞĞÂ·¾¶×ø±êµãµÄÈıÎ¬×ø±ê
-		fprintf(fpw, "%lf,%lf,%lf\n",m_FlayPath.GetAt(i)->x, m_FlayPath.GetAt(i)->y, m_FlayPath.GetAt(i)->z);
-	}
-	fclose(fpw);		// ¹Ø±ÕÎÄ¼ş
-	return 1;			// ·µ»Ø³É¹¦
+int CMy3DSymbolLibNewView::FlyPathSave(char* pathfile) {
+    FILE*    fpw;
+    char    message[200];
+    if ((fpw = fopen(pathfile, "w")) == NULL) {         // å¦‚æœå†™å…¥æ–‡ä»¶å¤±è´¥
+        sprintf(message, "æ–‡ä»¶ %s åˆ›å»ºæ— æ•ˆ", pathfile);
+        MessageBox(message, "ä¿å­˜é£è¡Œè·¯å¾„åæ ‡åˆ°æ–‡ä»¶", MB_ICONWARNING);
+        return 0;                                       // è¿”å›å¤±è´¥
+    }
+    fprintf(fpw, "%d\n", m_FlayPath.GetSize());         // å†™å…¥é£è¡Œè·¯å¾„åæ ‡ç‚¹æ€»æ•°
+    for (int i = 0; i < m_FlayPath.GetSize(); i++) {
+        // å‘æ–‡ä»¶fpwå†™å…¥é£è¡Œè·¯å¾„åæ ‡ç‚¹çš„ä¸‰ç»´åæ ‡
+        fprintf(fpw, "%lf,%lf,%lf\n", m_FlayPath.GetAt(i)->x, m_FlayPath.GetAt(i)->y, m_FlayPath.GetAt(i)->z);
+    }
+    fclose(fpw);        // å…³é—­æ–‡ä»¶
+    return 1;           // è¿”å›æˆåŠŸ
 }
 
 
 /****************************************************************/
-/* Function: ´ò¿ª·ÉĞĞÂ·¾¶											*/
+/* Function: æ‰“å¼€é£è¡Œè·¯å¾„                                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyOpenpath() 
-{
-	CString 	NeededFile;
-	char 		FileFilter[] = "·ÉĞĞÂ·¾¶(*.pth)|*.pth||";
-	//ÉèÖÃÎÄ¼ş¶Ô»°¿òÊôĞÔ
-	DWORD 		FileDialogFlag = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
-	CFileDialog FileDialogBoxFile(TRUE, NULL, 0, FileDialogFlag, FileFilter, this);
-	FileDialogBoxFile.m_ofn.lpstrTitle = "´ò¿ª·ÉĞĞÂ·¾¶ÎÄ¼ş";
-	FileDialogBoxFile.m_ofn.lpstrInitialDir = m_AllDataPath;
-	char		FileName[200];
-
-	CString tt[3];
-	if( FileDialogBoxFile.DoModal() == IDOK )			// Èç¹û¶Ô»°¿ò³É¹û´ò¿ª
-	{	
-		NeededFile = FileDialogBoxFile.GetPathName();	// µÃµ½ÎÄ¼şÃû
-		sprintf(FileName, "%s", NeededFile);
-		if(strcmp(FileDialogBoxFile.GetFileExt(),"pth")!=0) 
-			strcat(FileName,".pth");					// Ìí¼Ó·ÉĞĞÂ·¾¶ÎÄ¼şÀ©Õ¹Ãû
-
-		if(FlyPathRead(FileName)) //¶ÁÈ¡·ÉĞĞÂ·¾¶ÎÄ¼şÊı¾İ¶¯Ì¬Êı×éÖĞ
-			MessageBox("´ò¿ªÂ·¾¶µãÍê±Ï","ÌáÊ¾",MB_ICONWARNING);
-		if(m_FlayPath.GetSize()>1)						// Èç¹û·ÉĞĞÂ·¾¶Êı¾İ×ø±êµãÊı>1
-		{
-			m_ShowFlyPath=TRUE;							// ÏÔÊ¾·ÉĞĞÂ·¾¶
-			m_PathFlag=TRUE;							// ±êÊ¶·ÉĞĞÂ·¾¶´ò¿ª³É¹¦
-		}
-		else
-			m_PathFlag=FALSE;							// ±êÊ¶·ÉĞĞÂ·¾¶´ò¿ªÊ§°Ü
-	}		
-
-	Invalidate(FALSE);
+void CMy3DSymbolLibNewView::OnFlyOpenpath() {
+    CString     NeededFile;
+    char        FileFilter[] = "é£è¡Œè·¯å¾„(*.pth)|*.pth||";
+    //è®¾ç½®æ–‡ä»¶å¯¹è¯æ¡†å±æ€§
+    DWORD       FileDialogFlag = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
+    CFileDialog FileDialogBoxFile(TRUE, NULL, 0, FileDialogFlag, FileFilter, this);
+    FileDialogBoxFile.m_ofn.lpstrTitle = "æ‰“å¼€é£è¡Œè·¯å¾„æ–‡ä»¶";
+    FileDialogBoxFile.m_ofn.lpstrInitialDir = m_AllDataPath;
+    char        FileName[200];
+    CString tt[3];
+    if (FileDialogBoxFile.DoModal() == IDOK) {           // å¦‚æœå¯¹è¯æ¡†æˆæœæ‰“å¼€
+        NeededFile = FileDialogBoxFile.GetPathName();   // å¾—åˆ°æ–‡ä»¶å
+        sprintf(FileName, "%s", NeededFile);
+        if (strcmp(FileDialogBoxFile.GetFileExt(), "pth") != 0)
+            strcat(FileName, ".pth");                   // æ·»åŠ é£è¡Œè·¯å¾„æ–‡ä»¶æ‰©å±•å
+        if (FlyPathRead(FileName))  // è¯»å–é£è¡Œè·¯å¾„æ–‡ä»¶æ•°æ®åŠ¨æ€æ•°ç»„ä¸­
+            MessageBox("æ‰“å¼€è·¯å¾„ç‚¹å®Œæ¯•", "æç¤º", MB_ICONWARNING);
+        if (m_FlayPath.GetSize() > 1) {                 // å¦‚æœé£è¡Œè·¯å¾„æ•°æ®åæ ‡ç‚¹æ•°>1
+            m_ShowFlyPath = TRUE;                       // æ˜¾ç¤ºé£è¡Œè·¯å¾„
+            m_PathFlag = TRUE;                          // æ ‡è¯†é£è¡Œè·¯å¾„æ‰“å¼€æˆåŠŸ
+        } else
+            m_PathFlag = FALSE;                         // æ ‡è¯†é£è¡Œè·¯å¾„æ‰“å¼€å¤±è´¥
+    }
+    Invalidate(FALSE);
 }
 
 
 /****************************************************************/
-/* Function: ¶ÁÈ¡·ÉĞĞÂ·¾¶ÎÄ¼şÊı¾İ¶¯Ì¬Êı×éÖĞ						*/
+/* Function: è¯»å–é£è¡Œè·¯å¾„æ–‡ä»¶æ•°æ®åŠ¨æ€æ•°ç»„ä¸­                     */
 /****************************************************************/
-int CMy3DSymbolLibNewView::FlyPathRead(char *pathfile)
-{
-	CString tt,m_strszLine;
-	PCordinate ppt = new Cordinate;  
-
-	m_FlayPath.RemoveAll();								// ·ÉĞĞÂ·¾¶Êı×éÇå¿Õ
-
-	CStdioFile m_inFile;	
-
-	if(m_inFile.Open (pathfile,CFile::modeRead)==FALSE) // ´ò¿ªÎÄ¼ş
-	{
-		return 0;										// ·µ»ØÊ§°Ü±êÖ¾
-	}
-	m_inFile.ReadString(m_strszLine);					// ¶ÁÈ¡·ÉĞĞÂ·¾¶×ø±êµã×ÜÊı
-	while( m_inFile.ReadString(m_strszLine))
-	{
-		ppt = new Cordinate;
-
-		m_strszLine.TrimLeft(" ");
-		m_strszLine.TrimRight("	");
-		int nPos=m_strszLine.Find(",");
-		tt=m_strszLine.Left(nPos);
-		ppt->x=atof(tt);
-		m_strszLine=m_strszLine.Right(m_strszLine.GetLength()-nPos-1);
-		nPos=m_strszLine.Find(",");
-		tt=m_strszLine.Left(nPos);
-		ppt->y=atof(tt); 
-		m_strszLine=m_strszLine.Right(m_strszLine.GetLength()-nPos-1);
-		ppt->z=atof(m_strszLine);
-		m_FlayPath.Add(ppt);							// ¼ÇÂ¼·ÉĞĞÂ·¾¶×ø±êµã
-
-	}
-	m_inFile.Close();									// ¹Ø±ÕÎÄ¼ş
-
-	return 1;											// ·µ»Ø³É¹¦±êÖ¾
+int CMy3DSymbolLibNewView::FlyPathRead(char* pathfile) {
+    CString tt, m_strszLine;
+    PCordinate ppt = new Cordinate;
+    m_FlayPath.RemoveAll();                             // é£è¡Œè·¯å¾„æ•°ç»„æ¸…ç©º
+    CStdioFile m_inFile;
+    if (m_inFile.Open(pathfile, CFile::modeRead) == FALSE) { // æ‰“å¼€æ–‡ä»¶
+        return 0;                                       // è¿”å›å¤±è´¥æ ‡å¿—
+    }
+    m_inFile.ReadString(m_strszLine);                   // è¯»å–é£è¡Œè·¯å¾„åæ ‡ç‚¹æ€»æ•°
+    while (m_inFile.ReadString(m_strszLine)) {
+        ppt = new Cordinate;
+        m_strszLine.TrimLeft(" ");
+        m_strszLine.TrimRight("	");
+        int nPos = m_strszLine.Find(",");
+        tt = m_strszLine.Left(nPos);
+        ppt->x = atof(tt);
+        m_strszLine = m_strszLine.Right(m_strszLine.GetLength() - nPos - 1);
+        nPos = m_strszLine.Find(",");
+        tt = m_strszLine.Left(nPos);
+        ppt->y = atof(tt);
+        m_strszLine = m_strszLine.Right(m_strszLine.GetLength() - nPos - 1);
+        ppt->z = atof(m_strszLine);
+        m_FlayPath.Add(ppt);                            // è®°å½•é£è¡Œè·¯å¾„åæ ‡ç‚¹
+    }
+    m_inFile.Close();                                   // å…³é—­æ–‡ä»¶
+    return 1;                                           // è¿”å›æˆåŠŸæ ‡å¿—
 }
 
 
 /****************************************************************/
-/* Function: ÏÔÊ¾»ò¹Ø±Õ·ÉĞĞÂ·¾¶									*/
+/* Function: æ˜¾ç¤ºæˆ–å…³é—­é£è¡Œè·¯å¾„                                 */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyOnoffpath() 
-{
-	if(m_ShowFlyPath==TRUE)								// Èç¹ûµ±Ç°ÊÇÏÔÊ¾·ÉĞĞÂ·¾¶
-		m_ShowFlyPath=FALSE;							// ±êÊ¶ÉèÖÃÎªFALSE
-	else
-		m_ShowFlyPath=TRUE;								// ·´Ö®,ÉèÖÃÎªTRUE	
-
-	Invalidate(FALSE);
+void CMy3DSymbolLibNewView::OnFlyOnoffpath() {
+    if (m_ShowFlyPath == TRUE)                          // å¦‚æœå½“å‰æ˜¯æ˜¾ç¤ºé£è¡Œè·¯å¾„
+        m_ShowFlyPath = FALSE;                          // æ ‡è¯†è®¾ç½®ä¸ºFALSE
+    else
+        m_ShowFlyPath = TRUE;                           // åä¹‹,è®¾ç½®ä¸ºTRUE
+    Invalidate(FALSE);
 }
 
 
 /****************************************************************/
-/* Function: ¸ù¾İm_ShowFlyPathÖµĞŞ¸Ä²Ëµ¥ÎÄ±¾						*/
+/* Function: æ ¹æ®m_ShowFlyPathå€¼ä¿®æ”¹èœå•æ–‡æœ¬                        */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnUpdateFlyOnoffpath(CCmdUI* pCmdUI) 
-{
-	if(m_ShowFlyPath==TRUE)							// Èç¹ûµ±Ç°ÊÇÏÔÊ¾·ÉĞĞÂ·¾¶
-		pCmdUI->SetText("¹Ø±Õ·ÉĞĞÂ·¾¶");				// ½«²Ëµ¥Ãû³ÆÉèÖÃÎª"¹Ø±Õ·ÉĞĞÂ·¾¶"
-	else											// Èç¹ûµ±Ç°ÊÇ¹Ø±Õ·ÉĞĞÂ·¾¶
-		pCmdUI->SetText("ÏÔÊ¾·ÉĞĞÂ·¾¶");				// ½«²Ëµ¥Ãû³ÆÉèÖÃÎª"ÏÔÊ¾·ÉĞĞÂ·¾¶"
+void CMy3DSymbolLibNewView::OnUpdateFlyOnoffpath(CCmdUI* pCmdUI) {
+    if (m_ShowFlyPath == TRUE)                      // å¦‚æœå½“å‰æ˜¯æ˜¾ç¤ºé£è¡Œè·¯å¾„
+        pCmdUI->SetText("å…³é—­é£è¡Œè·¯å¾„");                // å°†èœå•åç§°è®¾ç½®ä¸º"å…³é—­é£è¡Œè·¯å¾„"
+    else                                            // å¦‚æœå½“å‰æ˜¯å…³é—­é£è¡Œè·¯å¾„
+        pCmdUI->SetText("æ˜¾ç¤ºé£è¡Œè·¯å¾„");                // å°†èœå•åç§°è®¾ç½®ä¸º"æ˜¾ç¤ºé£è¡Œè·¯å¾„"
 }
 
 
 /****************************************************************/
-/* Function: °´¹Ì¶¨¸ß¶ÈÂşÓÎ										*/
+/* Function: æŒ‰å›ºå®šé«˜åº¦æ¼«æ¸¸                                     */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyStaticheight() 
-{
-	if(m_FlayPath.GetSize()<=0)							// Èç¹û·ÉĞĞÂ·¾¶×ø±êµãÊıÁ¿<=0£¬¼´·ÉĞĞÂ·¾¶Îª¿Õ
-	{
-		MessageBox("Ã»ÓĞÊäÈëÂ·¾¶ÎÄ¼ş","·ÉĞĞä¯ÀÀ",MB_ICONWARNING);
-		return;
-	}
-
-	m_fly_start_pause_Enable = TRUE;//[]
-
-	m_FlyHeightType = GIS_FLY_STATICHEIGHT;				// ÉèÖÃÂşÓÎÀàĞÍÎª¹Ì¶¨¸ß¶ÈÂşÓÎ
-	m_StaticHeight = (m_maxHeight+m_minHeight)/2.0;	// È¡¹Ì¶¨¸ß¶ÈÖµ=µØĞÎ×î´óºÍ×îĞ¡¸ß¶ÈµÄ1/4
-	
-	m_flypathPtIndex=0;									// ·ÉĞĞÂ·¾¶×ø±êË÷Òı=0
-
-	SetFLyTimer();										// ÉèÖÃÈıÎ¬ÂşÓÎ¼ÆÊ±Æ÷
+void CMy3DSymbolLibNewView::OnFlyStaticheight() {
+    if (m_FlayPath.GetSize() <= 0) {                    // å¦‚æœé£è¡Œè·¯å¾„åæ ‡ç‚¹æ•°é‡<=0ï¼Œå³é£è¡Œè·¯å¾„ä¸ºç©º
+        MessageBox("æ²¡æœ‰è¾“å…¥è·¯å¾„æ–‡ä»¶", "é£è¡Œæµè§ˆ", MB_ICONWARNING);
+        return;
+    }
+    m_fly_start_pause_Enable = TRUE;//[]
+    m_FlyHeightType = GIS_FLY_STATICHEIGHT;             // è®¾ç½®æ¼«æ¸¸ç±»å‹ä¸ºå›ºå®šé«˜åº¦æ¼«æ¸¸
+    m_StaticHeight = (m_maxHeight + m_minHeight) / 2.0; // å–å›ºå®šé«˜åº¦å€¼=åœ°å½¢æœ€å¤§å’Œæœ€å°é«˜åº¦çš„1/4
+    m_flypathPtIndex = 0;                               // é£è¡Œè·¯å¾„åæ ‡ç´¢å¼•=0
+    SetFLyTimer();                                      // è®¾ç½®ä¸‰ç»´æ¼«æ¸¸è®¡æ—¶å™¨
 }
 
 
-void CMy3DSymbolLibNewView::OnUpdateFlyStaticheight(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable(	m_PathFlag == TRUE);				// ¸ù¾İÊÇ·ñ¾ßÓĞÓĞĞ§·ÉĞĞÂ·¾¶ÖµÉèÖÃ²Ëµ¥×´Ì¬
-	if (m_FlyHeightType==GIS_FLY_STATICHEIGHT)			// Èç¹ûµ±Ç°ÊÇ"ÑØ¹Ì¶¨¸ß¶ÈÂşÓÎ"·½Ê½
-		pCmdUI->SetCheck(TRUE);							// ²Ëµ¥Ç°ÉèÖÃÑ¡ÖĞ±êÖ¾"¡Ì"
-	else
-		pCmdUI->SetCheck(FALSE);						// ·ñÔò²»ÉèÖÃ		
+void CMy3DSymbolLibNewView::OnUpdateFlyStaticheight(CCmdUI* pCmdUI) {
+    pCmdUI->Enable(m_PathFlag == TRUE);              // æ ¹æ®æ˜¯å¦å…·æœ‰æœ‰æ•ˆé£è¡Œè·¯å¾„å€¼è®¾ç½®èœå•çŠ¶æ€
+    if (m_FlyHeightType == GIS_FLY_STATICHEIGHT)        // å¦‚æœå½“å‰æ˜¯"æ²¿å›ºå®šé«˜åº¦æ¼«æ¸¸"æ–¹å¼
+        pCmdUI->SetCheck(TRUE);                         // èœå•å‰è®¾ç½®é€‰ä¸­æ ‡å¿—"âˆš"
+    else
+        pCmdUI->SetCheck(FALSE);                        // å¦åˆ™ä¸è®¾ç½®
 }
 
 
 /****************************************************************/
-/* Function: ÉèÖÃ·ÉĞĞ¼ÆÊ±Æ÷										*/
+/* Function: è®¾ç½®é£è¡Œè®¡æ—¶å™¨                                     */
 /****************************************************************/
-void CMy3DSymbolLibNewView::SetFLyTimer()
-{
-	SetTimer(1,m_flyspeed,NULL);						// m_flyspeed:·ÉĞĞ¼ÆÊ±Æ÷Ê±¼ä¼ä¸ô,
+void CMy3DSymbolLibNewView::SetFLyTimer() {
+    SetTimer(1, m_flyspeed, NULL);                      // m_flyspeed:é£è¡Œè®¡æ—¶å™¨æ—¶é—´é—´éš”,
 }
 
 
 /****************************************************************/
-/* Function: ¼ÆÊ±Æ÷,·ÉĞĞÆµÂÊ¿ØÖÆÆ÷								*/
+/* Function: è®¡æ—¶å™¨,é£è¡Œé¢‘ç‡æ§åˆ¶å™¨                              */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnTimer(UINT nIDEvent) 
-{
-	switch(nIDEvent)
-	{
-	case 1:  // ÈıÎ¬ÂşÓÎ
-		if(m_flypathPtIndex<=m_FlayPath.GetSize()-2)	// Èç¹ûµ±Ç°·ÉĞĞÂ·¾¶×ø±êµãË÷Òı<=Â·¾¶×ø±êµã×ÜÊı-1
-		{
-			// ¸ù¾İÂşÓÎÂ·¾¶ÏàÁÙ×ø±êµã¼ÆËãÏà»ú¸÷²ÎÊı
-			GetCameraCorrdinate(
-				m_FlayPath.GetAt(m_flypathPtIndex)->x,\
-				m_FlayPath.GetAt(m_flypathPtIndex)->y,\
-				m_FlayPath.GetAt(m_flypathPtIndex)->z,\
-				m_FlayPath.GetAt(m_flypathPtIndex+1)->x,\
-				m_FlayPath.GetAt(m_flypathPtIndex+1)->y,\
-				m_FlayPath.GetAt(m_flypathPtIndex+1)->z
-				);
-			Invalidate(FALSE);
-			m_flypathPtIndex++;							// ·ÉĞĞÂ·¾¶µ±Ç°×ø±êË÷ÒıºÅ+1
-		}
-		else
-		{
-			m_flypathPtIndex=0;							// µ½ÁË·ÉĞĞÎ²,½«·ÉĞĞÂ·¾¶µ±Ç°×ø±êË÷ÒıºÅÖØÖÃÎª0,¼´´Ó·ÉĞĞÂ·¾¶ÆğÊ¼µã¿ªÊ¼ÂşÓÎ
-		}
-		break;  
-
-	case 2: // Ä£ĞÍÑ¡ÖĞ½øĞĞºì°×ÑÕÉ«ÉÁË¸ÏÔÊ¾
-		if(wireG == 0)
-		{
-			wireR = 1;
-			wireG = 1;
-			wireB = 1;
-		}
-		else
-		{
-			wireR = 1;
-			wireG = 0;
-			wireB = 0;
-		}
-		Invalidate(FALSE);
-		break;
-	}
-
-	CView::OnTimer(nIDEvent);
+void CMy3DSymbolLibNewView::OnTimer(UINT nIDEvent) {
+    switch (nIDEvent) {
+        case 1:  // ä¸‰ç»´æ¼«æ¸¸
+            if (m_flypathPtIndex <= m_FlayPath.GetSize() - 2) {  // å¦‚æœå½“å‰é£è¡Œè·¯å¾„åæ ‡ç‚¹ç´¢å¼•<=è·¯å¾„åæ ‡ç‚¹æ€»æ•°-1
+                // æ ¹æ®æ¼«æ¸¸è·¯å¾„ç›¸ä¸´åæ ‡ç‚¹è®¡ç®—ç›¸æœºå„å‚æ•°
+                GetCameraCorrdinate(
+                    m_FlayPath.GetAt(m_flypathPtIndex)->x, \
+                    m_FlayPath.GetAt(m_flypathPtIndex)->y, \
+                    m_FlayPath.GetAt(m_flypathPtIndex)->z, \
+                    m_FlayPath.GetAt(m_flypathPtIndex + 1)->x, \
+                    m_FlayPath.GetAt(m_flypathPtIndex + 1)->y, \
+                    m_FlayPath.GetAt(m_flypathPtIndex + 1)->z
+                );
+                Invalidate(FALSE);
+                m_flypathPtIndex++;                         // é£è¡Œè·¯å¾„å½“å‰åæ ‡ç´¢å¼•å·+1
+            } else {
+                m_flypathPtIndex = 0;                       // åˆ°äº†é£è¡Œå°¾,å°†é£è¡Œè·¯å¾„å½“å‰åæ ‡ç´¢å¼•å·é‡ç½®ä¸º0,å³ä»é£è¡Œè·¯å¾„èµ·å§‹ç‚¹å¼€å§‹æ¼«æ¸¸
+            }
+            break;
+        case 2:  // æ¨¡å‹é€‰ä¸­è¿›è¡Œçº¢ç™½é¢œè‰²é—ªçƒæ˜¾ç¤º
+            if (wireG == 0) {
+                wireR = 1;
+                wireG = 1;
+                wireB = 1;
+            } else {
+                wireR = 1;
+                wireG = 0;
+                wireB = 0;
+            }
+            Invalidate(FALSE);
+            break;
+    }
+    CView::OnTimer(nIDEvent);
 }
 
 
 /****************************************************************/
-/* Function: ¸ù¾İÂşÓÎÂ·¾¶ÏàÁÙ×ø±êµã¼ÆËãÏà»ú¸÷²ÎÊı					*/
+/* Function: æ ¹æ®æ¼«æ¸¸è·¯å¾„ç›¸ä¸´åæ ‡ç‚¹è®¡ç®—ç›¸æœºå„å‚æ•°                   */
 /****************************************************************/
-void CMy3DSymbolLibNewView::GetCameraCorrdinate(double x1, double y1, double z1, double x2, double y2, double z2)
-{
-	//(x1,y1,x1):·ÉĞĞÂ·¾¶µ±Ç°µã×ø±ê
-
-	//(x2,y2,x2):·ÉĞĞÂ·¾¶ÏÂÒ»µã×ø±ê 
-
-	if(m_FlyHeightType == GIS_FLY_STATICHEIGHT)				// ¹Ì¶¨¸ß¶È·ÉĞĞ·½Ê½
-	{
-		if(m_StaticHeight < 85)
-			m_StaticHeight = 85;
-		m_vLook.x = x2;//¹Û²ìµãx×ø±ê
-		m_vLook.y = m_StaticHeight;//¹Û²ìµãy×ø±ê=y2+m_StaticHeight¹Ì¶¨¸ß¶ÈÖµ
-		m_vLook.z = z2;//¹Û²ìµãz×ø±ê
-
-		m_vEyePosition.x = x1;//ÊÓµãx×ø±ê
-		m_vEyePosition.y = m_vLook.y;//ÊÓµãy×ø±ê=¹Û²ìµãy×ø±ê
-		m_vEyePosition.z = z1;//ÊÓµãz×ø±ê 
-
-	}
-	//°´Ïà¶Ô¸ß¶È(¼´ÑØÂ·¾¶)ÂşÓÎÊ±£¬Ğè¼ÆËãÒ»¸ö»ù±¾¸ß¶È
-	else if(m_FlyHeightType == GIS_FLY_PATHHEIGHT)
-	{
-		//ÑØÏà¶Ô¸ß¶ÈÂşÓÎ
-		m_vLook.x=x2;										// ¹Û²ìµãx×ø±ê
-		m_vLook.y=y2+m_StaticHeight + 1;						// ¹Û²ìµãy×ø±ê=y2+m_StaticHeight¹Ì¶¨¸ß¶ÈÖµ
-		m_vLook.z=z2;										// ¹Û²ìµãz×ø±ê
-
-		//Çó¶şµãÖ®¼ä¾àÀë
-		float distance = sqrt((x2-x1)*(x2-x1)+(z2-z1)*(z2-z1));
-		//¸ù¾İÇã½Ç¼ÆËã¸ß¶È²î
-		float dh = distance * tan(m_ViewUpDown * PAI_D180);
-
-		m_vEyePosition.x=x1;								// ÊÓµãx×ø±ê
-		m_vEyePosition.y=m_vLook.y+dh;						// ÊÓµãy×ø±ê=¹Û²ìµãy×ø±ê+¸ß²î
-		m_vEyePosition.z=z1;								// ÊÓµãz×ø±ê
-
-	}
+void CMy3DSymbolLibNewView::GetCameraCorrdinate(double x1, double y1, double z1, double x2, double y2, double z2) {
+    // (x1,y1,x1):é£è¡Œè·¯å¾„å½“å‰ç‚¹åæ ‡
+    // (x2,y2,x2):é£è¡Œè·¯å¾„ä¸‹ä¸€ç‚¹åæ ‡
+    if (m_FlyHeightType == GIS_FLY_STATICHEIGHT) {          // å›ºå®šé«˜åº¦é£è¡Œæ–¹å¼
+        if (m_StaticHeight < 85)
+            m_StaticHeight = 85;
+        m_vLook.x = x2;  // è§‚å¯Ÿç‚¹xåæ ‡
+        m_vLook.y = m_StaticHeight;  // è§‚å¯Ÿç‚¹yåæ ‡=y2+m_StaticHeightå›ºå®šé«˜åº¦å€¼
+        m_vLook.z = z2; // è§‚å¯Ÿç‚¹zåæ ‡
+        m_vEyePosition.x = x1;  // è§†ç‚¹xåæ ‡
+        m_vEyePosition.y = m_vLook.y;  // è§†ç‚¹yåæ ‡=è§‚å¯Ÿç‚¹yåæ ‡
+        m_vEyePosition.z = z1;  // è§†ç‚¹zåæ ‡
+    }
+    // æŒ‰ç›¸å¯¹é«˜åº¦(å³æ²¿è·¯å¾„)æ¼«æ¸¸æ—¶ï¼Œéœ€è®¡ç®—ä¸€ä¸ªåŸºæœ¬é«˜åº¦
+    else if (m_FlyHeightType == GIS_FLY_PATHHEIGHT) {
+        // æ²¿ç›¸å¯¹é«˜åº¦æ¼«æ¸¸
+        m_vLook.x = x2;                                     // è§‚å¯Ÿç‚¹xåæ ‡
+        m_vLook.y = y2 + m_StaticHeight + 1;                    // è§‚å¯Ÿç‚¹yåæ ‡=y2+m_StaticHeightå›ºå®šé«˜åº¦å€¼
+        m_vLook.z = z2;                                     // è§‚å¯Ÿç‚¹zåæ ‡
+        // æ±‚äºŒç‚¹ä¹‹é—´è·ç¦»
+        float distance = sqrt((x2 - x1) * (x2 - x1) + (z2 - z1) * (z2 - z1));
+        // æ ¹æ®å€¾è§’è®¡ç®—é«˜åº¦å·®
+        float dh = distance * tan(m_ViewUpDown * PAI_D180);
+        m_vEyePosition.x = x1;                              // è§†ç‚¹xåæ ‡
+        m_vEyePosition.y = m_vLook.y + dh;                  // è§†ç‚¹yåæ ‡=è§‚å¯Ÿç‚¹yåæ ‡+é«˜å·®
+        m_vEyePosition.z = z1;                              // è§†ç‚¹zåæ ‡
+    }
 }
 
 
 /****************************************************************/
-/* Function: °´Ïà¶Ô¸ß¶ÈÂşÓÎ·½Ê½									*/
+/* Function: æŒ‰ç›¸å¯¹é«˜åº¦æ¼«æ¸¸æ–¹å¼                                 */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyRoutineheight() 
-{
-	if(m_FlayPath.GetSize()<=0)//Èç¹û·ÉĞĞÂ·¾¶×ø±êµãÊıÁ¿<=0£¬¼´·ÉĞĞÂ·¾¶Îª¿Õ
-	{
-		MessageBox("Ã»ÓĞÊäÈëÂ·¾¶ÎÄ¼ş","·ÉĞĞä¯ÀÀ",MB_ICONWARNING);
-		return;
-	}
-
-	m_fly_start_pause_Enable = TRUE;//[]
-
-	m_FlyHeightType = GIS_FLY_PATHHEIGHT;					// ÉèÖÃÂşÓÎÀàĞÍÎªÏà¶Ô¸ß¶ÈÂşÓÎ
-
-	
-	m_StaticHeight = 0;										// ÉèÖÃÏà¶Ô¸ß²îÖµ
-
-	m_flypathPtIndex=0;										// ·ÉĞĞÂ·¾¶×ø±ê³õÊ¼Ë÷Òı=0
-	SetFLyTimer();											// ÉèÖÃÈıÎ¬ÂşÓÎ¼ÆÊ±Æ÷
+void CMy3DSymbolLibNewView::OnFlyRoutineheight() {
+    if (m_FlayPath.GetSize() <= 0) { //å¦‚æœé£è¡Œè·¯å¾„åæ ‡ç‚¹æ•°é‡<=0ï¼Œå³é£è¡Œè·¯å¾„ä¸ºç©º
+        MessageBox("æ²¡æœ‰è¾“å…¥è·¯å¾„æ–‡ä»¶", "é£è¡Œæµè§ˆ", MB_ICONWARNING);
+        return;
+    }
+    m_fly_start_pause_Enable = TRUE;
+    m_FlyHeightType = GIS_FLY_PATHHEIGHT;                   // è®¾ç½®æ¼«æ¸¸ç±»å‹ä¸ºç›¸å¯¹é«˜åº¦æ¼«æ¸¸
+    m_StaticHeight = 0;                                     // è®¾ç½®ç›¸å¯¹é«˜å·®å€¼
+    m_flypathPtIndex = 0;                                   // é£è¡Œè·¯å¾„åæ ‡åˆå§‹ç´¢å¼•=0
+    SetFLyTimer();                                          // è®¾ç½®ä¸‰ç»´æ¼«æ¸¸è®¡æ—¶å™¨
 }
 
 
 /****************************************************************/
-/* Function: ÉèÖÃ²Ëµ¥ÊÇ·ñÉèÖÃÑ¡ÖĞ±êÊ¶"¡Ì"							*/
+/* Function: è®¾ç½®èœå•æ˜¯å¦è®¾ç½®é€‰ä¸­æ ‡è¯†"âˆš"                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnUpdateFlyRoutineheight(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable(	m_PathFlag == TRUE);					// ¸ù¾İÊÇ·ñ¾ßÓĞÓĞĞ§·ÉĞĞÂ·¾¶ÖµÉèÖÃ²Ëµ¥×´Ì¬
-	if (m_FlyHeightType==GIS_FLY_PATHHEIGHT)				// Èç¹ûµ±Ç°ÊÇ"ÑØÏà¶Ô¸ß¶ÈÂşÓÎ"·½Ê½
-		pCmdUI->SetCheck(TRUE);								// ²Ëµ¥Ç°ÉèÖÃÑ¡ÖĞ±êÖ¾"¡Ì"
-	else
-		pCmdUI->SetCheck(FALSE);								// ·ñÔò²»ÉèÖÃ	
+void CMy3DSymbolLibNewView::OnUpdateFlyRoutineheight(CCmdUI* pCmdUI) {
+    pCmdUI->Enable(m_PathFlag == TRUE);                  // æ ¹æ®æ˜¯å¦å…·æœ‰æœ‰æ•ˆé£è¡Œè·¯å¾„å€¼è®¾ç½®èœå•çŠ¶æ€
+    if (m_FlyHeightType == GIS_FLY_PATHHEIGHT)              // å¦‚æœå½“å‰æ˜¯"æ²¿ç›¸å¯¹é«˜åº¦æ¼«æ¸¸"æ–¹å¼
+        pCmdUI->SetCheck(TRUE);                             // èœå•å‰è®¾ç½®é€‰ä¸­æ ‡å¿—"âˆš"
+    else
+        pCmdUI->SetCheck(FALSE);                                // å¦åˆ™ä¸è®¾ç½®
 }
 
 
 /****************************************************************/
-/* Function: ¿ªÊ¼/ÔİÍ£ÂşÓÎ										*/
+/* Function: å¼€å§‹/æš‚åœæ¼«æ¸¸                                      */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyPlaypause() 
-{
-	if(m_FlyPause==FALSE)									// Èç¹û²»ÊÇÔİÍ£ÂşÓÎ,¼´´¦ÓÚÂşÓÎ×´Ì¬
-	{
-		m_FlyPause=TRUE;									// ÉèÖÃÔİÍ£±êÊ¶m_FlyPause=TRUE
-		KillTimer(1);										// Ïú»Ù¶¨Ê±Æ÷1
-	}
-	else													// Èç¹û´¦ÓÚÂşÓÎ×´Ì¬
-	{
-		m_FlyPause=FALSE;									// ÉèÖÃÔİÍ£±êÊ¶m_FlyPause=FALSE
-		SetFLyTimer();										// ÉèÖÃ·ÉĞĞÊ±¼äÆ÷,¼ÌĞøÂşÓÎ
-	}
+void CMy3DSymbolLibNewView::OnFlyPlaypause() {
+    if (m_FlyPause == FALSE) {                              // å¦‚æœä¸æ˜¯æš‚åœæ¼«æ¸¸,å³å¤„äºæ¼«æ¸¸çŠ¶æ€
+        m_FlyPause = TRUE;                                  // è®¾ç½®æš‚åœæ ‡è¯†m_FlyPause=TRUE
+        KillTimer(1);                                       // é”€æ¯å®šæ—¶å™¨1
+    } else {                                                // å¦‚æœå¤„äºæ¼«æ¸¸çŠ¶æ€
+        m_FlyPause = FALSE;                                 // è®¾ç½®æš‚åœæ ‡è¯†m_FlyPause=FALSE
+        SetFLyTimer();                                      // è®¾ç½®é£è¡Œæ—¶é—´å™¨,ç»§ç»­æ¼«æ¸¸
+    }
 }
 
 
 /****************************************************************/
-/* Function: ¸ù¾İm_FlyPauseÖµÉèÖÃ²Ëµ¥ID_FLY_PLAYPAUSEÎÄ±¾			*/
+/* Function: æ ¹æ®m_FlyPauseå€¼è®¾ç½®èœå•ID_FLY_PLAYPAUSEæ–‡æœ¬           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnUpdateFlyPlaypause(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable(m_fly_start_pause_Enable==TRUE);//[]
-	if(m_FlyPause==TRUE)						// Èç¹û´¦ÓÚÂşÓÎ×´Ì¬
-		pCmdUI->SetText("¿ªÊ¼ÂşÓÎ");				// ÉèÖÃ²Ëµ¥ID_FLY_PLAYPAUSEÎÄ±¾
-	else										// Èç¹û²»ÊÇÔİÍ£ÂşÓÎ,¼´´¦ÓÚÂşÓÎ×´Ì¬
-		pCmdUI->SetText("ÔİÍ£ÂşÓÎ");				// ÉèÖÃ²Ëµ¥ID_FLY_PLAYPAUSEÎÄ±¾
-} 
-
-
-/****************************************************************/
-/* Function: Í£Ö¹ÂşÓÎ											*/
-/****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyStop() 
-{
-	KillTimer(1);						// Ïú»Ù¶¨Ê±Æ÷1
-	m_flypathPtIndex=0;					// ·ÉĞĞÂ·¾¶×ø±êË÷Òı=0
-	m_FlyPause=FALSE;					// ÔİÍ£±êÊ¶ÎªFALSE
-	m_far=10000;						// »Ö¸´gluPerspective()º¯Êı¶¨ÒåÆ½½ØÍ·ÌåµÄÔ¶¼ô²ÃÆ½ÃæµÄ¾àÀë
-	m_fly_start_pause_Enable = FALSE;	//[]
+void CMy3DSymbolLibNewView::OnUpdateFlyPlaypause(CCmdUI* pCmdUI) {
+    pCmdUI->Enable(m_fly_start_pause_Enable == TRUE);
+    if (m_FlyPause == TRUE)                     // å¦‚æœå¤„äºæ¼«æ¸¸çŠ¶æ€
+        pCmdUI->SetText("å¼€å§‹æ¼«æ¸¸");                // è®¾ç½®èœå•ID_FLY_PLAYPAUSEæ–‡æœ¬
+    else                                        // å¦‚æœä¸æ˜¯æš‚åœæ¼«æ¸¸,å³å¤„äºæ¼«æ¸¸çŠ¶æ€
+        pCmdUI->SetText("æš‚åœæ¼«æ¸¸");                // è®¾ç½®èœå•ID_FLY_PLAYPAUSEæ–‡æœ¬
 }
 
 
 /****************************************************************/
-/* Function: µ¥²½Ç°½ø											*/
+/* Function: åœæ­¢æ¼«æ¸¸                                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyOnestep() 
-{
-	//Èç¹û·ÉĞĞÂ·¾¶×ø±êË÷Òı>=0²¢ÇÒ<·ÉĞĞÂ·¾¶×ø±ê×ÜÊı-1,¸ÃÌõ¼ş±íÊ¾µÄÊÇ
-	//Ö»Òª·ÉĞĞÂ·¾¶×ø±êË÷ÒıÃ»ÓĞµ½·ÉĞĞÂ·¾¶Î²,¾Í¿ÉÒÔÖ´ĞĞµ¥²½Ç°½ø
-	if(m_flypathPtIndex>=0 && m_flypathPtIndex<m_FlayPath.GetSize()-1)
-	{
-
-		KillTimer(1);								// Ïú»Ù¶¨Ê±Æ÷1	
-		m_FlyPause=TRUE;							// ÔİÍ£±êÊ¶ÎªTRUE
-		//¸ù¾İÂşÓÎÂ·¾¶ÏàÁÙ×ø±êµã¼ÆËãÏà»ú¸÷²ÎÊı
-		GetCameraCorrdinate(
-			m_FlayPath.GetAt(m_flypathPtIndex)->x,\
-			m_FlayPath.GetAt(m_flypathPtIndex)->y,\
-			m_FlayPath.GetAt(m_flypathPtIndex)->z,\
-			m_FlayPath.GetAt(m_flypathPtIndex+1)->x,\
-			m_FlayPath.GetAt(m_flypathPtIndex+1)->y,\
-			m_FlayPath.GetAt(m_flypathPtIndex+1)->z
-			);
-
-		Invalidate(FALSE);
-		m_flypathPtIndex++;							// µ±Ç°ĞĞÂ·¾¶×ø±êË÷Òı+1
-	}	
-} 
-
-
-/****************************************************************/
-/* Function: ·ÉĞĞÊÓÒ°À©´ó											*/
-/****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyViewEnlarge() 
-{
-	m_ViewWideNarrow += 5.0;						// m_ViewWideNarrowÖµÔö¼Ó
-	OnDraw (GetDC());								// Ë¢ĞÂÈıÎ¬³¡¾°
+void CMy3DSymbolLibNewView::OnFlyStop() {
+    KillTimer(1);                       // é”€æ¯å®šæ—¶å™¨1
+    m_flypathPtIndex = 0;               // é£è¡Œè·¯å¾„åæ ‡ç´¢å¼•=0
+    m_FlyPause = FALSE;                 // æš‚åœæ ‡è¯†ä¸ºFALSE
+    m_far = 10000;                      // æ¢å¤gluPerspective()å‡½æ•°å®šä¹‰å¹³æˆªå¤´ä½“çš„è¿œå‰ªè£å¹³é¢çš„è·ç¦»
+    m_fly_start_pause_Enable = FALSE;   // []
 }
 
 
 /****************************************************************/
-/* Function: ·ÉĞĞÊÓÒ°¼õĞ¡											*/
+/* Function: å•æ­¥å‰è¿›                                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyViewSmall() 
-{
-	m_ViewWideNarrow -= 5.0;						// m_ViewWideNarrowÖµ¼õĞ¡
-	OnDraw (GetDC());								// Ë¢ĞÂÈıÎ¬³¡¾°
+void CMy3DSymbolLibNewView::OnFlyOnestep() {
+    // å¦‚æœé£è¡Œè·¯å¾„åæ ‡ç´¢å¼•>=0å¹¶ä¸”<é£è¡Œè·¯å¾„åæ ‡æ€»æ•°-1,è¯¥æ¡ä»¶è¡¨ç¤ºçš„æ˜¯
+    // åªè¦é£è¡Œè·¯å¾„åæ ‡ç´¢å¼•æ²¡æœ‰åˆ°é£è¡Œè·¯å¾„å°¾,å°±å¯ä»¥æ‰§è¡Œå•æ­¥å‰è¿›
+    if (m_flypathPtIndex >= 0 && m_flypathPtIndex < m_FlayPath.GetSize() - 1) {
+        KillTimer(1);                               // é”€æ¯å®šæ—¶å™¨1
+        m_FlyPause = TRUE;                          // æš‚åœæ ‡è¯†ä¸ºTRUE
+        // æ ¹æ®æ¼«æ¸¸è·¯å¾„ç›¸ä¸´åæ ‡ç‚¹è®¡ç®—ç›¸æœºå„å‚æ•°
+        GetCameraCorrdinate(
+            m_FlayPath.GetAt(m_flypathPtIndex)->x, \
+            m_FlayPath.GetAt(m_flypathPtIndex)->y, \
+            m_FlayPath.GetAt(m_flypathPtIndex)->z, \
+            m_FlayPath.GetAt(m_flypathPtIndex + 1)->x, \
+            m_FlayPath.GetAt(m_flypathPtIndex + 1)->y, \
+            m_FlayPath.GetAt(m_flypathPtIndex + 1)->z
+        );
+        Invalidate(FALSE);
+        m_flypathPtIndex++;                         // å½“å‰è¡Œè·¯å¾„åæ ‡ç´¢å¼•+1
+    }
 }
 
 
 /****************************************************************/
-/* Function: ·ÉĞĞ¸ß¶ÈÔö¼Ó											*/
+/* Function: é£è¡Œè§†é‡æ‰©å¤§                                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyHeightUp() 
-{
-	m_StaticHeight += 8;							// ¸ß¶ÈÖµÔö¼Ó(²½³¤=8,¿ÉÈÎÒâÉè¶¨)
-	OnDraw (GetDC());								// Ë¢ĞÂÈıÎ¬³¡¾°	
+void CMy3DSymbolLibNewView::OnFlyViewEnlarge() {
+    m_ViewWideNarrow += 5.0;                        // m_ViewWideNarrowå€¼å¢åŠ 
+    OnDraw(GetDC());                                // åˆ·æ–°ä¸‰ç»´åœºæ™¯
 }
 
 
 /****************************************************************/
-/* Function: ·ÉĞĞ¸ß¶È½µµÍ											*/
+/* Function: é£è¡Œè§†é‡å‡å°                                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyHeightDown() 
-{
-	m_StaticHeight -= 8;							// ¸ß¶ÈÖµÔö¼Ó(²½³¤=8,¿ÉÈÎÒâÉè¶¨)
-	OnDraw (GetDC());								// Ë¢ĞÂÈıÎ¬³¡¾°	
-
+void CMy3DSymbolLibNewView::OnFlyViewSmall() {
+    m_ViewWideNarrow -= 5.0;                        // m_ViewWideNarrowå€¼å‡å°
+    OnDraw(GetDC());                                // åˆ·æ–°ä¸‰ç»´åœºæ™¯
 }
 
 
 /****************************************************************/
-/* Function: ·ÉĞĞÊÓ½ÇÉÏÇã(ÑöÊÓ)									*/
+/* Function: é£è¡Œé«˜åº¦å¢åŠ                                            */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyViewUp() 
-{
-	m_ViewUpDown += 1.0;
-	OnDraw (GetDC());								// Ë¢ĞÂÈıÎ¬³¡¾°	
+void CMy3DSymbolLibNewView::OnFlyHeightUp() {
+    m_StaticHeight += 8;                            // é«˜åº¦å€¼å¢åŠ (æ­¥é•¿=8,å¯ä»»æ„è®¾å®š)
+    OnDraw(GetDC());                                // åˆ·æ–°ä¸‰ç»´åœºæ™¯
 }
 
 
 /****************************************************************/
-/* Function: ·ÉĞĞÊÓ½ÇÏÂÇã(¸©ÊÓ)									*/
+/* Function: é£è¡Œé«˜åº¦é™ä½                                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlyViewDown() 
-{
-	m_ViewUpDown -= 1.0;
-	OnDraw (GetDC());								// Ë¢ĞÂÈıÎ¬³¡¾°	
+void CMy3DSymbolLibNewView::OnFlyHeightDown() {
+    m_StaticHeight -= 8;                            // é«˜åº¦å€¼å¢åŠ (æ­¥é•¿=8,å¯ä»»æ„è®¾å®š)
+    OnDraw(GetDC());                                // åˆ·æ–°ä¸‰ç»´åœºæ™¯
 }
 
 
 /****************************************************************/
-/* Function: ¼ÓËÙ												*/
+/* Function: é£è¡Œè§†è§’ä¸Šå€¾(ä»°è§†)                                 */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlySpeedUp() 
-{
-	m_flyspeed-=2;									// ·ÉĞĞÊ±µÄ¼ÆÊ±Æ÷Ê±¼ä¼ä¸ô¼õÉÙ 
-	if(m_flyspeed<=1)								// Èç¹û¼ÆÊ±Æ÷Ê±¼ä¼ä¸ô<=1,ÔòÓĞ
-		m_flyspeed=1;
-	SetFLyTimer();									// ÉèÖÃ·ÉĞĞ¼ÆÊ±Æ÷
+void CMy3DSymbolLibNewView::OnFlyViewUp() {
+    m_ViewUpDown += 1.0;
+    OnDraw(GetDC());                                // åˆ·æ–°ä¸‰ç»´åœºæ™¯
 }
 
 
 /****************************************************************/
-/* Function: ¼õËÙ												*/
+/* Function: é£è¡Œè§†è§’ä¸‹å€¾(ä¿¯è§†)                                 */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnFlySpeedDown() 
-{
-	m_flyspeed+=2;									// ·ÉĞĞÊ±µÄ¼ÆÊ±Æ÷Ê±¼ä¼ä¸ôÔö¼Ó 
-	SetFLyTimer();									// ÉèÖÃ·ÉĞĞ¼ÆÊ±Æ÷
+void CMy3DSymbolLibNewView::OnFlyViewDown() {
+    m_ViewUpDown -= 1.0;
+    OnDraw(GetDC());                                // åˆ·æ–°ä¸‰ç»´åœºæ™¯
 }
 
 
 /****************************************************************/
-/* Function: ÈıÎ¬ÂşÓÎµ÷ÕûÈÈ¼ü°ïÖú									*/
+/* Function: åŠ é€Ÿ                                               */
 /****************************************************************/
-void CMy3DSymbolLibNewView::DisplayHelp()
-{
-	char str[20][50],strdis[2000];
-
-	strdis[0]='\0';
-
-	strcpy(str[0]," Ïò¡ü¼ü   ÍùÇ°·½ÏòÒÆ¶¯\n");
-	strcpy(str[1]," Ïò¡ı¼ü   Íùºó·½ÏòÒÆ¶¯\n");
-	strcpy(str[2]," Ïò¡ú¼ü   Íù×ó·½ÏòÒÆ¶¯\n");
-	strcpy(str[3]," Ïò¡û¼ü   ÍùÓÒ·½ÏòÒÆ¶¯\n");
-	strcpy(str[4],"  J ¼ü    ·ÉĞĞ¼ÓËÙ\n");
-	strcpy(str[5],"  M ¼ü    ·ÉĞĞ¼õËÙ\n");
-	strcpy(str[6],"  I ¼ü    ·ÉĞĞÊÓÒ°Ôö´ó\n");
-	strcpy(str[7],"  O ¼ü    ·ÉĞĞÊÓÒ°¼õĞ¡\n");
-	strcpy(str[8],"  G ¼ü     Éı¸ß·ÉĞĞ¸ß¶È\n");
-	strcpy(str[9],"  B ¼ü     ½µµÍ·ÉĞĞ¸ß¶È\n");
-	strcpy(str[10],"  H ¼ü    ·ÉĞĞ¹Û²ìÉÏÇã\n");
-	strcpy(str[11],"  N ¼ü    ·ÉĞĞ¹Û²ìÏÂÇã\n");
-	strcpy(str[12],"  P ¼ü    ¿ªÊ¼/ÔİÍ£ÂşÓÎ\n");
-	strcpy(str[13],"  S ¼ü    Í£Ö¹ÂşÓÎ"); 
-
-	for(int i=0;i<14; i++)
-		strcat(strdis,str[i]);
-	MessageBox(strdis,"ÈıÎ¬ÂşÓÎÈÈ¼üËµÃ÷",MB_OK);
-
-	//TextFlyHelp();
-}
-
-void CMy3DSymbolLibNewView::TextFlyHelp()
-{
-	// ÏÔÊ¾ÎÄ×Ö
-	
-	Font->Settext(350,485,"Ïò¡ü¼ü   ÍùÇ°·½ÏòÒÆ¶¯", hFont, 1, 0,0);
-	Font->Settext(350,500,"Ïò¡ı¼ü   Íùºó·½ÏòÒÆ¶¯", hFont, 1, 0,0);
-	Font->Settext(350,515,"Ïò¡ú¼ü   Íù×ó·½ÏòÒÆ¶¯", hFont, 1, 0,0);
-	Font->Settext(350,530,"Ïò¡û¼ü   ÍùÓÒ·½ÏòÒÆ¶¯", hFont, 1, 0,0);
-
-	Font->Settext(550,485,"J ¼ü    ·ÉĞĞ¼ÓËÙ", hFont, 1, 0,0);
-	Font->Settext(550,500,"M ¼ü    ·ÉĞĞ¼õËÙ", hFont, 1, 0,0);
-	Font->Settext(550,515,"I ¼ü    ·ÉĞĞÊÓÒ°Ôö´ó", hFont, 1, 0,0);
-	Font->Settext(550,530,"O ¼ü    ·ÉĞĞÊÓÒ°¼õĞ¡", hFont, 1, 0,0);
-
-	Font->Settext(750,485,"H ¼ü    ·ÉĞĞ¹Û²ìÉÏÇã", hFont, 1, 0,0);
-	Font->Settext(750,500,"N ¼ü    ·ÉĞĞ¹Û²ìÏÂÇã", hFont, 1, 0,0);
-	Font->Settext(750,515,"P ¼ü    ¿ªÊ¼/ÔİÍ£ÂşÓÎ", hFont, 1, 0,0);
-	Font->Settext(750,530,"S ¼ü    Í£Ö¹ÂşÓÎ", hFont, 1, 0,0); 
+void CMy3DSymbolLibNewView::OnFlySpeedUp() {
+    m_flyspeed -= 2;                                // é£è¡Œæ—¶çš„è®¡æ—¶å™¨æ—¶é—´é—´éš”å‡å°‘
+    if (m_flyspeed <= 1)                            // å¦‚æœè®¡æ—¶å™¨æ—¶é—´é—´éš”<=1,åˆ™æœ‰
+        m_flyspeed = 1;
+    SetFLyTimer();                                  // è®¾ç½®é£è¡Œè®¡æ—¶å™¨
 }
 
 
 /****************************************************************/
-/* Function: ³õÊ¼»¯ÏÔÊ¾ÁĞ±í										*/
+/* Function: å‡é€Ÿ                                               */
 /****************************************************************/
-void CMy3DSymbolLibNewView::InitList()
-{
-	m_ClockList=glGenLists(1);   
-	m_SkyList=m_ClockList+1 ;						// ±³¾°Ìì¿ÕÏÔÊ¾ÁĞ±í
-
-	MakeClockList();								// ´´½¨Ê±ÖÓÖ¸±±ÕëÏÔÊ¾ÁĞ±í 
-	
-		
-	m_Rail3DwayList=m_ClockList+2;					//ÏßÂ·ÈıÎ¬Ä£ĞÍÏÔÊ¾ÁĞ±í
-
+void CMy3DSymbolLibNewView::OnFlySpeedDown() {
+    m_flyspeed += 2;                                // é£è¡Œæ—¶çš„è®¡æ—¶å™¨æ—¶é—´é—´éš”å¢åŠ 
+    SetFLyTimer();                                  // è®¾ç½®é£è¡Œè®¡æ—¶å™¨
 }
 
 
 /****************************************************************/
-/* Function: ´´½¨Ê±ÖÓÖ¸±±ÕëÏÔÊ¾ÁĞ±í								*/
+/* Function: ä¸‰ç»´æ¼«æ¸¸è°ƒæ•´çƒ­é”®å¸®åŠ©                                   */
 /****************************************************************/
-void CMy3DSymbolLibNewView::MakeClockList()
-{
-	glNewList(m_ClockList,GL_COMPILE);				// ´´½¨ÏÔÊ¾ÁĞ±í
-	float R=0.5,x,y;								// Ê±ÖÓÔ²ÅÌ°ë¾¶
-	int i;
+void CMy3DSymbolLibNewView::DisplayHelp() {
+    char str[20][50], strdis[2000];
+    strdis[0] = '\0';
+    strcpy(str[0], " å‘â†‘é”®   å¾€å‰æ–¹å‘ç§»åŠ¨\n");
+    strcpy(str[1], " å‘â†“é”®   å¾€åæ–¹å‘ç§»åŠ¨\n");
+    strcpy(str[2], " å‘â†’é”®   å¾€å·¦æ–¹å‘ç§»åŠ¨\n");
+    strcpy(str[3], " å‘â†é”®   å¾€å³æ–¹å‘ç§»åŠ¨\n");
+    strcpy(str[4], "  J é”®    é£è¡ŒåŠ é€Ÿ\n");
+    strcpy(str[5], "  M é”®    é£è¡Œå‡é€Ÿ\n");
+    strcpy(str[6], "  I é”®    é£è¡Œè§†é‡å¢å¤§\n");
+    strcpy(str[7], "  O é”®    é£è¡Œè§†é‡å‡å°\n");
+    strcpy(str[8], "  G é”®     å‡é«˜é£è¡Œé«˜åº¦\n");
+    strcpy(str[9], "  B é”®     é™ä½é£è¡Œé«˜åº¦\n");
+    strcpy(str[10], "  H é”®    é£è¡Œè§‚å¯Ÿä¸Šå€¾\n");
+    strcpy(str[11], "  N é”®    é£è¡Œè§‚å¯Ÿä¸‹å€¾\n");
+    strcpy(str[12], "  P é”®    å¼€å§‹/æš‚åœæ¼«æ¸¸\n");
+    strcpy(str[13], "  S é”®    åœæ­¢æ¼«æ¸¸");
+    for (int i = 0; i < 14; i++)
+        strcat(strdis, str[i]);
+    MessageBox(strdis, "ä¸‰ç»´æ¼«æ¸¸çƒ­é”®è¯´æ˜", MB_OK);
+    // TextFlyHelp();
+}
 
-	glColor3f(0.0, 1.0, 1.0);						// ÉèÖÃÎÄ×ÖÑÕÉ«
-
-	x=R*cos((0)*PAI_D180)+0.37;						// ¼ÓÉÏÆ«ÒÆÁ¿£¬×¼±¸Ğ´Èë×ÖÄ¸"E"£¬±íÊ¾¿Ì¶È3
-	y=R*sin((0)*PAI_D180)+0.48;
-	PrintText(x,y,(LPTSTR)(LPCTSTR)"E");			// ÔÚÉèÖÃ×ø±êÎ»ÖÃĞ´ÈëE£¬±íÊ¾·½Ïò¡°¶«¡±
-
-	x=R*cos((90)*PAI_D180)+0.47;					// ¼ÓÉÏÆ«ÒÆÁ¿£¬×¼±¸Ğ´Èë×ÖÄ¸"N"£¬±íÊ¾¿Ì¶È12
-	y=R*sin((90)*PAI_D180)+0.36;
-	PrintText(x,y,(LPTSTR)(LPCTSTR)"N");			// ÔÚÉèÖÃ×ø±êÎ»ÖÃĞ´ÈëN£¬±íÊ¾·½Ïò¡°±±¡±
-
-	x=R*cos((180)*PAI_D180)+0.59;					// ¼ÓÉÏÆ«ÒÆÁ¿£¬×¼±¸Ğ´Èë×ÖÄ¸"W" £¬±íÊ¾¿Ì¶È9
-	y=R*sin((180)*PAI_D180)+0.48;
-	PrintText(x,y,(LPTSTR)(LPCTSTR)"W");			// ÔÚÉèÖÃ×ø±êÎ»ÖÃĞ´ÈëW£¬±íÊ¾·½Ïò¡°Î÷¡±
-
-	x=R*cos((270)*PAI_D180)+0.48;					// ¼ÓÉÏÆ«ÒÆÁ¿£¬×¼±¸Ğ´Èë×ÖÄ¸"S" £¬±íÊ¾¿Ì¶È6
-	y=R*sin((270)*PAI_D180)+0.58;
-	PrintText(x,y,(LPTSTR)(LPCTSTR)"S");			// ÔÚÉèÖÃ×ø±êÎ»ÖÃĞ´ÈëS£¬±íÊ¾·½Ïò¡°ÄÏ¡±
-
-	glColor3f(1.0, 1.0, 1.0);						// ÉèÖÃÊ±ÖÓ¿Ì¶ÈÊı×ÖÑÕÉ«
-
-	x=R*cos((30)*PAI_D180)+0.39;					// ÉèÖÃ×ø±ê
-	y=R*sin((30)*PAI_D180)+0.43;
-	PrintText(x,y,(LPTSTR)(LPCTSTR)"2");			// Ğ´ÈëÊı×Ö¿Ì¶È
-
-
-	x=R*cos((60)*PAI_D180)+0.42;
-	y=R*sin((60)*PAI_D180)+0.40;
-	PrintText(x,y,(LPTSTR)(LPCTSTR)"1");			// Ğ´ÈëÊı×Ö¿Ì¶È1
-
-
-	x=R*cos((120)*PAI_D180)+0.49;
-	y=R*sin((120)*PAI_D180)+0.38;
-	PrintText(x,y,(LPTSTR)(LPCTSTR)"11");			// Ğ´ÈëÊı×Ö¿Ì¶È11
-
-	x=R*cos((150)*PAI_D180)+0.55;
-	y=R*sin((150)*PAI_D180)+0.42;
-	PrintText(x,y,(LPTSTR)(LPCTSTR)"10");			// Ğ´ÈëÊı×Ö¿Ì¶È10
-
-
-	x=R*cos((210)*PAI_D180)+0.58;
-	y=R*sin((210)*PAI_D180)+0.53;
-	PrintText(x,y,(LPTSTR)(LPCTSTR)"8");			// Ğ´ÈëÊı×Ö¿Ì¶È8
-
-	x=R*cos((240)*PAI_D180)+0.54;
-	y=R*sin((240)*PAI_D180)+0.58;
-	PrintText(x,y,(LPTSTR)(LPCTSTR)"7");			// Ğ´ÈëÊı×Ö¿Ì¶È7
-
-
-	x=R*cos((300)*PAI_D180)+0.43;
-	y=R*sin((300)*PAI_D180)+0.58;
-	PrintText(x,y,(LPTSTR)(LPCTSTR)"5");			// Ğ´ÈëÊı×Ö¿Ì¶È5
-
-	x=R*cos((330)*PAI_D180)+0.40;
-	y=R*sin((330)*PAI_D180)+0.52;
-	PrintText(x,y,(LPTSTR)(LPCTSTR)"4");			// Ğ´ÈëÊı×Ö¿Ì¶È4
-
-	//ÉèÖÃÊ±ÖÓÔ²ÄÚÔ²ÅÌµÄÑÕÉ«
-	glColor3f(0.0, 1.0, 0.0);
-	glLineWidth(2.0);								// ÉèÖÃÏß¿í
-
-	// »æÖÆÊ±ÖÓÔ²ÍâÔ²ÅÌ
-	glBegin(GL_LINE_STRIP);
-	for ( i=0;i<=360;i++)
-	{
-		x=R*cos(i*PAI_D180)+0.5;
-		y=R*sin(i*PAI_D180)+0.5;
-		glVertex2f(x,y);
-	}
-	glEnd();
-
-	// »æÖÆÊ±ÖÓÄÚ±íÊ¾Ğ¡Ê±Ö®¼äµÄ¿Ì¶È,ÓÃÔ²µã±íÊ¾	
-	float d;
-	for (i=0;i<=360;i+=6)
-	{
-
-		switch(i)
-		{
-		case 0:										// ÔÚN(12µã)´¦
-			glColor3f(0.0, 1.0, 1.0);				// ÉèÖÃÑÕÉ«
-			glPointSize(4.0);						// ÉèÖÃµãµÄ´óĞ¡
-			break;
-		case 90:									// ÔÚW(9µã)´¦
-			glColor3f(0.0, 1.0, 1.0);				// ÉèÖÃÑÕÉ«
-			glPointSize(4.0);						// ÉèÖÃµãµÄ´óĞ¡
-			break;
-		case 180:									// ÔÚS(6µã)´¦
-			glColor3f(0.0, 1.0, 1.0);				// ÉèÖÃÑÕÉ«
-			glPointSize(4.0);						// ÉèÖÃµãµÄ´óĞ¡
-			break;
-		case 270:									// ÔÚE(3µã)´¦
-			glColor3f(0.0, 1.0, 1.0);				// ÉèÖÃÑÕÉ«
-			glPointSize(4.0);						// ÉèÖÃµãµÄ´óĞ¡
-			break;
-		default:
-			glColor3f(0.77, 0.67, 0.95);			// ÉèÖÃÑÕÉ«
-			glPointSize(2.0);						// ÉèÖÃµãµÄ´óĞ¡
-			break;
-		}
-
-		if(i%30==0 && i%90!=0)						// ÔÚÕûÊ±¿Ì´¦(Èç7µã,8µãµÈ)
-		{	 
-			glColor3f(1.0, 0.0, 1.0);				// ÉèÖÃÑÕÉ«
-			glPointSize(3.0);						// ÉèÖÃµãµÄ´óĞ¡
-		}
-
-		d=0.04;										// Æ«ÒÆÁ¿
-		x=R*cos(i*PAI_D180)+0.5;					// ¼ÆËãx×ø±ê
-		y=R*sin(i*PAI_D180)+0.5;					// ¼ÆËãy×ø±ê
-
-		//»æÖÆµã±êÖ¾
-		glBegin(GL_POINTS);
-		x=x-d*cos(i*PAI_D180);
-		y=y-d*sin(i*PAI_D180);
-		glVertex2f(x,y);
-		glEnd();
-	}
-	glLineWidth(1.0);								// ÉèÖÃÏß¿í
-	glEndList();									// ½áÊøÏÔÊ¾ÁĞ±í
-
+void CMy3DSymbolLibNewView::TextFlyHelp() {
+    // æ˜¾ç¤ºæ–‡å­—
+    Font->Settext(350, 485, "å‘â†‘é”®   å¾€å‰æ–¹å‘ç§»åŠ¨", hFont, 1, 0, 0);
+    Font->Settext(350, 500, "å‘â†“é”®   å¾€åæ–¹å‘ç§»åŠ¨", hFont, 1, 0, 0);
+    Font->Settext(350, 515, "å‘â†’é”®   å¾€å·¦æ–¹å‘ç§»åŠ¨", hFont, 1, 0, 0);
+    Font->Settext(350, 530, "å‘â†é”®   å¾€å³æ–¹å‘ç§»åŠ¨", hFont, 1, 0, 0);
+    Font->Settext(550, 485, "J é”®    é£è¡ŒåŠ é€Ÿ", hFont, 1, 0, 0);
+    Font->Settext(550, 500, "M é”®    é£è¡Œå‡é€Ÿ", hFont, 1, 0, 0);
+    Font->Settext(550, 515, "I é”®    é£è¡Œè§†é‡å¢å¤§", hFont, 1, 0, 0);
+    Font->Settext(550, 530, "O é”®    é£è¡Œè§†é‡å‡å°", hFont, 1, 0, 0);
+    Font->Settext(750, 485, "H é”®    é£è¡Œè§‚å¯Ÿä¸Šå€¾", hFont, 1, 0, 0);
+    Font->Settext(750, 500, "N é”®    é£è¡Œè§‚å¯Ÿä¸‹å€¾", hFont, 1, 0, 0);
+    Font->Settext(750, 515, "P é”®    å¼€å§‹/æš‚åœæ¼«æ¸¸", hFont, 1, 0, 0);
+    Font->Settext(750, 530, "S é”®    åœæ­¢æ¼«æ¸¸", hFont, 1, 0, 0);
 }
 
 
 /****************************************************************/
-/* Function: Ê±ÖÓÖ¸±±ÕëµÄ»æÖÆ										*/
+/* Function: åˆå§‹åŒ–æ˜¾ç¤ºåˆ—è¡¨                                     */
 /****************************************************************/
-void CMy3DSymbolLibNewView::DrawClock()
-{
-	glPushAttrib(GL_CURRENT_BIT);					// ±£´æÏÖÓĞÑÕÉ«ÊôĞÔ
-	glPushMatrix();									// Ñ¹Èë¾ØÕó¶ÑÕ»
-	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);		// Ïß»æÖÆ·½Ê½
-	glDisable(GL_TEXTURE_2D);						// ¹Ø±ÕÎÆÀí	
-	SetClockProjectionNavigate();					// ÉèÖÃÖ¸±±ÕëµÄÍ¶Ó°²ÎÊı
-	glCallList(m_ClockList);						// µ÷ÓÃÖ¸±±ÕëÊ±ÖÓµÄÏÔÊ¾ÁĞ±í
-	DrawNorthPt();									// »æÖÆÖ¸±±Õë
-
-	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);		// Ìî³ä»æÖÆ·½Ê½
-	glEnable(GL_TEXTURE_2D);						// ´ò¿ªÎÆÀí	
-	glLineWidth(1.0);								// ÉèÖÃÏß¿í
-	glColor3f(1.0, 1.0, 1.0);						// ÉèÖÃÑÕÉ«
-	glPopMatrix();									// µ¯³ö¾ØÕó¶ÑÕ»
-	glPopAttrib();
-
-}
-
-void CMy3DSymbolLibNewView::SetClockProjectionNavigate()
-{
-	float wh=120;									// ÉèÖÃÊ±ÖÓµÄ¸ß¶È
-	glViewport(0, WinViewY-wh,wh, wh);				// ÉèÖÃÊÓ¿ÚÎ»ÖÃºÍ´óĞ¡
-	glMatrixMode( GL_PROJECTION );					// ÉèÖÃµ±Ç°¾ØÕóÎªÍ¸ÊÓ¾ØÕó
-	glLoadIdentity();								// ½«µ±Ç°¾ØÕóÖÃ»»Îªµ¥Î»Õó 
-	glOrtho (0.0f,1.0,0.0f, 1.0f, -1.0f, 1.0f);
-	glMatrixMode( GL_MODELVIEW );					// ÉèÖÃµ±Ç°¾ØÕóÎªÄ£ĞÍ¾ØÕó
-	glLoadIdentity ();								// ½«µ±Ç°¾ØÕóÖÃ»»Îªµ¥Î»Õó 
-}
-
- 
-/****************************************************************/
-/* Function: »æÖÆÖ¸±±Õë											*/
-/****************************************************************/
-void CMy3DSymbolLibNewView::DrawNorthPt()
-{
-	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);		// ÒÔÌî³ä·½Ê½»æÖÆ
-	glDisable(GL_TEXTURE_2D);						// ¹Ø±ÕÎÆÀí		
-	float R=0.5;
-
-	float x1,y1,x2,y2,x3,y3;
-	float mPtangle=25;
-	float tempangle;
-	float L,L1,L2;
-	L1=0.3; 
-	L2=0.2;
-	x1=0.5;y1=0.5;									// Ê±ÖÓÔ²ĞÄµã×ø±ê£¬Ö¸±±ÕëÎ§ÈÆ¸Ãµã½øĞĞÖ¸ÏòĞı×ª
-	x3=x1+L1*cos((m_NorthPtangle)*PAI_D180);
-	y3=y1+L1*sin((m_NorthPtangle)*PAI_D180);
-
-	//Èç¹ûÖ¸±±ÕëÖ¸Ïò½ÇÎ»ÓÚµÚ1ÏóÏŞ
-	if(m_NorthPtangle>=0 && m_NorthPtangle<=90)
-	{	
-		tempangle=m_NorthPtangle-mPtangle;
-		L=0.1/cos(mPtangle*PAI_D180);
-		x2=x1-L2*cos(tempangle*PAI_D180);
-		y2=y1-L2*sin(tempangle*PAI_D180);
-
-		glColor3f(1.0, 1.0, 0.0);						// ÉèÖÃÑÕÉ«
-		glBegin(GL_TRIANGLES);							// »æÖÆ×ó²àÈı½ÇĞÎ
-		glVertex2f(x1,y1);
-		glVertex2f(x2,y2);
-		glVertex2f(x3,y3);
-		glEnd();
-
-		glColor3f(1.0, 0.0, 0.0);						// ÉèÖÃÑÕÉ«
-		tempangle=m_NorthPtangle+mPtangle;
-		x2=x1-L2*cos(tempangle*PAI_D180);
-		y2=y1-L2*sin(tempangle*PAI_D180);
-		glBegin(GL_TRIANGLES);							// »æÖÆÓÒ²àÈı½ÇĞÎ
-		glVertex2f(x1,y1);
-		glVertex2f(x2,y2);
-		glVertex2f(x3,y3);
-		glEnd();
-	}
-
-	//Èç¹ûÖ¸±±ÕëÖ¸Ïò½ÇÎ»ÓÚµÚ2ÏóÏŞ
-	if(m_NorthPtangle>90 && m_NorthPtangle<=180)
-	{	
-
-		tempangle=180-m_NorthPtangle-mPtangle;
-		x2=x1+L2*cos(tempangle*PAI_D180);
-		y2=y1-L2*sin(tempangle*PAI_D180);
-
-		glColor3f(1.0, 1.0, 0.0);					// ÉèÖÃÑÕÉ«
-		glBegin(GL_TRIANGLES);						// »æÖÆ×ó²àÈı½ÇĞÎ
-		glVertex2f(x1,y1);
-		glVertex2f(x2,y2);
-		glVertex2f(x3,y3);
-		glEnd();
-
-		glColor3f(1.0, 0.0, 0.0);					// ÉèÖÃÑÕÉ«
-		tempangle=180-m_NorthPtangle+mPtangle;
-		x2=x1+L2*cos(tempangle*PAI_D180);
-		y2=y1-L2*sin(tempangle*PAI_D180);
-		glBegin(GL_TRIANGLES);						// »æÖÆÓÒ²àÈı½ÇĞÎ
-		glVertex2f(x1,y1);
-		glVertex2f(x2,y2);
-		glVertex2f(x3,y3);
-		glEnd();
-	}
-
-	//Èç¹ûÖ¸±±ÕëÖ¸Ïò½ÇÎ»ÓÚµÚ3ÏóÏŞ
-	if(m_NorthPtangle>180 && m_NorthPtangle<=270)
-	{	
-
-		tempangle=m_NorthPtangle-180-mPtangle;
-		x2=x1+L2*cos(tempangle*PAI_D180);
-		y2=y1+L2*sin(tempangle*PAI_D180);
-
-		glColor3f(1.0, 1.0, 0.0);					// ÉèÖÃÑÕÉ«
-		glBegin(GL_TRIANGLES);						// »æÖÆ×ó²àÈı½ÇĞÎ
-		glVertex2f(x1,y1);
-		glVertex2f(x2,y2);
-		glVertex2f(x3,y3);
-		glEnd();
-
-		glColor3f(1.0, 0.0, 0.0);					// ÉèÖÃÑÕÉ«
-		tempangle=m_NorthPtangle-180+mPtangle;
-		x2=x1+L2*cos(tempangle*PAI_D180);
-		y2=y1+L2*sin(tempangle*PAI_D180);
-		glBegin(GL_TRIANGLES);						// »æÖÆÓÒ²àÈı½ÇĞÎ
-		glVertex2f(x1,y1);
-		glVertex2f(x2,y2);
-		glVertex2f(x3,y3);
-		glEnd();
-	}
-
-	//Èç¹ûÖ¸±±ÕëÖ¸Ïò½ÇÎ»ÓÚµÚ4ÏóÏŞ
-	if(m_NorthPtangle>270 && m_NorthPtangle<=360)
-	{	
-
-		tempangle=360-m_NorthPtangle-mPtangle;
-		x2=x1-L2*cos(tempangle*PAI_D180);
-		y2=y1+L2*sin(tempangle*PAI_D180);
-
-		glColor3f(1.0, 1.0, 0.0);					// ÉèÖÃÑÕÉ«
-		glBegin(GL_TRIANGLES);						// »æÖÆ×ó²àÈı½ÇĞÎ
-		glVertex2f(x1,y1);
-		glVertex2f(x2,y2);
-		glVertex2f(x3,y3);
-		glEnd();
-
-		glColor3f(1.0, 0.0, 0.0);					// ÉèÖÃÑÕÉ«
-		tempangle=360-m_NorthPtangle+mPtangle;
-		x2=x1-L2*cos(tempangle*PAI_D180);
-		y2=y1+L2*sin(tempangle*PAI_D180);
-		glBegin(GL_TRIANGLES);						// »æÖÆÓÒ²àÈı½ÇĞÎ
-		glVertex2f(x1,y1);
-		glVertex2f(x2,y2);
-		glVertex2f(x3,y3);
-		glEnd();
-	}
-
-	glColor3f(0.4, 0.47, 0.72);						// ÉèÖÃÑÕÉ«
-	glLineWidth(2.0);								// ÉèÖÃÏß¿í
-	glBegin(GL_LINES);								// Ö¸±±ÕëÏÂ¶ÌÖ±Ïß
-	glVertex2f(x1,y1);
-	x2=x1-0.1*cos((m_NorthPtangle)*PAI_D180);
-	y2=y1-0.1*sin((m_NorthPtangle)*PAI_D180);
-	glVertex2f(x2,y2);
-	glEnd();
-	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); 
-	glEnable(GL_TEXTURE_2D);						// ¿ªÆôÎÆÀí		
-	glLineWidth(1.0);								// ÉèÖÃÏß¿í
+void CMy3DSymbolLibNewView::InitList() {
+    m_ClockList = glGenLists(1);
+    m_SkyList = m_ClockList + 1 ;                   // èƒŒæ™¯å¤©ç©ºæ˜¾ç¤ºåˆ—è¡¨
+    MakeClockList();                                // åˆ›å»ºæ—¶é’ŸæŒ‡åŒ—é’ˆæ˜¾ç¤ºåˆ—è¡¨
+    m_Rail3DwayList = m_ClockList + 2;              // çº¿è·¯ä¸‰ç»´æ¨¡å‹æ˜¾ç¤ºåˆ—è¡¨
 }
 
 
 /****************************************************************/
-/* Function: ÔÚÖ¸¶¨Î»ÖÃÊä³öÎÄ±¾									*/
+/* Function: åˆ›å»ºæ—¶é’ŸæŒ‡åŒ—é’ˆæ˜¾ç¤ºåˆ—è¡¨                             */
 /****************************************************************/
-void CMy3DSymbolLibNewView::PrintText(float x, float y, char *string)
-{
-	int length;
-	length = (int) strlen(string);					// ×Ö·û´®³¤¶È
-	glRasterPos2f(x,y);								// ¶¨Î»µ±Ç°¹â±ê
-	for (int m=0;m<length;m++)
-	{
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, string[m]); // ÓÃÎ»Í¼·½Ê½°´Ö¸¶¨µÄ×ÖÌå»æÖÆÒ»¸ö×Ö·û´®
-	}
-
+void CMy3DSymbolLibNewView::MakeClockList() {
+    glNewList(m_ClockList, GL_COMPILE);             // åˆ›å»ºæ˜¾ç¤ºåˆ—è¡¨
+    float R = 0.5, x, y;                            // æ—¶é’Ÿåœ†ç›˜åŠå¾„
+    int i;
+    glColor3f(0.0, 1.0, 1.0);                       // è®¾ç½®æ–‡å­—é¢œè‰²
+    x = R * cos((0) * PAI_D180) + 0.37;             // åŠ ä¸Šåç§»é‡ï¼Œå‡†å¤‡å†™å…¥å­—æ¯"E"ï¼Œè¡¨ç¤ºåˆ»åº¦3
+    y = R * sin((0) * PAI_D180) + 0.48;
+    PrintText(x, y, (LPTSTR)(LPCTSTR)"E");          // åœ¨è®¾ç½®åæ ‡ä½ç½®å†™å…¥Eï¼Œè¡¨ç¤ºæ–¹å‘â€œä¸œâ€
+    x = R * cos((90) * PAI_D180) + 0.47;            // åŠ ä¸Šåç§»é‡ï¼Œå‡†å¤‡å†™å…¥å­—æ¯"N"ï¼Œè¡¨ç¤ºåˆ»åº¦12
+    y = R * sin((90) * PAI_D180) + 0.36;
+    PrintText(x, y, (LPTSTR)(LPCTSTR)"N");          // åœ¨è®¾ç½®åæ ‡ä½ç½®å†™å…¥Nï¼Œè¡¨ç¤ºæ–¹å‘â€œåŒ—â€
+    x = R * cos((180) * PAI_D180) + 0.59;           // åŠ ä¸Šåç§»é‡ï¼Œå‡†å¤‡å†™å…¥å­—æ¯"W" ï¼Œè¡¨ç¤ºåˆ»åº¦9
+    y = R * sin((180) * PAI_D180) + 0.48;
+    PrintText(x, y, (LPTSTR)(LPCTSTR)"W");          // åœ¨è®¾ç½®åæ ‡ä½ç½®å†™å…¥Wï¼Œè¡¨ç¤ºæ–¹å‘â€œè¥¿â€
+    x = R * cos((270) * PAI_D180) + 0.48;           // åŠ ä¸Šåç§»é‡ï¼Œå‡†å¤‡å†™å…¥å­—æ¯"S" ï¼Œè¡¨ç¤ºåˆ»åº¦6
+    y = R * sin((270) * PAI_D180) + 0.58;
+    PrintText(x, y, (LPTSTR)(LPCTSTR)"S");          // åœ¨è®¾ç½®åæ ‡ä½ç½®å†™å…¥Sï¼Œè¡¨ç¤ºæ–¹å‘â€œå—â€
+    glColor3f(1.0, 1.0, 1.0);                       // è®¾ç½®æ—¶é’Ÿåˆ»åº¦æ•°å­—é¢œè‰²
+    x = R * cos((30) * PAI_D180) + 0.39;            // è®¾ç½®åæ ‡
+    y = R * sin((30) * PAI_D180) + 0.43;
+    PrintText(x, y, (LPTSTR)(LPCTSTR)"2");          // å†™å…¥æ•°å­—åˆ»åº¦
+    x = R * cos((60) * PAI_D180) + 0.42;
+    y = R * sin((60) * PAI_D180) + 0.40;
+    PrintText(x, y, (LPTSTR)(LPCTSTR)"1");          // å†™å…¥æ•°å­—åˆ»åº¦1
+    x = R * cos((120) * PAI_D180) + 0.49;
+    y = R * sin((120) * PAI_D180) + 0.38;
+    PrintText(x, y, (LPTSTR)(LPCTSTR)"11");         // å†™å…¥æ•°å­—åˆ»åº¦11
+    x = R * cos((150) * PAI_D180) + 0.55;
+    y = R * sin((150) * PAI_D180) + 0.42;
+    PrintText(x, y, (LPTSTR)(LPCTSTR)"10");         // å†™å…¥æ•°å­—åˆ»åº¦10
+    x = R * cos((210) * PAI_D180) + 0.58;
+    y = R * sin((210) * PAI_D180) + 0.53;
+    PrintText(x, y, (LPTSTR)(LPCTSTR)"8");          // å†™å…¥æ•°å­—åˆ»åº¦8
+    x = R * cos((240) * PAI_D180) + 0.54;
+    y = R * sin((240) * PAI_D180) + 0.58;
+    PrintText(x, y, (LPTSTR)(LPCTSTR)"7");          // å†™å…¥æ•°å­—åˆ»åº¦7
+    x = R * cos((300) * PAI_D180) + 0.43;
+    y = R * sin((300) * PAI_D180) + 0.58;
+    PrintText(x, y, (LPTSTR)(LPCTSTR)"5");          // å†™å…¥æ•°å­—åˆ»åº¦5
+    x = R * cos((330) * PAI_D180) + 0.40;
+    y = R * sin((330) * PAI_D180) + 0.52;
+    PrintText(x, y, (LPTSTR)(LPCTSTR)"4");          // å†™å…¥æ•°å­—åˆ»åº¦4
+    // è®¾ç½®æ—¶é’Ÿåœ†å†…åœ†ç›˜çš„é¢œè‰²
+    glColor3f(0.0, 1.0, 0.0);
+    glLineWidth(2.0);                               // è®¾ç½®çº¿å®½
+    // ç»˜åˆ¶æ—¶é’Ÿåœ†å¤–åœ†ç›˜
+    glBegin(GL_LINE_STRIP);
+    for (i = 0; i <= 360; i++) {
+        x = R * cos(i * PAI_D180) + 0.5;
+        y = R * sin(i * PAI_D180) + 0.5;
+        glVertex2f(x, y);
+    }
+    glEnd();
+    // ç»˜åˆ¶æ—¶é’Ÿå†…è¡¨ç¤ºå°æ—¶ä¹‹é—´çš„åˆ»åº¦,ç”¨åœ†ç‚¹è¡¨ç¤º
+    float d;
+    for (i = 0; i <= 360; i += 6) {
+        switch (i) {
+            case 0:                                     // åœ¨N(12ç‚¹)å¤„
+                glColor3f(0.0, 1.0, 1.0);               // è®¾ç½®é¢œè‰²
+                glPointSize(4.0);                       // è®¾ç½®ç‚¹çš„å¤§å°
+                break;
+            case 90:                                    // åœ¨W(9ç‚¹)å¤„
+                glColor3f(0.0, 1.0, 1.0);               // è®¾ç½®é¢œè‰²
+                glPointSize(4.0);                       // è®¾ç½®ç‚¹çš„å¤§å°
+                break;
+            case 180:                                   // åœ¨S(6ç‚¹)å¤„
+                glColor3f(0.0, 1.0, 1.0);               // è®¾ç½®é¢œè‰²
+                glPointSize(4.0);                       // è®¾ç½®ç‚¹çš„å¤§å°
+                break;
+            case 270:                                   // åœ¨E(3ç‚¹)å¤„
+                glColor3f(0.0, 1.0, 1.0);               // è®¾ç½®é¢œè‰²
+                glPointSize(4.0);                       // è®¾ç½®ç‚¹çš„å¤§å°
+                break;
+            default:
+                glColor3f(0.77, 0.67, 0.95);            // è®¾ç½®é¢œè‰²
+                glPointSize(2.0);                       // è®¾ç½®ç‚¹çš„å¤§å°
+                break;
+        }
+        if (i % 30 == 0 && i % 90 != 0) {           // åœ¨æ•´æ—¶åˆ»å¤„(å¦‚7ç‚¹,8ç‚¹ç­‰)
+            glColor3f(1.0, 0.0, 1.0);               // è®¾ç½®é¢œè‰²
+            glPointSize(3.0);                       // è®¾ç½®ç‚¹çš„å¤§å°
+        }
+        d = 0.04;                                   // åç§»é‡
+        x = R * cos(i * PAI_D180) + 0.5;            // è®¡ç®—xåæ ‡
+        y = R * sin(i * PAI_D180) + 0.5;            // è®¡ç®—yåæ ‡
+        //ç»˜åˆ¶ç‚¹æ ‡å¿—
+        glBegin(GL_POINTS);
+        x = x - d * cos(i * PAI_D180);
+        y = y - d * sin(i * PAI_D180);
+        glVertex2f(x, y);
+        glEnd();
+    }
+    glLineWidth(1.0);                               // è®¾ç½®çº¿å®½
+    glEndList();                                    // ç»“æŸæ˜¾ç¤ºåˆ—è¡¨
 }
 
 
 /****************************************************************/
-/* Function: ¸ù¾İÏà»úµÄÊÓµã×ø±êºÍ¹Û²ìµã×ø±ê¼ÆËãÊ±ÖÓÖ¸±±ÕëÖ¸Ïò½Ç¶È	*/
+/* Function: æ—¶é’ŸæŒ‡åŒ—é’ˆçš„ç»˜åˆ¶                                       */
 /****************************************************************/
-void CMy3DSymbolLibNewView::GetNorthPtangle()
-{
-	float dx,dz,ar;
-	dx=m_vEyePosition.x-m_vLook.x;					// Ïà»úÊÓµãÓë¹Û²ìµãx×ø±êÖ®²î
-	dz=m_vEyePosition.z-m_vLook.z;					// Ïà»úÊÓµãÓë¹Û²ìµãz×ø±êÖ®²î
+void CMy3DSymbolLibNewView::DrawClock() {
+    glPushAttrib(GL_CURRENT_BIT);                   // ä¿å­˜ç°æœ‰é¢œè‰²å±æ€§
+    glPushMatrix();                                 // å‹å…¥çŸ©é˜µå †æ ˆ
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);      // çº¿ç»˜åˆ¶æ–¹å¼
+    glDisable(GL_TEXTURE_2D);                       // å…³é—­çº¹ç†
+    SetClockProjectionNavigate();                   // è®¾ç½®æŒ‡åŒ—é’ˆçš„æŠ•å½±å‚æ•°
+    glCallList(m_ClockList);                        // è°ƒç”¨æŒ‡åŒ—é’ˆæ—¶é’Ÿçš„æ˜¾ç¤ºåˆ—è¡¨
+    DrawNorthPt();                                  // ç»˜åˆ¶æŒ‡åŒ—é’ˆ
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);      // å¡«å……ç»˜åˆ¶æ–¹å¼
+    glEnable(GL_TEXTURE_2D);                        // æ‰“å¼€çº¹ç†
+    glLineWidth(1.0);                               // è®¾ç½®çº¿å®½
+    glColor3f(1.0, 1.0, 1.0);                       // è®¾ç½®é¢œè‰²
+    glPopMatrix();                                  // å¼¹å‡ºçŸ©é˜µå †æ ˆ
+    glPopAttrib();
+}
 
-	if(dx==0)										// Èç¹ûdx==0
-	{
-		if(dz>=0)									// Èç¹ûdz>=0
-			m_NorthPtangle=90;						// Ö¸±±Õë³õÊ¼Ö¸Ïò½Ç¶È=90£¬Ö¸ÏòÆÁÄ»ÀïÃæ£¨ZÖá¸º·½Ïò£©
-		else
-			m_NorthPtangle=270;						// Ö¸±±Õë³õÊ¼Ö¸Ïò½Ç¶È=270£¬Ö¸ÏòÆÁÄ»ÍâÃæ£¨ZÖáÕı·½Ïò£©
-	}
-	else
-	{
-		if(dx>0) 
-		{
-			if(dz>0)								// µÚ2ÏóÏŞ
-			{
-				ar=fabs(atan(dx/dz));
-				m_NorthPtangle=90+ar*HDANGLE;		// Ö¸±±Õë³õÊ¼Ö¸Ïò½Ç¶È
-			}
-			else									// µÚ3ÏóÏŞ
-			{
-				ar=fabs(atan(dx/dz));
-				m_NorthPtangle=270-ar*HDANGLE;		// Ö¸±±Õë³õÊ¼Ö¸Ïò½Ç¶È
-			}
-		}
-
-		if(dx<0)
-		{
-			if(dz>0)								// µÚ1ÏóÏŞ
-			{
-				ar=fabs(atan(dx/dz));
-				m_NorthPtangle=90-ar*HDANGLE;		// Ö¸±±Õë³õÊ¼Ö¸Ïò½Ç¶È
-			}
-			else									// µÚ4ÏóÏŞ
-			{
-				ar=fabs(atan(dx/dz));
-				m_NorthPtangle=270+ar*HDANGLE;		// Ö¸±±Õë³õÊ¼Ö¸Ïò½Ç¶È
-			}
-		}
-
-	}
+void CMy3DSymbolLibNewView::SetClockProjectionNavigate() {
+    float wh = 120;                                 // è®¾ç½®æ—¶é’Ÿçš„é«˜åº¦
+    glViewport(0, WinViewY - wh, wh, wh);           // è®¾ç½®è§†å£ä½ç½®å’Œå¤§å°
+    glMatrixMode(GL_PROJECTION);                     // è®¾ç½®å½“å‰çŸ©é˜µä¸ºé€è§†çŸ©é˜µ
+    glLoadIdentity();                               // å°†å½“å‰çŸ©é˜µç½®æ¢ä¸ºå•ä½é˜µ
+    glOrtho(0.0f, 1.0, 0.0f, 1.0f, -1.0f, 1.0f);
+    glMatrixMode(GL_MODELVIEW);                      // è®¾ç½®å½“å‰çŸ©é˜µä¸ºæ¨¡å‹çŸ©é˜µ
+    glLoadIdentity();                               // å°†å½“å‰çŸ©é˜µç½®æ¢ä¸ºå•ä½é˜µ
 }
 
 
 /****************************************************************/
-/* Function: Éú³É»æÖÆ±³¾°Ìì¿ÕÏÔÊ¾ÁĞ±í								*/
+/* Function: ç»˜åˆ¶æŒ‡åŒ—é’ˆ                                         */
 /****************************************************************/
-void CMy3DSymbolLibNewView::MakeSkykList()
-{
-	glNewList(m_SkyList , GL_COMPILE);
-	
-	CreateSkyBox();
-	glEndList();
+void CMy3DSymbolLibNewView::DrawNorthPt() {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);      // ä»¥å¡«å……æ–¹å¼ç»˜åˆ¶
+    glDisable(GL_TEXTURE_2D);                       // å…³é—­çº¹ç†
+    float R = 0.5;
+    float x1, y1, x2, y2, x3, y3;
+    float mPtangle = 25;
+    float tempangle;
+    float L, L1, L2;
+    L1 = 0.3;
+    L2 = 0.2;
+    x1 = 0.5;
+    y1 = 0.5;                                // æ—¶é’Ÿåœ†å¿ƒç‚¹åæ ‡ï¼ŒæŒ‡åŒ—é’ˆå›´ç»•è¯¥ç‚¹è¿›è¡ŒæŒ‡å‘æ—‹è½¬
+    x3 = x1 + L1 * cos((m_NorthPtangle) * PAI_D180);
+    y3 = y1 + L1 * sin((m_NorthPtangle) * PAI_D180);
+    //å¦‚æœæŒ‡åŒ—é’ˆæŒ‡å‘è§’ä½äºç¬¬1è±¡é™
+    if (m_NorthPtangle >= 0 && m_NorthPtangle <= 90) {
+        tempangle = m_NorthPtangle - mPtangle;
+        L = 0.1 / cos(mPtangle * PAI_D180);
+        x2 = x1 - L2 * cos(tempangle * PAI_D180);
+        y2 = y1 - L2 * sin(tempangle * PAI_D180);
+        glColor3f(1.0, 1.0, 0.0);                       // è®¾ç½®é¢œè‰²
+        glBegin(GL_TRIANGLES);                          // ç»˜åˆ¶å·¦ä¾§ä¸‰è§’å½¢
+        glVertex2f(x1, y1);
+        glVertex2f(x2, y2);
+        glVertex2f(x3, y3);
+        glEnd();
+        glColor3f(1.0, 0.0, 0.0);                       // è®¾ç½®é¢œè‰²
+        tempangle = m_NorthPtangle + mPtangle;
+        x2 = x1 - L2 * cos(tempangle * PAI_D180);
+        y2 = y1 - L2 * sin(tempangle * PAI_D180);
+        glBegin(GL_TRIANGLES);                          // ç»˜åˆ¶å³ä¾§ä¸‰è§’å½¢
+        glVertex2f(x1, y1);
+        glVertex2f(x2, y2);
+        glVertex2f(x3, y3);
+        glEnd();
+    }
+    // å¦‚æœæŒ‡åŒ—é’ˆæŒ‡å‘è§’ä½äºç¬¬2è±¡é™
+    if (m_NorthPtangle > 90 && m_NorthPtangle <= 180) {
+        tempangle = 180 - m_NorthPtangle - mPtangle;
+        x2 = x1 + L2 * cos(tempangle * PAI_D180);
+        y2 = y1 - L2 * sin(tempangle * PAI_D180);
+        glColor3f(1.0, 1.0, 0.0);                   // è®¾ç½®é¢œè‰²
+        glBegin(GL_TRIANGLES);                      // ç»˜åˆ¶å·¦ä¾§ä¸‰è§’å½¢
+        glVertex2f(x1, y1);
+        glVertex2f(x2, y2);
+        glVertex2f(x3, y3);
+        glEnd();
+        glColor3f(1.0, 0.0, 0.0);                   // è®¾ç½®é¢œè‰²
+        tempangle = 180 - m_NorthPtangle + mPtangle;
+        x2 = x1 + L2 * cos(tempangle * PAI_D180);
+        y2 = y1 - L2 * sin(tempangle * PAI_D180);
+        glBegin(GL_TRIANGLES);                      // ç»˜åˆ¶å³ä¾§ä¸‰è§’å½¢
+        glVertex2f(x1, y1);
+        glVertex2f(x2, y2);
+        glVertex2f(x3, y3);
+        glEnd();
+    }
+    //å¦‚æœæŒ‡åŒ—é’ˆæŒ‡å‘è§’ä½äºç¬¬3è±¡é™
+    if (m_NorthPtangle > 180 && m_NorthPtangle <= 270) {
+        tempangle = m_NorthPtangle - 180 - mPtangle;
+        x2 = x1 + L2 * cos(tempangle * PAI_D180);
+        y2 = y1 + L2 * sin(tempangle * PAI_D180);
+        glColor3f(1.0, 1.0, 0.0);                   // è®¾ç½®é¢œè‰²
+        glBegin(GL_TRIANGLES);                      // ç»˜åˆ¶å·¦ä¾§ä¸‰è§’å½¢
+        glVertex2f(x1, y1);
+        glVertex2f(x2, y2);
+        glVertex2f(x3, y3);
+        glEnd();
+        glColor3f(1.0, 0.0, 0.0);                   // è®¾ç½®é¢œè‰²
+        tempangle = m_NorthPtangle - 180 + mPtangle;
+        x2 = x1 + L2 * cos(tempangle * PAI_D180);
+        y2 = y1 + L2 * sin(tempangle * PAI_D180);
+        glBegin(GL_TRIANGLES);                      // ç»˜åˆ¶å³ä¾§ä¸‰è§’å½¢
+        glVertex2f(x1, y1);
+        glVertex2f(x2, y2);
+        glVertex2f(x3, y3);
+        glEnd();
+    }
+    //å¦‚æœæŒ‡åŒ—é’ˆæŒ‡å‘è§’ä½äºç¬¬4è±¡é™
+    if (m_NorthPtangle > 270 && m_NorthPtangle <= 360) {
+        tempangle = 360 - m_NorthPtangle - mPtangle;
+        x2 = x1 - L2 * cos(tempangle * PAI_D180);
+        y2 = y1 + L2 * sin(tempangle * PAI_D180);
+        glColor3f(1.0, 1.0, 0.0);                   // è®¾ç½®é¢œè‰²
+        glBegin(GL_TRIANGLES);                      // ç»˜åˆ¶å·¦ä¾§ä¸‰è§’å½¢
+        glVertex2f(x1, y1);
+        glVertex2f(x2, y2);
+        glVertex2f(x3, y3);
+        glEnd();
+        glColor3f(1.0, 0.0, 0.0);                   // è®¾ç½®é¢œè‰²
+        tempangle = 360 - m_NorthPtangle + mPtangle;
+        x2 = x1 - L2 * cos(tempangle * PAI_D180);
+        y2 = y1 + L2 * sin(tempangle * PAI_D180);
+        glBegin(GL_TRIANGLES);                      // ç»˜åˆ¶å³ä¾§ä¸‰è§’å½¢
+        glVertex2f(x1, y1);
+        glVertex2f(x2, y2);
+        glVertex2f(x3, y3);
+        glEnd();
+    }
+    glColor3f(0.4, 0.47, 0.72);                     // è®¾ç½®é¢œè‰²
+    glLineWidth(2.0);                               // è®¾ç½®çº¿å®½
+    glBegin(GL_LINES);                              // æŒ‡åŒ—é’ˆä¸‹çŸ­ç›´çº¿
+    glVertex2f(x1, y1);
+    x2 = x1 - 0.1 * cos((m_NorthPtangle) * PAI_D180);
+    y2 = y1 - 0.1 * sin((m_NorthPtangle) * PAI_D180);
+    glVertex2f(x2, y2);
+    glEnd();
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glEnable(GL_TEXTURE_2D);                        // å¼€å¯çº¹ç†
+    glLineWidth(1.0);                               // è®¾ç½®çº¿å®½
 }
 
 
 /****************************************************************/
-/* Function: »æÖÆÌì¿Õ±³¾°											*/
+/* Function: åœ¨æŒ‡å®šä½ç½®è¾“å‡ºæ–‡æœ¬                                 */
 /****************************************************************/
-void CMy3DSymbolLibNewView::DrawSky()
-{
-	glPushAttrib(GL_CURRENT_BIT);
-	glPushMatrix();
-	glPushMatrix();
-	if(m_bShowbreviary==TRUE)				//Èç¹ûÏÔÊ¾µ¼º½Í¼
-	{
-		SetSkyProjectionNavigate() ;		// ÉèÖÃµ¼º½Í¼µÄ±³¾°Ìì¿ÕÍ¶Ó°
-	}
-	glPopMatrix();
-
-	SetSkyProjection() ;					// ÉèÖÃ±³¾°Ìì¿ÕÍ¶Ó°
-	glCallList(m_SkyList);
-
-	glPopMatrix();
-	glPopAttrib();
+void CMy3DSymbolLibNewView::PrintText(float x, float y, char* string) {
+    int length;
+    length = (int) strlen(string);                  // å­—ç¬¦ä¸²é•¿åº¦
+    glRasterPos2f(x, y);                            // å®šä½å½“å‰å…‰æ ‡
+    for (int m = 0; m < length; m++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, string[m]); // ç”¨ä½å›¾æ–¹å¼æŒ‰æŒ‡å®šçš„å­—ä½“ç»˜åˆ¶ä¸€ä¸ªå­—ç¬¦ä¸²
+    }
 }
 
 
 /****************************************************************/
-/* Function: ±³¾°Ìì¿ÕÍ¶Ó°ÉèÖÃ										*/
+/* Function: æ ¹æ®ç›¸æœºçš„è§†ç‚¹åæ ‡å’Œè§‚å¯Ÿç‚¹åæ ‡è®¡ç®—æ—¶é’ŸæŒ‡åŒ—é’ˆæŒ‡å‘è§’åº¦   */
 /****************************************************************/
-void CMy3DSymbolLibNewView::SetSkyProjection()
-{
-	glViewport(0 ,  0 ,  WinViewX ,  WinViewY);				// ÉèÖÃÊÓ¿Ú´óĞ¡ºÍÎ»ÖÃ
-
-	glMatrixMode(GL_PROJECTION); 
-	glLoadIdentity();            
-	gluPerspective(50.0 + m_ViewWideNarrow , (float)WinViewX/(float)WinViewY , m_near , m_far);		
-
-	glMatrixMode(GL_MODELVIEW);								// ¶¨Òå¾ØÕóÎªÄ£ĞÍÄ£ĞÍ¾ØÕó
-
-	glLoadIdentity();										// ½«µ±Ç°¾ØÕóÖÃ»»Îªµ¥Î»¾ØÕó       
-
-	SetCamra();
+void CMy3DSymbolLibNewView::GetNorthPtangle() {
+    float dx, dz, ar;
+    dx = m_vEyePosition.x - m_vLook.x;              // ç›¸æœºè§†ç‚¹ä¸è§‚å¯Ÿç‚¹xåæ ‡ä¹‹å·®
+    dz = m_vEyePosition.z - m_vLook.z;              // ç›¸æœºè§†ç‚¹ä¸è§‚å¯Ÿç‚¹zåæ ‡ä¹‹å·®
+    if (dx == 0) {                                  // å¦‚æœdx==0
+        if (dz >= 0)                                // å¦‚æœdz>=0
+            m_NorthPtangle = 90;                    // æŒ‡åŒ—é’ˆåˆå§‹æŒ‡å‘è§’åº¦=90ï¼ŒæŒ‡å‘å±å¹•é‡Œé¢ï¼ˆZè½´è´Ÿæ–¹å‘ï¼‰
+        else
+            m_NorthPtangle = 270;                   // æŒ‡åŒ—é’ˆåˆå§‹æŒ‡å‘è§’åº¦=270ï¼ŒæŒ‡å‘å±å¹•å¤–é¢ï¼ˆZè½´æ­£æ–¹å‘ï¼‰
+    } else {
+        if (dx > 0) {
+            if (dz > 0) {                           // ç¬¬2è±¡é™
+                ar = fabs(atan(dx / dz));
+                m_NorthPtangle = 90 + ar * HDANGLE; // æŒ‡åŒ—é’ˆåˆå§‹æŒ‡å‘è§’åº¦
+            } else {                                // ç¬¬3è±¡é™
+                ar = fabs(atan(dx / dz));
+                m_NorthPtangle = 270 - ar * HDANGLE; // æŒ‡åŒ—é’ˆåˆå§‹æŒ‡å‘è§’åº¦
+            }
+        }
+        if (dx < 0) {
+            if (dz > 0) {                           // ç¬¬1è±¡é™
+                ar = fabs(atan(dx / dz));
+                m_NorthPtangle = 90 - ar * HDANGLE; // æŒ‡åŒ—é’ˆåˆå§‹æŒ‡å‘è§’åº¦
+            } else {                                // ç¬¬4è±¡é™
+                ar = fabs(atan(dx / dz));
+                m_NorthPtangle = 270 + ar * HDANGLE; // æŒ‡åŒ—é’ˆåˆå§‹æŒ‡å‘è§’åº¦
+            }
+        }
+    }
 }
 
 
 /****************************************************************/
-/* Function: ±³¾°Ìì¿Õµ¼º½Í¼Í¶Ó°ÉèÖÃ								*/
+/* Function: ç”Ÿæˆç»˜åˆ¶èƒŒæ™¯å¤©ç©ºæ˜¾ç¤ºåˆ—è¡¨                               */
 /****************************************************************/
-void CMy3DSymbolLibNewView::SetSkyProjectionNavigate()
-{
-	glClearDepth(1.0f);								// ÉèÖÃ³õÊ¼»¯Éî¶È»º´æÖµ
-	glEnable(GL_DEPTH_TEST);						// ÆôÓÃÉî¶È²âÊÔ
-	glDepthFunc(GL_LESS);							// ÔÚµ÷ÓÃglEnable(GL_DEPTH_TEST); ¿ªÆôÕâ¸ö¹¦ÄÜÒÔºó£¬µ±Éî¶È±ä»¯Ğ¡ÓÚµ±Ç°Éî¶ÈÖµÊ±£¬¸üĞÂÉî¶ÈÖµ¡£
-
-	glViewport(WinViewX*5/6 ,  WinViewY*5/6 , WinViewX/6 ,  WinViewY/6) ; // ÉèÖÃÊÓ¿Ú´óĞ¡
-
-	glMatrixMode(GL_PROJECTION); 
-	glLoadIdentity();            
-	gluPerspective(50.0 + m_ViewWideNarrow , (float)WinViewX/(float)WinViewY , m_near , m_far);		
-
-	//ÉèÖÃÕıÉäÍ¶Ó°ÊÓ¾°Ìå
-	
-	glMatrixMode(GL_MODELVIEW);							// ¶¨Òå¾ØÕóÎªÄ£ĞÍÄ£ĞÍ¾ØÕó
-	glLoadIdentity();									// ½«µ±Ç°¾ØÕóÖÃ»»Îªµ¥Î»¾ØÕó       
-
-	glClearColor(0.53, 0.81, 0.92, 0.0);				// ÉèÖÃË¢ĞÂ±³¾°É«SkyBlue: 135,206,235
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);	// Ë¢ĞÂ±³¾°
-	glLoadIdentity();									// ÖØÖÃµ±Ç°µÄÄ£ĞÍ¹Û²ì¾ØÕó
-
-	SetCamra();
+void CMy3DSymbolLibNewView::MakeSkykList() {
+    glNewList(m_SkyList , GL_COMPILE);
+    CreateSkyBox();
+    glEndList();
 }
 
 
 /****************************************************************/
-/* Function: µ¼Èë3DSÄ£ĞÍ ÉèÖÃ²ÎÊı									*/
+/* Function: ç»˜åˆ¶å¤©ç©ºèƒŒæ™¯                                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::On3dsModelLoad()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-
-	CString tt,stt;
-	FILE *fp;
-
-	CString modelFileFormat = ".3DS";
-
-	PModelParamStruct p3d;
-
-	if(m_i3DModelNum < MODEL_NUM_MAX)
-	{
-		CDialogModelList dlg1;
-		dlg1.m_Dir = m_AllDataPath + "\\" + m_3DModelFolder;
-		dlg1.m_format = ".bmp";
-		dlg1.m_type = "3DS";
-
-		CString selectItem;
-		if(dlg1.DoModal() == IDOK)
-		{
-			selectItem = dlg1.m_selectItem;
-			m_3DModelPath = dlg1.m_Dir + "\\" + selectItem + modelFileFormat;
-		}
-
-		else
-			return;	
-
-
-		if((fp=fopen(m_3DModelPath,"r"))==NULL)
-		{
-			MessageBox("3DÄ£ĞÍÎÄ¼ş²»´æÔÚ!","³õÊ¼»¯3DÄ£ĞÍ",MB_ICONINFORMATION+MB_OK);
-			exit(-1);
-		}
-
-
-		p3d = new CModelParamStruct;
-		CModelParamStruct a = {0};
-		*p3d = a;
-
-		p3d->modelID = m_i3DModelNum;
-	
-		p3d->isDeleted = false;
-
-		p3d->modelPath = m_3DModelPath;
-
-		p3d->m_3DS_Mode_Texture_PATH_NAME = dlg1.m_Dir + "\\" + selectItem + ".bmp";
-
-		p3d->posX = 389;
-		p3d->posZ = -389;
-	 
-		p3d->scale = 1;
-
-
-		ModelParam dlg;
-		
-		dlg.m_strTitle = "3DÄ£ĞÍ²ÎÊı³õÊ¼»¯";
-
-		if(m_QueryType==QUERY_COORDINATE && IsSearchPoint) // µ±Ç°Îª²éÑ¯Ä£Ê½,²¢ÇÒÒÑ¾­²éÑ¯ÁË
-		{
-			p3d->posX = pt1[0];
-			p3d->posZ = pt1[2];
-		} 		
-
-		PModelParamStructToModelParamDlg(dlg, p3d);
-
-		if(dlg.DoModal()==IDOK)
-		{ 
-			ModelParamDlgToPModelParamStruct(dlg, p3d);
-
-			Load3DModel(p3d, MODEL_NEW);
-
-			m_i3DModelNum++;
-		}
-	} 
-}
-
-void CMy3DSymbolLibNewView::Draw3DModel(PModelParamStruct model)
-{		
-	glPushMatrix();											// Ñ¹Èë¶ÑÕ»
-
-	t3DBox t3dBox;
-	t3dBox.l = g_3DModel[model->modelID].t3DModelBox.l * model->scale;
-	t3dBox.w = g_3DModel[model->modelID].t3DModelBox.w * model->scale;
-	t3dBox.h = g_3DModel[model->modelID].t3DModelBox.h * model->scale;
-
-	// »ñÈ¡µØÃæ¸ß¶È
-	int y = GetHeight((float)model->posX,(float)model->posZ) + t3dBox.h/2 + model->posY;		 
-
-	glTranslatef(model->posX,y,model->posZ);					// Ä£ĞÍ¶¨Î»
-	glRotatef(model->rotY, 0.0, 1.0, 0.0);					// Ä£ĞÍĞı×ª	
-	glRotatef(model->rotX, 1.0, 0.0, 0.0);					// Ä£ĞÍĞı×ª	
-	glRotatef(model->rotZ, 0.0, 0.0, 1.0);					// Ä£ĞÍĞı×ª	
-	
-		
-	m_3ds->Show3ds(model->modelID,0,0.0f,0,model->scale);	// ÏÔÊ¾3dsÄ£ĞÍ
-	
-
-	glPushAttrib(GL_CURRENT_BIT);							// ±£´æÏÖÓĞÑÕÉ«ÊôĞÔ
-	glDisable(GL_TEXTURE_2D);					 			// È¡ÏûÌùÍ¼
-	glPushMatrix();											// Ñ¹Èë¶ÑÕ»
-	glLineWidth(3);											// Ïß¿í2
-
-	glPushAttrib(GL_CURRENT_COLOR);
-
-	if(m_3DModel.GetAt(model->modelID)->modelSelected)
-	{
-		glColor3f(wireR, wireG, wireB);
-		auxWireBox(t3dBox.w , t3dBox.h, t3dBox.l);
-	}
-
-	glPopMatrix();
-
-	glPopMatrix();
-	glEnable(GL_TEXTURE_2D);
-	glPopAttrib();
-
-	glPopMatrix();	
+void CMy3DSymbolLibNewView::DrawSky() {
+    glPushAttrib(GL_CURRENT_BIT);
+    glPushMatrix();
+    glPushMatrix();
+    if (m_bShowbreviary == TRUE) {          //å¦‚æœæ˜¾ç¤ºå¯¼èˆªå›¾
+        SetSkyProjectionNavigate() ;        // è®¾ç½®å¯¼èˆªå›¾çš„èƒŒæ™¯å¤©ç©ºæŠ•å½±
+    }
+    glPopMatrix();
+    SetSkyProjection() ;                    // è®¾ç½®èƒŒæ™¯å¤©ç©ºæŠ•å½±
+    glCallList(m_SkyList);
+    glPopMatrix();
+    glPopAttrib();
 }
 
 
 /****************************************************************/
-/* Function: 3dÄ£ĞÍÑ¡ÔñÒÔ¼°²ÎÊıÉèÖÃ								*/
+/* Function: èƒŒæ™¯å¤©ç©ºæŠ•å½±è®¾ç½®                                       */
 /****************************************************************/
-void CMy3DSymbolLibNewView::On3dsModelSelectSet()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-
-	bIsSelect3DModel = !bIsSelect3DModel;
-	if(bIsSelect3DModel)
-	{
-		m_OperateType = SELECT;
-		m_mouseShape = MOUSE_SHAPE_SLECT;
-
-		m_QueryType = -1;
-	}
-	else
-	{
-		m_OperateType = -1;
-
-		// µ±²»ÊÇÑ¡ÔñÄ£Ê½Ê±£¬¹Ø±ÕÉÁË¸¶¨Ê±Æ÷
-		if(m_bFlash)
-		{
-			KillTimer(2);
-			m_bFlash = false;
-			for(unsigned int i = 0; i < m_pSelectedModelSet.size(); ++i)// i++ Òª¶àÒ»¸öÁÙÊ±±äÁ¿À´´æ´¢£¬ËùÒÔÊ¹ÓÃ++i
-			{
-				if(m_pSelectedModelSet.at(i)->modelType == MODEL_3DS)
-					m_3DModel.GetAt(m_pSelectedModelSet.at(i)->modelID)->modelSelected = false;
-			}
-			m_pSelectedModelSet.clear();
-		}
-
-		m_bMouseMoveSelect = false;
-		m_mouseShape = MOUSE_SHAPE_ARROW;
-	}
-
-	Invalidate(FALSE);
-}
-
-void CMy3DSymbolLibNewView::OnUpdate3dsModelSelectSet(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(m_OperateType == SELECT);
+void CMy3DSymbolLibNewView::SetSkyProjection() {
+    glViewport(0 ,  0 ,  WinViewX ,  WinViewY);             // è®¾ç½®è§†å£å¤§å°å’Œä½ç½®
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(50.0 + m_ViewWideNarrow , (float)WinViewX / (float)WinViewY , m_near , m_far);
+    glMatrixMode(GL_MODELVIEW);                             // å®šä¹‰çŸ©é˜µä¸ºæ¨¡å‹æ¨¡å‹çŸ©é˜µ
+    glLoadIdentity();                                       // å°†å½“å‰çŸ©é˜µç½®æ¢ä¸ºå•ä½çŸ©é˜µ
+    SetCamra();
 }
 
 
 /****************************************************************/
-/* Function: ÒÆ¶¯Ä£ĞÍ,´Ó×ó¼ü°´ÏÂµ½×ó¼üµ¯ÆğµÄ¾àÀë					*/
+/* Function: èƒŒæ™¯å¤©ç©ºå¯¼èˆªå›¾æŠ•å½±è®¾ç½®                             */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnLButtonUp(UINT nFlags, CPoint point)
-{
-	// TODO: ÔÚ´ËÌí¼ÓÏûÏ¢´¦Àí³ÌĞò´úÂëºÍ/»òµ÷ÓÃÄ¬ÈÏÖµ
-	if(m_OperateType ==MOVE)	// ÒÆ¶¯Ñ¡ÖĞ3DÄ£ĞÍ
-	{
-		m_oldMousePos=point;
-		ScreenToGL(point);
-	}
-
-	m_bIsLBtnDown = false;
-	CView::OnLButtonUp(nFlags, point);
-}
-
-void CMy3DSymbolLibNewView::On3dsModelMouseMove()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	bIsMouseMove3DModel = !bIsMouseMove3DModel;
-	if(bIsMouseMove3DModel) 
-	{
-		m_OperateType = MOVE;
-	}
-	else
-		m_OperateType = -1;
-
-	Invalidate(FALSE);
-}
-
-void CMy3DSymbolLibNewView::OnUpdate3dsModelMouseMove(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(m_OperateType == MOVE);
+void CMy3DSymbolLibNewView::SetSkyProjectionNavigate() {
+    glClearDepth(1.0f);                             // è®¾ç½®åˆå§‹åŒ–æ·±åº¦ç¼“å­˜å€¼
+    glEnable(GL_DEPTH_TEST);                        // å¯ç”¨æ·±åº¦æµ‹è¯•
+    glDepthFunc(GL_LESS);                           // åœ¨è°ƒç”¨glEnable(GL_DEPTH_TEST); å¼€å¯è¿™ä¸ªåŠŸèƒ½ä»¥åï¼Œå½“æ·±åº¦å˜åŒ–å°äºå½“å‰æ·±åº¦å€¼æ—¶ï¼Œæ›´æ–°æ·±åº¦å€¼ã€‚
+    glViewport(WinViewX * 5 / 6 ,  WinViewY * 5 / 6 , WinViewX / 6 ,  WinViewY / 6) ; // è®¾ç½®è§†å£å¤§å°
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(50.0 + m_ViewWideNarrow , (float)WinViewX / (float)WinViewY , m_near , m_far);
+    //è®¾ç½®æ­£å°„æŠ•å½±è§†æ™¯ä½“
+    glMatrixMode(GL_MODELVIEW);                         // å®šä¹‰çŸ©é˜µä¸ºæ¨¡å‹æ¨¡å‹çŸ©é˜µ
+    glLoadIdentity();                                   // å°†å½“å‰çŸ©é˜µç½®æ¢ä¸ºå•ä½çŸ©é˜µ
+    glClearColor(0.53, 0.81, 0.92, 0.0);                // è®¾ç½®åˆ·æ–°èƒŒæ™¯è‰²SkyBlue: 135,206,235
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // åˆ·æ–°èƒŒæ™¯
+    glLoadIdentity();                                   // é‡ç½®å½“å‰çš„æ¨¡å‹è§‚å¯ŸçŸ©é˜µ
+    SetCamra();
 }
 
 
 /****************************************************************/
-/* Function: ÔÚ×ø±ê×ª»»Ê±ÅĞ¶ÏÊó±êÊÇ·ñÂäÈë3DÄ£ĞÍ¿Õ¼ä·¶Î§ÄÚ			*/
+/* Function: å¯¼å…¥3DSæ¨¡å‹ è®¾ç½®å‚æ•°                                   */
 /****************************************************************/
-void CMy3DSymbolLibNewView::JudgeModelSelected(PCordinate ppt)
-{
-	// »ñÈ¡Ä£ĞÍÖĞÈıÎ¬µã¼«Öµ
-	int minx,maxx,minz,maxz;
+void CMy3DSymbolLibNewView::On3dsModelLoad() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    CString tt, stt;
+    FILE* fp;
+    CString modelFileFormat = ".3DS";
+    PModelParamStruct p3d;
+    if (m_i3DModelNum < MODEL_NUM_MAX) {
+        CDialogModelList dlg1;
+        dlg1.m_Dir = m_AllDataPath + "\\" + m_3DModelFolder;
+        dlg1.m_format = ".bmp";
+        dlg1.m_type = "3DS";
+        CString selectItem;
+        if (dlg1.DoModal() == IDOK) {
+            selectItem = dlg1.m_selectItem;
+            m_3DModelPath = dlg1.m_Dir + "\\" + selectItem + modelFileFormat;
+        } else
+            return;
+        if ((fp = fopen(m_3DModelPath, "r")) == NULL) {
+            MessageBox("3Dæ¨¡å‹æ–‡ä»¶ä¸å­˜åœ¨!", "åˆå§‹åŒ–3Dæ¨¡å‹", MB_ICONINFORMATION + MB_OK);
+            exit(-1);
+        }
+        p3d = new CModelParamStruct;
+        CModelParamStruct a = {0};
+        *p3d = a;
+        p3d->modelID = m_i3DModelNum;
+        p3d->isDeleted = false;
+        p3d->modelPath = m_3DModelPath;
+        p3d->m_3DS_Mode_Texture_PATH_NAME = dlg1.m_Dir + "\\" + selectItem + ".bmp";
+        p3d->posX = 389;
+        p3d->posZ = -389;
+        p3d->scale = 1;
+        ModelParam dlg;
+        dlg.m_strTitle = "3Dæ¨¡å‹å‚æ•°åˆå§‹åŒ–";
+        if (m_QueryType == QUERY_COORDINATE && IsSearchPoint) {  // å½“å‰ä¸ºæŸ¥è¯¢æ¨¡å¼,å¹¶ä¸”å·²ç»æŸ¥è¯¢äº†
+            p3d->posX = pt1[0];
+            p3d->posZ = pt1[2];
+        }
+        PModelParamStructToModelParamDlg(dlg, p3d);
+        if (dlg.DoModal() == IDOK) {
+            ModelParamDlgToPModelParamStruct(dlg, p3d);
+            Load3DModel(p3d, MODEL_NEW);
+            m_i3DModelNum++;
+        }
+    }
+}
 
-	// ±éÀúËùÓĞµÄ3DÄ£ĞÍ,ÅĞ¶ÏÊÇ·ñÔÚ·¶Î§ÄÚ 
-	for(int j = 0; j < m_i3DModelNum; j++)
-	{		
-		t3DBox t3dBox;
-		t3dBox.w = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.w;
-		t3dBox.h = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.h;
-		t3dBox.l = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.l;
-
-		POINT pt;
-		pt.x = m_3DModel.GetAt(j)->posX;
-		pt.y = m_3DModel.GetAt(j)->posZ;
-
-		minx = pt.x - (t3dBox.l * 1.5 )/2;
-		maxx = pt.x + (t3dBox.l * 1.5 )/2;
-		minz = pt.y - (t3dBox.w * 1.5 )/2;
-		maxz = pt.y + (t3dBox.w * 1.5 )/2;
-
-		// ÒòÎªµ±Ç°Ä£ĞÍÎªÊó±êÒÆ¶¯Ä£ĞÍÊ±¾Í²»ÄÜ¸Ä±äÄ£ĞÍµÄÑ¡ÖĞ×´Ì¬
-		if((ppt->x >= minx && ppt->x <= maxx ) &&(ppt->z >= minz && ppt->z <= maxz))
-		{				
-			if(m_OperateType == MOVE)
-			{
-				m_3DModel.GetAt(j)->modelSelected = true;
-			}
-			else
-			{
-				m_3DModel.GetAt(j)->modelSelected = !(m_3DModel.GetAt(j)->modelSelected);	
-			}
-		} 
-		else 
-			m_3DModel.GetAt(j)->modelSelected = false;
-	}			
+void CMy3DSymbolLibNewView::Draw3DModel(PModelParamStruct model) {
+    glPushMatrix();                                         // å‹å…¥å †æ ˆ
+    t3DBox t3dBox;
+    t3dBox.l = g_3DModel[model->modelID].t3DModelBox.l * model->scale;
+    t3dBox.w = g_3DModel[model->modelID].t3DModelBox.w * model->scale;
+    t3dBox.h = g_3DModel[model->modelID].t3DModelBox.h * model->scale;
+    // è·å–åœ°é¢é«˜åº¦
+    int y = GetHeight((float)model->posX, (float)model->posZ) + t3dBox.h / 2 + model->posY;
+    glTranslatef(model->posX, y, model->posZ);                  // æ¨¡å‹å®šä½
+    glRotatef(model->rotY, 0.0, 1.0, 0.0);                  // æ¨¡å‹æ—‹è½¬
+    glRotatef(model->rotX, 1.0, 0.0, 0.0);                  // æ¨¡å‹æ—‹è½¬
+    glRotatef(model->rotZ, 0.0, 0.0, 1.0);                  // æ¨¡å‹æ—‹è½¬
+    m_3ds->Show3ds(model->modelID, 0, 0.0f, 0, model->scale);  // æ˜¾ç¤º3dsæ¨¡å‹
+    glPushAttrib(GL_CURRENT_BIT);                           // ä¿å­˜ç°æœ‰é¢œè‰²å±æ€§
+    glDisable(GL_TEXTURE_2D);                               // å–æ¶ˆè´´å›¾
+    glPushMatrix();                                         // å‹å…¥å †æ ˆ
+    glLineWidth(3);                                         // çº¿å®½2
+    glPushAttrib(GL_CURRENT_COLOR);
+    if (m_3DModel.GetAt(model->modelID)->modelSelected) {
+        glColor3f(wireR, wireG, wireB);
+        auxWireBox(t3dBox.w , t3dBox.h, t3dBox.l);
+    }
+    glPopMatrix();
+    glPopMatrix();
+    glEnable(GL_TEXTURE_2D);
+    glPopAttrib();
+    glPopMatrix();
 }
 
 
 /****************************************************************/
-/* Function: µ¼Èë¾°¹ÛÊ÷ ÉèÖÃ²ÎÊı									*/
+/* Function: 3dæ¨¡å‹é€‰æ‹©ä»¥åŠå‚æ•°è®¾ç½®                             */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnTreeLoad()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+void CMy3DSymbolLibNewView::On3dsModelSelectSet() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    bIsSelect3DModel = !bIsSelect3DModel;
+    if (bIsSelect3DModel) {
+        m_OperateType = SELECT;
+        m_mouseShape = MOUSE_SHAPE_SLECT;
+        m_QueryType = -1;
+    } else {
+        m_OperateType = -1;
+        // å½“ä¸æ˜¯é€‰æ‹©æ¨¡å¼æ—¶ï¼Œå…³é—­é—ªçƒå®šæ—¶å™¨
+        if (m_bFlash) {
+            KillTimer(2);
+            m_bFlash = false;
+            for (unsigned int i = 0; i < m_pSelectedModelSet.size(); ++i) {  // i++ è¦å¤šä¸€ä¸ªä¸´æ—¶å˜é‡æ¥å­˜å‚¨ï¼Œæ‰€ä»¥ä½¿ç”¨++i
+                if (m_pSelectedModelSet.at(i)->modelType == MODEL_3DS)
+                    m_3DModel.GetAt(m_pSelectedModelSet.at(i)->modelID)->modelSelected = false;
+            }
+            m_pSelectedModelSet.clear();
+        }
+        m_bMouseMoveSelect = false;
+        m_mouseShape = MOUSE_SHAPE_ARROW;
+    }
+    Invalidate(FALSE);
+}
 
-	CString tt,stt;
-	FILE *fp;
-	CString treeTexPath;
-	CString treeFileFormat = ".BMP";
-
-	if(m_iTreeModelNum < 50)
-	{
-		CDialogModelList dlg1;
-		dlg1.m_Dir = m_AllDataPath + "\\" + m_TreeModelFolder;
-		dlg1.m_format = ".bmp";
-		dlg1.m_type = "Tree";
-
-		if(dlg1.DoModal() == IDOK)
-		{
-			CString selectItem = dlg1.m_selectItem;
-			treeTexPath = dlg1.m_Dir + "\\" + selectItem + treeFileFormat;
-		}
-		else
-			return;	
-
-		if((fp=fopen(treeTexPath,"r"))==NULL)
-		{
-			MessageBox("¾°¹ÛÊ÷ÎÄ¼ş²»´æÔÚ!","³õÊ¼»¯¾°¹ÛÊ÷Ä£ĞÍ",MB_ICONINFORMATION+MB_OK);
-			exit(-1);
-		}
-
-		ptree = new CModelStruct;
-		ptree->iModelNum = m_iTreeModelNum;
-		ptree->strModelPath = treeTexPath;
+void CMy3DSymbolLibNewView::OnUpdate3dsModelSelectSet(CCmdUI* pCmdUI) {
+    pCmdUI->SetCheck(m_OperateType == SELECT);
+}
 
 
-		// ·ÇÄ£Ê½¶Ô»°¿ò
-		paramSet_modeless_dlg = new C3DModelParamSet(this);
-		paramSet_modeless_dlg->Create();
-		paramSet_modeless_dlg->CenterWindow();
+/****************************************************************/
+/* Function: ç§»åŠ¨æ¨¡å‹,ä»å·¦é”®æŒ‰ä¸‹åˆ°å·¦é”®å¼¹èµ·çš„è·ç¦»                    */
+/****************************************************************/
+void CMy3DSymbolLibNewView::OnLButtonUp(UINT nFlags, CPoint point) {
+    // TODO: åœ¨æ­¤æ·»åŠ æ¶ˆæ¯å¤„ç†ç¨‹åºä»£ç å’Œ/æˆ–è°ƒç”¨é»˜è®¤å€¼
+    if (m_OperateType == MOVE) {  // ç§»åŠ¨é€‰ä¸­3Dæ¨¡å‹
+        m_oldMousePos = point;
+        ScreenToGL(point);
+    }
+    m_bIsLBtnDown = false;
+    CView::OnLButtonUp(nFlags, point);
+}
+
+void CMy3DSymbolLibNewView::On3dsModelMouseMove() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    bIsMouseMove3DModel = !bIsMouseMove3DModel;
+    if (bIsMouseMove3DModel) {
+        m_OperateType = MOVE;
+    } else
+        m_OperateType = -1;
+    Invalidate(FALSE);
+}
+
+void CMy3DSymbolLibNewView::OnUpdate3dsModelMouseMove(CCmdUI* pCmdUI) {
+    pCmdUI->SetCheck(m_OperateType == MOVE);
+}
 
 
-		paramSet_modeless_dlg->m_strTitle = "¾°¹ÛÊ÷Ä£ĞÍ  ²ÎÊı³õÊ¼»¯";
+/****************************************************************/
+/* Function: åœ¨åæ ‡è½¬æ¢æ—¶åˆ¤æ–­é¼ æ ‡æ˜¯å¦è½å…¥3Dæ¨¡å‹ç©ºé—´èŒƒå›´å†…           */
+/****************************************************************/
+void CMy3DSymbolLibNewView::JudgeModelSelected(PCordinate ppt) {
+    // è·å–æ¨¡å‹ä¸­ä¸‰ç»´ç‚¹æå€¼
+    int minx, maxx, minz, maxz;
+    // éå†æ‰€æœ‰çš„3Dæ¨¡å‹,åˆ¤æ–­æ˜¯å¦åœ¨èŒƒå›´å†…
+    for (int j = 0; j < m_i3DModelNum; j++) {
+        t3DBox t3dBox;
+        t3dBox.w = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.w;
+        t3dBox.h = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.h;
+        t3dBox.l = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.l;
+        POINT pt;
+        pt.x = m_3DModel.GetAt(j)->posX;
+        pt.y = m_3DModel.GetAt(j)->posZ;
+        minx = pt.x - (t3dBox.l * 1.5) / 2;
+        maxx = pt.x + (t3dBox.l * 1.5) / 2;
+        minz = pt.y - (t3dBox.w * 1.5) / 2;
+        maxz = pt.y + (t3dBox.w * 1.5) / 2;
+        // å› ä¸ºå½“å‰æ¨¡å‹ä¸ºé¼ æ ‡ç§»åŠ¨æ¨¡å‹æ—¶å°±ä¸èƒ½æ”¹å˜æ¨¡å‹çš„é€‰ä¸­çŠ¶æ€
+        if ((ppt->x >= minx && ppt->x <= maxx) && (ppt->z >= minz && ppt->z <= maxz)) {
+            if (m_OperateType == MOVE) {
+                m_3DModel.GetAt(j)->modelSelected = true;
+            } else {
+                m_3DModel.GetAt(j)->modelSelected = !(m_3DModel.GetAt(j)->modelSelected);
+            }
+        } else
+            m_3DModel.GetAt(j)->modelSelected = false;
+    }
+}
 
-		paramSet_modeless_dlg->m_modeParam.type = "tree";
 
-
-		paramSet_modeless_dlg->ShowWindow(SW_SHOW);
-	}
-	else
-	{
-		MessageBox("Ê÷Ä¾µÄ´óĞ¡³¬³öÁË50!");
-	}
+/****************************************************************/
+/* Function: å¯¼å…¥æ™¯è§‚æ ‘ è®¾ç½®å‚æ•°                                    */
+/****************************************************************/
+void CMy3DSymbolLibNewView::OnTreeLoad() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    CString tt, stt;
+    FILE* fp;
+    CString treeTexPath;
+    CString treeFileFormat = ".BMP";
+    if (m_iTreeModelNum < 50) {
+        CDialogModelList dlg1;
+        dlg1.m_Dir = m_AllDataPath + "\\" + m_TreeModelFolder;
+        dlg1.m_format = ".bmp";
+        dlg1.m_type = "Tree";
+        if (dlg1.DoModal() == IDOK) {
+            CString selectItem = dlg1.m_selectItem;
+            treeTexPath = dlg1.m_Dir + "\\" + selectItem + treeFileFormat;
+        } else
+            return;
+        if ((fp = fopen(treeTexPath, "r")) == NULL) {
+            MessageBox("æ™¯è§‚æ ‘æ–‡ä»¶ä¸å­˜åœ¨!", "åˆå§‹åŒ–æ™¯è§‚æ ‘æ¨¡å‹", MB_ICONINFORMATION + MB_OK);
+            exit(-1);
+        }
+        ptree = new CModelStruct;
+        ptree->iModelNum = m_iTreeModelNum;
+        ptree->strModelPath = treeTexPath;
+        // éæ¨¡å¼å¯¹è¯æ¡†
+        paramSet_modeless_dlg = new C3DModelParamSet(this);
+        paramSet_modeless_dlg->Create();
+        paramSet_modeless_dlg->CenterWindow();
+        paramSet_modeless_dlg->m_strTitle = "æ™¯è§‚æ ‘æ¨¡å‹  å‚æ•°åˆå§‹åŒ–";
+        paramSet_modeless_dlg->m_modeParam.type = "tree";
+        paramSet_modeless_dlg->ShowWindow(SW_SHOW);
+    } else {
+        MessageBox("æ ‘æœ¨çš„å¤§å°è¶…å‡ºäº†50!");
+    }
 }
 
 
 /*************************************************************************/
-/* Function: Ê÷µÄÌùÍ¼ĞèÒªÍ¸Ã÷ÏÔÊ¾£¬Í¸Ã÷ÏÔÊ¾ÒªÇóÊ÷µÄÍ¼Æ¬Ó¦¸ÃÊÇ16Î»É«µÄBMPÎ»Í¼	 */
+/* Function: æ ‘çš„è´´å›¾éœ€è¦é€æ˜æ˜¾ç¤ºï¼Œé€æ˜æ˜¾ç¤ºè¦æ±‚æ ‘çš„å›¾ç‰‡åº”è¯¥æ˜¯16ä½è‰²çš„BMPä½å›¾     */
 /*************************************************************************/
-void CMy3DSymbolLibNewView::LoadT16(char *filename, GLuint &texture)
-{  
-	glGenTextures(1, &texture);											// »ñÈ¡1¸öÎ´Ê¹ÓÃµÄÌùÍ¼Ãû³Æ
-	glBindTexture(GL_TEXTURE_2D, texture);								// Ñ¡ÔñÒª°ó¶¨µÄÌùÍ¼£¨ÎÆÀí£©
-	BITMAPINFOHEADER bitHeader;											// ¶¨ÒåÎ»Í¼½á¹¹
-	unsigned char *buffer;												// ¶¨ÒåÎ»Í¼Ö¸Õë
-	buffer=LoadBitmapFileWithAlpha(filename,&bitHeader);				// µ÷ÈëÎ»Í¼
-	gluBuild2DMipmaps( GL_TEXTURE_2D,									// ´´½¨Ò»¸ö2DÌùÍ¼£¨ÎÆÀí£©
-		4,																// Ê¹ÓÃ3ÖÖÑÕÉ«£¨RGB£©+ÑÕÉ«Éî¶È
-		bitHeader.biWidth,												// Í¼Ïñ¿í
-		bitHeader.biHeight,												// Í¼Ïñ¸ß
-		GL_RGBA,														// ºìÂÌÀ¶Ë³Ğò
-		GL_UNSIGNED_BYTE,												// Í¼ÏñµÄÊı¾İÀàĞÍÊÇ×Ö½Ú
-		buffer															// Ö¸¶¨ÌùÍ¼£¨ÎÆÀí£©Êı¾İ
-		);																// ´´½¨ÌùÍ¼£¨ÎÆÀí£©
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);					// ËõĞ¡ÂË²¨
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);					// ·Å´óÂË²¨
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);	// Ë«ÏßĞÔÂË²¨
-	free(buffer);																		// ÊÍ·ÅÎ»Í¼Êı¾İ
-} 
+void CMy3DSymbolLibNewView::LoadT16(char* filename, GLuint& texture) {
+    glGenTextures(1, &texture);                                         // è·å–1ä¸ªæœªä½¿ç”¨çš„è´´å›¾åç§°
+    glBindTexture(GL_TEXTURE_2D, texture);                              // é€‰æ‹©è¦ç»‘å®šçš„è´´å›¾ï¼ˆçº¹ç†ï¼‰
+    BITMAPINFOHEADER bitHeader;                                         // å®šä¹‰ä½å›¾ç»“æ„
+    unsigned char* buffer;                                              // å®šä¹‰ä½å›¾æŒ‡é’ˆ
+    buffer = LoadBitmapFileWithAlpha(filename, &bitHeader);             // è°ƒå…¥ä½å›¾
+    gluBuild2DMipmaps(GL_TEXTURE_2D,                                     // åˆ›å»ºä¸€ä¸ª2Dè´´å›¾ï¼ˆçº¹ç†ï¼‰
+                      4,                                                              // ä½¿ç”¨3ç§é¢œè‰²ï¼ˆRGBï¼‰+é¢œè‰²æ·±åº¦
+                      bitHeader.biWidth,                                              // å›¾åƒå®½
+                      bitHeader.biHeight,                                             // å›¾åƒé«˜
+                      GL_RGBA,                                                        // çº¢ç»¿è“é¡ºåº
+                      GL_UNSIGNED_BYTE,                                               // å›¾åƒçš„æ•°æ®ç±»å‹æ˜¯å­—èŠ‚
+                      buffer                                                          // æŒ‡å®šè´´å›¾ï¼ˆçº¹ç†ï¼‰æ•°æ®
+                     );                                                              // åˆ›å»ºè´´å›¾ï¼ˆçº¹ç†ï¼‰
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);                   // ç¼©å°æ»¤æ³¢
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);                   // æ”¾å¤§æ»¤æ³¢
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);    // åŒçº¿æ€§æ»¤æ³¢
+    free(buffer);                                                                       // é‡Šæ”¾ä½å›¾æ•°æ®
+}
 
 
 /********************************************************************/
-/* Function: ÏÔÊ¾ÌØÊâÆ½ÃæÊ÷£¬³¡¾°Ğı×ªÊ±Ê÷Ò²¸ú×ÅĞı×ª£¬Ê¼ÖÕÊÇÕıÃæ¶Ô×ÅÓÃ»§	*/
+/* Function: æ˜¾ç¤ºç‰¹æ®Šå¹³é¢æ ‘ï¼Œåœºæ™¯æ—‹è½¬æ—¶æ ‘ä¹Ÿè·Ÿç€æ—‹è½¬ï¼Œå§‹ç»ˆæ˜¯æ­£é¢å¯¹ç€ç”¨æˆ· */
 /********************************************************************/
-void CMy3DSymbolLibNewView::ShowTree(int i)
-{ 
-	float x, y, z;
-	x = m_TreeModel.GetAt(i)->xPos;
-	z = m_TreeModel.GetAt(i)->zPos;
-	float h = 3;
-
-	y = GetHeight(x,z) + m_TreeModel.GetAt(i)->hPos + h; 
-
-	glPushMatrix();
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0);
-	float mat[16];
-	glGetFloatv(GL_MODELVIEW_MATRIX, mat);				// »ñÈ¡ÊÓÍ¼¾ØÕó
-	CVector3 X(mat[0], mat[4], mat[8]);
-	CVector3 Z(mat[1], mat[5], mat[9]); 
-	glBindTexture(GL_TEXTURE_2D, g_cactus[i]);
-	CVector3 pos(x,y,z);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0,0.0);glVertex3f((pos+(X+Z)*-h).x, (pos+(X+Z)*-h).y, (pos+(X+Z)*-h).z);	// ×óÏÂµã
-	glTexCoord2f(1.0,0.0);glVertex3f((pos+(X-Z)* h).x, (pos+(X-Z)* h).y, (pos+(X-Z)* h).z);	// ÓÒÏÂµã
-	glTexCoord2f(1.0,1.0);glVertex3f((pos+(X+Z)* h).x, (pos+(X+Z)* h).y, (pos+(X+Z)* h).z);	// ÓÒÉÏµã
-	glTexCoord2f(0.0,1.0);glVertex3f((pos+(Z-X)* h).x, (pos+(Z-X)* h).y, (pos+(Z-X)* h).z);	// ×óÉÏµã
-	glEnd();
-	glDisable(GL_ALPHA);
-	glDisable(GL_BLEND);
-
-	glPopMatrix();
+void CMy3DSymbolLibNewView::ShowTree(int i) {
+    float x, y, z;
+    x = m_TreeModel.GetAt(i)->xPos;
+    z = m_TreeModel.GetAt(i)->zPos;
+    float h = 3;
+    y = GetHeight(x, z) + m_TreeModel.GetAt(i)->hPos + h;
+    glPushMatrix();
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0);
+    float mat[16];
+    glGetFloatv(GL_MODELVIEW_MATRIX, mat);              // è·å–è§†å›¾çŸ©é˜µ
+    CVector3 X(mat[0], mat[4], mat[8]);
+    CVector3 Z(mat[1], mat[5], mat[9]);
+    glBindTexture(GL_TEXTURE_2D, g_cactus[i]);
+    CVector3 pos(x, y, z);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3f((pos + (X + Z) * -h).x, (pos + (X + Z) * -h).y, (pos + (X + Z) * -h).z); // å·¦ä¸‹ç‚¹
+    glTexCoord2f(1.0, 0.0);
+    glVertex3f((pos + (X - Z)* h).x, (pos + (X - Z)* h).y, (pos + (X - Z)* h).z); // å³ä¸‹ç‚¹
+    glTexCoord2f(1.0, 1.0);
+    glVertex3f((pos + (X + Z)* h).x, (pos + (X + Z)* h).y, (pos + (X + Z)* h).z); // å³ä¸Šç‚¹
+    glTexCoord2f(0.0, 1.0);
+    glVertex3f((pos + (Z - X)* h).x, (pos + (Z - X)* h).y, (pos + (Z - X)* h).z); // å·¦ä¸Šç‚¹
+    glEnd();
+    glDisable(GL_ALPHA);
+    glDisable(GL_BLEND);
+    glPopMatrix();
 }
 
 
 /****************************************************************/
-/* Function: µ¼Èë³ÇÊĞ±êÊ¶,ĞĞÕşµã,¿§·Èµê,²ŞËù,·şÎñÇøµÈ				*/
+/* Function: å¯¼å…¥åŸå¸‚æ ‡è¯†,è¡Œæ”¿ç‚¹,å’–å•¡åº—,å•æ‰€,æœåŠ¡åŒºç­‰               */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnCitySymbolLoad()
-{
-	CString tt,stt;
-	FILE *fp;
-	CString citySymbolTexPath;
-	CString citySymbolFileFormat = ".png";
-
-	if(m_iCitySymbolModelNum < 50)
-	{	
-		CDialogModelList dlg1;
-		dlg1.m_Dir = m_AllDataPath + "\\" + m_CitySymbolFolder;
-		dlg1.m_format = ".png";
-		dlg1.m_type = "City";
-
-		if(dlg1.DoModal() == IDOK)
-		{
-			CString selectItem = dlg1.m_selectItem;
-			citySymbolTexPath = dlg1.m_Dir + "\\" + selectItem + citySymbolFileFormat;
-		}
-		else
-			return;	
-
-		if((fp=fopen(citySymbolTexPath,"r"))==NULL)
-		{
-			MessageBox("³ÇÊĞ±êÊ¶·ûºÅÎÄ¼ş²»´æÔÚ!","³õÊ¼»¯³ÇÊĞ±êÊ¶·ûºÅ",MB_ICONINFORMATION+MB_OK);
-			exit(-1);
-		}
-
-		pCitySymbol = new CModelStruct;
-		pCitySymbol->iModelNum = m_iCitySymbolModelNum;
-		pCitySymbol->strModelPath = citySymbolTexPath;
-
-
-
-		// ·ÇÄ£Ê½¶Ô»°¿ò
-		paramSet_modeless_dlg = new C3DModelParamSet(this);
-		paramSet_modeless_dlg->Create();
-		paramSet_modeless_dlg->CenterWindow();
-
-
-		paramSet_modeless_dlg->m_strTitle = "³ÇÊĞ±êÊ¶  ²ÎÊı³õÊ¼»¯";
-
-		paramSet_modeless_dlg->m_modeParam.type = "CitySymbol";
-	
-		paramSet_modeless_dlg->ShowWindow(SW_SHOW);
-
-	} 
+void CMy3DSymbolLibNewView::OnCitySymbolLoad() {
+    CString tt, stt;
+    FILE* fp;
+    CString citySymbolTexPath;
+    CString citySymbolFileFormat = ".png";
+    if (m_iCitySymbolModelNum < 50) {
+        CDialogModelList dlg1;
+        dlg1.m_Dir = m_AllDataPath + "\\" + m_CitySymbolFolder;
+        dlg1.m_format = ".png";
+        dlg1.m_type = "City";
+        if (dlg1.DoModal() == IDOK) {
+            CString selectItem = dlg1.m_selectItem;
+            citySymbolTexPath = dlg1.m_Dir + "\\" + selectItem + citySymbolFileFormat;
+        } else
+            return;
+        if ((fp = fopen(citySymbolTexPath, "r")) == NULL) {
+            MessageBox("åŸå¸‚æ ‡è¯†ç¬¦å·æ–‡ä»¶ä¸å­˜åœ¨!", "åˆå§‹åŒ–åŸå¸‚æ ‡è¯†ç¬¦å·", MB_ICONINFORMATION + MB_OK);
+            exit(-1);
+        }
+        pCitySymbol = new CModelStruct;
+        pCitySymbol->iModelNum = m_iCitySymbolModelNum;
+        pCitySymbol->strModelPath = citySymbolTexPath;
+        // éæ¨¡å¼å¯¹è¯æ¡†
+        paramSet_modeless_dlg = new C3DModelParamSet(this);
+        paramSet_modeless_dlg->Create();
+        paramSet_modeless_dlg->CenterWindow();
+        paramSet_modeless_dlg->m_strTitle = "åŸå¸‚æ ‡è¯†  å‚æ•°åˆå§‹åŒ–";
+        paramSet_modeless_dlg->m_modeParam.type = "CitySymbol";
+        paramSet_modeless_dlg->ShowWindow(SW_SHOW);
+    }
 }
 
 
 /****************************************************************/
-/* Function: ÏÔÊ¾ÆÕÍ¨³ÇÊĞ·ûºÅ,²»ËæÊÓÏß×ª»¯¶ø×ª»»½Ç¶È				*/
+/* Function: æ˜¾ç¤ºæ™®é€šåŸå¸‚ç¬¦å·,ä¸éšè§†çº¿è½¬åŒ–è€Œè½¬æ¢è§’åº¦                */
 /****************************************************************/
-void CMy3DSymbolLibNewView::ShowCitySymbol0(int i)
-{ 
-	float x, y, z;
-	x = m_CitySymbolModel.GetAt(i)->xPos;
-	z = m_CitySymbolModel.GetAt(i)->zPos;
-	float h = 0.5;
-
-	glPushMatrix();  
-	y = GetHeight(x,z) + m_CitySymbolModel.GetAt(i)->hPos + h;
-	glTranslatef(x,y, z); 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0);
-	glBindTexture(GL_TEXTURE_2D, g_citySymbolTex[i]); 
-	glBegin(GL_QUADS); 
-
-	glTexCoord2f(1.0f, 0.0f); glVertex3f( h, 0, 0.0f);		// ÓÒÉÏµã
-	glTexCoord2f(0.0f, 0.0f); glVertex3f( 0, 0, 0.0f);		// ÓÒÉÏµã
-	glTexCoord2f(0.0f, 1.0f); glVertex3f( 0, h, 0.0f);		// ÓÒÏÂµã
-	glTexCoord2f(1.0f, 1.0f); glVertex3f( h, h, 0.0f);		// ×óÏÂµã
-
-	glEnd();
-	glDisable(GL_ALPHA);
-	glDisable(GL_BLEND);
-	glPopMatrix();
+void CMy3DSymbolLibNewView::ShowCitySymbol0(int i) {
+    float x, y, z;
+    x = m_CitySymbolModel.GetAt(i)->xPos;
+    z = m_CitySymbolModel.GetAt(i)->zPos;
+    float h = 0.5;
+    glPushMatrix();
+    y = GetHeight(x, z) + m_CitySymbolModel.GetAt(i)->hPos + h;
+    glTranslatef(x, y, z);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0);
+    glBindTexture(GL_TEXTURE_2D, g_citySymbolTex[i]);
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(h, 0, 0.0f);        // å³ä¸Šç‚¹
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(0, 0, 0.0f);        // å³ä¸Šç‚¹
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(0, h, 0.0f);        // å³ä¸‹ç‚¹
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(h, h, 0.0f);        // å·¦ä¸‹ç‚¹
+    glEnd();
+    glDisable(GL_ALPHA);
+    glDisable(GL_BLEND);
+    glPopMatrix();
 }
 
 
 /****************************************************************/
-/* Function:ÏÔÊ¾³ÇÊĞ·ûºÅ											*/
+/* Function:æ˜¾ç¤ºåŸå¸‚ç¬¦å·                                            */
 /****************************************************************/
-void CMy3DSymbolLibNewView::ShowCitySymbol(int i)
-{ 
-	float x, y, z;
-	x = m_CitySymbolModel.GetAt(i)->xPos;
-	z = m_CitySymbolModel.GetAt(i)->zPos;
-	float h = 3.2;
-
-	y = GetHeight(x,z) + m_CitySymbolModel.GetAt(i)->hPos + h; 
-
-	glPushMatrix();
-
-	glEnable(GL_TEXTURE_2D); 
-	glEnable(GL_BLEND); 
-	glEnable(GL_ALPHA_TEST); 
-	glAlphaFunc(GL_GREATER ,0.9);						//0.5¿ÉÒÔ»»³ÉÈÎºÎÔÚ0~1Ö®¼äµÄÊı 
-
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	// ±³¾°Îª°×É«
-
-	float mat[16];
-	glGetFloatv(GL_MODELVIEW_MATRIX, mat);				// »ñÈ¡ÊÓÍ¼¾ØÕó
-	CVector3 X(mat[0], mat[4], mat[8]);
-	CVector3 Z(mat[1], mat[5], mat[9]); 
-	glBindTexture(GL_TEXTURE_2D, g_citySymbolTex[i]);
-	CVector3 pos(x,y,z);
-
-	glBegin(GL_QUADS);
-
-	glTexCoord2f(0.0,0.0);glVertex3f((pos+(X+Z)*-h).x, (pos+(X+Z)*-h).y, (pos+(X+Z)*-h).z);	// ×óÏÂµã
-	glTexCoord2f(1.0,0.0);glVertex3f((pos+(X-Z)* h).x, (pos+(X-Z)* h).y, (pos+(X-Z)* h).z);	// ÓÒÏÂµã
-	glTexCoord2f(1.0,1.0);glVertex3f((pos+(X+Z)* h).x, (pos+(X+Z)* h).y, (pos+(X+Z)* h).z);	// ÓÒÉÏµã
-	glTexCoord2f(0.0,1.0);glVertex3f((pos+(Z-X)* h).x, (pos+(Z-X)* h).y, (pos+(Z-X)* h).z);	// ×óÉÏµã
-
-	glEnd();
-
-	glDisable(GL_ALPHA_TEST);
-	glDisable(GL_ALPHA);
-	glDisable(GL_BLEND);
-
-	glPopMatrix();
+void CMy3DSymbolLibNewView::ShowCitySymbol(int i) {
+    float x, y, z;
+    x = m_CitySymbolModel.GetAt(i)->xPos;
+    z = m_CitySymbolModel.GetAt(i)->zPos;
+    float h = 3.2;
+    y = GetHeight(x, z) + m_CitySymbolModel.GetAt(i)->hPos + h;
+    glPushMatrix();
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER , 0.9);                      //0.5å¯ä»¥æ¢æˆä»»ä½•åœ¨0~1ä¹‹é—´çš„æ•°
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  // èƒŒæ™¯ä¸ºç™½è‰²
+    float mat[16];
+    glGetFloatv(GL_MODELVIEW_MATRIX, mat);              // è·å–è§†å›¾çŸ©é˜µ
+    CVector3 X(mat[0], mat[4], mat[8]);
+    CVector3 Z(mat[1], mat[5], mat[9]);
+    glBindTexture(GL_TEXTURE_2D, g_citySymbolTex[i]);
+    CVector3 pos(x, y, z);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3f((pos + (X + Z) * -h).x, (pos + (X + Z) * -h).y, (pos + (X + Z) * -h).z); // å·¦ä¸‹ç‚¹
+    glTexCoord2f(1.0, 0.0);
+    glVertex3f((pos + (X - Z)* h).x, (pos + (X - Z)* h).y, (pos + (X - Z)* h).z); // å³ä¸‹ç‚¹
+    glTexCoord2f(1.0, 1.0);
+    glVertex3f((pos + (X + Z)* h).x, (pos + (X + Z)* h).y, (pos + (X + Z)* h).z); // å³ä¸Šç‚¹
+    glTexCoord2f(0.0, 1.0);
+    glVertex3f((pos + (Z - X)* h).x, (pos + (Z - X)* h).y, (pos + (Z - X)* h).z); // å·¦ä¸Šç‚¹
+    glEnd();
+    glDisable(GL_ALPHA_TEST);
+    glDisable(GL_ALPHA);
+    glDisable(GL_BLEND);
+    glPopMatrix();
 }
 
 
 /****************************************************************/
-/* Function: Í¸Ã÷PNG ÎÆÀí¼ÓÔØ										*/
+/* Function: é€æ˜PNG çº¹ç†åŠ è½½                                       */
 /****************************************************************/
-void CMy3DSymbolLibNewView::LoadPNG(const char *fileName, GLuint &texture) 
-{  
-	glGenTextures(1, &texture);						// »ñÈ¡1¸öÎ´Ê¹ÓÃµÄÌùÍ¼Ãû³Æ
-	glBindTexture(GL_TEXTURE_2D, texture);			// Ñ¡ÔñÒª°ó¶¨µÄÌùÍ¼£¨ÎÆÀí£©
-
-	BITMAP bm; 
-	CImage img;										// ĞèÒªÍ·ÎÄ¼şatlimage.h 
-	HRESULT hr = img.Load(fileName); 
-	if ( !SUCCEEDED(hr) )							//ÎÄ¼ş¼ÓÔØÊ§°Ü 
-	{ 
-		MessageBox(NULL, "ÎÄ¼ş¼ÓÔØÊ§°Ü", MB_OK);
-	} 
-	HBITMAP hbmp = img; 
-	GetObject(hbmp, sizeof(bm), &bm);
-
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP); 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	glPixelStoref(GL_PACK_ALIGNMENT, 1); 
-
-	glTexImage2D(GL_TEXTURE_2D, 0, 4, bm.bmWidth, bm.bmHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE,bm.bmBits);	//ÕâÀï²»ÊÇGL_RGB,Ò»¶¨ÒªÉèÖÃ³É4ºÍGL_BGRA£¬·ñÔò²»ÄÜ±³¾°Í¸Ã÷£¬Ò»°ãµÄÎÆÀíÊÇÉèÖÃÎª3ºÍGL_BGR£¬ÕâÑù¾Í²»ÄÜÍ¸Ã÷»¯ÏÔÊ¾
+void CMy3DSymbolLibNewView::LoadPNG(const char* fileName, GLuint& texture) {
+    glGenTextures(1, &texture);                     // è·å–1ä¸ªæœªä½¿ç”¨çš„è´´å›¾åç§°
+    glBindTexture(GL_TEXTURE_2D, texture);          // é€‰æ‹©è¦ç»‘å®šçš„è´´å›¾ï¼ˆçº¹ç†ï¼‰
+    BITMAP bm;
+    CImage img;                                     // éœ€è¦å¤´æ–‡ä»¶atlimage.h
+    HRESULT hr = img.Load(fileName);
+    if (!SUCCEEDED(hr)) {                            //æ–‡ä»¶åŠ è½½å¤±è´¥
+        MessageBox(NULL, "æ–‡ä»¶åŠ è½½å¤±è´¥", MB_OK);
+    }
+    HBITMAP hbmp = img;
+    GetObject(hbmp, sizeof(bm), &bm);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glPixelStoref(GL_PACK_ALIGNMENT, 1);
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, bm.bmWidth, bm.bmHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, bm.bmBits); //è¿™é‡Œä¸æ˜¯GL_RGB,ä¸€å®šè¦è®¾ç½®æˆ4å’ŒGL_BGRAï¼Œå¦åˆ™ä¸èƒ½èƒŒæ™¯é€æ˜ï¼Œä¸€èˆ¬çš„çº¹ç†æ˜¯è®¾ç½®ä¸º3å’ŒGL_BGRï¼Œè¿™æ ·å°±ä¸èƒ½é€æ˜åŒ–æ˜¾ç¤º
 }
 
 
 /****************************************************************/
-/* Function: µ¼ÈëÌìÆøÔ¤±¨Í¼Æ¬ 									*/
+/* Function: å¯¼å…¥å¤©æ°”é¢„æŠ¥å›¾ç‰‡                                   */
 /****************************************************************/
-void CMy3DSymbolLibNewView::OnWeatherLoad()
-{
-	CString tt,stt;
-	FILE *fp;
-	CString weatherSymbolTexPath;
-
-	CString weatherFileFormat = ".bmp";
-
-	if(1)
-	{	
-		CDialogModelList dlg1;
-		dlg1.m_Dir = m_AllDataPath + "\\" + m_WeatherFolder;
-		dlg1.m_format = ".bmp";
-		dlg1.m_type = "Weather";
-
-		if(dlg1.DoModal() == IDOK)
-		{
-			CString selectItem = dlg1.m_selectItem;
-		
-
-			// ĞŞ¸ÄÁËÔ­³ÌĞòÔÚ±£´æ³¡¾°ÎÄ¼şÊ±Î´ÄÜ±£´æÌìÆøĞÅÏ¢µÄÎÊÌâ
-			m_WeatherTex = selectItem + weatherFileFormat;
-
-			weatherSymbolTexPath = dlg1.m_Dir + "\\" + selectItem + weatherFileFormat;
-		}
-		else
-			return;	
-
-		if((fp=fopen(weatherSymbolTexPath,"r"))==NULL)
-		{
-			MessageBox("ÌìÆø·ûºÅÎÄ¼ş²»´æÔÚ!","³õÊ¼»¯ÌìÆø·ûºÅ",MB_ICONINFORMATION+MB_OK);
-			exit(-1);
-		} 
-
-		char cc[256]; 
-		sprintf(cc,weatherSymbolTexPath);
-		LoadT8(cc,g_weatherTex); 
-		bIsWeatherLoad = true; 
-	}
+void CMy3DSymbolLibNewView::OnWeatherLoad() {
+    CString tt, stt;
+    FILE* fp;
+    CString weatherSymbolTexPath;
+    CString weatherFileFormat = ".bmp";
+    if (1) {
+        CDialogModelList dlg1;
+        dlg1.m_Dir = m_AllDataPath + "\\" + m_WeatherFolder;
+        dlg1.m_format = ".bmp";
+        dlg1.m_type = "Weather";
+        if (dlg1.DoModal() == IDOK) {
+            CString selectItem = dlg1.m_selectItem;
+            // ä¿®æ”¹äº†åŸç¨‹åºåœ¨ä¿å­˜åœºæ™¯æ–‡ä»¶æ—¶æœªèƒ½ä¿å­˜å¤©æ°”ä¿¡æ¯çš„é—®é¢˜
+            m_WeatherTex = selectItem + weatherFileFormat;
+            weatherSymbolTexPath = dlg1.m_Dir + "\\" + selectItem + weatherFileFormat;
+        } else
+            return;
+        if ((fp = fopen(weatherSymbolTexPath, "r")) == NULL) {
+            MessageBox("å¤©æ°”ç¬¦å·æ–‡ä»¶ä¸å­˜åœ¨!", "åˆå§‹åŒ–å¤©æ°”ç¬¦å·", MB_ICONINFORMATION + MB_OK);
+            exit(-1);
+        }
+        char cc[256];
+        sprintf(cc, weatherSymbolTexPath);
+        LoadT8(cc, g_weatherTex);
+        bIsWeatherLoad = true;
+    }
 }
 
 
 /****************************************************************/
-/* Function: ÏÔÊ¾ÌìÆøÍ¼±ê											*/
+/* Function: æ˜¾ç¤ºå¤©æ°”å›¾æ ‡                                           */
 /****************************************************************/
-void CMy3DSymbolLibNewView::ShowWeather()
-{
-	glPushAttrib(GL_CURRENT_BIT);					// ±£´æÏÖÓĞÑÕÉ«ÊôĞÔ
-	glPushMatrix();									// Ñ¹Èë¾ØÕó¶ÑÕ»
-	glEnable(GL_TEXTURE_2D);
-
-	float wh=50;									// ÉèÖÃÊ±ÖÓµÄ¸ß¶È
-	glViewport(WinViewX*5/6 -wh,  WinViewY - wh ,wh ,  wh);				// ÉèÖÃÊÓ¿ÚÎ»ÖÃºÍ´óĞ¡
-	glMatrixMode( GL_PROJECTION );					// ÉèÖÃµ±Ç°¾ØÕóÎªÍ¸ÊÓ¾ØÕó
-	glLoadIdentity();								// ½«µ±Ç°¾ØÕóÖÃ»»Îªµ¥Î»Õó 
-	glOrtho (0.0f,1.0,0.0f, 1.0f, -1.0f, 1.0f);
-	glMatrixMode( GL_MODELVIEW );					// ÉèÖÃµ±Ç°¾ØÕóÎªÄ£ĞÍ¾ØÕó
-	glLoadIdentity ();								// ½«µ±Ç°¾ØÕóÖÃ»»Îªµ¥Î»Õó 
-
-	// ÉèÖÃBACKÎÆÀí²ÎÊı
-	glBindTexture(GL_TEXTURE_2D, g_weatherTex);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);  
-
-	// ¿ªÊ¼»æÖÆ
-	glBegin(GL_QUADS);		
-	glTexCoord2f(1.0f, 0.0f); glVertex2f(1, 0);
-	glTexCoord2f(1.0f, 1.0f); glVertex2f(1, 1); 
-	glTexCoord2f(0.0f, 1.0f); glVertex2f(0, 1);
-	glTexCoord2f(0.0f, 0.0f); glVertex2f(0, 0);		
-	glEnd();
-
-	glPopMatrix();									// µ¯³ö¾ØÕó¶ÑÕ»
-	glPopAttrib();
-
-	glViewport(0 ,  0 ,  WinViewX ,  WinViewY);		//ÉèÖÃÊÓ¿Ú´óĞ¡ºÍÎ»ÖÃ
-	glMatrixMode(GL_PROJECTION); 
-	glLoadIdentity();          
-	gluPerspective(50.0 + m_ViewWideNarrow , (float)WinViewX/(float)WinViewY , m_near , m_far);		
-	glMatrixMode(GL_MODELVIEW);						// ¶¨Òå¾ØÕóÎªÄ£ĞÍÄ£ĞÍ¾ØÕó
-	glLoadIdentity();								// ½«µ±Ç°¾ØÕóÖÃ»»Îªµ¥Î»¾ØÕó   
+void CMy3DSymbolLibNewView::ShowWeather() {
+    glPushAttrib(GL_CURRENT_BIT);                   // ä¿å­˜ç°æœ‰é¢œè‰²å±æ€§
+    glPushMatrix();                                 // å‹å…¥çŸ©é˜µå †æ ˆ
+    glEnable(GL_TEXTURE_2D);
+    float wh = 50;                                  // è®¾ç½®æ—¶é’Ÿçš„é«˜åº¦
+    glViewport(WinViewX * 5 / 6 - wh,  WinViewY - wh , wh ,  wh);       // è®¾ç½®è§†å£ä½ç½®å’Œå¤§å°
+    glMatrixMode(GL_PROJECTION);                     // è®¾ç½®å½“å‰çŸ©é˜µä¸ºé€è§†çŸ©é˜µ
+    glLoadIdentity();                               // å°†å½“å‰çŸ©é˜µç½®æ¢ä¸ºå•ä½é˜µ
+    glOrtho(0.0f, 1.0, 0.0f, 1.0f, -1.0f, 1.0f);
+    glMatrixMode(GL_MODELVIEW);                      // è®¾ç½®å½“å‰çŸ©é˜µä¸ºæ¨¡å‹çŸ©é˜µ
+    glLoadIdentity();                               // å°†å½“å‰çŸ©é˜µç½®æ¢ä¸ºå•ä½é˜µ
+    // è®¾ç½®BACKçº¹ç†å‚æ•°
+    glBindTexture(GL_TEXTURE_2D, g_weatherTex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // å¼€å§‹ç»˜åˆ¶
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex2f(1, 0);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex2f(1, 1);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex2f(0, 1);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex2f(0, 0);
+    glEnd();
+    glPopMatrix();                                  // å¼¹å‡ºçŸ©é˜µå †æ ˆ
+    glPopAttrib();
+    glViewport(0 ,  0 ,  WinViewX ,  WinViewY);     //è®¾ç½®è§†å£å¤§å°å’Œä½ç½®
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(50.0 + m_ViewWideNarrow , (float)WinViewX / (float)WinViewY , m_near , m_far);
+    glMatrixMode(GL_MODELVIEW);                     // å®šä¹‰çŸ©é˜µä¸ºæ¨¡å‹æ¨¡å‹çŸ©é˜µ
+    glLoadIdentity();                               // å°†å½“å‰çŸ©é˜µç½®æ¢ä¸ºå•ä½çŸ©é˜µ
 }
 
-  
+
 /****************************************************************/
-/* Function: ²ÎÊıÉèÖÃ¶Ô»°¿òÄÚ±äÁ¿Ö±½ÓÈ«²¿¸³Öµ¸ø½á¹¹Ìå				*/
+/* Function: å‚æ•°è®¾ç½®å¯¹è¯æ¡†å†…å˜é‡ç›´æ¥å…¨éƒ¨èµ‹å€¼ç»™ç»“æ„ä½“               */
 /****************************************************************/
-void CMy3DSymbolLibNewView::C3DModelParamSetTOPModelStruct(C3DModelParamSet &model, PModelStruct &pStruct)
-{
-	pStruct->angle = model.angle;
-	pStruct->hPos = model.hPos;
-	pStruct->iDisplayType = model.iDisplayType;
-	//pStruct->iModelNum = model.
-	pStruct->iRotateX = model.iRotateX;
-	pStruct->iRotateY = model.iRotateY;
-	pStruct->iRotateZ = model.iRotateZ;
-	pStruct->isSelected = false;
-	pStruct->radiu = model.radiu;
-	pStruct->scale = model.scale;
-	//pStruct->strModelPath =
-	pStruct->xPos = model.xPos;
-	pStruct->zPos = model.zPos;
-} 
-void CMy3DSymbolLibNewView::C3DModelParamSetTOPModelStruct(C3DModelParamSet *model, PModelStruct &pStruct)
-{
-	pStruct->angle = model->angle;
-	pStruct->hPos = model->hPos;
-	pStruct->iDisplayType = model->iDisplayType;
-	pStruct->iRotateX = model->iRotateX;
-	pStruct->iRotateY = model->iRotateY;
-	pStruct->iRotateZ = model->iRotateZ;
-	pStruct->isSelected = false;
-	pStruct->radiu = model->radiu;
-	pStruct->scale = model->scale;
-	pStruct->xPos = model->xPos;
-	pStruct->zPos = model->zPos;
-} 
-
-
-/****************************************************************************/
-/* Function: µ¼Èë3DÁ¢Ìå¾°¹ÛÊ÷£¬ÊµÖÊÉÏÊÇ½«Æ½ÃæÊ÷ÎÆÀíÈÆYÖáĞı×ª90¶ÈÊµÏÖ¶ş´ÎÌùÎÆÀí	*/
-/****************************************************************************/
-void CMy3DSymbolLibNewView::On3dTreeLoad()
-{	
-	CString tt,stt;
-	FILE *fp;
-	CString treeTexPath;
-	CString treeFileFormat = ".BMP";
-
-	if(m_i3DTreeModelNum < 50)
-	{
-		CDialogModelList dlg1;
-		dlg1.m_Dir = m_AllDataPath + "\\" + m_TreeModelFolder;
-		dlg1.m_format = ".bmp";
-		dlg1.m_type = "3DTree";
-
-		if(dlg1.DoModal() == IDOK)
-		{
-			CString selectItem = dlg1.m_selectItem;
-			treeTexPath = dlg1.m_Dir + "\\" + selectItem + treeFileFormat;
-		}
-		else
-			return;	
-
-		if((fp=fopen(treeTexPath,"r"))==NULL)
-		{
-			MessageBox("¾°¹ÛÊ÷ÎÄ¼ş²»´æÔÚ!","³õÊ¼»¯¾°¹ÛÊ÷Ä£ĞÍ",MB_ICONINFORMATION+MB_OK);
-			exit(-1);
-		}
-
-		p3dtree = new CModelStruct;
-		p3dtree->iModelNum = m_i3DTreeModelNum;
-		p3dtree->strModelPath = treeTexPath;
-
-
-
-		// ·ÇÄ£Ê½¶Ô»°¿ò
-		paramSet_modeless_dlg = new C3DModelParamSet(this);
-		paramSet_modeless_dlg->Create();
-		paramSet_modeless_dlg->CenterWindow();
-		
-
-		paramSet_modeless_dlg->m_strTitle = "¾°¹ÛÊ÷Ä£ĞÍ  ²ÎÊı³õÊ¼»¯";
-
-		paramSet_modeless_dlg->m_modeParam.type = "3dtree";
-
-		paramSet_modeless_dlg->ShowWindow(SW_SHOW);
-
-	} 
-	else
-	{
-		MessageBox("Ê÷Ä¾µÄ´óĞ¡³¬³öÁË50!");
-	}
-} 
-
-
-/****************************************************************************/
-/* Function: ×Ô¶¨ÒåÏûÏ¢ÏìÓ¦,·ÇÄ£Ê½¶Ô»°¿ò(·Ç3DSÄ£ĞÍ²ÎÊı¶Ô»°¿ò)					*/
-/****************************************************************************/
-LRESULT CMy3DSymbolLibNewView::OnGoodBye(WPARAM wParam,LPARAM lParam)
-{
-	// È·¶¨
-	if(wParam == IDOK)
-	{	
-		if(paramSet_modeless_dlg->m_modeParam.type == "3dtree")
-		{
-			C3DModelParamSetTOPModelStruct(paramSet_modeless_dlg, p3dtree);
-
-			m_3DTreeModel.Add(p3dtree); 
-
-			char cc[256]; 
-			sprintf(cc,p3dtree->strModelPath);
-			LoadT16(cc,g_cactus3DTree[m_i3DTreeModelNum]); 
-			m_i3DTreeModelNum ++;
-
-			paramSet_modeless_dlg->DestroyWindow();
-
-			m_isSetXYByMouse = 0;
-		}
-		else if(paramSet_modeless_dlg->m_modeParam.type == "tree")
-		{
-			C3DModelParamSetTOPModelStruct(paramSet_modeless_dlg, ptree);
-
-			m_TreeModel.Add(ptree); 
-
-			char cc[256]; 
-			sprintf(cc,ptree->strModelPath);
-			LoadT16(cc,g_cactus[m_iTreeModelNum]); 
-
-			m_iTreeModelNum ++;
-
-			paramSet_modeless_dlg->DestroyWindow();
-
-			m_isSetXYByMouse = 0;
-		}
-		else if(paramSet_modeless_dlg->m_modeParam.type == "CitySymbol")
-		{
-			C3DModelParamSetTOPModelStruct(paramSet_modeless_dlg, pCitySymbol);
-
-			m_CitySymbolModel.Add(pCitySymbol); 
-
-			char cc[256]; 
-			sprintf(cc,pCitySymbol->strModelPath);
-			LoadPNG(cc, g_citySymbolTex[m_iCitySymbolModelNum]);
-
-			m_iCitySymbolModelNum ++;
-
-			paramSet_modeless_dlg->DestroyWindow();
-
-			m_isSetXYByMouse = 0;
-		}
-	}
-	// È¡Ïû
-	else if(wParam == IDCANCEL)
-	{
-		paramSet_modeless_dlg->DestroyWindow();
-		m_isSetXYByMouse = 0;
-	}
-	// checkboxÑ¡ÖĞ×´Ì¬
-	else if(wParam == SET_XY_BY_MOUSE_TRUE)
-	{
-		m_isSetXYByMouse = paramSet_modeless_dlg->isSetXYByMouse;
-	}
-	// checkbox·ÇÑ¡ÖĞ×´Ì¬
-	else if(wParam == SET_XY_BY_MOUSE_FALSE)
-	{
-		m_isSetXYByMouse = paramSet_modeless_dlg->isSetXYByMouse; 
-	}
-
-	return 0L;
+void CMy3DSymbolLibNewView::C3DModelParamSetTOPModelStruct(C3DModelParamSet& model, PModelStruct& pStruct) {
+    pStruct->angle = model.angle;
+    pStruct->hPos = model.hPos;
+    pStruct->iDisplayType = model.iDisplayType;
+    // pStruct->iModelNum = model.
+    pStruct->iRotateX = model.iRotateX;
+    pStruct->iRotateY = model.iRotateY;
+    pStruct->iRotateZ = model.iRotateZ;
+    pStruct->isSelected = false;
+    pStruct->radiu = model.radiu;
+    pStruct->scale = model.scale;
+    // pStruct->strModelPath =
+    pStruct->xPos = model.xPos;
+    pStruct->zPos = model.zPos;
+}
+void CMy3DSymbolLibNewView::C3DModelParamSetTOPModelStruct(C3DModelParamSet* model, PModelStruct& pStruct) {
+    pStruct->angle = model->angle;
+    pStruct->hPos = model->hPos;
+    pStruct->iDisplayType = model->iDisplayType;
+    pStruct->iRotateX = model->iRotateX;
+    pStruct->iRotateY = model->iRotateY;
+    pStruct->iRotateZ = model->iRotateZ;
+    pStruct->isSelected = false;
+    pStruct->radiu = model->radiu;
+    pStruct->scale = model->scale;
+    pStruct->xPos = model->xPos;
+    pStruct->zPos = model->zPos;
 }
 
 
 /****************************************************************************/
-/* Function: ÏÔÊ¾3DÁ¢Ìå¾°¹ÛÊ÷													*/
+/* Function: å¯¼å…¥3Dç«‹ä½“æ™¯è§‚æ ‘ï¼Œå®è´¨ä¸Šæ˜¯å°†å¹³é¢æ ‘çº¹ç†ç»•Yè½´æ—‹è½¬90åº¦å®ç°äºŒæ¬¡è´´çº¹ç†  */
 /****************************************************************************/
-void CMy3DSymbolLibNewView::Show3DTree(int i)
-{ 
-	float x, y, z;
-	x = m_3DTreeModel.GetAt(i)->xPos;
-	z = m_3DTreeModel.GetAt(i)->zPos;
-	float h = 3;
-
-	glPushMatrix();  
-	y = GetHeight(x,z) + m_3DTreeModel.GetAt(i)->hPos + h;
-
-	glTranslatef(x,y, z); 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0);
-	glBindTexture(GL_TEXTURE_2D, g_cactus3DTree[i]); 
-
-	glPushMatrix();
-	glBegin(GL_QUADS); 
-	glTexCoord2f(1.0f, 0.0f); glVertex3f( h, 0, 0.0f);		// ÓÒÉÏµã
-	glTexCoord2f(0.0f, 0.0f); glVertex3f( 0, 0, 0.0f);		// ÓÒÉÏµã
-	glTexCoord2f(0.0f, 1.0f); glVertex3f( 0, h, 0.0f);		// ÓÒÏÂµã
-	glTexCoord2f(1.0f, 1.0f); glVertex3f( h, h, 0.0f);		// ×óÏÂµã
-	glEnd();
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(h/2,0, h/2); // ½«×ø±êÒÆµ½Ê÷¸ÉÖĞĞÄÎ»ÖÃ£¬½øĞĞĞı×ª£¬Éú³ÉÁ¢Ìå¾°¹ÛÊ÷
-	glRotated(90,0,1,0);
-	glBegin(GL_QUADS); 
-	glTexCoord2f(1.0f, 0.0f); glVertex3f( h, 0, 0.0f);		// ÓÒÉÏµã
-	glTexCoord2f(0.0f, 0.0f); glVertex3f( 0, 0, 0.0f);		// ÓÒÉÏµã
-	glTexCoord2f(0.0f, 1.0f); glVertex3f( 0, h, 0.0f);		// ÓÒÏÂµã
-	glTexCoord2f(1.0f, 1.0f); glVertex3f( h, h, 0.0f);		// ×óÏÂµã
-	glEnd();
-	glPopMatrix();
-	glDisable(GL_ALPHA);
-	glDisable(GL_BLEND);
-	glPopMatrix();
+void CMy3DSymbolLibNewView::On3dTreeLoad() {
+    CString tt, stt;
+    FILE* fp;
+    CString treeTexPath;
+    CString treeFileFormat = ".BMP";
+    if (m_i3DTreeModelNum < 50) {
+        CDialogModelList dlg1;
+        dlg1.m_Dir = m_AllDataPath + "\\" + m_TreeModelFolder;
+        dlg1.m_format = ".bmp";
+        dlg1.m_type = "3DTree";
+        if (dlg1.DoModal() == IDOK) {
+            CString selectItem = dlg1.m_selectItem;
+            treeTexPath = dlg1.m_Dir + "\\" + selectItem + treeFileFormat;
+        } else
+            return;
+        if ((fp = fopen(treeTexPath, "r")) == NULL) {
+            MessageBox("æ™¯è§‚æ ‘æ–‡ä»¶ä¸å­˜åœ¨!", "åˆå§‹åŒ–æ™¯è§‚æ ‘æ¨¡å‹", MB_ICONINFORMATION + MB_OK);
+            exit(-1);
+        }
+        p3dtree = new CModelStruct;
+        p3dtree->iModelNum = m_i3DTreeModelNum;
+        p3dtree->strModelPath = treeTexPath;
+        // éæ¨¡å¼å¯¹è¯æ¡†
+        paramSet_modeless_dlg = new C3DModelParamSet(this);
+        paramSet_modeless_dlg->Create();
+        paramSet_modeless_dlg->CenterWindow();
+        paramSet_modeless_dlg->m_strTitle = "æ™¯è§‚æ ‘æ¨¡å‹  å‚æ•°åˆå§‹åŒ–";
+        paramSet_modeless_dlg->m_modeParam.type = "3dtree";
+        paramSet_modeless_dlg->ShowWindow(SW_SHOW);
+    } else {
+        MessageBox("æ ‘æœ¨çš„å¤§å°è¶…å‡ºäº†50!");
+    }
 }
 
 
 /****************************************************************************/
-/* Function: ¹öÂÖËõ·Å,µ±Ñ¡ÖĞÄ³¸öÄ£ĞÍÊ±¾Í¶ÔÄ£ĞÍ½øĞĞËõ·Å£¬·ñÔòÊÇËõ·ÅÕû¸öÊÓ¾°´°¿Ú	*/
+/* Function: è‡ªå®šä¹‰æ¶ˆæ¯å“åº”,éæ¨¡å¼å¯¹è¯æ¡†(é3DSæ¨¡å‹å‚æ•°å¯¹è¯æ¡†)                   */
 /****************************************************************************/
-BOOL CMy3DSymbolLibNewView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
-{
-	// Ëõ·ÅÑ¡ÖĞÄ£ĞÍ´óĞ¡
-	if(m_OperateType == SCALE)
-	{
-		if(m_selectedModelID != -1) // µ±Ç°Êó±êÊ°È¡Ä³¸öÄ£ĞÍ
-		{
-			// Ëõ·ÅÕû¸öÊÓ¾°´°¿Ú
-			if (zDelta > 0)			//ÏòÇ°¹ö¶¯£¬·Å´ó
-			{
-				m_3DModel.GetAt(m_selectedModelID)->scale *= 1.1;
-			}
-			else if (zDelta < 0)
-			{
-				float oldScale = m_3DModel.GetAt(m_selectedModelID)->scale;
-				m_3DModel.GetAt(m_selectedModelID)->scale *= 0.9;
-				if(m_3DModel.GetAt(m_selectedModelID)->scale <= 0)
-				{
-					m_3DModel.GetAt(m_selectedModelID)->scale = oldScale;
-				}
-			}
-		}
-	}
-	else
-	{
-		// Ëõ·ÅÕû¸öÊÓ¾°´°¿Ú
-		if (zDelta > 0)				//ÏòÇ°¹ö¶¯£¬·Å´ó
-		{
-			m_ViewWideNarrow += ((zDelta/120)+0.1);
-		}
-		else if (zDelta < 0)
-		{
-			zDelta = - zDelta;
-			m_ViewWideNarrow -= ( ( zDelta/120)-0.1);
-		}
-	}
-
-	InvalidateRect(NULL,false);
-	return CView::OnMouseWheel(nFlags, zDelta, pt);
+LRESULT CMy3DSymbolLibNewView::OnGoodBye(WPARAM wParam, LPARAM lParam) {
+    // ç¡®å®š
+    if (wParam == IDOK) {
+        if (paramSet_modeless_dlg->m_modeParam.type == "3dtree") {
+            C3DModelParamSetTOPModelStruct(paramSet_modeless_dlg, p3dtree);
+            m_3DTreeModel.Add(p3dtree);
+            char cc[256];
+            sprintf(cc, p3dtree->strModelPath);
+            LoadT16(cc, g_cactus3DTree[m_i3DTreeModelNum]);
+            m_i3DTreeModelNum ++;
+            paramSet_modeless_dlg->DestroyWindow();
+            m_isSetXYByMouse = 0;
+        } else if (paramSet_modeless_dlg->m_modeParam.type == "tree") {
+            C3DModelParamSetTOPModelStruct(paramSet_modeless_dlg, ptree);
+            m_TreeModel.Add(ptree);
+            char cc[256];
+            sprintf(cc, ptree->strModelPath);
+            LoadT16(cc, g_cactus[m_iTreeModelNum]);
+            m_iTreeModelNum ++;
+            paramSet_modeless_dlg->DestroyWindow();
+            m_isSetXYByMouse = 0;
+        } else if (paramSet_modeless_dlg->m_modeParam.type == "CitySymbol") {
+            C3DModelParamSetTOPModelStruct(paramSet_modeless_dlg, pCitySymbol);
+            m_CitySymbolModel.Add(pCitySymbol);
+            char cc[256];
+            sprintf(cc, pCitySymbol->strModelPath);
+            LoadPNG(cc, g_citySymbolTex[m_iCitySymbolModelNum]);
+            m_iCitySymbolModelNum ++;
+            paramSet_modeless_dlg->DestroyWindow();
+            m_isSetXYByMouse = 0;
+        }
+    }
+    // å–æ¶ˆ
+    else if (wParam == IDCANCEL) {
+        paramSet_modeless_dlg->DestroyWindow();
+        m_isSetXYByMouse = 0;
+    }
+    // checkboxé€‰ä¸­çŠ¶æ€
+    else if (wParam == SET_XY_BY_MOUSE_TRUE) {
+        m_isSetXYByMouse = paramSet_modeless_dlg->isSetXYByMouse;
+    }
+    // checkboxéé€‰ä¸­çŠ¶æ€
+    else if (wParam == SET_XY_BY_MOUSE_FALSE) {
+        m_isSetXYByMouse = paramSet_modeless_dlg->isSetXYByMouse;
+    }
+    return 0L;
 }
 
 
-// ÅĞ¶ÏÉäÏßÓëAABB°üÎ§ºĞÊÇ·ñÏà½»£¬ÒÔ´ËÀ´ÅĞ¶ÏÊÇ·ñÓë³¡¾°ÖĞÁ¢ÌåÄ£ĞÍÏà½»£¬Í¬Ê±ĞèÒªÁíÒ»¸ö¼ì²âÊÇ·ñÓëÆ½ÃæÄ£ĞÍÏà½»
-/* 
-* WooÌá³öµÄ·½·¨£¬ÏÈÅĞ¶Ï¾ØĞÎ±ß½ç¿òµÄÄÄ¸öÃæ»áÏà½»£¬ 
-* ÔÙ¼ì²âÉäÏßÓë°üº¬Õâ¸öÃæµÄÆ½ÃæµÄÏà½»ĞÔ¡£ 
-* Èç¹û½»µãÔÚºĞ×ÓÖĞ£¬ÄÇÃ´ÉäÏßÓë¾ØĞÎ±ß½ç¿òÏà½»£¬ 
-* ·ñÔò²»´æÔÚÏà½»  
-*/  
-//ºÍ²ÎÊıÉäÏßµÄÏà½»ĞÔ²âÊÔ£¬Èç¹û²»Ïà½»Ôò·µ»ØÖµÊÇÒ»¸ö·Ç³£´óµÄÊı(´óÓÚ1)  
-//Èç¹ûÏà½»£¬·µ»ØÏà½»Ê±¼ät  
-//tÎª0-1Ö®¼äµÄÖµ  
+/****************************************************************************/
+/* Function: æ˜¾ç¤º3Dç«‹ä½“æ™¯è§‚æ ‘                                                   */
+/****************************************************************************/
+void CMy3DSymbolLibNewView::Show3DTree(int i) {
+    float x, y, z;
+    x = m_3DTreeModel.GetAt(i)->xPos;
+    z = m_3DTreeModel.GetAt(i)->zPos;
+    float h = 3;
+    glPushMatrix();
+    y = GetHeight(x, z) + m_3DTreeModel.GetAt(i)->hPos + h;
+    glTranslatef(x, y, z);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0);
+    glBindTexture(GL_TEXTURE_2D, g_cactus3DTree[i]);
+    glPushMatrix();
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(h, 0, 0.0f);        // å³ä¸Šç‚¹
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(0, 0, 0.0f);        // å³ä¸Šç‚¹
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(0, h, 0.0f);        // å³ä¸‹ç‚¹
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(h, h, 0.0f);        // å·¦ä¸‹ç‚¹
+    glEnd();
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(h / 2, 0, h / 2); // å°†åæ ‡ç§»åˆ°æ ‘å¹²ä¸­å¿ƒä½ç½®ï¼Œè¿›è¡Œæ—‹è½¬ï¼Œç”Ÿæˆç«‹ä½“æ™¯è§‚æ ‘
+    glRotated(90, 0, 1, 0);
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(h, 0, 0.0f);        // å³ä¸Šç‚¹
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(0, 0, 0.0f);        // å³ä¸Šç‚¹
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(0, h, 0.0f);        // å³ä¸‹ç‚¹
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(h, h, 0.0f);        // å·¦ä¸‹ç‚¹
+    glEnd();
+    glPopMatrix();
+    glDisable(GL_ALPHA);
+    glDisable(GL_BLEND);
+    glPopMatrix();
+}
+
+
+/****************************************************************************/
+/* Function: æ»šè½®ç¼©æ”¾,å½“é€‰ä¸­æŸä¸ªæ¨¡å‹æ—¶å°±å¯¹æ¨¡å‹è¿›è¡Œç¼©æ”¾ï¼Œå¦åˆ™æ˜¯ç¼©æ”¾æ•´ä¸ªè§†æ™¯çª—å£  */
+/****************************************************************************/
+BOOL CMy3DSymbolLibNewView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) {
+    // ç¼©æ”¾é€‰ä¸­æ¨¡å‹å¤§å°
+    if (m_OperateType == SCALE) {
+        if (m_selectedModelID != -1) {  // å½“å‰é¼ æ ‡æ‹¾å–æŸä¸ªæ¨¡å‹
+            // ç¼©æ”¾æ•´ä¸ªè§†æ™¯çª—å£
+            if (zDelta > 0) {       // å‘å‰æ»šåŠ¨ï¼Œæ”¾å¤§
+                m_3DModel.GetAt(m_selectedModelID)->scale *= 1.1;
+            } else if (zDelta < 0) {
+                float oldScale = m_3DModel.GetAt(m_selectedModelID)->scale;
+                m_3DModel.GetAt(m_selectedModelID)->scale *= 0.9;
+                if (m_3DModel.GetAt(m_selectedModelID)->scale <= 0) {
+                    m_3DModel.GetAt(m_selectedModelID)->scale = oldScale;
+                }
+            }
+        }
+    } else {
+        // ç¼©æ”¾æ•´ä¸ªè§†æ™¯çª—å£
+        if (zDelta > 0) {           //å‘å‰æ»šåŠ¨ï¼Œæ”¾å¤§
+            m_ViewWideNarrow += ((zDelta / 120) + 0.1);
+        } else if (zDelta < 0) {
+            zDelta = - zDelta;
+            m_ViewWideNarrow -= ((zDelta / 120) - 0.1);
+        }
+    }
+    InvalidateRect(NULL, false);
+    return CView::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+
+// åˆ¤æ–­å°„çº¿ä¸AABBåŒ…å›´ç›’æ˜¯å¦ç›¸äº¤ï¼Œä»¥æ­¤æ¥åˆ¤æ–­æ˜¯å¦ä¸åœºæ™¯ä¸­ç«‹ä½“æ¨¡å‹ç›¸äº¤ï¼ŒåŒæ—¶éœ€è¦å¦ä¸€ä¸ªæ£€æµ‹æ˜¯å¦ä¸å¹³é¢æ¨¡å‹ç›¸äº¤
+/*
+* Wooæå‡ºçš„æ–¹æ³•ï¼Œå…ˆåˆ¤æ–­çŸ©å½¢è¾¹ç•Œæ¡†çš„å“ªä¸ªé¢ä¼šç›¸äº¤ï¼Œ
+* å†æ£€æµ‹å°„çº¿ä¸åŒ…å«è¿™ä¸ªé¢çš„å¹³é¢çš„ç›¸äº¤æ€§ã€‚
+* å¦‚æœäº¤ç‚¹åœ¨ç›’å­ä¸­ï¼Œé‚£ä¹ˆå°„çº¿ä¸çŸ©å½¢è¾¹ç•Œæ¡†ç›¸äº¤ï¼Œ
+* å¦åˆ™ä¸å­˜åœ¨ç›¸äº¤
+*/
+// å’Œå‚æ•°å°„çº¿çš„ç›¸äº¤æ€§æµ‹è¯•ï¼Œå¦‚æœä¸ç›¸äº¤åˆ™è¿”å›å€¼æ˜¯ä¸€ä¸ªéå¸¸å¤§çš„æ•°(å¤§äº1)
+// å¦‚æœç›¸äº¤ï¼Œè¿”å›ç›¸äº¤æ—¶é—´t
+// tä¸º0-1ä¹‹é—´çš„å€¼
 float CMy3DSymbolLibNewView::RayIntersect(
-	CVector3 rayStart,					// ÉäÏßÆğµã  
-	CVector3 rayDir,					// ÉäÏß³¤¶ÈºÍ·½Ïò  
-	CVector3 returnNormal,				// ¿ÉÑ¡µÄ£¬Ïà½»µã´¦·¨ÏòÁ¿  
-	CVector3 min,
-	CVector3 max
-	){  
-		//Èç¹ûÎ´Ïà½»Ôò·µ»ØÕâ¸ö´óÊı  
-		/*final*/const float kNoIntersection = 1e30f;  
-		//¼ì²éµãÔÚ¾ØĞÎ±ß½çÄÚµÄÇé¿ö£¬²¢¼ÆËãµ½Ã¿¸öÃæµÄ¾àÀë  
-		bool inside = true;//µãÔÚ¾ØĞÎ±ß½çÄÚµÄÇé¿ö,ÊÇÖ¸ÉäÏßÆğµãÔÚ±ß½çÄÚÃ´£¿  
-		float xt, xn = 0.0f;  
-		if(rayStart.x<min.x){//Èç¹ûÉäÏßµÄÆğµãÔÚ×ó±ß½çÒÔ×ó  
-			xt = min.x - rayStart.x;//ÇóµÃ´ÓÉäÏßÆğµãµ½×ó±ß½çµÄÏòÁ¿µÄx·ÖÁ¿  
-			if(xt>rayDir.x){ return kNoIntersection; }//Èç¹ûÉäÏß¸üÆ«×óÔòÎŞ·¨Ïà½»  
-			//ÕâÀïÊÇÊ²Ã´ÒâË¼£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿  
-			//ÎÒÏë×ÅÊÇÓĞÊ²Ã´¼¸ºÎÒâÒå°É£¬ÓĞÄÄÎ»¸ßÈËÖªµÀ£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿  
-			//ÊÇÖ¸´ÓÉäÏßÆğµãµ½ÎïÌå°üÎ§ºĞ±ß½ç´¦ÏòÁ¿Æ«ÒÆÉäÏß·½ÏòµÄ±ÈÀıÃ´£¿£¿£¿£¿£¿  
-			xt /= rayDir.x;  
-			inside = false;//ÊÇÖ¸ÉäÏßµÄÆğµã²»ÔÚ¾ØĞÎ±ß½çÄÚÃ´£¿  
-			xn = -1.0f;  
-		}  
-		else if(rayStart.x>max.x){//Èç¹ûÉäÏßµÄÆğµãÔÚ×ó±ß½çÒÔÓÒ  
-			xt = max.x - rayStart.x;//ÇóµÃ´ÓÉäÏßÆğµãµ½ÓÒ±ß½çµÄxt  
-			if(xt<rayDir.x){ return kNoIntersection; }//Èç¹ûÉäÏß¸üÆ«ÓÒÔòÎŞ·¨Ïà½»  
-			xt /= rayDir.x;  
-			inside = false;  
-			xn = 1.0f;  
-		}  
-		else{  
-			xt = -1.0f;//ÊÇÖ¸ÉäÏßÆğµãÔÚÎïÌå°üÎ§ºĞÄÚÃ´£¿  
-		}  
-
-		float yt, yn = 0.0f;  
-		if(rayStart.y<min.y){  
-			yt = min.y - rayStart.y;  
-			if(yt>rayDir.y){ return kNoIntersection; }  
-			yt /= rayDir.y;  
-			inside = false;  
-			yn = -1.0f;  
-		}  
-		else if(rayStart.y>max.y){  
-			yt = max.y - rayStart.y;  
-			if(yt<rayDir.y){ return kNoIntersection; }  
-			yt /= rayDir.y;  
-			inside = false;  
-			yn = 1.0f;  
-		}  
-		else{  
-			yt = -1.0f;  
-		}  
-
-		float zt, zn = 0.0f;  
-		if(rayStart.z<min.z){  
-			zt = min.z - rayStart.z;  
-			if(zt>rayDir.z){ return kNoIntersection; }  
-			zt /= rayDir.z;  
-			inside = false;  
-			zn = -1.0f;  
-		}  
-		else if(rayStart.z>max.z){  
-			zt = max.z - rayStart.z;  
-			if(zt<rayDir.z){ return kNoIntersection; }  
-			zt /= rayDir.z;  
-			inside = false;  
-			zn = 1.0f;  
-		}  
-		else{  
-			zt = -1.0f;  
-		}  
-		//ÊÇ·ñÔÚ¾ØĞÎ±ß½ç¿òÄÚ£¿  
-		if(inside){  
-			/*if(returnNormal != NULL){  */
-			//returnNormal = rayDir.multiK(-1);  
-			//returnNormal.normalize();  
-			returnNormal = CVector3(0,0,0) - rayDir;
-			Normalize(returnNormal);
-
-			/*	}  */
-			return 0.0f;//ÆğµãÔÚ¾ØĞÎ±ß½ç¿òÄÚ£¬È·¶¨Ïà½»Ê±¼ä×î¶Ì£¿  
-		}  
-		//Ñ¡Ôñ×îÔ¶µÄÆ½Ãæ¡ª¡ª¡ª¡ª·¢ÉúÏà½»µÄµØ·½  
-		int which = 0;  
-		float t = xt;//Ñ¡Ôñ×îÔ¶µÄÆ½ÃæÊÇÊ²Ã´ÒâË¼£¿ÊÇÖ¸ÉäÏß·½ÏòÆ«ÒÆÎïÌå°üÎ§ºĞ±ß½ç×îÔ¶Ã´£¿£¨×îÔ¶ÊÇÖ¸Óë°üÎ§ºĞÄ³ÃæÖĞµãÏà½»£¿£©  
-		if(yt>t){  
-			which = 1;  
-			t=yt;  
-		}  
-		if(zt>t){  
-			which = 2;  
-			t=zt;  
-		}  
-		switch(which){  
-		case 0://ºÍyzÆ½ÃæÏà½»  
-			{  
-				float y=rayStart.y+rayDir.y*t;//´ËÊ± t = xt£¬xt /= rayDir.x;´Ë´¦ÓÖÊÇÊ²Ã´ÒâË¼£¿ 
-				if(y<min.y||y>max.y){return kNoIntersection;}  
-				float z=rayStart.z+rayDir.z*t;  
-				if(z<min.z||z>max.z){return kNoIntersection;}  
-				//if(/*returnNormal != NULL*/){  
-				returnNormal.x = xn;  
-				returnNormal.y = 0.0f;  
-				returnNormal.z = 0.0f;  
-				/*} */                
-			}  
-			break;  
-		case 1://ºÍxzÆ½ÃæÏà½»  
-			{  
-				float x=rayStart.x+rayDir.x*t;  
-				if(x<min.x||x>max.x){return kNoIntersection;}  
-				float z=rayStart.z+rayDir.z*t;  
-				if(z<min.z||z>max.z){return kNoIntersection;}  
-				/*	if(returnNormal != NULL){  */
-				returnNormal.x = 0.0f;  
-				returnNormal.y = yn;  
-				returnNormal.z = 0.0f;  
-				/*	}      */           
-			}  
-			break;  
-		case 2://ºÍxyÆ½ÃæÏà½»  
-			{  
-				float x=rayStart.x+rayDir.x*t;  
-				if(x<min.x||x>max.x){return kNoIntersection;}  
-				float y=rayStart.y+rayDir.y*t;  
-				if(y<min.y||y>max.y){return kNoIntersection;}  
-				/*if(returnNormal != NULL){*/  
-				returnNormal.x = 0.0f;  
-				returnNormal.y = 0.0f;  
-				returnNormal.z = zn;  
-				/*} */                
-			}  
-			break;  
-		}  
-		return t;//·µ»ØÏà½»µã²ÎÊıÖµ  
-}  
+    CVector3 rayStart,                  // å°„çº¿èµ·ç‚¹
+    CVector3 rayDir,                    // å°„çº¿é•¿åº¦å’Œæ–¹å‘
+    CVector3 returnNormal,              // å¯é€‰çš„ï¼Œç›¸äº¤ç‚¹å¤„æ³•å‘é‡
+    CVector3 min,
+    CVector3 max
+) {
+    // å¦‚æœæœªç›¸äº¤åˆ™è¿”å›è¿™ä¸ªå¤§æ•°
+    /*final*/const float kNoIntersection = 1e30f;
+    // æ£€æŸ¥ç‚¹åœ¨çŸ©å½¢è¾¹ç•Œå†…çš„æƒ…å†µï¼Œå¹¶è®¡ç®—åˆ°æ¯ä¸ªé¢çš„è·ç¦»
+    bool inside = true;//ç‚¹åœ¨çŸ©å½¢è¾¹ç•Œå†…çš„æƒ…å†µ,æ˜¯æŒ‡å°„çº¿èµ·ç‚¹åœ¨è¾¹ç•Œå†…ä¹ˆï¼Ÿ
+    float xt, xn = 0.0f;
+    if (rayStart.x < min.x) {  // å¦‚æœå°„çº¿çš„èµ·ç‚¹åœ¨å·¦è¾¹ç•Œä»¥å·¦
+        xt = min.x - rayStart.x;  // æ±‚å¾—ä»å°„çº¿èµ·ç‚¹åˆ°å·¦è¾¹ç•Œçš„å‘é‡çš„xåˆ†é‡
+        if (xt > rayDir.x) {
+            return kNoIntersection;    //å¦‚æœå°„çº¿æ›´åå·¦åˆ™æ— æ³•ç›¸äº¤
+        }
+        // è¿™é‡Œæ˜¯ä»€ä¹ˆæ„æ€ï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿ
+        // æˆ‘æƒ³ç€æ˜¯æœ‰ä»€ä¹ˆå‡ ä½•æ„ä¹‰å§ï¼Œæœ‰å“ªä½é«˜äººçŸ¥é“ï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿ
+        // æ˜¯æŒ‡ä»å°„çº¿èµ·ç‚¹åˆ°ç‰©ä½“åŒ…å›´ç›’è¾¹ç•Œå¤„å‘é‡åç§»å°„çº¿æ–¹å‘çš„æ¯”ä¾‹ä¹ˆï¼Ÿï¼Ÿï¼Ÿï¼Ÿï¼Ÿ
+        xt /= rayDir.x;
+        inside = false;  // æ˜¯æŒ‡å°„çº¿çš„èµ·ç‚¹ä¸åœ¨çŸ©å½¢è¾¹ç•Œå†…ä¹ˆï¼Ÿ
+        xn = -1.0f;
+    } else if (rayStart.x > max.x) {  // å¦‚æœå°„çº¿çš„èµ·ç‚¹åœ¨å·¦è¾¹ç•Œä»¥å³
+        xt = max.x - rayStart.x; // æ±‚å¾—ä»å°„çº¿èµ·ç‚¹åˆ°å³è¾¹ç•Œçš„xt
+        if (xt < rayDir.x) {
+            return kNoIntersection;    // å¦‚æœå°„çº¿æ›´åå³åˆ™æ— æ³•ç›¸äº¤
+        }
+        xt /= rayDir.x;
+        inside = false;
+        xn = 1.0f;
+    } else {
+        xt = -1.0f;  // æ˜¯æŒ‡å°„çº¿èµ·ç‚¹åœ¨ç‰©ä½“åŒ…å›´ç›’å†…ä¹ˆï¼Ÿ
+    }
+    float yt, yn = 0.0f;
+    if (rayStart.y < min.y) {
+        yt = min.y - rayStart.y;
+        if (yt > rayDir.y) {
+            return kNoIntersection;
+        }
+        yt /= rayDir.y;
+        inside = false;
+        yn = -1.0f;
+    } else if (rayStart.y > max.y) {
+        yt = max.y - rayStart.y;
+        if (yt < rayDir.y) {
+            return kNoIntersection;
+        }
+        yt /= rayDir.y;
+        inside = false;
+        yn = 1.0f;
+    } else {
+        yt = -1.0f;
+    }
+    float zt, zn = 0.0f;
+    if (rayStart.z < min.z) {
+        zt = min.z - rayStart.z;
+        if (zt > rayDir.z) {
+            return kNoIntersection;
+        }
+        zt /= rayDir.z;
+        inside = false;
+        zn = -1.0f;
+    } else if (rayStart.z > max.z) {
+        zt = max.z - rayStart.z;
+        if (zt < rayDir.z) {
+            return kNoIntersection;
+        }
+        zt /= rayDir.z;
+        inside = false;
+        zn = 1.0f;
+    } else {
+        zt = -1.0f;
+    }
+    // æ˜¯å¦åœ¨çŸ©å½¢è¾¹ç•Œæ¡†å†…ï¼Ÿ
+    if (inside) {
+        /*if(returnNormal != NULL){  */
+        // returnNormal = rayDir.multiK(-1);
+        // returnNormal.normalize();
+        returnNormal = CVector3(0, 0, 0) - rayDir;
+        Normalize(returnNormal);
+        /*  }  */
+        return 0.0f;  // èµ·ç‚¹åœ¨çŸ©å½¢è¾¹ç•Œæ¡†å†…ï¼Œç¡®å®šç›¸äº¤æ—¶é—´æœ€çŸ­ï¼Ÿ
+    }
+    // é€‰æ‹©æœ€è¿œçš„å¹³é¢â€”â€”â€”â€”å‘ç”Ÿç›¸äº¤çš„åœ°æ–¹
+    int which = 0;
+    float t = xt;  // é€‰æ‹©æœ€è¿œçš„å¹³é¢æ˜¯ä»€ä¹ˆæ„æ€ï¼Ÿæ˜¯æŒ‡å°„çº¿æ–¹å‘åç§»ç‰©ä½“åŒ…å›´ç›’è¾¹ç•Œæœ€è¿œä¹ˆï¼Ÿï¼ˆæœ€è¿œæ˜¯æŒ‡ä¸åŒ…å›´ç›’æŸé¢ä¸­ç‚¹ç›¸äº¤ï¼Ÿï¼‰
+    if (yt > t) {
+        which = 1;
+        t = yt;
+    }
+    if (zt > t) {
+        which = 2;
+        t = zt;
+    }
+    switch (which) {
+        case 0: {  // å’Œyzå¹³é¢ç›¸äº¤
+                float y = rayStart.y + rayDir.y * t;  // æ­¤æ—¶ t = xtï¼Œxt /= rayDir.x;æ­¤å¤„åˆæ˜¯ä»€ä¹ˆæ„æ€ï¼Ÿ
+                if (y < min.y || y > max.y) {
+                    return kNoIntersection;
+                }
+                float z = rayStart.z + rayDir.z * t;
+                if (z < min.z || z > max.z) {
+                    return kNoIntersection;
+                }
+                // if(/*returnNormal != NULL*/){
+                returnNormal.x = xn;
+                returnNormal.y = 0.0f;
+                returnNormal.z = 0.0f;
+                /*} */
+            }
+            break;
+        case 1: {  // å’Œxzå¹³é¢ç›¸äº¤
+                float x = rayStart.x + rayDir.x * t;
+                if (x < min.x || x > max.x) {
+                    return kNoIntersection;
+                }
+                float z = rayStart.z + rayDir.z * t;
+                if (z < min.z || z > max.z) {
+                    return kNoIntersection;
+                }
+                /*  if(returnNormal != NULL){  */
+                returnNormal.x = 0.0f;
+                returnNormal.y = yn;
+                returnNormal.z = 0.0f;
+                /*  }      */
+            }
+            break;
+        case 2: {  // å’Œxyå¹³é¢ç›¸äº¤
+                float x = rayStart.x + rayDir.x * t;
+                if (x < min.x || x > max.x) {
+                    return kNoIntersection;
+                }
+                float y = rayStart.y + rayDir.y * t;
+                if (y < min.y || y > max.y) {
+                    return kNoIntersection;
+                }
+                /*if(returnNormal != NULL){*/
+                returnNormal.x = 0.0f;
+                returnNormal.y = 0.0f;
+                returnNormal.z = zn;
+                /*} */
+            }
+            break;
+    }
+    return t;  // è¿”å›ç›¸äº¤ç‚¹å‚æ•°å€¼
+}
 
 void CMy3DSymbolLibNewView::JudgeRayIntersect(
-	CVector3 rayStart,					// ÉäÏßÆğµã  
-	CVector3 rayDir,					// ÉäÏß³¤¶ÈºÍ·½Ïò  
-	CVector3 returnNormal				// ¿ÉÑ¡µÄ£¬Ïà½»µã´¦·¨ÏòÁ¿
-	)
-{
-	// »ñÈ¡Ä£ĞÍÖĞÈıÎ¬µã¼«Öµ
-	int minx,maxx,miny,maxy,minz,maxz;
-	float t;
-
-	// Èç¹ûÊÇÔÚÑ¡ÔñÄ£Ê½ÏÂÊó±êÒÆ¶¯Ê°È¡¶ÔÏó£¬¾ÍÖ»¶ÔÒÑ¾­Ê°È¡ÁËµÄÎïÌå½øĞĞÆ¥Åä
-	if(m_bMouseMoveSelect)
-	{
-		for(unsigned int i = 0; i < m_pSelectedModelSet.size(); ++i)
-		{
-			if(m_pSelectedModelSet.at(i)->modelType == MODEL_3DS)
-			{
-				int j = m_pSelectedModelSet.at(i)->modelID;
-
-				//t = -1;
-				t3DBox t3dBox;
-				t3dBox.w = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.w;
-				t3dBox.h = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.h;
-				t3dBox.l = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.l;
-
-				POINT pt;
-				pt.x = m_3DModel.GetAt(j)->posX;
-				pt.y = m_3DModel.GetAt(j)->posZ;
-
-				minx = pt.x - (t3dBox.l * 1.5 )/2;
-				maxx = pt.x + (t3dBox.l * 1.5 )/2;
-				minz = pt.y - (t3dBox.w * 1.5 )/2;
-				maxz = pt.y + (t3dBox.w * 1.5 )/2;
-
-				// int y = GetHeight(x,z) + h + t3dBox.h/2;				// »ñÈ¡µØÃæ¸ß¶È
-				// Ö®ËùÒÔ¸ß¶È×îµÍÊÇµØÃæ¸ß¶È£¬ÊÇÒòÎªÔÚäÖÈ¾Ä£ĞÍÊ±ÒÑ¾­½«Ä£ĞÍÌá¸ßÁË×îµÍ¸ß¶Èµ½µØ±í
-				miny = GetHeight(pt.x, pt.y);
-				maxy = GetHeight(pt.x, pt.y) + (t3dBox.h * 1.5 );
-
-				CVector3 returnNormal,min,max;
-				min = CVector3(minx, miny, minz);
-				max = CVector3(maxx, maxy, maxz);
-
-				t = RayIntersect(rayStart, rayDir,returnNormal,min,max);
-
-				if(t>= 0 && t <= 1)
-				{
-					// Èç¹ûÊó±êÎ»ÖÃÊ°È¡ÁËµ±Ç°µÄÑ¡ÖĞÄ£ĞÍ£¬Êó±ê¸Ä±äĞÎÌ¬
-					m_mouseShape = MOUSE_SHAPE_EDIT; 	
-					m_selectedModelID = j;
-				}
-				else
-					m_mouseShape = MOUSE_SHAPE_SLECT;
-			}
-		}
-	}
-
-	if(m_bIsLBtnDown)
-	{
-		// ±éÀúËùÓĞµÄ3DÄ£ĞÍ,ÅĞ¶ÏÊÇ·ñÔÚ·¶Î§ÄÚ 
-		for(int j = 0; j < m_i3DModelNum; j++)
-		{		
-			//t = -1;
-			t3DBox t3dBox;
-			float scale = m_3DModel.GetAt(j)->scale;
-			t3dBox.w = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.w;
-			t3dBox.h = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.h;
-			t3dBox.l = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.l;
-
-			POINT pt;
-			pt.x = m_3DModel.GetAt(j)->posX;
-			pt.y = m_3DModel.GetAt(j)->posZ;
-
-			minx = pt.x - (t3dBox.l * 1.5 )/2;
-			maxx = pt.x + (t3dBox.l * 1.5 )/2;
-			minz = pt.y - (t3dBox.w * 1.5 )/2;
-			maxz = pt.y + (t3dBox.w * 1.5 )/2; 
-
-			// int y = GetHeight(x,z) + h + t3dBox.h/2;				// »ñÈ¡µØÃæ¸ß¶È
-			// Ö®ËùÒÔ¸ß¶È×îµÍÊÇµØÃæ¸ß¶È£¬ÊÇÒòÎªÔÚäÖÈ¾Ä£ĞÍÊ±ÒÑ¾­½«Ä£ĞÍÌá¸ßÁË×îµÍ¸ß¶Èµ½µØ±í
-			miny = GetHeight(pt.x, pt.y);
-			maxy = GetHeight(pt.x, pt.y) + (t3dBox.h * 1.5);
-
-			CVector3 returnNormal,min,max;
-			min = CVector3(minx, miny, minz);
-			max = CVector3(maxx, maxy, maxz);
-
-			t = RayIntersect(rayStart, rayDir,returnNormal,min,max);
-
-			if(t>= 0 && t <= 1)
-			{
-				CVector3 DotC = rayStart + CVector3(t* rayDir.x, t * rayDir.y, t*rayDir.z);
-
-				CString strText;
-				strText.Format("½»µãÔÚ  X=%.3f , Y=%.3f , Z=%.3f" , DotC.x, DotC.y, DotC.z);
-
-				
-				// Ñ¡ÖĞÄ£ĞÍ
-				//AfxMessageBox(strText,MB_OK);
-				//Set3dsModelParam(j);
-				// Èç¹ûÄ£ĞÍµ±Ç°±¾Éí¾ÍÊÇÑ¡ÖĞ×´Ì¬£¬ÄÇÔÙ´ÎÊ°È¡µ½µÄÊ±ºò¾ÍÊÇ´ÓÑ¡ÖĞ¶ÓÁĞÖĞÉ¾³ı³öÈ¥
-				if(m_OperateType == SELECT && m_3DModel.GetAt(j)->modelSelected)
-				{
-					m_3DModel.GetAt(j)->modelSelected = false;
-
-					vector<PSelectedModel>::iterator ite; 
-					for(vector<PSelectedModel>::iterator it = m_pSelectedModelSet.begin(); it != m_pSelectedModelSet.end(); ++it)
-					{ 
-						/*
-						´Ë´¦µü´úÆ÷±äÁ¿iterator¿ÉÒÔ¼òµ¥µÄÀí½âÎªvetorµÄÖ¸Õë£¬ËùÒÔÓÃ*iterator¶ÔÆä½øĞĞ½âÒıÓÃ²Ù×÷¾Í·µ»ØÁËÒ»¸öPSelectedModelÀàĞÍ
-						µÄ¶ÔÏó*/
-						if((*it)->modelID == (m_3DModel.GetAt(j)->modelID)/* && it != m_pSelectedModelSet.end()*/)
-						{ 
-							ite = it;
-							//it = m_pSelectedModelSet.end();
-						}
-					}
-
-					m_pSelectedModelSet.erase(ite); 
-				}
-				else
-				{
-					if(m_3DModel.GetAt(j)->isDeleted == false)
-					{
-						m_3DModel.GetAt(j)->modelSelected = true;
-
-						PSelectedModel selectedModel = new SelectedModel;
-						selectedModel->modelID = m_3DModel.GetAt(j)->modelID;
-						selectedModel->modelType = MODEL_3DS;
-
-						
-						m_pSelectedModelSet.push_back(selectedModel); 
-					}
-				}
-				
-				if(!m_bFlash && !m_pSelectedModelSet.empty())
-				{
-					SetTimer(2, 500, NULL);
-					m_bFlash = true;
-				}
-			}
-		} 
-	} 
+    CVector3 rayStart,                  // å°„çº¿èµ·ç‚¹
+    CVector3 rayDir,                    // å°„çº¿é•¿åº¦å’Œæ–¹å‘
+    CVector3 returnNormal               // å¯é€‰çš„ï¼Œç›¸äº¤ç‚¹å¤„æ³•å‘é‡
+) {
+    // è·å–æ¨¡å‹ä¸­ä¸‰ç»´ç‚¹æå€¼
+    int minx, maxx, miny, maxy, minz, maxz;
+    float t;
+    // å¦‚æœæ˜¯åœ¨é€‰æ‹©æ¨¡å¼ä¸‹é¼ æ ‡ç§»åŠ¨æ‹¾å–å¯¹è±¡ï¼Œå°±åªå¯¹å·²ç»æ‹¾å–äº†çš„ç‰©ä½“è¿›è¡ŒåŒ¹é…
+    if (m_bMouseMoveSelect) {
+        for (unsigned int i = 0; i < m_pSelectedModelSet.size(); ++i) {
+            if (m_pSelectedModelSet.at(i)->modelType == MODEL_3DS) {
+                int j = m_pSelectedModelSet.at(i)->modelID;
+                // t = -1;
+                t3DBox t3dBox;
+                t3dBox.w = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.w;
+                t3dBox.h = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.h;
+                t3dBox.l = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.l;
+                POINT pt;
+                pt.x = m_3DModel.GetAt(j)->posX;
+                pt.y = m_3DModel.GetAt(j)->posZ;
+                minx = pt.x - (t3dBox.l * 1.5) / 2;
+                maxx = pt.x + (t3dBox.l * 1.5) / 2;
+                minz = pt.y - (t3dBox.w * 1.5) / 2;
+                maxz = pt.y + (t3dBox.w * 1.5) / 2;
+                // int y = GetHeight(x,z) + h + t3dBox.h/2;             // è·å–åœ°é¢é«˜åº¦
+                // ä¹‹æ‰€ä»¥é«˜åº¦æœ€ä½æ˜¯åœ°é¢é«˜åº¦ï¼Œæ˜¯å› ä¸ºåœ¨æ¸²æŸ“æ¨¡å‹æ—¶å·²ç»å°†æ¨¡å‹æé«˜äº†æœ€ä½é«˜åº¦åˆ°åœ°è¡¨
+                miny = GetHeight(pt.x, pt.y);
+                maxy = GetHeight(pt.x, pt.y) + (t3dBox.h * 1.5);
+                CVector3 returnNormal, min, max;
+                min = CVector3(minx, miny, minz);
+                max = CVector3(maxx, maxy, maxz);
+                t = RayIntersect(rayStart, rayDir, returnNormal, min, max);
+                if (t >= 0 && t <= 1) {
+                    // å¦‚æœé¼ æ ‡ä½ç½®æ‹¾å–äº†å½“å‰çš„é€‰ä¸­æ¨¡å‹ï¼Œé¼ æ ‡æ”¹å˜å½¢æ€
+                    m_mouseShape = MOUSE_SHAPE_EDIT;
+                    m_selectedModelID = j;
+                } else
+                    m_mouseShape = MOUSE_SHAPE_SLECT;
+            }
+        }
+    }
+    if (m_bIsLBtnDown) {
+        // éå†æ‰€æœ‰çš„3Dæ¨¡å‹,åˆ¤æ–­æ˜¯å¦åœ¨èŒƒå›´å†…
+        for (int j = 0; j < m_i3DModelNum; j++) {
+            // t = -1;
+            t3DBox t3dBox;
+            float scale = m_3DModel.GetAt(j)->scale;
+            t3dBox.w = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.w;
+            t3dBox.h = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.h;
+            t3dBox.l = m_3DModel.GetAt(j)->scale * g_3DModel[j].t3DModelBox.l;
+            POINT pt;
+            pt.x = m_3DModel.GetAt(j)->posX;
+            pt.y = m_3DModel.GetAt(j)->posZ;
+            minx = pt.x - (t3dBox.l * 1.5) / 2;
+            maxx = pt.x + (t3dBox.l * 1.5) / 2;
+            minz = pt.y - (t3dBox.w * 1.5) / 2;
+            maxz = pt.y + (t3dBox.w * 1.5) / 2;
+            // int y = GetHeight(x,z) + h + t3dBox.h/2;             // è·å–åœ°é¢é«˜åº¦
+            // ä¹‹æ‰€ä»¥é«˜åº¦æœ€ä½æ˜¯åœ°é¢é«˜åº¦ï¼Œæ˜¯å› ä¸ºåœ¨æ¸²æŸ“æ¨¡å‹æ—¶å·²ç»å°†æ¨¡å‹æé«˜äº†æœ€ä½é«˜åº¦åˆ°åœ°è¡¨
+            miny = GetHeight(pt.x, pt.y);
+            maxy = GetHeight(pt.x, pt.y) + (t3dBox.h * 1.5);
+            CVector3 returnNormal, min, max;
+            min = CVector3(minx, miny, minz);
+            max = CVector3(maxx, maxy, maxz);
+            t = RayIntersect(rayStart, rayDir, returnNormal, min, max);
+            if (t >= 0 && t <= 1) {
+                CVector3 DotC = rayStart + CVector3(t * rayDir.x, t * rayDir.y, t * rayDir.z);
+                CString strText;
+                strText.Format("äº¤ç‚¹åœ¨  X=%.3f , Y=%.3f , Z=%.3f" , DotC.x, DotC.y, DotC.z);
+                // é€‰ä¸­æ¨¡å‹
+                // AfxMessageBox(strText,MB_OK);
+                // Set3dsModelParam(j);
+                // å¦‚æœæ¨¡å‹å½“å‰æœ¬èº«å°±æ˜¯é€‰ä¸­çŠ¶æ€ï¼Œé‚£å†æ¬¡æ‹¾å–åˆ°çš„æ—¶å€™å°±æ˜¯ä»é€‰ä¸­é˜Ÿåˆ—ä¸­åˆ é™¤å‡ºå»
+                if (m_OperateType == SELECT && m_3DModel.GetAt(j)->modelSelected) {
+                    m_3DModel.GetAt(j)->modelSelected = false;
+                    vector<PSelectedModel>::iterator ite;
+                    for (vector<PSelectedModel>::iterator it = m_pSelectedModelSet.begin(); it != m_pSelectedModelSet.end(); ++it) {
+                        /*
+                        æ­¤å¤„è¿­ä»£å™¨å˜é‡iteratorå¯ä»¥ç®€å•çš„ç†è§£ä¸ºvetorçš„æŒ‡é’ˆï¼Œæ‰€ä»¥ç”¨*iteratorå¯¹å…¶è¿›è¡Œè§£å¼•ç”¨æ“ä½œå°±è¿”å›äº†ä¸€ä¸ªPSelectedModelç±»å‹
+                        çš„å¯¹è±¡*/
+                        if ((*it)->modelID == (m_3DModel.GetAt(j)->modelID)/* && it != m_pSelectedModelSet.end()*/) {
+                            ite = it;
+                            // it = m_pSelectedModelSet.end();
+                        }
+                    }
+                    m_pSelectedModelSet.erase(ite);
+                } else {
+                    if (m_3DModel.GetAt(j)->isDeleted == false) {
+                        m_3DModel.GetAt(j)->modelSelected = true;
+                        PSelectedModel selectedModel = new SelectedModel;
+                        selectedModel->modelID = m_3DModel.GetAt(j)->modelID;
+                        selectedModel->modelType = MODEL_3DS;
+                        m_pSelectedModelSet.push_back(selectedModel);
+                    }
+                }
+                if (!m_bFlash && !m_pSelectedModelSet.empty()) {
+                    SetTimer(2, 500, NULL);
+                    m_bFlash = true;
+                }
+            }
+        }
+    }
 }
 
 
 
 /****************************************************************************/
-/* Function: ¼ÓÔØ¹¤³ÌÎÄ¼ş														*/
+/* Function: åŠ è½½å·¥ç¨‹æ–‡ä»¶                                                       */
 /****************************************************************************/
-void CMy3DSymbolLibNewView::loadSceneFile(CString filename)
-{
-	CStdioFile file;
-	BOOL b_open = file.Open(filename, CStdioFile::modeRead);
-	if((!b_open) || (file==NULL))
-	{
-		MessageBox(_T("¹¤³Ì²»´æÔÚ!\n")+filename, _T("´ò¿ª¹¤³ÌÎÄ¼ş"), MB_ICONWARNING + MB_OK);
-		return;
-	}
-	else
-	{
-		CString tmpStr = filename.Right(4);
+void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
+    CStdioFile file;
+    BOOL b_open = file.Open(filename, CStdioFile::modeRead);
+    if ((!b_open) || (file == NULL)) {
+        MessageBox(_T("å·¥ç¨‹ä¸å­˜åœ¨!\n") + filename, _T("æ‰“å¼€å·¥ç¨‹æ–‡ä»¶"), MB_ICONWARNING + MB_OK);
+        return;
+    } else {
+        CString tmpStr = filename.Right(4);
+        // æ·»åŠ åˆ°æ³¨å†Œè¡¨ï¼Œ æœ€è¿‘æ‰“å¼€çš„æ–‡ä»¶åˆ—è¡¨
+        if (tmpStr == _T(".prj"))
+            theApp.AddToRecentFileList(filename);
+        // å…³é—­å½“å‰åœºæ™¯
+        OnCloseCurrentScene();
+        // è¯»å–æ‰€æœ‰æ•°æ®æ–‡ä»¶è·¯å¾„
+        m_AllDataPath = g_sceneDataPath.c_str();
+        // åœºæ™¯é…ç½®æ•°æ®
+        file.ReadString(m_SceneConfig);
+        // ----------------------------------------------------
+        // åœ°å½¢æ•°æ®, Terrain
+        file.ReadString(m_TerrainFolder);
+        // Tex Sand512.BMP
+        file.ReadString(m_TerrainTextureFolder);
+        int length = m_TerrainTextureFolder.GetLength();
+        int i = m_TerrainTextureFolder.Find(" ");
+        m_TerrainTexture = m_TerrainTextureFolder.Right(length - i - 1);
+        m_TerrainTextureFolder = m_TerrainTextureFolder.Left(i);
+        // Contour Terrain1.bmp
+        file.ReadString(m_TerrainContourFolder);
+        length = m_TerrainContourFolder.GetLength();
+        i = m_TerrainContourFolder.Find(" ");
+        m_TerrainContour = m_TerrainContourFolder.Right(length - i - 1);
+        m_TerrainContourFolder = m_TerrainContourFolder.Left(i);
+        // ----------------------------------------------------
+        // å¤©ç©ºç›’æ•°æ®SkyBox
+        file.ReadString(m_SkyBoxFolder);
+        // default TOP.BMP LEFT.BMP BACK.BMP RIGHT.BMP FRONT.BMP
+        file.ReadString(m_SkyBoxKindFolder);
+        int curPos = 0;
+        int tokenID = 0;
+        CString temp = m_SkyBoxKindFolder.Tokenize(" ", curPos);
+        CString Skyfolder = temp;
+        while (temp != _T("")) {
+            tokenID += 1;
+            temp = m_SkyBoxKindFolder.Tokenize(" ", curPos);
+            if (tokenID == 1)
+                m_SkyBoxTP = temp;
+            else if (tokenID == 2)
+                m_SkyBoxLT = temp;
+            else if (tokenID == 3)
+                m_SkyBoxBK = temp;
+            else if (tokenID == 4)
+                m_SkyBoxRT = temp;
+            else if (tokenID == 5)
+                m_SkyBoxFR = temp;
+        };
+        m_SkyBoxKindFolder = Skyfolder;
+        // ----------------------------------------------------
+        // å¤©æ°”æ•°æ®
+        file.ReadString(m_WeatherFolder);
+        file.ReadString(m_WeatherTex);
+        CString weatherSymbolTexPath = m_AllDataPath + "\\" + m_WeatherFolder + "\\" + m_WeatherTex;
+        char cc[256];
+        sprintf(cc, weatherSymbolTexPath);
+        LoadT8(cc, g_weatherTex);
+        bIsWeatherLoad = true;
+        // ----------------------------------------------------
+        // ç¬¦å·æ–‡ä»¶ä¸ªæ•°
+        file.ReadString(m_CurrentSymbolTypeNum);
+        file.ReadString(m_PointSymbolFile);
+        file.ReadString(m_LineSymbolFile);
+        file.ReadString(m_AreaSymbolFile);
+        file.Close();
+        // åŠ è½½ç‚¹æ–‡ä»¶
+        if (m_PointSymbolFile != "0") {
+            CString point_Path = /*m_AllDataPath + "\\" + m_SceneConfig + "\\" + */m_PointSymbolFile;
+            LoadPointSymbolFile(point_Path);
+            exist_point_flag = TRUE;
+        }
+        // åŠ è½½çº¿æ–‡ä»¶
+        if (m_LineSymbolFile != "0") {
+            CString line_Path = /*m_AllDataPath + "\\" + m_SceneConfig + "\\" + */m_LineSymbolFile;
+            LoadLineSymbolFile(line_Path);
+            exist_line_flag = TRUE;
+        }
+        // åŠ è½½åŒºæ–‡ä»¶  å¿…é¡»ç­‰åˆå§‹åŒ–åœ°å½¢æ•°æ®ä¹‹å  (è§ä¸‹æ–¹)
+        /**************************************/
+        /* åŠ è½½çº¿è·¯çº¹ç†èµ„æº                   */
+        /**************************************/
+        CString scenePath = g_sceneDataPath.c_str();
+        CString tmpPath = scenePath + "\\RoadTexture";
+        CString txtureRailway = tmpPath + "\\é“è·¯\\doubleway5.bmp";
+        // åŠ è½½é“è·¯çº¹ç†
+        m_cTxtureRailway.LoadGLTextures(txtureRailway.GetBuffer(0));
+        CString txtureBP = tmpPath + "\\è¾¹å¡é˜²æŠ¤\\æ‹±å½¢æŠ¤å¡1.bmp";
+        m_cTxtureBP.LoadGLTextures(txtureBP.GetBuffer(0));
+        CString txtureLJ = tmpPath + "\\è·¯è‚©\\1.bmp";
+        m_cTxtureLJ.LoadGLTextures(txtureLJ.GetBuffer(0));
+        CString txtureGdToLJ = tmpPath + "\\è·¯è‚©\\10.bmp";
+        m_cTxtureGdToLJ.LoadGLTextures(txtureGdToLJ.GetBuffer(0));
+        CString txturePT = tmpPath + "\\è¾¹å¡å¹³å°\\è¾¹å¡å¹³å°1.bmp";
+        m_cTxturePT.LoadGLTextures(txturePT.GetBuffer(0));
+        // æ–­é¢çº¹ç†
+        CString txtureFF = tmpPath + "\\è¾¹å¡å¹³å°\\è¾¹å¡å¹³å°2.bmp";
+        m_cFillFaceTxture.LoadGLTextures(txtureFF.GetBuffer(0));
+        //==========================================================
+        // ----------------------------------------------------
+        /*
+        // çº¿è·¯
+        CString strLine;
+        CString strJDNumber;
+        int intJDNumber;
+        CString strJDPositions;
 
-		// Ìí¼Óµ½×¢²á±í£¬ ×î½ü´ò¿ªµÄÎÄ¼şÁĞ±í 
-		if(tmpStr == _T(".prj"))
-			theApp.AddToRecentFileList(filename);
+        file.ReadString(strLine);
+        file.ReadString(strJDNumber);
+        intJDNumber = atoi(strJDNumber);
 
+        PCordinate tmpJD = new Cordinate;
+        PCurve_R_L0_Struct tmpCurveRL0 = new Curve_R_L0_Struct;
 
-		// ¹Ø±Õµ±Ç°³¡¾°
-		OnCloseCurrentScene();
+        file.ReadString(strJDPositions);
 
-		// ¶ÁÈ¡ËùÓĞÊı¾İÎÄ¼şÂ·¾¶
-		m_AllDataPath = g_sceneDataPath.c_str();
+        {
+            curPos = 0; tokenID = 0;
+            CString temp = "0.000";
+            while (temp != _T(""))
+            {
+                tokenID += 1;
+                temp = strJDPositions.Tokenize(" ", curPos);
 
+                if(temp != _T(""))
+                {
+                    if(tokenID%5 == 1)
+                    tmpJD->x = atof(temp);
+                    else if(tokenID%5 == 2)
+                        tmpJD->y = atof(temp);
+                    else if(tokenID%5 == 3)
+                        tmpJD->z = atof(temp);
+                    else if(tokenID%5 == 4)
+                        tmpCurveRL0->curve_R = atoi(temp);
+                    else if(tokenID%5 == 0)
+                    {
+                        tmpCurveRL0->curve_L0 = atoi(temp);
+                        fun(tmpJD, tmpCurveRL0);
+                        tmpJD = new Cordinate;
+                        tmpCurveRL0 = new Curve_R_L0_Struct;
+                    }
+                }
+            }
+        }
 
-		// ³¡¾°ÅäÖÃÊı¾İ
-		file.ReadString(m_SceneConfig);
+        int s1 = myDesingScheme.PtS_JD.GetSize();
+        float a ;
+        for(int i=0;i<s1;++i)
+        {
+            a = myDesingScheme.PtS_JD[i]->x;
+        }
+        int s2 = myDesingScheme.JDCurveElements.GetSize();
 
-		// ----------------------------------------------------
-
-		// µØĞÎÊı¾İ, Terrain
-		file.ReadString(m_TerrainFolder);
-		// Tex Sand512.BMP
-		file.ReadString(m_TerrainTextureFolder);
-		int length = m_TerrainTextureFolder.GetLength();
-		int i = m_TerrainTextureFolder.Find(" ");
-		m_TerrainTexture = m_TerrainTextureFolder.Right(length - i - 1);
-		m_TerrainTextureFolder = m_TerrainTextureFolder.Left(i);
-		// Contour Terrain1.bmp
-		file.ReadString(m_TerrainContourFolder);
-		length = m_TerrainContourFolder.GetLength();
-		i = m_TerrainContourFolder.Find(" ");
-		m_TerrainContour = m_TerrainContourFolder.Right(length - i - 1);
-		m_TerrainContourFolder = m_TerrainContourFolder.Left(i);
-
-		// ----------------------------------------------------
-
-		// Ìì¿ÕºĞÊı¾İSkyBox
-		file.ReadString(m_SkyBoxFolder);
-		// default TOP.BMP LEFT.BMP BACK.BMP RIGHT.BMP FRONT.BMP
-		file.ReadString(m_SkyBoxKindFolder);
-		int curPos = 0; 
-		int tokenID = 0;
-		CString temp = m_SkyBoxKindFolder.Tokenize(" ", curPos);
-		CString Skyfolder = temp;
-		while (temp != _T(""))
-		{		
-			tokenID += 1;	
-			temp = m_SkyBoxKindFolder.Tokenize(" ", curPos); 
-
-			if(tokenID == 1)
-				m_SkyBoxTP = temp;
-			else if(tokenID == 2)
-				m_SkyBoxLT = temp;
-			else if(tokenID == 3)
-				m_SkyBoxBK = temp;
-			else if(tokenID == 4)
-				m_SkyBoxRT = temp;
-			else if(tokenID == 5)
-				m_SkyBoxFR = temp;
-		};   
-		m_SkyBoxKindFolder = Skyfolder;
-
-		// ----------------------------------------------------
-
-		// ÌìÆøÊı¾İ
-		file.ReadString(m_WeatherFolder);
-		file.ReadString(m_WeatherTex);
-
-		CString weatherSymbolTexPath = m_AllDataPath + "\\" + m_WeatherFolder + "\\" + m_WeatherTex;
-
-		char cc[256]; 
-		sprintf(cc,weatherSymbolTexPath);
-		LoadT8(cc,g_weatherTex); 
-		bIsWeatherLoad = true; 
-
-		// ----------------------------------------------------
-		// ·ûºÅÎÄ¼ş¸öÊı
-		file.ReadString(m_CurrentSymbolTypeNum);
-
-		file.ReadString(m_PointSymbolFile);
-		file.ReadString(m_LineSymbolFile);
-		file.ReadString(m_AreaSymbolFile);
-
-
-		file.Close();
-
-
-		
-
-
-		// ¼ÓÔØµãÎÄ¼ş
-		if(m_PointSymbolFile != "0")
-		{
-			 CString point_Path = /*m_AllDataPath + "\\" + m_SceneConfig + "\\" + */m_PointSymbolFile;
-			 LoadPointSymbolFile(point_Path);
-			 exist_point_flag = TRUE;
-		}
-		// ¼ÓÔØÏßÎÄ¼ş
-		if(m_LineSymbolFile != "0")
-		{
-			CString line_Path = /*m_AllDataPath + "\\" + m_SceneConfig + "\\" + */m_LineSymbolFile;
-			LoadLineSymbolFile(line_Path);
-			exist_line_flag = TRUE;
-		}
-		
-		// ¼ÓÔØÇøÎÄ¼ş  ±ØĞëµÈ³õÊ¼»¯µØĞÎÊı¾İÖ®ºó  (¼ûÏÂ·½)
-
-
-
-		/**************************************/
-		/* ¼ÓÔØÏßÂ·ÎÆÀí×ÊÔ´					  */
-		/**************************************/
-		CString scenePath = g_sceneDataPath.c_str();
-		CString tmpPath = scenePath + "\\RoadTexture";
-
-	
-		CString txtureRailway = tmpPath + "\\ÌúÂ·\\doubleway5.bmp";
-
-		// ¼ÓÔØÌúÂ·ÎÆÀí
-		m_cTxtureRailway.LoadGLTextures(txtureRailway.GetBuffer(0));
-
-		CString txtureBP = tmpPath + "\\±ßÆÂ·À»¤\\¹°ĞÎ»¤ÆÂ1.bmp";
-		m_cTxtureBP.LoadGLTextures(txtureBP.GetBuffer(0));
-
-		CString txtureLJ = tmpPath + "\\Â·¼ç\\1.bmp";
-		m_cTxtureLJ.LoadGLTextures(txtureLJ.GetBuffer(0));
-
-		CString txtureGdToLJ = tmpPath + "\\Â·¼ç\\10.bmp";
-		m_cTxtureGdToLJ.LoadGLTextures(txtureGdToLJ.GetBuffer(0));
-
-		CString txturePT = tmpPath + "\\±ßÆÂÆ½Ì¨\\±ßÆÂÆ½Ì¨1.bmp";
-		m_cTxturePT.LoadGLTextures(txturePT.GetBuffer(0));
-
-
-		// ¶ÏÃæÎÆÀí
-		CString txtureFF = tmpPath + "\\±ßÆÂÆ½Ì¨\\±ßÆÂÆ½Ì¨2.bmp";
-		m_cFillFaceTxture.LoadGLTextures(txtureFF.GetBuffer(0));
-		//==========================================================
-
-		// ----------------------------------------------------
-		/*
-		// ÏßÂ·
-		CString strLine;
-		CString strJDNumber;
-		int intJDNumber;
-		CString strJDPositions;
-
-		file.ReadString(strLine);
-		file.ReadString(strJDNumber);
-		intJDNumber = atoi(strJDNumber);
-
-		PCordinate tmpJD = new Cordinate;
-		PCurve_R_L0_Struct tmpCurveRL0 = new Curve_R_L0_Struct;
-
-		file.ReadString(strJDPositions);
-
-		{
-			curPos = 0; tokenID = 0;
-			CString temp = "0.000";
-			while (temp != _T(""))
-			{		
-				tokenID += 1;	
-				temp = strJDPositions.Tokenize(" ", curPos); 
-				
-				if(temp != _T(""))
-				{
-					if(tokenID%5 == 1)
-					tmpJD->x = atof(temp);
-					else if(tokenID%5 == 2)
-						tmpJD->y = atof(temp);
-					else if(tokenID%5 == 3)
-						tmpJD->z = atof(temp);
-					else if(tokenID%5 == 4)
-						tmpCurveRL0->curve_R = atoi(temp);
-					else if(tokenID%5 == 0)
-					{
-						tmpCurveRL0->curve_L0 = atoi(temp);
-						fun(tmpJD, tmpCurveRL0);
-						tmpJD = new Cordinate;
-						tmpCurveRL0 = new Curve_R_L0_Struct;
-					}
-				}
-			}
-		}
-
-		int s1 = myDesingScheme.PtS_JD.GetSize();
-		float a ;
-		for(int i=0;i<s1;++i)
-		{
-			a = myDesingScheme.PtS_JD[i]->x;
-		}
-		int s2 = myDesingScheme.JDCurveElements.GetSize();
-
-		file.Close();
-		*/
-
-		// ----------------------------------------------------
-
-		// ¿ªÊ¼³¡¾°äÖÈ¾ ÅäÖÃÌì¿ÕºĞ
-		CString skyBoxPathPre = m_AllDataPath + "\\" + m_SkyBoxFolder + "\\" + m_SkyBoxKindFolder + "\\";
-		g_texSkyBoxFlieNameTP = skyBoxPathPre + m_SkyBoxTP; 
-		g_texSkyBoxFlieNameLF = skyBoxPathPre + m_SkyBoxLT; 
-		g_texSkyBoxFlieNameBK = skyBoxPathPre + m_SkyBoxBK; 
-		g_texSkyBoxFlieNameRT = skyBoxPathPre + m_SkyBoxRT; 
-		g_texSkyBoxFlieNameFR = skyBoxPathPre + m_SkyBoxFR; 
-
-		LoadSkyBoxTex(g_texSkyBoxFlieNameTP, g_texSkyBoxFlieNameLF, g_texSkyBoxFlieNameBK,
-			g_texSkyBoxFlieNameRT, g_texSkyBoxFlieNameFR);
-
-		// ÅäÖÃµØĞÎ
-		terrainTexFileName = m_AllDataPath + "\\" + m_TerrainFolder + "\\" + m_TerrainTextureFolder + "\\" + m_TerrainTexture;
-		terrainContourFileName = m_AllDataPath + "\\" + m_TerrainFolder + "\\" + m_TerrainContourFolder + "\\" + m_TerrainContour;
-		LoadTerrainTex(terrainTexFileName, terrainContourFileName);
-
-		OnMenuBuild3dlinemodle();
-
-
-
-
-
-
-
-		// ¼ÓÔØÇøÎÄ¼ş
-		if(m_AreaSymbolFile != "0")
-		{
-			CString area_Path = /*m_AllDataPath + "\\" + m_SceneConfig + "\\" + */m_AreaSymbolFile;
-			LoadAreaSymbolFile(area_Path);
-			exist_area_flag = TRUE;
-		}
-
-
-
-
-
-
-	} 
+        file.Close();
+        */
+        // ----------------------------------------------------
+        // å¼€å§‹åœºæ™¯æ¸²æŸ“ é…ç½®å¤©ç©ºç›’
+        CString skyBoxPathPre = m_AllDataPath + "\\" + m_SkyBoxFolder + "\\" + m_SkyBoxKindFolder + "\\";
+        g_texSkyBoxFlieNameTP = skyBoxPathPre + m_SkyBoxTP;
+        g_texSkyBoxFlieNameLF = skyBoxPathPre + m_SkyBoxLT;
+        g_texSkyBoxFlieNameBK = skyBoxPathPre + m_SkyBoxBK;
+        g_texSkyBoxFlieNameRT = skyBoxPathPre + m_SkyBoxRT;
+        g_texSkyBoxFlieNameFR = skyBoxPathPre + m_SkyBoxFR;
+        LoadSkyBoxTex(g_texSkyBoxFlieNameTP, g_texSkyBoxFlieNameLF, g_texSkyBoxFlieNameBK,
+                      g_texSkyBoxFlieNameRT, g_texSkyBoxFlieNameFR);
+        // é…ç½®åœ°å½¢
+        terrainTexFileName = m_AllDataPath + "\\" + m_TerrainFolder + "\\" + m_TerrainTextureFolder + "\\" + m_TerrainTexture;
+        terrainContourFileName = m_AllDataPath + "\\" + m_TerrainFolder + "\\" + m_TerrainContourFolder + "\\" + m_TerrainContour;
+        LoadTerrainTex(terrainTexFileName, terrainContourFileName);
+        OnMenuBuild3dlinemodle();
+        // åŠ è½½åŒºæ–‡ä»¶
+        if (m_AreaSymbolFile != "0") {
+            CString area_Path = /*m_AllDataPath + "\\" + m_SceneConfig + "\\" + */m_AreaSymbolFile;
+            LoadAreaSymbolFile(area_Path);
+            exist_area_flag = TRUE;
+        }
+    }
 }
 
 
-// ¼ÓÔØµãÎÄ¼ş(.pt)
-void CMy3DSymbolLibNewView::LoadPointSymbolFile(CString filename)
-{
-	CStdioFile file;
-	BOOL b_open = file.Open(filename, CStdioFile::modeRead);
-	if((!b_open) || (file==NULL))
-	{
-		MessageBox(_T("µãÎÄ¼ş!\n")+filename, _T("´ò¿ªµãÎÄ¼ş"), MB_ICONWARNING + MB_OK);
-		return;
-	}
-	else
-	{
-		// ¶ÁÈ¡ËùÓĞÊı¾İÎÄ¼şÂ·¾¶
-		m_AllDataPath = g_sceneDataPath.c_str();
-
-		CString tmp_pointHeader;
-		// µãÎÄ¼şÊ×²¿
-		file.ReadString(tmp_pointHeader);
-
-		// ----------------------------------------------------
-
-		// 3DS Ä£ĞÍÊı¾İ
-
-		/*3DModel
-		2
-		·¿×Ó1 399.921 83.990 384.101
-		º½Ìì·¢ÉäÌ¨ 397.700 83.991 373.560*/
-		file.ReadString(m_3DModelFolder);
-		CString m_3DModelNumStr;
-		file.ReadString(m_3DModelNumStr);
-		m_i3DModelNum = atoi(m_3DModelNumStr);
-
-		for(int i = 0; i <m_i3DModelNum; ++i)
-		{
-			file.ReadString(m_3DModelPath);
-
-			int curPos = 0; 
-			int tokenID = 0;
-			CString temp = m_3DModelPath.Tokenize(" ", curPos);
-			CString model3DFolder = temp;
-			while (temp != _T(""))
-			{		
-				tokenID += 1;	
-				temp = m_3DModelPath.Tokenize(" ", curPos); 
-
-				if(tokenID == 1)
-					m_3DModelPosX = atof(temp);
-				else if(tokenID == 2)
-					m_3DModelPosY = atof(temp);
-				else if(tokenID == 3)
-					m_3DModelPosZ = atof(temp);			
-
-				else if(tokenID == 4)
-					m_3DModelRotX = atof(temp);	
-				else if(tokenID == 5)
-					m_3DModelRotY = atof(temp);	
-				else if(tokenID == 6)
-					m_3DModelRotZ = atof(temp);	
-				else if(tokenID == 7)
-					m_3DModelScale = atof(temp);	
-			};   
-			m_3DModelPath = model3DFolder;
-
-			PModelParamStruct p3d = new CModelParamStruct;
-			p3d->modelPath = m_AllDataPath + "\\" + m_3DModelFolder + "\\"+ m_3DModelPath;
-			p3d->modelID = i;
-			p3d->modelSelected = false;
-
-			p3d->m_3DS_Mode_Texture_PATH_NAME = m_AllDataPath + "\\" + m_3DModelFolder + "\\"+ m_3DModelPath.Left(m_3DModelPath.Find('.')) + ".bmp";
-
-			p3d->isDeleted = false;
-
-			p3d->posX = m_3DModelPosX;
-			p3d->posY = m_3DModelPosY;
-			p3d->posZ = m_3DModelPosZ;
-
-			p3d->rotX = m_3DModelRotX;
-			p3d->rotY = m_3DModelRotY;
-			p3d->rotZ = m_3DModelRotZ;
-			p3d->scale = m_3DModelScale; 
-				
-			Load3DModel(p3d, MODEL_NEW);
-		}
-
-
-		// ----------------------------------------------------
-
-		// ³ÇÊĞ±êÊ¶Êı¾İ
-		/*City Symbol
-		2
-		25 398.469 83.992 393.427
-		1 386.085 83.993 387.031*/
-		file.ReadString(m_CitySymbolFolder);
-		CString m_CitySymbolNumStr;
-		file.ReadString(m_CitySymbolNumStr);
-		m_iCitySymbolModelNum = atoi(m_CitySymbolNumStr);
-
-		for(int i = 0; i <m_iCitySymbolModelNum; ++i)
-		{
-			file.ReadString(m_CitySymbolTex);
-			int curPos = 0; 
-			int tokenID = 0;
-			curPos = 0; tokenID = 0;
-			CString temp = m_CitySymbolTex.Tokenize(" ", curPos);
-			CString citySymbolTex = temp;
-			while (temp != _T(""))
-			{		
-				tokenID += 1;	
-				temp = m_CitySymbolTex.Tokenize(" ", curPos); 
-
-				if(tokenID == 1)
-					m_CitySymbolPosX = atof(temp);
-				else if(tokenID == 2)
-					m_CitySymbolPosY = atof(temp);
-				else if(tokenID == 3)
-					m_CitySymbolPosZ = atof(temp);					
-			};   
-			m_CitySymbolTex = citySymbolTex;
-
-			PModelStruct p3d = new CModelStruct;
-			p3d->strModelPath = m_AllDataPath + "\\" + m_CitySymbolFolder + "\\"+ m_CitySymbolTex;
-			p3d->iModelNum = i;
-
-			p3d->xPos = m_CitySymbolPosX;
-			p3d->hPos = m_CitySymbolPosY;
-			p3d->zPos = m_CitySymbolPosZ;
-
-			p3d->radiu = 0;	p3d->angle = 0; p3d->scale = 1;	p3d->isSelected = false; 
-			p3d->iRotateX = 0; p3d->iRotateY = 0; p3d->iRotateZ = 0;  
-
-			m_CitySymbolModel.Add(p3d); 
-
-			char cc[256]; 
-			sprintf(cc,p3d->strModelPath);
-			LoadPNG(cc, g_citySymbolTex[i]);
-		}
-
-
-		// ----------------------------------------------------
-
-		// ¾°¹ÛÊ÷Êı¾İ
-		/*TreeModel
-		2
-		CACTUS3 400.574 82.159 354.653
-		CACTUS5 449.065 76.690 329.477
-		1
-		CACTUS5 665.527 56.000 315.917*/
-		file.ReadString(m_TreeModelFolder);
-		CString m_TreeModelNumStr;
-		file.ReadString(m_TreeModelNumStr);
-		m_iTreeModelNum = atoi(m_TreeModelNumStr);
-
-		for(int i = 0; i <m_iTreeModelNum; ++i)
-		{
-			file.ReadString(m_TreeModelTex);
-			int curPos = 0; 
-			int tokenID = 0;
-			curPos = 0; tokenID = 0;
-			CString temp = m_TreeModelTex.Tokenize(" ", curPos);
-			CString treeModelTex = temp;
-			while (temp != _T(""))
-			{		
-				tokenID += 1;	
-				temp = m_TreeModelTex.Tokenize(" ", curPos); 
-
-				if(tokenID == 1)
-					m_TreeModelPosX = atof(temp);
-				else if(tokenID == 2)
-					m_TreeModelPosY = atof(temp);
-				else if(tokenID == 3)
-					m_TreeModelPosZ = atof(temp);					
-			};   
-			m_TreeModelTex = treeModelTex;
-
-			PModelStruct p3d = new CModelStruct;
-			p3d->strModelPath = m_AllDataPath + "\\" + m_TreeModelFolder + "\\"+ m_TreeModelTex;
-			p3d->iModelNum = i;
-
-			p3d->xPos = m_TreeModelPosX;
-			p3d->hPos = m_TreeModelPosY;
-			p3d->zPos = m_TreeModelPosZ;
-
-			p3d->radiu = 0;	p3d->angle = 0; p3d->scale = 1;	p3d->isSelected = false; 
-			p3d->iRotateX = 0; p3d->iRotateY = 0; p3d->iRotateZ = 0;  
-
-			m_TreeModel.Add(p3d); 
-
-			char cc[256]; 
-			sprintf(cc,p3d->strModelPath);
-			LoadT16(cc,g_cactus[p3d->iModelNum]); 
-		}
-
-		// ----------------------------------------------------
-
-		// 3D Tree
-		file.ReadString(m_TreeModelNumStr);
-		m_i3DTreeModelNum = atoi(m_TreeModelNumStr);
-		for(int i = 0; i <m_i3DTreeModelNum; ++i)
-		{
-			file.ReadString(m_TreeModelTex);
-			int curPos = 0; 
-			int tokenID = 0;
-			curPos = 0; tokenID = 0;
-			CString temp = m_TreeModelTex.Tokenize(" ", curPos);
-			CString treeModelTex = temp;
-			while (temp != _T(""))
-			{		
-				tokenID += 1;	
-				temp = m_TreeModelTex.Tokenize(" ", curPos); 
-
-				if(tokenID == 1)
-					m_TreeModelPosX = atof(temp);
-				else if(tokenID == 2)
-					m_TreeModelPosY = atof(temp);
-				else if(tokenID == 3)
-					m_TreeModelPosZ = atof(temp);					
-			};   
-			m_TreeModelTex = treeModelTex;
-
-			PModelStruct p3d = new CModelStruct;
-			p3d->strModelPath = m_AllDataPath + "\\" + m_TreeModelFolder + "\\"+ m_TreeModelTex;
-			p3d->iModelNum = i;
-
-			p3d->xPos = m_TreeModelPosX;
-			p3d->hPos = m_TreeModelPosY;
-			p3d->zPos = m_TreeModelPosZ;
-
-			p3d->radiu = 0;	p3d->angle = 0; p3d->scale = 1;	p3d->isSelected = false; 
-			p3d->iRotateX = 0; p3d->iRotateY = 0; p3d->iRotateZ = 0;  
-
-			m_3DTreeModel.Add(p3d); 
-
-			char cc[256]; 
-			sprintf(cc,p3d->strModelPath);
-			LoadT16(cc,g_cactus3DTree[p3d->iModelNum]); 
-		}
-	}
-
-	file.Close();
+// åŠ è½½ç‚¹æ–‡ä»¶(.pt)
+void CMy3DSymbolLibNewView::LoadPointSymbolFile(CString filename) {
+    CStdioFile file;
+    BOOL b_open = file.Open(filename, CStdioFile::modeRead);
+    if ((!b_open) || (file == NULL)) {
+        MessageBox(_T("ç‚¹æ–‡ä»¶!\n") + filename, _T("æ‰“å¼€ç‚¹æ–‡ä»¶"), MB_ICONWARNING + MB_OK);
+        return;
+    } else {
+        // è¯»å–æ‰€æœ‰æ•°æ®æ–‡ä»¶è·¯å¾„
+        m_AllDataPath = g_sceneDataPath.c_str();
+        CString tmp_pointHeader;
+        // ç‚¹æ–‡ä»¶é¦–éƒ¨
+        file.ReadString(tmp_pointHeader);
+        // ----------------------------------------------------
+        // 3DS æ¨¡å‹æ•°æ®
+        /*3DModel
+        2
+        æˆ¿å­1 399.921 83.990 384.101
+        èˆªå¤©å‘å°„å° 397.700 83.991 373.560*/
+        file.ReadString(m_3DModelFolder);
+        CString m_3DModelNumStr;
+        file.ReadString(m_3DModelNumStr);
+        m_i3DModelNum = atoi(m_3DModelNumStr);
+        for (int i = 0; i < m_i3DModelNum; ++i) {
+            file.ReadString(m_3DModelPath);
+            int curPos = 0;
+            int tokenID = 0;
+            CString temp = m_3DModelPath.Tokenize(" ", curPos);
+            CString model3DFolder = temp;
+            while (temp != _T("")) {
+                tokenID += 1;
+                temp = m_3DModelPath.Tokenize(" ", curPos);
+                if (tokenID == 1)
+                    m_3DModelPosX = atof(temp);
+                else if (tokenID == 2)
+                    m_3DModelPosY = atof(temp);
+                else if (tokenID == 3)
+                    m_3DModelPosZ = atof(temp);
+                else if (tokenID == 4)
+                    m_3DModelRotX = atof(temp);
+                else if (tokenID == 5)
+                    m_3DModelRotY = atof(temp);
+                else if (tokenID == 6)
+                    m_3DModelRotZ = atof(temp);
+                else if (tokenID == 7)
+                    m_3DModelScale = atof(temp);
+            };
+            m_3DModelPath = model3DFolder;
+            PModelParamStruct p3d = new CModelParamStruct;
+            p3d->modelPath = m_AllDataPath + "\\" + m_3DModelFolder + "\\" + m_3DModelPath;
+            p3d->modelID = i;
+            p3d->modelSelected = false;
+            p3d->m_3DS_Mode_Texture_PATH_NAME = m_AllDataPath + "\\" + m_3DModelFolder + "\\" + m_3DModelPath.Left(m_3DModelPath.Find('.')) + ".bmp";
+            p3d->isDeleted = false;
+            p3d->posX = m_3DModelPosX;
+            p3d->posY = m_3DModelPosY;
+            p3d->posZ = m_3DModelPosZ;
+            p3d->rotX = m_3DModelRotX;
+            p3d->rotY = m_3DModelRotY;
+            p3d->rotZ = m_3DModelRotZ;
+            p3d->scale = m_3DModelScale;
+            Load3DModel(p3d, MODEL_NEW);
+        }
+        // ----------------------------------------------------
+        // åŸå¸‚æ ‡è¯†æ•°æ®
+        /*City Symbol
+        2
+        25 398.469 83.992 393.427
+        1 386.085 83.993 387.031*/
+        file.ReadString(m_CitySymbolFolder);
+        CString m_CitySymbolNumStr;
+        file.ReadString(m_CitySymbolNumStr);
+        m_iCitySymbolModelNum = atoi(m_CitySymbolNumStr);
+        for (int i = 0; i < m_iCitySymbolModelNum; ++i) {
+            file.ReadString(m_CitySymbolTex);
+            int curPos = 0;
+            int tokenID = 0;
+            curPos = 0;
+            tokenID = 0;
+            CString temp = m_CitySymbolTex.Tokenize(" ", curPos);
+            CString citySymbolTex = temp;
+            while (temp != _T("")) {
+                tokenID += 1;
+                temp = m_CitySymbolTex.Tokenize(" ", curPos);
+                if (tokenID == 1)
+                    m_CitySymbolPosX = atof(temp);
+                else if (tokenID == 2)
+                    m_CitySymbolPosY = atof(temp);
+                else if (tokenID == 3)
+                    m_CitySymbolPosZ = atof(temp);
+            };
+            m_CitySymbolTex = citySymbolTex;
+            PModelStruct p3d = new CModelStruct;
+            p3d->strModelPath = m_AllDataPath + "\\" + m_CitySymbolFolder + "\\" + m_CitySymbolTex;
+            p3d->iModelNum = i;
+            p3d->xPos = m_CitySymbolPosX;
+            p3d->hPos = m_CitySymbolPosY;
+            p3d->zPos = m_CitySymbolPosZ;
+            p3d->radiu = 0;
+            p3d->angle = 0;
+            p3d->scale = 1;
+            p3d->isSelected = false;
+            p3d->iRotateX = 0;
+            p3d->iRotateY = 0;
+            p3d->iRotateZ = 0;
+            m_CitySymbolModel.Add(p3d);
+            char cc[256];
+            sprintf(cc, p3d->strModelPath);
+            LoadPNG(cc, g_citySymbolTex[i]);
+        }
+        // ----------------------------------------------------
+        // æ™¯è§‚æ ‘æ•°æ®
+        /*TreeModel
+        2
+        CACTUS3 400.574 82.159 354.653
+        CACTUS5 449.065 76.690 329.477
+        1
+        CACTUS5 665.527 56.000 315.917*/
+        file.ReadString(m_TreeModelFolder);
+        CString m_TreeModelNumStr;
+        file.ReadString(m_TreeModelNumStr);
+        m_iTreeModelNum = atoi(m_TreeModelNumStr);
+        for (int i = 0; i < m_iTreeModelNum; ++i) {
+            file.ReadString(m_TreeModelTex);
+            int curPos = 0;
+            int tokenID = 0;
+            curPos = 0;
+            tokenID = 0;
+            CString temp = m_TreeModelTex.Tokenize(" ", curPos);
+            CString treeModelTex = temp;
+            while (temp != _T("")) {
+                tokenID += 1;
+                temp = m_TreeModelTex.Tokenize(" ", curPos);
+                if (tokenID == 1)
+                    m_TreeModelPosX = atof(temp);
+                else if (tokenID == 2)
+                    m_TreeModelPosY = atof(temp);
+                else if (tokenID == 3)
+                    m_TreeModelPosZ = atof(temp);
+            };
+            m_TreeModelTex = treeModelTex;
+            PModelStruct p3d = new CModelStruct;
+            p3d->strModelPath = m_AllDataPath + "\\" + m_TreeModelFolder + "\\" + m_TreeModelTex;
+            p3d->iModelNum = i;
+            p3d->xPos = m_TreeModelPosX;
+            p3d->hPos = m_TreeModelPosY;
+            p3d->zPos = m_TreeModelPosZ;
+            p3d->radiu = 0;
+            p3d->angle = 0;
+            p3d->scale = 1;
+            p3d->isSelected = false;
+            p3d->iRotateX = 0;
+            p3d->iRotateY = 0;
+            p3d->iRotateZ = 0;
+            m_TreeModel.Add(p3d);
+            char cc[256];
+            sprintf(cc, p3d->strModelPath);
+            LoadT16(cc, g_cactus[p3d->iModelNum]);
+        }
+        // ----------------------------------------------------
+        // 3D Tree
+        file.ReadString(m_TreeModelNumStr);
+        m_i3DTreeModelNum = atoi(m_TreeModelNumStr);
+        for (int i = 0; i < m_i3DTreeModelNum; ++i) {
+            file.ReadString(m_TreeModelTex);
+            int curPos = 0;
+            int tokenID = 0;
+            curPos = 0;
+            tokenID = 0;
+            CString temp = m_TreeModelTex.Tokenize(" ", curPos);
+            CString treeModelTex = temp;
+            while (temp != _T("")) {
+                tokenID += 1;
+                temp = m_TreeModelTex.Tokenize(" ", curPos);
+                if (tokenID == 1)
+                    m_TreeModelPosX = atof(temp);
+                else if (tokenID == 2)
+                    m_TreeModelPosY = atof(temp);
+                else if (tokenID == 3)
+                    m_TreeModelPosZ = atof(temp);
+            };
+            m_TreeModelTex = treeModelTex;
+            PModelStruct p3d = new CModelStruct;
+            p3d->strModelPath = m_AllDataPath + "\\" + m_TreeModelFolder + "\\" + m_TreeModelTex;
+            p3d->iModelNum = i;
+            p3d->xPos = m_TreeModelPosX;
+            p3d->hPos = m_TreeModelPosY;
+            p3d->zPos = m_TreeModelPosZ;
+            p3d->radiu = 0;
+            p3d->angle = 0;
+            p3d->scale = 1;
+            p3d->isSelected = false;
+            p3d->iRotateX = 0;
+            p3d->iRotateY = 0;
+            p3d->iRotateZ = 0;
+            m_3DTreeModel.Add(p3d);
+            char cc[256];
+            sprintf(cc, p3d->strModelPath);
+            LoadT16(cc, g_cactus3DTree[p3d->iModelNum]);
+        }
+    }
+    file.Close();
 }
-// ¼ÓÔØÏßÎÄ¼ş(.ln)
-void CMy3DSymbolLibNewView::LoadLineSymbolFile(CString filename)
-{
-
+// åŠ è½½çº¿æ–‡ä»¶(.ln)
+void CMy3DSymbolLibNewView::LoadLineSymbolFile(CString filename) {
 }
-// ¼ÓÔØÇøÎÄ¼ş(.gsf)
-void CMy3DSymbolLibNewView::LoadAreaSymbolFile(CString filename)
-{
-	CStdioFile file;
-	BOOL b_open = file.Open(filename, CStdioFile::modeRead);
-	if((!b_open) || (file==NULL))
-	{
-		MessageBox(_T("ÃæÎÄ¼ş!\n")+filename, _T("´ò¿ªÃæÎÄ¼ş"), MB_ICONWARNING + MB_OK);
-		return;
-	}
-	else
-	{
-		// ¶ÁÈ¡ËùÓĞÊı¾İÎÄ¼şÂ·¾¶
-		//m_AllDataPath = g_sceneDataPath.c_str();
-
-		CString tmp_areaHeader;
-		// µãÎÄ¼şÊ×²¿
-		file.ReadString(tmp_areaHeader);
-
-		// ----------------------------------------------------
-
-		// Ãæ·ûºÅµÄ¸öÊı
-		CString area_count_str;
-		file.ReadString(area_count_str);
-		int area_num = atoi(area_count_str);
-
-		// ¶à±ßĞÎµÄ±ßÊı
-		CString area_edge_num_str;
-		
-
-
-		CString area_info_str;
- 
-		for(int i=0; i<area_num; ++i)
-		{
-			file.ReadString(area_info_str);
-
-			int curPos = 0; 
-			int tokenID = 0;
-			CString temp = area_info_str.Tokenize(" ", curPos);
-
-			CString area_edge_num_str = temp;
-			int area_edges = atoi(area_edge_num_str);
-
-
-			Area_4 tmp_area4; 
-			
-
-			while (temp != _T("") && (4==area_edges) )
-			{		
-				tokenID += 1;	
-				temp = area_info_str.Tokenize(" ", curPos); 
-
-				//pt1
-				if(tokenID == 1)
-					tmp_area4.pt1._x = atof(temp);
-				else if(tokenID == 2)
-					tmp_area4.pt1._y = atof(temp);
-				else if(tokenID == 3)
-					tmp_area4.pt1._z = atof(temp);			
-
-				//pt2
-				else if(tokenID == 4)
-					tmp_area4.pt2._x = atof(temp);	
-				else if(tokenID == 5)
-					tmp_area4.pt2._y = atof(temp);	
-				else if(tokenID == 6)
-					tmp_area4.pt2._z = atof(temp);	
-
-				//pt3
-				else if(tokenID == 7)
-					tmp_area4.pt3._x = atof(temp);	
-				else if(tokenID == 8)
-					tmp_area4.pt3._y = atof(temp);	
-				else if(tokenID == 9)
-					tmp_area4.pt3._z = atof(temp);	
-
-
-				//pt4
-				else if(tokenID == 10)
-					tmp_area4.pt4._x = atof(temp);	
-				else if(tokenID == 11)
-					tmp_area4.pt4._y = atof(temp);
-				else if(tokenID == 12)
-					tmp_area4.pt4._z = atof(temp);
-				else if(tokenID == 13)
-					tmp_area4.area_texture = temp;
-			}
-
-
-			PArea_4 area = new Area_4;
-			area->pt1 = tmp_area4.pt1;
-			area->pt2 = tmp_area4.pt2;
-			area->pt3 = tmp_area4.pt3;
-			area->pt4 = tmp_area4.pt4;
-
-			area->area_texture = tmp_area4.area_texture;
-			area->deleted = 0;
-
-			m_Area4_Array.Add(area);
-			 
-
-			
-
-		}
-
-
-		OnMenuAreaFuse(); 
-		 
- 
-	}
-
-	file.Close();
+// åŠ è½½åŒºæ–‡ä»¶(.gsf)
+void CMy3DSymbolLibNewView::LoadAreaSymbolFile(CString filename) {
+    CStdioFile file;
+    BOOL b_open = file.Open(filename, CStdioFile::modeRead);
+    if ((!b_open) || (file == NULL)) {
+        MessageBox(_T("é¢æ–‡ä»¶!\n") + filename, _T("æ‰“å¼€é¢æ–‡ä»¶"), MB_ICONWARNING + MB_OK);
+        return;
+    } else {
+        // è¯»å–æ‰€æœ‰æ•°æ®æ–‡ä»¶è·¯å¾„
+        // m_AllDataPath = g_sceneDataPath.c_str();
+        CString tmp_areaHeader;
+        // ç‚¹æ–‡ä»¶é¦–éƒ¨
+        file.ReadString(tmp_areaHeader);
+        // ----------------------------------------------------
+        // é¢ç¬¦å·çš„ä¸ªæ•°
+        CString area_count_str;
+        file.ReadString(area_count_str);
+        int area_num = atoi(area_count_str);
+        // å¤šè¾¹å½¢çš„è¾¹æ•°
+        CString area_edge_num_str;
+        CString area_info_str;
+        for (int i = 0; i < area_num; ++i) {
+            file.ReadString(area_info_str);
+            int curPos = 0;
+            int tokenID = 0;
+            CString temp = area_info_str.Tokenize(" ", curPos);
+            CString area_edge_num_str = temp;
+            int area_edges = atoi(area_edge_num_str);
+            Area_4 tmp_area4;
+            while (temp != _T("") && (4 == area_edges)) {
+                tokenID += 1;
+                temp = area_info_str.Tokenize(" ", curPos);
+                // pt1
+                if (tokenID == 1)
+                    tmp_area4.pt1._x = atof(temp);
+                else if (tokenID == 2)
+                    tmp_area4.pt1._y = atof(temp);
+                else if (tokenID == 3)
+                    tmp_area4.pt1._z = atof(temp);
+                // pt2
+                else if (tokenID == 4)
+                    tmp_area4.pt2._x = atof(temp);
+                else if (tokenID == 5)
+                    tmp_area4.pt2._y = atof(temp);
+                else if (tokenID == 6)
+                    tmp_area4.pt2._z = atof(temp);
+                // pt3
+                else if (tokenID == 7)
+                    tmp_area4.pt3._x = atof(temp);
+                else if (tokenID == 8)
+                    tmp_area4.pt3._y = atof(temp);
+                else if (tokenID == 9)
+                    tmp_area4.pt3._z = atof(temp);
+                // pt4
+                else if (tokenID == 10)
+                    tmp_area4.pt4._x = atof(temp);
+                else if (tokenID == 11)
+                    tmp_area4.pt4._y = atof(temp);
+                else if (tokenID == 12)
+                    tmp_area4.pt4._z = atof(temp);
+                else if (tokenID == 13)
+                    tmp_area4.area_texture = temp;
+            }
+            PArea_4 area = new Area_4;
+            area->pt1 = tmp_area4.pt1;
+            area->pt2 = tmp_area4.pt2;
+            area->pt3 = tmp_area4.pt3;
+            area->pt4 = tmp_area4.pt4;
+            area->area_texture = tmp_area4.area_texture;
+            area->deleted = 0;
+            m_Area4_Array.Add(area);
+        }
+        OnMenuAreaFuse();
+    }
+    file.Close();
 }
 
 
 /****************************************************************************/
-/* Function: ³õÊ¼½×¶Îµ¼Èë³¡¾°ÎÄ¼ş												*/
+/* Function: åˆå§‹é˜¶æ®µå¯¼å…¥åœºæ™¯æ–‡ä»¶                                               */
 /****************************************************************************/
-void CMy3DSymbolLibNewView::OnSceneLoad()
-{
-	CString sceneConfigPath;
-
-	CFileDialog FileDialog(TRUE,"´ò¿ª¹¤³Ì",NULL,OFN_HIDEREADONLY \
-		| OFN_OVERWRITEPROMPT,\
-		"¹¤³ÌÎÄ¼ş(*.prj)|*.prj|",NULL);
-	
-	// Ä¬ÈÏ´ò¿ªÅäÖÃÖĞµÄÎÄ¼şÂ·¾¶
-	FileDialog.m_ofn.lpstrInitialDir = g_sceneDataPath.c_str();
-	FileDialog.m_ofn.lpstrTitle="´ò¿ª¹¤³ÌÎÄ¼ş";	
-	if(FileDialog.DoModal() == IDOK)
-	{
-		sceneConfigPath = FileDialog.GetPathName();
-	}
-	else
-		return;	
-
-	// ¼ÓÔØ³¡¾°ÎÄ¼ş
-	loadSceneFile(sceneConfigPath);
-	m_CurrentProjectName = sceneConfigPath;
+void CMy3DSymbolLibNewView::OnSceneLoad() {
+    CString sceneConfigPath;
+    CFileDialog FileDialog(TRUE, "æ‰“å¼€å·¥ç¨‹", NULL, OFN_HIDEREADONLY \
+                           | OFN_OVERWRITEPROMPT, \
+                           "å·¥ç¨‹æ–‡ä»¶(*.prj)|*.prj|", NULL);
+    // é»˜è®¤æ‰“å¼€é…ç½®ä¸­çš„æ–‡ä»¶è·¯å¾„
+    FileDialog.m_ofn.lpstrInitialDir = g_sceneDataPath.c_str();
+    FileDialog.m_ofn.lpstrTitle = "æ‰“å¼€å·¥ç¨‹æ–‡ä»¶";
+    if (FileDialog.DoModal() == IDOK) {
+        sceneConfigPath = FileDialog.GetPathName();
+    } else
+        return;
+    // åŠ è½½åœºæ™¯æ–‡ä»¶
+    loadSceneFile(sceneConfigPath);
+    m_CurrentProjectName = sceneConfigPath;
 }
 
 
@@ -5517,1902 +4396,1340 @@ void CMy3DSymbolLibNewView::OnSceneLoad()
 
 
 /****************************************************************************/
-/* Function: µ¼ÈëÌì¿ÕºĞÎÆÀí													*/
+/* Function: å¯¼å…¥å¤©ç©ºç›’çº¹ç†                                                 */
 /****************************************************************************/
-void CMy3DSymbolLibNewView::LoadSkyBoxTex(CString skyTP, CString skyLF, CString skyBK, CString skyRT, CString skyFR)
-{
-	char cc[256];
-	sprintf(cc,skyTP);
-	LoadT8(cc,g_texSkyBox[TP]);
-
-	sprintf(cc,skyLF);
-	LoadT8(cc,g_texSkyBox[LF]);
-
-	sprintf(cc,skyBK);
-	LoadT8(cc,g_texSkyBox[BK]);
-
-	sprintf(cc,skyRT);
-	LoadT8(cc,g_texSkyBox[RT]);
-
-	sprintf(cc,skyFR);
-	LoadT8(cc,g_texSkyBox[FR]);
-
-	MakeSkykList();
-	iSkyBoxLoaded = true;
+void CMy3DSymbolLibNewView::LoadSkyBoxTex(CString skyTP, CString skyLF, CString skyBK, CString skyRT, CString skyFR) {
+    char cc[256];
+    sprintf(cc, skyTP);
+    LoadT8(cc, g_texSkyBox[TP]);
+    sprintf(cc, skyLF);
+    LoadT8(cc, g_texSkyBox[LF]);
+    sprintf(cc, skyBK);
+    LoadT8(cc, g_texSkyBox[BK]);
+    sprintf(cc, skyRT);
+    LoadT8(cc, g_texSkyBox[RT]);
+    sprintf(cc, skyFR);
+    LoadT8(cc, g_texSkyBox[FR]);
+    MakeSkykList();
+    iSkyBoxLoaded = true;
 }
 
 
 /****************************************************************************/
-/* Function: µ¼ÈëµØĞÎÎÆÀí														*/
+/* Function: å¯¼å…¥åœ°å½¢çº¹ç†                                                       */
 /****************************************************************************/
-void CMy3DSymbolLibNewView::LoadTerrainTex(CString terrainTex, CString terrainContour)
-{
-	char cc[256];
-	strcpy(cc,terrainTex);				// µØÃæÌùÍ¼
-	LoadT8(cc,	texTerrain);	
-
-	strcpy(cc,terrainContour);			// µÈ¸ßµØÊÆÍ¼
-	g_imageData = LoadBit(cc,&g_bit);	// µ÷µÈ¸ßÏßµØÊÆÍ¼
-
-	InitTerrain(/*5*/);					// ³õÊ¼»¯µØÃæ£¬µØÃæÆğ·ü¸ß¶ÈÎª5£¬Ö»ÓĞÔÚËæ»úµØÊÆ¸ß¶ÈÉèÖÃ²ÅÓĞÓÃ
-	g_isTerrainInit = true;
-	iTerrainType = 1;
+void CMy3DSymbolLibNewView::LoadTerrainTex(CString terrainTex, CString terrainContour) {
+    char cc[256];
+    strcpy(cc, terrainTex);             // åœ°é¢è´´å›¾
+    LoadT8(cc,  texTerrain);
+    strcpy(cc, terrainContour);         // ç­‰é«˜åœ°åŠ¿å›¾
+    g_imageData = LoadBit(cc, &g_bit);  // è°ƒç­‰é«˜çº¿åœ°åŠ¿å›¾
+    InitTerrain(/*5*/);                 // åˆå§‹åŒ–åœ°é¢ï¼Œåœ°é¢èµ·ä¼é«˜åº¦ä¸º5ï¼Œåªæœ‰åœ¨éšæœºåœ°åŠ¿é«˜åº¦è®¾ç½®æ‰æœ‰ç”¨
+    g_isTerrainInit = true;
+    iTerrainType = 1;
 }
 
 
 
 
 /****************************************************************************/
-/* Function: ¼ÓÔØ3DSÄ£ĞÍ														*/
+/* Function: åŠ è½½3DSæ¨¡å‹                                                        */
 /****************************************************************************/
-void CMy3DSymbolLibNewView::Load3DModel(PModelParamStruct p3d, int iLoadModelType)
-{
-	if(iLoadModelType == MODEL_NEW)
-	{
-		m_3DModel.Add(p3d);
-	}
+void CMy3DSymbolLibNewView::Load3DModel(PModelParamStruct p3d, int iLoadModelType) {
+    if (iLoadModelType == MODEL_NEW) {
+        m_3DModel.Add(p3d);
+    }
+    char _3DSFile[256];
+    sprintf(_3DSFile, p3d->modelPath);  // "...\\3DModel\\XXX.3DS"
+    // [ADD]
+    char _3DSTextureFile[256];
+    sprintf(_3DSTextureFile, p3d->m_3DS_Mode_Texture_PATH_NAME);
+    m_3ds->Init(_3DSFile, p3d->modelID, _3DSTextureFile);   // è°ƒç”¨æ¨¡å‹è°ƒå…¥å‡½æ•°
+    t3DBox t3dBox;
+    t3dBox.l = g_3DModel[p3d->modelID].t3DModelBox.l * p3d->scale;
+    t3dBox.w = g_3DModel[p3d->modelID].t3DModelBox.w * p3d->scale;
+    t3dBox.h = g_3DModel[p3d->modelID].t3DModelBox.h * p3d->scale;
+    // è§£å†³load3dsmodelæ—¶ç¼©æ”¾æ¯”ä¾‹é—®é¢˜
+    if (p3d->scale < 0.99) {
+        return;
+    }
+    float maxtemp = (t3dBox.l > t3dBox.w) ? t3dBox.l : t3dBox.w;
+    float max = (maxtemp > t3dBox.h) ? maxtemp : t3dBox.h;
+    float scale = 0.0f;
+    if (max > 10) {
+        scale = 10 / max;
+        m_3DModel.GetAt(p3d->modelID)->scale = scale;
+    }
+}
 
-	char _3DSFile[256]; 
-	sprintf(_3DSFile,p3d->modelPath); // "...\\3DModel\\XXX.3DS" 
 
-	// [ADD]
-	char _3DSTextureFile[256]; 
-	sprintf(_3DSTextureFile,p3d->m_3DS_Mode_Texture_PATH_NAME);
 
-	m_3ds->Init(_3DSFile, p3d->modelID, _3DSTextureFile);	// µ÷ÓÃÄ£ĞÍµ÷Èëº¯Êı
-
-	t3DBox t3dBox;
-
-	t3dBox.l = g_3DModel[p3d->modelID].t3DModelBox.l * p3d->scale;
-	t3dBox.w = g_3DModel[p3d->modelID].t3DModelBox.w * p3d->scale;
-	t3dBox.h = g_3DModel[p3d->modelID].t3DModelBox.h * p3d->scale;
-
-	// ½â¾öload3dsmodelÊ±Ëõ·Å±ÈÀıÎÊÌâ
-	if(p3d->scale < 0.99)
-	{
-		return;
-	}
-
-	float maxtemp = (t3dBox.l > t3dBox.w) ? t3dBox.l : t3dBox.w;
-	float max = (maxtemp > t3dBox.h) ? maxtemp : t3dBox.h;
-
-	float scale = 0.0f;
-	if(max > 10)
-	{
-		scale = 10 / max;
-		m_3DModel.GetAt(p3d->modelID)->scale = scale;
-	}
+void CMy3DSymbolLibNewView::OnSceneSave() {
+    if (ScenSave(m_CurrentProjectName))
+        MessageBox("åœºæ™¯é…ç½®æ–‡ä»¶ä¿å­˜å®Œæ¯•", "ä¿å­˜åœºæ™¯é…ç½®æ–¹æ¡ˆ", MB_ICONWARNING);
 }
 
 
 /****************************************************************************/
-/* Function: ±£´æµ±Ç°³¡¾°														*/
+/* Function: å½“å‰åœºæ™¯å¦å­˜ä¸º                                                 */
 /****************************************************************************/
-//void CMy3DSymbolLibNewView::OnSceneSave()
-//{ 
-//	// ºÍFlyPathSaveº¯ÊıÒ»ÖÂ
-//	CString 	NeededFile;
-//	char 		FileFilter[] = "¹¤³ÌÎÄ¼ş(*.prj)|*.prj|";
-//
-//	//ÉèÖÃÎÄ¼ş¶Ô»°¿òÊôĞÔ
-//	DWORD 		FileDialogFlag = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
-//	CFileDialog FileDialogBoxFile(FALSE, NULL, 0, FileDialogFlag, FileFilter, this);
-//	FileDialogBoxFile.m_ofn.lpstrTitle = "±£´æ¹¤³ÌÎÄ¼ş";
-//	char		FileName[200];
-//
-//	
-//	CString sceneDir = m_AllDataPath + "\\" + m_SceneConfig;
-//	FileDialogBoxFile.m_ofn.lpstrInitialDir = sceneDir;
-//
-//	CString tt[3];
-//	if( FileDialogBoxFile.DoModal() == IDOK )			//Èç¹û¶Ô»°¿ò³É¹û´ò¿ª
-//	{	
-//		NeededFile = FileDialogBoxFile.GetPathName();	//µÃµ½ÎÄ¼şÃû
-//		sprintf(FileName, "%s", NeededFile);
-//		if(strcmp(FileDialogBoxFile.GetFileExt(),"prj")!=0) 
-//			strcat(FileName,".prj");				 
-//
-//		if(ScenSave(FileName))
-//			MessageBox("³¡¾°ÅäÖÃÎÄ¼ş±£´æÍê±Ï","±£´æ³¡¾°ÅäÖÃ·½°¸",MB_ICONWARNING);
-//	}		
-//}
+void CMy3DSymbolLibNewView::OnSceneSaveAs() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    CString     NeededFile;
+    char        FileFilter[] = "å·¥ç¨‹æ–‡ä»¶(*.prj)|*.prj|";
+    // è®¾ç½®æ–‡ä»¶å¯¹è¯æ¡†å±æ€§
+    DWORD       FileDialogFlag = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
+    CFileDialog FileDialogBoxFile(FALSE, NULL, 0, FileDialogFlag, FileFilter, this);
+    FileDialogBoxFile.m_ofn.lpstrTitle = "ä¿å­˜å·¥ç¨‹æ–‡ä»¶";
+    char        FileName[200];
+    CString sceneDir = m_AllDataPath + "\\" + m_SceneConfig;
+    FileDialogBoxFile.m_ofn.lpstrInitialDir = sceneDir;
+    CString tt[3];
+    if (FileDialogBoxFile.DoModal() == IDOK) {           // å¦‚æœå¯¹è¯æ¡†æˆæœæ‰“å¼€
+        NeededFile = FileDialogBoxFile.GetPathName();   // å¾—åˆ°æ–‡ä»¶å
+        sprintf(FileName, "%s", NeededFile);
+        if (strcmp(FileDialogBoxFile.GetFileExt(), "prj") != 0)
+            strcat(FileName, ".prj");
+        if (ScenSave(FileName))
+            MessageBox("åœºæ™¯é…ç½®æ–‡ä»¶ä¿å­˜å®Œæ¯•", "ä¿å­˜åœºæ™¯é…ç½®æ–¹æ¡ˆ", MB_ICONWARNING);
+    }
+}
 
 
-void CMy3DSymbolLibNewView::OnSceneSave()
-{ 
-	if(ScenSave(m_CurrentProjectName))
-		MessageBox("³¡¾°ÅäÖÃÎÄ¼ş±£´æÍê±Ï","±£´æ³¡¾°ÅäÖÃ·½°¸",MB_ICONWARNING);
+bool CMy3DSymbolLibNewView::ScenSave(CString scenePth) {
+    CStdioFile file;
+    BOOL openFlag = file.Open(scenePth, CStdioFile::modeCreate | CStdioFile::modeWrite);
+    if (file == NULL || openFlag == FALSE) {
+        MessageBox("æ— æ•ˆçš„å·¥ç¨‹æ–‡ä»¶å!", "ä¿å­˜å·¥ç¨‹", MB_ICONINFORMATION + MB_OK);
+        return FALSE;
+    } else {
+        /************************************************************************/
+        /*   åœºæ™¯é…ç½®æ•°æ®                                                           */
+        /************************************************************************/
+        file.WriteString(m_SceneConfig + "\n");
+        /************************************************************************/
+        /*   åœ°å½¢æ•°æ® Terrain                                                   */
+        /************************************************************************/
+        file.WriteString(m_TerrainFolder + "\n");
+        //    Tex Sand512.BMP
+        file.WriteString(m_TerrainTextureFolder + " " + m_TerrainTexture + "\n");
+        //    Contour Terrain1.bmp
+        file.WriteString(m_TerrainContourFolder + " " + m_TerrainContour + "\n");
+        /************************************************************************/
+        /*   å¤©ç©ºç›’æ•°æ® SkyBox                                                  */
+        /************************************************************************/
+        file.WriteString(m_SkyBoxFolder + "\n");
+        //    0ç¼ºçœ TOP.BMP LEFT.BMP BACK.BMP RIGHT.BMP FRONT.BMP
+        file.WriteString(m_SkyBoxKindFolder + " " + m_SkyBoxTP + " " + m_SkyBoxLT + " "\
+                         + m_SkyBoxBK + " " + m_SkyBoxRT + " " + m_SkyBoxFR + "\n");
+        /************************************************************************/
+        /*   å¤©æ°”æ•°æ®                                                           */
+        /************************************************************************/
+        file.WriteString(m_WeatherFolder + "\n");
+        file.WriteString(m_WeatherTex + "\n");
+        // å†™å…¥ç‚¹çº¿é¢æ–‡ä»¶é“¾æ¥
+        file.WriteString("3\n");
+        file.WriteString(m_PointSymbolFile + "\n");
+        file.WriteString(m_LineSymbolFile + "\n");
+        file.WriteString(m_AreaSymbolFile);
+        file.Close();
+        // ä¿å­˜ç‚¹çº¿é¢æ–‡ä»¶
+        if (m_PointSymbolFile != "0")
+            savePointSymbolFile(m_PointSymbolFile);
+        if (m_LineSymbolFile != "0")
+            saveLineSymbolFile(m_LineSymbolFile);
+        if (m_AreaSymbolFile != "0")
+            saveAreaSymbolFile(m_AreaSymbolFile);
+        return TRUE;
+    }
+}
+
+/****************************************************************************/
+/* Function: ä¿å­˜ç‚¹ã€çº¿ã€é¢æ–‡ä»¶                                             */
+/****************************************************************************/
+// ä¿å­˜ç‚¹æ–‡ä»¶
+int CMy3DSymbolLibNewView::savePointSymbolFile(CString filename) {
+    CStdioFile file;
+    file.Open(filename, CStdioFile::modeCreate | CStdioFile::modeWrite);
+    if (file == NULL) {
+        MessageBox("ç‚¹æ–‡ä»¶ä¸å­˜åœ¨!", "ä¿å­˜ç‚¹æ–‡ä»¶", MB_ICONINFORMATION + MB_OK);
+        return FALSE;
+    } else {
+        file.WriteString("POINT\n");
+        /************************************************************************/
+        /*   3DS æ¨¡å‹æ•°æ® 3DModel                                               */
+        /************************************************************************/
+        file.WriteString(m_3DModelFolder + "\n");
+        int count_model_existed = 0;
+        for (int i = 0; i < m_i3DModelNum; ++i) {
+            if (m_3DModel.GetAt(i)->isDeleted == false) {
+                count_model_existed++;
+            }
+        }
+        CString m_3DModelNumStr;
+        m_3DModelNumStr.Format("%d", count_model_existed);
+        file.WriteString(m_3DModelNumStr + "\n");
+        for (int i = 0; i < m_i3DModelNum; ++i) {
+            if (m_3DModel.GetAt(i)->isDeleted == false) {
+                CString model;
+                CString path = m_3DModel.GetAt(i)->modelPath;
+                CString temp;
+                int n = path.ReverseFind('\\');//ä»åå¾€å‰å¯»æ‰¾
+                temp = path.Right(path.GetLength() - n - 1);
+                float pos_x = m_3DModel.GetAt(i)->posX;
+                float pos_z = m_3DModel.GetAt(i)->posZ;
+                float pos_y = m_3DModel.GetAt(i)->posY;
+                float rot_x = m_3DModel.GetAt(i)->rotX;
+                float rot_z = m_3DModel.GetAt(i)->rotZ;
+                float rot_y = m_3DModel.GetAt(i)->rotY;
+                float model_scale = m_3DModel.GetAt(i)->scale;
+                model.Format("%s %.3f %.3f %.3f %.3f %.3f %.3f %.13f", temp, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z, model_scale);
+                file.WriteString(model + "\n");
+            }
+        }
+        /************************************************************************/
+        /*   åŸå¸‚æ ‡è¯†æ•°æ® City Symbol                                               */
+        /************************************************************************/
+        file.WriteString(m_CitySymbolFolder + "\n");
+        CString m_CitySymbolNumStr;
+        m_CitySymbolNumStr.Format("%d", m_iCitySymbolModelNum);
+        file.WriteString(m_CitySymbolNumStr + "\n");
+        for (int i = 0; i < m_iCitySymbolModelNum; ++i) {
+            CString model;
+            CString path = m_CitySymbolModel.GetAt(i)->strModelPath;
+            CString temp;
+            int n = path.ReverseFind('\\');//ä»åå¾€å‰å¯»æ‰¾
+            temp = path.Right(path.GetLength() - n - 1);
+            model.Format("%s %d %.3f %d", temp, \
+                         m_CitySymbolModel.GetAt(i)->xPos, m_CitySymbolModel.GetAt(i)->hPos, m_CitySymbolModel.GetAt(i)->zPos);
+            file.WriteString(model + "\n");
+        }
+        /************************************************************************/
+        /*   æ™¯è§‚æ ‘æ•°æ® TreeModel                                               */
+        /************************************************************************/
+        file.WriteString(m_TreeModelFolder + "\n");
+        CString m_TreeModelNumStr;
+        m_TreeModelNumStr.Format("%d", m_iTreeModelNum);
+        file.WriteString(m_TreeModelNumStr + "\n");
+        for (int i = 0; i < m_iTreeModelNum; ++i) {
+            CString model;
+            CString path = m_TreeModel.GetAt(i)->strModelPath;
+            CString temp;
+            int n = path.ReverseFind('\\');//ä»åå¾€å‰å¯»æ‰¾
+            temp = path.Right(path.GetLength() - n - 1);
+            model.Format("%s %d %.3f %d", temp, \
+                         m_TreeModel.GetAt(i)->xPos, m_TreeModel.GetAt(i)->hPos, m_TreeModel.GetAt(i)->zPos);
+            file.WriteString(model + "\n");
+        }
+        /************************************************************************/
+        /*   3Dæ™¯è§‚æ ‘ 3D Tree                                                   */
+        /************************************************************************/
+        CString m_3DTreeModelNumStr;
+        m_3DTreeModelNumStr.Format("%d", m_i3DTreeModelNum);
+        file.WriteString(m_3DTreeModelNumStr + "\n");
+        for (int i = 0; i < m_i3DTreeModelNum; ++i) {
+            CString model;
+            CString path = m_3DTreeModel.GetAt(i)->strModelPath;
+            CString temp;
+            int n = path.ReverseFind('\\');//ä»åå¾€å‰å¯»æ‰¾
+            temp = path.Right(path.GetLength() - n - 1);
+            model.Format("%s %d %.3f %d", temp, \
+                         m_3DTreeModel.GetAt(i)->xPos, m_3DTreeModel.GetAt(i)->hPos, m_3DTreeModel.GetAt(i)->zPos);
+            file.WriteString(model + "\n");
+        }
+        file.Close();
+    }
+    return 0;
+}
+// ä¿å­˜çº¿æ–‡ä»¶
+int CMy3DSymbolLibNewView::saveLineSymbolFile(CString filename) {
+    return 0;
+}
+// ä¿å­˜åŒºæ–‡ä»¶
+int CMy3DSymbolLibNewView::saveAreaSymbolFile(CString filename) {
+    CStdioFile file;
+    file.Open(filename, CStdioFile::modeCreate | CStdioFile::modeWrite);
+    if (file == NULL) {
+        MessageBox("é¢æ–‡ä»¶ä¸å­˜åœ¨!", "ä¿å­˜é¢æ–‡ä»¶", MB_ICONINFORMATION + MB_OK);
+        return FALSE;
+    } else {
+        file.WriteString("AREA\n");
+        int size = m_Area4_Array.GetSize();
+        for (int i = 0; i < size; ++i) {
+            if (m_Area4_Array[i]->deleted == 1) {
+                size--;
+            }
+        }
+        CString polygon_count_str;
+        polygon_count_str.Format("%d\n", size);
+        file.WriteString(polygon_count_str);
+        int polygon4_edges = 4;
+        for (int i = 0; i < m_Area4_Array.GetSize(); ++i) {
+            if (m_Area4_Array[i]->deleted != 1) {
+                CString point_str;
+                point_str.Format("%d %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %s\n",
+                                 polygon4_edges,
+                                 m_Area4_Array[i]->pt1._x, m_Area4_Array[i]->pt1._y, m_Area4_Array[i]->pt1._z,
+                                 m_Area4_Array[i]->pt2._x, m_Area4_Array[i]->pt2._y, m_Area4_Array[i]->pt2._z,
+                                 m_Area4_Array[i]->pt3._x, m_Area4_Array[i]->pt3._y, m_Area4_Array[i]->pt3._z,
+                                 m_Area4_Array[i]->pt4._x, m_Area4_Array[i]->pt4._y, m_Area4_Array[i]->pt4._z,
+                                 m_Area4_Array[i]->area_texture
+                                );
+                file.WriteString(point_str);
+            }
+        }
+        file.Close();
+    }
+    return 0;
 }
 
 
 /****************************************************************************/
-/* Function: µ±Ç°³¡¾°Áí´æÎª													*/
+/* Function: é€‰ä¸­æ¨¡å‹ä¹‹åå³é”®å¼¹å‡ºèœå•ä¸­è¿›è¡Œé¼ æ ‡ç§»åŠ¨æ¨¡å‹æ“ä½œ                     */
 /****************************************************************************/
-void CMy3DSymbolLibNewView::OnSceneSaveAs()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	CString 	NeededFile;
-	char 		FileFilter[] = "¹¤³ÌÎÄ¼ş(*.prj)|*.prj|";
-
-	//ÉèÖÃÎÄ¼ş¶Ô»°¿òÊôĞÔ
-	DWORD 		FileDialogFlag = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
-	CFileDialog FileDialogBoxFile(FALSE, NULL, 0, FileDialogFlag, FileFilter, this);
-	FileDialogBoxFile.m_ofn.lpstrTitle = "±£´æ¹¤³ÌÎÄ¼ş";
-	char		FileName[200];
-
-
-	CString sceneDir = m_AllDataPath + "\\" + m_SceneConfig;
-	FileDialogBoxFile.m_ofn.lpstrInitialDir = sceneDir;
-
-	CString tt[3];
-	if( FileDialogBoxFile.DoModal() == IDOK )			//Èç¹û¶Ô»°¿ò³É¹û´ò¿ª
-	{	
-		NeededFile = FileDialogBoxFile.GetPathName();	//µÃµ½ÎÄ¼şÃû
-		sprintf(FileName, "%s", NeededFile);
-		if(strcmp(FileDialogBoxFile.GetFileExt(),"prj")!=0) 
-			strcat(FileName,".prj");				 
-
-		if(ScenSave(FileName))
-			MessageBox("³¡¾°ÅäÖÃÎÄ¼ş±£´æÍê±Ï","±£´æ³¡¾°ÅäÖÃ·½°¸",MB_ICONWARNING);
-	}		
+void CMy3DSymbolLibNewView::OnModelMove() {
+    m_OperateType = MOVE;
 }
 
 
 /****************************************************************************/
-/* Function: ±£´æ³¡¾°ÅäÖÃ														*/
+/* Function: ç¼–è¾‘æ¨¡å‹å‚æ•°,ä¾‹å¦‚æ¨¡å‹çº¹ç†è·¯å¾„,å¤§å°,æ–¹å‘,ç¼©æ”¾æ¯”ä¾‹                   */
 /****************************************************************************/
-//bool CMy3DSymbolLibNewView::ScenSave(CString scenePth)
-//{
-//	CStdioFile file; 
-//	file.Open(scenePth, CStdioFile::modeCreate | CStdioFile::modeWrite);
-//	if(file == NULL)
-//	{
-//		MessageBox("³¡¾°ÅäÖÃÎÄ¼ş²»´æÔÚ!", "³¡¾°ÅäÖÃÎÄ¼şµ¼Èë", MB_ICONINFORMATION + MB_OK);
-//		return FALSE;
-//	}
-//	else
-//	{ 
-//		/************************************************************************/
-//		/*   ³¡¾°ÅäÖÃÊı¾İ															*/
-//		/************************************************************************/
-//		file.WriteString(m_SceneConfig + "\n");
-//
-//
-//		/************************************************************************/
-//		/*   µØĞÎÊı¾İ Terrain													*/
-//		/************************************************************************/
-//		file.WriteString(m_TerrainFolder + "\n");
-//		//	  Tex Sand512.BMP
-//		file.WriteString(m_TerrainTextureFolder + " " + m_TerrainTexture + "\n"); 
-//		//	  Contour Terrain1.bmp
-//		file.WriteString(m_TerrainContourFolder + " " + m_TerrainContour + "\n"); 
-//
-// 
-//		/************************************************************************/
-//		/*   Ìì¿ÕºĞÊı¾İ SkyBox													*/
-//		/************************************************************************/
-//		file.WriteString(m_SkyBoxFolder + "\n");
-//		//	  0È±Ê¡ TOP.BMP LEFT.BMP BACK.BMP RIGHT.BMP FRONT.BMP
-//		file.WriteString(m_SkyBoxKindFolder + " " + m_SkyBoxTP + " " + m_SkyBoxLT + " "\
-//			+ m_SkyBoxBK + " " + m_SkyBoxRT + " " + m_SkyBoxFR + "\n"); 
-//
-//
-//		/************************************************************************/
-//		/*   3DS Ä£ĞÍÊı¾İ 3DModel												*/
-//		/************************************************************************/
-//		file.WriteString(m_3DModelFolder + "\n");
-//		
-//		int count_model_existed = 0;
-//		for(int i = 0; i <m_i3DModelNum; ++i)
-//		{
-//			if(m_3DModel.GetAt(i)->isDeleted == false)
-//			{
-//				count_model_existed++;
-//			}
-//		}
-//
-//		CString m_3DModelNumStr;
-//		m_3DModelNumStr.Format("%d", count_model_existed);
-//		file.WriteString(m_3DModelNumStr + "\n");
-//	
-//
-//		for(int i = 0; i <m_i3DModelNum; ++i)
-//		{
-//			if(m_3DModel.GetAt(i)->isDeleted == false)
-//			{
-//				CString model; 
-//				CString path = m_3DModel.GetAt(i)->modelPath; 		
-//				CString temp;					
-//				int n = path.ReverseFind('\\');//´ÓºóÍùÇ°Ñ°ÕÒ
-//				temp = path.Right(path.GetLength() - n - 1);
-//
-//				float pos_x = m_3DModel.GetAt(i)->posX;
-//				float pos_z = m_3DModel.GetAt(i)->posZ;
-//				float pos_y = m_3DModel.GetAt(i)->posY;
-//
-//				float rot_x = m_3DModel.GetAt(i)->rotX;
-//				float rot_z = m_3DModel.GetAt(i)->rotZ;
-//				float rot_y = m_3DModel.GetAt(i)->rotY;
-//
-//				float model_scale = m_3DModel.GetAt(i)->scale;
-//
-//				model.Format("%s %.3f %.3f %.3f %.3f %.3f %.3f %.13f",temp, pos_x, pos_y, pos_z,rot_x,rot_y,rot_z,model_scale);
-//
-//				file.WriteString(model + "\n"); 
-//			}
-//				
-//		}
-//
-//
-//		/************************************************************************/
-//		/*   ³ÇÊĞ±êÊ¶Êı¾İ City Symbol												*/
-//		/************************************************************************/
-//		file.WriteString(m_CitySymbolFolder + "\n");
-//		CString m_CitySymbolNumStr;
-//		m_CitySymbolNumStr.Format("%d", m_iCitySymbolModelNum);
-//		file.WriteString(m_CitySymbolNumStr + "\n");
-//
-//		for(int i = 0; i <m_iCitySymbolModelNum; ++i)
-//		{
-//			CString model; 
-//
-//			CString path = m_CitySymbolModel.GetAt(i)->strModelPath; 		
-//			CString temp;					
-//			int n = path.ReverseFind('\\');//´ÓºóÍùÇ°Ñ°ÕÒ
-//			temp = path.Right(path.GetLength() - n - 1);
-//
-//			model.Format("%s %d %.3f %d", temp,\
-//				m_CitySymbolModel.GetAt(i)->xPos, m_CitySymbolModel.GetAt(i)->hPos, m_CitySymbolModel.GetAt(i)->zPos);
-//
-//			file.WriteString(model + "\n"); 
-//		}
-//
-//
-//		/************************************************************************/
-//		/*   ¾°¹ÛÊ÷Êı¾İ TreeModel												*/
-//		/************************************************************************/
-//		file.WriteString(m_TreeModelFolder + "\n");
-//		CString m_TreeModelNumStr;
-//		m_TreeModelNumStr.Format("%d", m_iTreeModelNum);
-//		file.WriteString(m_TreeModelNumStr + "\n");
-//
-//		for(int i = 0; i <m_iTreeModelNum; ++i)
-//		{ 
-//			CString model;
-//
-//			CString path = m_TreeModel.GetAt(i)->strModelPath; 		
-//			CString temp;					
-//			int n = path.ReverseFind('\\');//´ÓºóÍùÇ°Ñ°ÕÒ
-//			temp = path.Right(path.GetLength() - n - 1);
-//
-//
-//			model.Format("%s %d %.3f %d", temp,\
-//				m_TreeModel.GetAt(i)->xPos, m_TreeModel.GetAt(i)->hPos, m_TreeModel.GetAt(i)->zPos);
-//
-//			file.WriteString(model + "\n");  
-//		}
-//
-//	
-//		/************************************************************************/
-//		/*   3D¾°¹ÛÊ÷ 3D Tree													*/
-//		/************************************************************************/
-//		CString m_3DTreeModelNumStr;
-//		m_3DTreeModelNumStr.Format("%d", m_i3DTreeModelNum);
-//		file.WriteString(m_3DTreeModelNumStr + "\n");
-//		
-//		for(int i = 0; i <m_i3DTreeModelNum; ++i)
-//		{
-//			CString model;
-//
-//			CString path = m_3DTreeModel.GetAt(i)->strModelPath; 		
-//			CString temp;					
-//			int n = path.ReverseFind('\\');//´ÓºóÍùÇ°Ñ°ÕÒ
-//			temp = path.Right(path.GetLength() - n - 1);
-//
-//
-//			model.Format("%s %d %.3f %d", temp,\
-//				m_3DTreeModel.GetAt(i)->xPos, m_3DTreeModel.GetAt(i)->hPos, m_3DTreeModel.GetAt(i)->zPos);
-//
-//			file.WriteString(model + "\n");   
-//		} 
-//
-//	
-//		/************************************************************************/
-//		/*   ÌìÆøÊı¾İ															*/
-//		/************************************************************************/
-//		file.WriteString(m_WeatherFolder + "\n");
-//		file.WriteString(m_WeatherTex + "\n");
-//		
-//
-//		/************************************************************************/
-//		/*     ±£´æÏßÂ·½»µã														*/
-//		/************************************************************************/
-//		int JD_Count = myDesingScheme.PtS_JD.GetSize();
-//		CString lineStr = "Line";
-//		file.WriteString(lineStr + "\n");
-//		// Ğ´Èë½»µã¸öÊı
-//		CString m_JDNumStr;
-//		m_JDNumStr.Format("%d", JD_Count);
-//		file.WriteString(m_JDNumStr + "\n");
-//
-//		if(JD_Count > 0)
-//		{ 
-//			// Ğ´Èë½»µã×ø±ê
-//			CString str_JD_Position;
-//			int JD_index = 0;
-//			for(JD_index=0;JD_index<JD_Count-1;++JD_index)
-//			{
-//				str_JD_Position.Format("%.3f %.3f %.3f %ld %d ",myDesingScheme.PtS_JD[JD_index]->x,
-//					myDesingScheme.PtS_JD[JD_index]->y,
-//					myDesingScheme.PtS_JD[JD_index]->z,
-//					myDesingScheme.JDCurveElements[JD_index]->R, 
-//					myDesingScheme.JDCurveElements[JD_index]->L0
-//					);
-//				file.WriteString(str_JD_Position);
-//			}
-//			str_JD_Position.Format("%.3f %.3f %.3f %ld %d",myDesingScheme.PtS_JD[JD_index]->x,
-//				myDesingScheme.PtS_JD[JD_index]->y,
-//				myDesingScheme.PtS_JD[JD_index]->z,
-//				0, 0
-//				);
-//			file.WriteString(str_JD_Position + "\n");
-//		}
-//		
-//
-//		file.Close();
-//
-//		return TRUE;
-//	} 
-//}
-
-bool CMy3DSymbolLibNewView::ScenSave(CString scenePth)
-{
-	CStdioFile file; 
-	BOOL openFlag = file.Open(scenePth, CStdioFile::modeCreate | CStdioFile::modeWrite);
-	if(file == NULL || openFlag == FALSE)
-	{
-		MessageBox("ÎŞĞ§µÄ¹¤³ÌÎÄ¼şÃû!", "±£´æ¹¤³Ì", MB_ICONINFORMATION + MB_OK);
-		return FALSE;
-	}
-	else
-	{ 
-		/************************************************************************/
-		/*   ³¡¾°ÅäÖÃÊı¾İ															*/
-		/************************************************************************/
-		file.WriteString(m_SceneConfig + "\n");
-
-
-		/************************************************************************/
-		/*   µØĞÎÊı¾İ Terrain													*/
-		/************************************************************************/
-		file.WriteString(m_TerrainFolder + "\n");
-		//	  Tex Sand512.BMP
-		file.WriteString(m_TerrainTextureFolder + " " + m_TerrainTexture + "\n"); 
-		//	  Contour Terrain1.bmp
-		file.WriteString(m_TerrainContourFolder + " " + m_TerrainContour + "\n"); 
-
-
-		/************************************************************************/
-		/*   Ìì¿ÕºĞÊı¾İ SkyBox													*/
-		/************************************************************************/
-		file.WriteString(m_SkyBoxFolder + "\n");
-		//	  0È±Ê¡ TOP.BMP LEFT.BMP BACK.BMP RIGHT.BMP FRONT.BMP
-		file.WriteString(m_SkyBoxKindFolder + " " + m_SkyBoxTP + " " + m_SkyBoxLT + " "\
-			+ m_SkyBoxBK + " " + m_SkyBoxRT + " " + m_SkyBoxFR + "\n"); 
-
-
-
-
-		/************************************************************************/
-		/*   ÌìÆøÊı¾İ															*/
-		/************************************************************************/
-		file.WriteString(m_WeatherFolder + "\n");
-		file.WriteString(m_WeatherTex + "\n");
-
-
-		
-		// Ğ´ÈëµãÏßÃæÎÄ¼şÁ´½Ó
-		file.WriteString("3\n");
-		
-		file.WriteString(m_PointSymbolFile + "\n");
-		file.WriteString(m_LineSymbolFile + "\n");
-		file.WriteString(m_AreaSymbolFile);
-
-
-		file.Close();
-
-
-		// ±£´æµãÏßÃæÎÄ¼ş
-		if(m_PointSymbolFile != "0")
-			savePointSymbolFile(m_PointSymbolFile);
-		if(m_LineSymbolFile != "0")
-			saveLineSymbolFile(m_LineSymbolFile);
-		if(m_AreaSymbolFile != "0")
-			saveAreaSymbolFile(m_AreaSymbolFile);
-
-
-		return TRUE;
-	} 
-}
-
-/****************************************************************************/
-/* Function: ±£´æµã¡¢Ïß¡¢ÃæÎÄ¼ş												*/
-/****************************************************************************/
-// ±£´æµãÎÄ¼ş
-int CMy3DSymbolLibNewView::savePointSymbolFile(CString filename)
-{
-	CStdioFile file; 
-	file.Open(filename, CStdioFile::modeCreate | CStdioFile::modeWrite);
-	if(file == NULL)
-	{
-		MessageBox("µãÎÄ¼ş²»´æÔÚ!", "±£´æµãÎÄ¼ş", MB_ICONINFORMATION + MB_OK);
-		return FALSE;
-	}
-	else
-	{ 
-		file.WriteString("POINT\n");
-		/************************************************************************/
-		/*   3DS Ä£ĞÍÊı¾İ 3DModel												*/
-		/************************************************************************/
-		file.WriteString(m_3DModelFolder + "\n");
-
-		int count_model_existed = 0;
-		for(int i = 0; i <m_i3DModelNum; ++i)
-		{
-			if(m_3DModel.GetAt(i)->isDeleted == false)
-			{
-				count_model_existed++;
-			}
-		}
-
-		CString m_3DModelNumStr;
-		m_3DModelNumStr.Format("%d", count_model_existed);
-		file.WriteString(m_3DModelNumStr + "\n");
-
-
-		for(int i = 0; i <m_i3DModelNum; ++i)
-		{
-			if(m_3DModel.GetAt(i)->isDeleted == false)
-			{
-				CString model; 
-				CString path = m_3DModel.GetAt(i)->modelPath; 		
-				CString temp;					
-				int n = path.ReverseFind('\\');//´ÓºóÍùÇ°Ñ°ÕÒ
-				temp = path.Right(path.GetLength() - n - 1);
-
-				float pos_x = m_3DModel.GetAt(i)->posX;
-				float pos_z = m_3DModel.GetAt(i)->posZ;
-				float pos_y = m_3DModel.GetAt(i)->posY;
-
-				float rot_x = m_3DModel.GetAt(i)->rotX;
-				float rot_z = m_3DModel.GetAt(i)->rotZ;
-				float rot_y = m_3DModel.GetAt(i)->rotY;
-
-				float model_scale = m_3DModel.GetAt(i)->scale;
-
-				model.Format("%s %.3f %.3f %.3f %.3f %.3f %.3f %.13f",temp, pos_x, pos_y, pos_z,rot_x,rot_y,rot_z,model_scale);
-
-				file.WriteString(model + "\n"); 
-			}
-
-		}
-
-
-		/************************************************************************/
-		/*   ³ÇÊĞ±êÊ¶Êı¾İ City Symbol												*/
-		/************************************************************************/
-		file.WriteString(m_CitySymbolFolder + "\n");
-		CString m_CitySymbolNumStr;
-		m_CitySymbolNumStr.Format("%d", m_iCitySymbolModelNum);
-		file.WriteString(m_CitySymbolNumStr + "\n");
-
-		for(int i = 0; i <m_iCitySymbolModelNum; ++i)
-		{
-			CString model; 
-
-			CString path = m_CitySymbolModel.GetAt(i)->strModelPath; 		
-			CString temp;					
-			int n = path.ReverseFind('\\');//´ÓºóÍùÇ°Ñ°ÕÒ
-			temp = path.Right(path.GetLength() - n - 1);
-
-			model.Format("%s %d %.3f %d", temp,\
-				m_CitySymbolModel.GetAt(i)->xPos, m_CitySymbolModel.GetAt(i)->hPos, m_CitySymbolModel.GetAt(i)->zPos);
-
-			file.WriteString(model + "\n"); 
-		}
-
-
-		/************************************************************************/
-		/*   ¾°¹ÛÊ÷Êı¾İ TreeModel												*/
-		/************************************************************************/
-		file.WriteString(m_TreeModelFolder + "\n");
-		CString m_TreeModelNumStr;
-		m_TreeModelNumStr.Format("%d", m_iTreeModelNum);
-		file.WriteString(m_TreeModelNumStr + "\n");
-
-		for(int i = 0; i <m_iTreeModelNum; ++i)
-		{ 
-			CString model;
-
-			CString path = m_TreeModel.GetAt(i)->strModelPath; 		
-			CString temp;					
-			int n = path.ReverseFind('\\');//´ÓºóÍùÇ°Ñ°ÕÒ
-			temp = path.Right(path.GetLength() - n - 1);
-
-
-			model.Format("%s %d %.3f %d", temp,\
-				m_TreeModel.GetAt(i)->xPos, m_TreeModel.GetAt(i)->hPos, m_TreeModel.GetAt(i)->zPos);
-
-			file.WriteString(model + "\n");  
-		}
-
-
-		/************************************************************************/
-		/*   3D¾°¹ÛÊ÷ 3D Tree													*/
-		/************************************************************************/
-		CString m_3DTreeModelNumStr;
-		m_3DTreeModelNumStr.Format("%d", m_i3DTreeModelNum);
-		file.WriteString(m_3DTreeModelNumStr + "\n");
-
-		for(int i = 0; i <m_i3DTreeModelNum; ++i)
-		{
-			CString model;
-
-			CString path = m_3DTreeModel.GetAt(i)->strModelPath; 		
-			CString temp;					
-			int n = path.ReverseFind('\\');//´ÓºóÍùÇ°Ñ°ÕÒ
-			temp = path.Right(path.GetLength() - n - 1);
-
-
-			model.Format("%s %d %.3f %d", temp,\
-				m_3DTreeModel.GetAt(i)->xPos, m_3DTreeModel.GetAt(i)->hPos, m_3DTreeModel.GetAt(i)->zPos);
-
-			file.WriteString(model + "\n");   
-		} 
-
-
-
-		file.Close();
-
-	} 
-	return 0;
-}
-// ±£´æÏßÎÄ¼ş
-int CMy3DSymbolLibNewView::saveLineSymbolFile(CString filename)
-{
-
-	return 0;
-}
-// ±£´æÇøÎÄ¼ş
-int CMy3DSymbolLibNewView::saveAreaSymbolFile(CString filename)
-{
-	CStdioFile file; 
-	file.Open(filename, CStdioFile::modeCreate | CStdioFile::modeWrite);
-	if(file == NULL)
-	{
-		MessageBox("ÃæÎÄ¼ş²»´æÔÚ!", "±£´æÃæÎÄ¼ş", MB_ICONINFORMATION + MB_OK);
-		return FALSE;
-	}
-	else
-	{ 
-		file.WriteString("AREA\n");
-		
-		int size = m_Area4_Array.GetSize();
-		for(int i=0;i<size;++i)
-		{
-			if(m_Area4_Array[i]->deleted == 1)
-			{
-				size--;
-			}
-		}
-
-		CString polygon_count_str;
-		polygon_count_str.Format("%d\n", size);
-
-
-		file.WriteString(polygon_count_str);
-
-		int polygon4_edges = 4;
-
-		for(int i=0; i<m_Area4_Array.GetSize(); ++i)
-		{
-			if(m_Area4_Array[i]->deleted != 1)
-			{
-				CString point_str;
-				point_str.Format("%d %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %s\n",
-					polygon4_edges,
-					m_Area4_Array[i]->pt1._x, m_Area4_Array[i]->pt1._y, m_Area4_Array[i]->pt1._z,
-					m_Area4_Array[i]->pt2._x, m_Area4_Array[i]->pt2._y, m_Area4_Array[i]->pt2._z,
-					m_Area4_Array[i]->pt3._x, m_Area4_Array[i]->pt3._y, m_Area4_Array[i]->pt3._z,
-					m_Area4_Array[i]->pt4._x, m_Area4_Array[i]->pt4._y, m_Area4_Array[i]->pt4._z,
-					m_Area4_Array[i]->area_texture
-					);
-
-
-				file.WriteString(point_str);
-			}
-		}
-		
-
-
-		file.Close();
-
-	} 
-	return 0;
+void CMy3DSymbolLibNewView::OnModelParam() {
+    ModelParam dlg;
+    dlg.modelFolder = m_AllDataPath + "\\" + m_3DModelFolder + "\\";
+    PModelParamStructToModelParamDlg(dlg, m_3DModel.GetAt(m_selectedModelID));
+    if (dlg.DoModal()) {
+        ModelParamDlgToPModelParamStruct(dlg, m_3DModel.GetAt(m_selectedModelID));
+    }
 }
 
 
 /****************************************************************************/
-/* Function: Ñ¡ÖĞÄ£ĞÍÖ®ºóÓÒ¼üµ¯³ö²Ëµ¥ÖĞ½øĞĞÊó±êÒÆ¶¯Ä£ĞÍ²Ù×÷						*/
+/* Function: å‚æ•°è®¾ç½®å¯¹è¯æ¡†å†…å˜é‡ç›´æ¥å…¨éƒ¨èµ‹å€¼ç»™ç»“æ„ä½“                           */
 /****************************************************************************/
-void CMy3DSymbolLibNewView::OnModelMove()
-{
-	m_OperateType = MOVE;
+void CMy3DSymbolLibNewView::ModelParamDlgToPModelParamStruct(ModelParam& model, PModelParamStruct pStruct) {
+    pStruct->posX = model.posX;
+    pStruct->posY = model.posY;
+    pStruct->posZ = model.posZ;
+    pStruct->rotX = model.rotX;
+    pStruct->rotY = model.rotY;
+    pStruct->rotZ = model.rotZ;
+    pStruct->scale = model.scale;
+    // æ›´æ–°3DSæ¨¡å‹
+    if ((model.modelChanged || model.isModelTextureUpdated)) { // && (pStruct->modelPath.Compare(model.modelPath) != 0))
+        pStruct->modelPath = model.modelPath;
+        pStruct->m_3DS_Mode_Texture_PATH_NAME = model.m_TexturePathAndName;
+        Load3DModel(pStruct, MODEL_CHANGE);
+    }
 }
 
 
 /****************************************************************************/
-/* Function: ±à¼­Ä£ĞÍ²ÎÊı,ÀıÈçÄ£ĞÍÎÆÀíÂ·¾¶,´óĞ¡,·½Ïò,Ëõ·Å±ÈÀı					*/
+/* Function: å‚æ•°ä¼ ç»™å¯¹è¯æ¡†                                                 */
 /****************************************************************************/
-void CMy3DSymbolLibNewView::OnModelParam()
-{
-	ModelParam dlg;
-	dlg.modelFolder = m_AllDataPath + "\\" + m_3DModelFolder + "\\";
-		
-	PModelParamStructToModelParamDlg(dlg, m_3DModel.GetAt(m_selectedModelID));
-	if(dlg.DoModal())
-	{
-		ModelParamDlgToPModelParamStruct(dlg, m_3DModel.GetAt(m_selectedModelID));
-	}
+void CMy3DSymbolLibNewView::PModelParamStructToModelParamDlg(ModelParam& model, PModelParamStruct pStruct) {
+    model.posX = pStruct->posX;
+    model.posY = pStruct->posY;
+    model.posZ = pStruct->posZ;
+    model.rotX = pStruct->rotX;
+    model.rotY = pStruct->rotY;
+    model.rotZ = pStruct->rotZ;
+    model.scale = pStruct->scale;
+    CString path = pStruct->modelPath;
+    int index = path.ReverseFind('\\');
+    int index1 = path.ReverseFind('.');
+    CString path1 = pStruct->modelPath.Mid(index + 1, index1 - index - 1);
+    model.displayPath = path1;
+    model.modelPath = pStruct->modelPath;
+    CString texturePath = pStruct->m_3DS_Mode_Texture_PATH_NAME;
+    index = texturePath.ReverseFind('\\');
+    index1 = texturePath.ReverseFind('.');
+    CString texture_format = ".bmp";
+    model.m_TextureName = pStruct->m_3DS_Mode_Texture_PATH_NAME.Mid(index + 1, index1 - index - 1) + texture_format;
 }
 
 
 /****************************************************************************/
-/* Function: ²ÎÊıÉèÖÃ¶Ô»°¿òÄÚ±äÁ¿Ö±½ÓÈ«²¿¸³Öµ¸ø½á¹¹Ìå							*/
+/* Function: ç¼©æ”¾é€‰ä¸­æ¨¡å‹                                                       */
 /****************************************************************************/
-void CMy3DSymbolLibNewView::ModelParamDlgToPModelParamStruct(ModelParam &model, PModelParamStruct pStruct)
-{
-	pStruct->posX = model.posX;
-	pStruct->posY = model.posY;
-	pStruct->posZ = model.posZ;
-
-	pStruct->rotX = model.rotX;
-	pStruct->rotY = model.rotY;
-	pStruct->rotZ = model.rotZ;
-
-	pStruct->scale = model.scale; 
-
-
-	// ¸üĞÂ3DSÄ£ĞÍ
-	if((model.modelChanged || model.isModelTextureUpdated))// && (pStruct->modelPath.Compare(model.modelPath) != 0))
-	{
-		pStruct->modelPath = model.modelPath;
-
-		pStruct->m_3DS_Mode_Texture_PATH_NAME = model.m_TexturePathAndName;
-	
-		Load3DModel(pStruct, MODEL_CHANGE);
-	}
-
-}
-
-
-/****************************************************************************/
-/* Function: ²ÎÊı´«¸ø¶Ô»°¿ò													*/
-/****************************************************************************/
-void CMy3DSymbolLibNewView::PModelParamStructToModelParamDlg(ModelParam &model, PModelParamStruct pStruct)
-{
-	model.posX = pStruct->posX;
-	model.posY = pStruct->posY;
-	model.posZ = pStruct->posZ;
-
-	model.rotX = pStruct->rotX;
-	model.rotY = pStruct->rotY;
-	model.rotZ = pStruct->rotZ;
-
-	model.scale = pStruct->scale;
-
-	CString path = pStruct->modelPath;
-	int index = path.ReverseFind('\\');
-	int index1 = path.ReverseFind('.');
-	
-	CString path1 = pStruct->modelPath.Mid(index + 1, index1 - index - 1);
-	model.displayPath = path1;
-
-	model.modelPath = pStruct->modelPath;
-
-
-	CString texturePath = pStruct->m_3DS_Mode_Texture_PATH_NAME;
-	index = texturePath.ReverseFind('\\');
-	index1 = texturePath.ReverseFind('.');
-	CString texture_format = ".bmp";
-	model.m_TextureName = pStruct->m_3DS_Mode_Texture_PATH_NAME.Mid(index + 1, index1 - index - 1) + texture_format;
-}
-
-
-/****************************************************************************/
-/* Function: Ëõ·ÅÑ¡ÖĞÄ£ĞÍ														*/
-/****************************************************************************/
-void CMy3DSymbolLibNewView::OnModelScale()
-{
-	m_OperateType = SCALE;
+void CMy3DSymbolLibNewView::OnModelScale() {
+    m_OperateType = SCALE;
 }
 
 /**************************************/
-/* Function: ÅäÖÃ·ûºÅÁĞ±í				  */
+/* Function: é…ç½®ç¬¦å·åˆ—è¡¨                 */
 /**************************************/
-void CMy3DSymbolLibNewView::OnConfigureSymbolList()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	ModelListConfigureDialog mlcDlg;;
-	if(mlcDlg.DoModal() == IDOK)
-	{
-		// null
-	}
-
+void CMy3DSymbolLibNewView::OnConfigureSymbolList() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    ModelListConfigureDialog mlcDlg;;
+    if (mlcDlg.DoModal() == IDOK) {
+        // null
+    }
 }
 
 /**************************************/
-/* Function: ÏµÍ³ÉèÖÃ				  */
+/* Function: ç³»ç»Ÿè®¾ç½®                 */
 /**************************************/
-void CMy3DSymbolLibNewView::OnSystemSetting()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	CSystemSetting sysSetDlg;
-	if(sysSetDlg.DoModal() == IDOK)
-	{
-		// null	
-	}
-		
+void CMy3DSymbolLibNewView::OnSystemSetting() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    CSystemSetting sysSetDlg;
+    if (sysSetDlg.DoModal() == IDOK) {
+        // null
+    }
 }
 
 /**************************************/
-/* Function: ¹Ø±Õµ±Ç°³¡¾°				  */
+/* Function: å…³é—­å½“å‰åœºæ™¯                 */
 /**************************************/
-void CMy3DSymbolLibNewView::OnCloseCurrentScene()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	InitData();
-
-	// Çå¿Õ³¡¾°ÖĞµÄ¾°¹ÛÊ÷
-	m_TreeModel.RemoveAll();
-	// Çå¿Õ³¡¾°ÖĞµÄ3D¾°¹ÛÊ÷
-	m_3DTreeModel.RemoveAll();
-	// Çå¿Õ³¡¾°ÖĞµÄ³ÇÊĞ·ûºÅ
-	m_CitySymbolModel.RemoveAll();
-	// Çå¿Õ³¡¾°ÖĞµÄ3DSÄ£ĞÍ
-	m_3DModel.RemoveAll();
-
-	// Çå³ıËùÓĞÏßÂ·Êı¾İ
-	clearLinesData();
-
-	// Çå¿ÕËùÓĞµÄÃæ·ûºÅ
-	m_Area4_Array.RemoveAll();
-
-
-	// Çå³ıÂşÓÎÊı¾İ
-	OnFlyStop();
-	if(m_ShowFlyPath==TRUE)
-		m_ShowFlyPath=FALSE;
-	m_FlayPath.RemoveAll();
-
+void CMy3DSymbolLibNewView::OnCloseCurrentScene() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    InitData();
+    // æ¸…ç©ºåœºæ™¯ä¸­çš„æ™¯è§‚æ ‘
+    m_TreeModel.RemoveAll();
+    // æ¸…ç©ºåœºæ™¯ä¸­çš„3Dæ™¯è§‚æ ‘
+    m_3DTreeModel.RemoveAll();
+    // æ¸…ç©ºåœºæ™¯ä¸­çš„åŸå¸‚ç¬¦å·
+    m_CitySymbolModel.RemoveAll();
+    // æ¸…ç©ºåœºæ™¯ä¸­çš„3DSæ¨¡å‹
+    m_3DModel.RemoveAll();
+    // æ¸…é™¤æ‰€æœ‰çº¿è·¯æ•°æ®
+    clearLinesData();
+    // æ¸…ç©ºæ‰€æœ‰çš„é¢ç¬¦å·
+    m_Area4_Array.RemoveAll();
+    // æ¸…é™¤æ¼«æ¸¸æ•°æ®
+    OnFlyStop();
+    if (m_ShowFlyPath == TRUE)
+        m_ShowFlyPath = FALSE;
+    m_FlayPath.RemoveAll();
 }
 
 
 /**************************************/
-/* Function: Çå³ıËùÓĞÏßÂ·Êı¾İ			  */
+/* Function: æ¸…é™¤æ‰€æœ‰çº¿è·¯æ•°æ®             */
 /**************************************/
-void CMy3DSymbolLibNewView::clearLinesData()
-{
-	// ½»µã
-	myDesingScheme.PtS_JD.RemoveAll();
-	// ÌúÂ·ÖĞÏß
-	myDesingScheme.PtS_3DLineZX.RemoveAll();
-	// Â·¼ç
-	myDesingScheme.PtS_RailwayLj3D.RemoveAll();
-	// ¹ìµÀ
-	myDesingScheme.PtS_Railway3D.RemoveAll();
-	// ÏßÂ·Éè¼Æ½»µã
-	myDesingScheme.JDCurveElements.RemoveAll();
-	myDesingScheme.PtS_RailwayLjToBP3D.RemoveAll();
-	myDesingScheme.PtS_RailwayBP3D.RemoveAll();
-	myDesingScheme.PtS_HuPo.RemoveAll();
-	myDesingScheme.PtSHuPoTemp.RemoveAll();
+void CMy3DSymbolLibNewView::clearLinesData() {
+    // äº¤ç‚¹
+    myDesingScheme.PtS_JD.RemoveAll();
+    // é“è·¯ä¸­çº¿
+    myDesingScheme.PtS_3DLineZX.RemoveAll();
+    // è·¯è‚©
+    myDesingScheme.PtS_RailwayLj3D.RemoveAll();
+    // è½¨é“
+    myDesingScheme.PtS_Railway3D.RemoveAll();
+    // çº¿è·¯è®¾è®¡äº¤ç‚¹
+    myDesingScheme.JDCurveElements.RemoveAll();
+    myDesingScheme.PtS_RailwayLjToBP3D.RemoveAll();
+    myDesingScheme.PtS_RailwayBP3D.RemoveAll();
+    myDesingScheme.PtS_HuPo.RemoveAll();
+    myDesingScheme.PtSHuPoTemp.RemoveAll();
 }
 
 
 /********************************************/
-/* Function: Ñ¡ÖĞÄ£ĞÍºó,ÓÒ»÷²Ëµ¥,É¾³ıÄ£ĞÍ		*/
+/* Function: é€‰ä¸­æ¨¡å‹å,å³å‡»èœå•,åˆ é™¤æ¨¡å‹       */
 /********************************************/
-void CMy3DSymbolLibNewView::OnModelDelete()
-{
-	m_3DModel.GetAt(m_selectedModelID)->isDeleted = true;
-
-	m_3DModel.GetAt(m_selectedModelID)->modelSelected = false;
-
-	vector<PSelectedModel>::iterator ite; 
-	for(vector<PSelectedModel>::iterator it = m_pSelectedModelSet.begin(); it != m_pSelectedModelSet.end(); ++it)
-	{ 
-		if((*it)->modelID == (m_3DModel.GetAt(m_selectedModelID)->modelID))
-		{ 
-			ite = it;
-			m_pSelectedModelSet.erase(ite); 
-			break;
-		}
-	}
+void CMy3DSymbolLibNewView::OnModelDelete() {
+    m_3DModel.GetAt(m_selectedModelID)->isDeleted = true;
+    m_3DModel.GetAt(m_selectedModelID)->modelSelected = false;
+    vector<PSelectedModel>::iterator ite;
+    for (vector<PSelectedModel>::iterator it = m_pSelectedModelSet.begin(); it != m_pSelectedModelSet.end(); ++it) {
+        if ((*it)->modelID == (m_3DModel.GetAt(m_selectedModelID)->modelID)) {
+            ite = it;
+            m_pSelectedModelSet.erase(ite);
+            break;
+        }
+    }
 }
 
 
 /************************************************************************/
-/*                        ÏßÂ·Éè¼Æ                                       */
+/*                        çº¿è·¯è®¾è®¡                                       */
 /************************************************************************/
 
 /**************************************/
-/* Function: ÏßÂ·ÈıÎ¬½¨Ä£				  */
+/* Function: çº¿è·¯ä¸‰ç»´å»ºæ¨¡                 */
 /**************************************/
-void CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-
-	// Êó±ê¹â±ê ÏµÍ³Ã¦
-	BeginWaitCursor();
-
-	myDesingScheme.CalculateCurveData();
-	
-	myDesingScheme.PtS_Railway3D.RemoveAll();
-
-	myDesingScheme.PtS_RailwayLj3D.RemoveAll();
-	myDesingScheme.PtS_RailwayLjToBP3D.RemoveAll();
-	myDesingScheme.PtS_RailwayBP3D.RemoveAll();
-	myDesingScheme.PtS_HuPo.RemoveAll();
-		 
-	if(myDesingScheme.PtS_3DLineZX.GetSize()<2)
-		return;
-
-	CMainFrame *pMainFrame=(CMainFrame*)AfxGetApp()->m_pMainWnd;
-
-	double EndLC = 10000;
-	
-	for(long i=0;i<myDesingScheme.PtS_3DLineZX.GetSize()-1;i++)
-	{	
-		if(myDesingScheme.PtS_3DLineZX.GetAt(i+1)->Lc <= EndLC)
-		{
-
-			myDesingScheme.Get3DLineModel(myDesingScheme.PtS_3DLineZX.GetAt(i)->x,\
-				myDesingScheme.PtS_3DLineZX.GetAt(i)->y,\
-				myDesingScheme.PtS_3DLineZX.GetAt(i)->z,\
-				myDesingScheme.PtS_3DLineZX.GetAt(i+1)->x,\
-				myDesingScheme.PtS_3DLineZX.GetAt(i+1)->y,\
-				myDesingScheme.PtS_3DLineZX.GetAt(i+1)->z,\
-				m_Railway.m_Railway_width,m_Railway.m_Lj_width,m_Railway.m_Lj_Dh,\
-				m_Railway.m_GuiMianToLujianWidth,45,\
-				myDesingScheme.PtS_3DLineZX.GetAt(i)->strJDStyle,\
-				myDesingScheme.PtS_3DLineZX.GetAt(i+1)->strJDStyle,\
-				i,\
-				myDesingScheme.PtS_3DLineZX.GetAt(i)->Lc
-				);
-		}
-	}
-	if(myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize()-1)->Lc <= EndLC)//myDesingScheme.SchemeDatass.EndLC)
-	{
-		myDesingScheme.Get3DLineModelLast(myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize()-2)->x,\
-			myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize()-2)->y,\
-			myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize()-2)->z,\
-			myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize()-1)->x,\
-			myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize()-1)->y,\
-			myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize()-1)->z,\
-			m_Railway.m_Railway_width,m_Railway.m_Lj_width,m_Railway.m_Lj_Dh,\
-			m_Railway.m_GuiMianToLujianWidth,45,\
-			myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize()-2)->strJDStyle,\
-			myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize()-1)->strJDStyle,\
-			myDesingScheme.PtS_3DLineZX.GetSize()-2,\
-			myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize()-2)->Lc\
-			);
-	}
-	b_haveMadeRail3DwayList=FALSE;
-
-	OnDraw (GetDC()); //Ë¢ĞÂÈıÎ¬³¡¾°
+void CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    // é¼ æ ‡å…‰æ ‡ ç³»ç»Ÿå¿™
+    BeginWaitCursor();
+    myDesingScheme.CalculateCurveData();
+    myDesingScheme.PtS_Railway3D.RemoveAll();
+    myDesingScheme.PtS_RailwayLj3D.RemoveAll();
+    myDesingScheme.PtS_RailwayLjToBP3D.RemoveAll();
+    myDesingScheme.PtS_RailwayBP3D.RemoveAll();
+    myDesingScheme.PtS_HuPo.RemoveAll();
+    if (myDesingScheme.PtS_3DLineZX.GetSize() < 2)
+        return;
+    CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    double EndLC = 10000;
+    for (long i = 0; i < myDesingScheme.PtS_3DLineZX.GetSize() - 1; i++) {
+        if (myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->Lc <= EndLC) {
+            myDesingScheme.Get3DLineModel(myDesingScheme.PtS_3DLineZX.GetAt(i)->x, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(i)->y, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(i)->z, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->x, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->y, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->z, \
+                                          m_Railway.m_Railway_width, m_Railway.m_Lj_width, m_Railway.m_Lj_Dh, \
+                                          m_Railway.m_GuiMianToLujianWidth, 45, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(i)->strJDStyle, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->strJDStyle, \
+                                          i, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(i)->Lc
+                                         );
+        }
+    }
+    if (myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 1)->Lc <= EndLC) { //myDesingScheme.SchemeDatass.EndLC)
+        myDesingScheme.Get3DLineModelLast(myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->x, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->y, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->z, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 1)->x, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 1)->y, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 1)->z, \
+                                          m_Railway.m_Railway_width, m_Railway.m_Lj_width, m_Railway.m_Lj_Dh, \
+                                          m_Railway.m_GuiMianToLujianWidth, 45, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->strJDStyle, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 1)->strJDStyle, \
+                                          myDesingScheme.PtS_3DLineZX.GetSize() - 2, \
+                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->Lc\
+                                         );
+    }
+    b_haveMadeRail3DwayList = FALSE;
+    OnDraw(GetDC());  //åˆ·æ–°ä¸‰ç»´åœºæ™¯
 }
 
 /**************************************/
-/* Function: ÈıÎ¬Ñ¡ÏßÉè¼Æ				  */
+/* Function: ä¸‰ç»´é€‰çº¿è®¾è®¡                 */
 /**************************************/
-void CMy3DSymbolLibNewView::OnMenuLinedesign()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	if(m_QueryType==SELECTLINE)		//Èç¹ûµ±Ç°ÒÑ¾­ÈıÎ¬Ñ¡Ïß×´Ì¬£¬Ôò¹Ø±Õ
-		m_QueryType=-1;
-	else							//Èç¹ûµ±Ç°²»ÊÇÈıÎ¬Ñ¡Ïß×´Ì¬£¬Ôò´ò¿ª
-		m_QueryType=SELECTLINE;
+void CMy3DSymbolLibNewView::OnMenuLinedesign() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    if (m_QueryType == SELECTLINE)  // å¦‚æœå½“å‰å·²ç»ä¸‰ç»´é€‰çº¿çŠ¶æ€ï¼Œåˆ™å…³é—­
+        m_QueryType = -1;
+    else                            // å¦‚æœå½“å‰ä¸æ˜¯ä¸‰ç»´é€‰çº¿çŠ¶æ€ï¼Œåˆ™æ‰“å¼€
+        m_QueryType = SELECTLINE;
 }
 
 /****************************************************/
-/* Function: ÉèÖÃÈıÎ¬Ñ¡ÏßÉè¼ÆÑ¡ÖĞ×´Ì¬					*/
+/* Function: è®¾ç½®ä¸‰ç»´é€‰çº¿è®¾è®¡é€‰ä¸­çŠ¶æ€                   */
 /****************************************************/
-void CMy3DSymbolLibNewView::OnUpdateMenuLinedesign(CCmdUI *pCmdUI)
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî¸üĞÂÓÃ»§½çÃæ´¦Àí³ÌĞò´úÂë
-	pCmdUI->SetCheck(m_QueryType==SELECTLINE);
+void CMy3DSymbolLibNewView::OnUpdateMenuLinedesign(CCmdUI* pCmdUI) {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤æ›´æ–°ç”¨æˆ·ç•Œé¢å¤„ç†ç¨‹åºä»£ç 
+    pCmdUI->SetCheck(m_QueryType == SELECTLINE);
 }
 
 
 /****************************************************/
-/* Function: ÊµÏÖÍ¸ÊÓÍ¶Ó°Ä£Ê½ÏÂµÄÏßÂ·ÈıÎ¬Ä£ĞÍ»æÖÆ		*/
+/* Function: å®ç°é€è§†æŠ•å½±æ¨¡å¼ä¸‹çš„çº¿è·¯ä¸‰ç»´æ¨¡å‹ç»˜åˆ¶       */
 /****************************************************/
-void CMy3DSymbolLibNewView::DrawRailwaythesme()
-{ 
-	//Ñ¹ÈëÊôĞÔ¶ÑÕ»
-	glPushAttrib(GL_DEPTH_BUFFER_BIT | GL_ENABLE_BIT | GL_POLYGON_BIT );
-	glEnable(GL_DEPTH_TEST | GL_CULL_FACE);
-	glCullFace(GL_BACK);
-
-	CString m_style,m_stylePre,m_styleNext;
-	
-	SetDrawMode();							//ÉèÖÃ»æÍ¼Ä£Ê½
-	glViewport(0, 0, WinViewX, WinViewY);	//ÖØĞÂÉèÖÃÊÓ¿Ú´óĞ¡
-
-	//Èç¹û»¹Ã»ÓĞ¹¹½¨ÏßÂ·ÈıÎ¬Ä£ĞÍµÄÏÔÊ¾ÁĞ±í
-	if(b_haveMadeRail3DwayList == FALSE )  
-	{			
-		glNewList(m_Rail3DwayList,GL_COMPILE_AND_EXECUTE); //´´½¨ÏÔÊ¾ÁĞ±í
-		
-		glColor3f(0.75,0.75,0.75);			//ÉèÖÃÑÕÉ«
-		glLineWidth(2.0);					//ÉèÖÃÏß¿í
-
-		// 1.»æÖÆ×ó²àÂ·»ù±ßÆÂ
-		glColor3f(1,0,0);		
-		glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());			//°ó¶¨Â·»ù±ßÆÂÎÆÀí
-
-		for(int i=0;i<myDesingScheme.PtS_HuPo.GetSize()-1;i++)
-		{
-			m_style=myDesingScheme.PtS_3DLineZX.GetAt(i)->strJDStyle;	//½»µãÀàĞÍ
-			m_styleNext=myDesingScheme.PtS_3DLineZX.GetAt(i+1)->strJDStyle;	
-		
-			//Èç¹û½»µãÀàĞÍÊÇ·ÇÆäËûµÄµã£¬Ôò»æÖÆÂ·»ù±ßÆÂ
-			if(m_style != "...")
-			{	
-				DrawBP(i,1); //»æÖÆ×ó²àÂ·»ù±ßÆÂ
-			}
-		
-		}
-
-		// 2.»æÖÆÓÒ²àÂ·»ù±ßÆÂ
-		glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());				//°ó¶¨Â·»ù±ßÆÂÎÆÀí
-		
-		for (int i=0;i<myDesingScheme.PtS_HuPo.GetSize()-1;i++)
-		{
-			m_style=myDesingScheme.PtS_3DLineZX.GetAt(i)->strJDStyle;		//½»µãÀàĞÍ
-			m_styleNext=myDesingScheme.PtS_3DLineZX.GetAt(i+1)->strJDStyle;	//ÏÂÒ»µãµÄ½»µãÀàĞÍ
-			
-			if(m_style != "...")
-			{
-				glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
-				DrawBP(i,2);//»æÖÆÓÒ²àÂ·»ù±ßÆÂ
-			}
-			 
-		}
-		
-		// 3.»æÖÆ¹ìµÀ
-		glBindTexture(GL_TEXTURE_2D, m_cTxtureRailway.GetTxtID());			// °ó¶¨¹ìµÀÎÆÀí
-	 	glLineWidth(2.0);													// ÉèÖÃÏß¿í
-		for (int i=0;i<myDesingScheme.PtS_Railway3D.GetSize()-1;i++)
-		{
-			
-			if(myDesingScheme.PtS_3DLineZX.GetAt(i)->Derh==0)				// Èç¹ûÍÚÎª0
-				glColor3f(0,1,1);											// ÉèÖÃÑÕÉ«
-			else
-				glColor3f(1,0,1);
-			float L=myDesingScheme.GetDistenceXY(myDesingScheme.PtS_Railway3D.GetAt(i)->x1,\
-				myDesingScheme.PtS_Railway3D.GetAt(i)->z1,\
-				myDesingScheme.PtS_Railway3D.GetAt(i+1)->x2,\
-				myDesingScheme.PtS_Railway3D.GetAt(i+1)->z2);
-		
-			// ÒÔ¾ØĞÎ·½Ê½Á¬½ÓÇ°ºóÏàÁÙ¹ìµÀ¶ÏÃæ	
-			glBegin(GL_POLYGON);
-			glTexCoord2f(0.0f,0.0f); // ÉèÖÃÎÆÀí×ø±ê(µ±Ç°¹ìµÀ¶ÏÃæ×ó²àµã)
-			glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i)->x1,\
-				myDesingScheme.PtS_Railway3D.GetAt(i)->y1,
-				myDesingScheme.PtS_Railway3D.GetAt(i)->z1);
-			glTexCoord2f(1.0f,0.0f); // ÉèÖÃÎÆÀí×ø±ê(µ±Ç°¹ìµÀ¶ÏÃæÓÒ²àµã)
-			glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i)->x2,\
-				myDesingScheme.PtS_Railway3D.GetAt(i)->y2,
-				myDesingScheme.PtS_Railway3D.GetAt(i)->z2);
-			glTexCoord2f(1.0f,L/10);// ÉèÖÃÎÆÀí×ø±ê(ÏÂÒ»Ç°¹ìµÀ¶ÏÃæÓÒ²àµã)
-			glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i+1)->x2,\
-				myDesingScheme.PtS_Railway3D.GetAt(i+1)->y2,
-				myDesingScheme.PtS_Railway3D.GetAt(i+1)->z2);
-			glTexCoord2f(0.0f,L/10); // ÉèÖÃÎÆÀí×ø±ê(ÏÂÒ»Ç°¹ìµÀ¶ÏÃæ×ó²àµã)
-			glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i+1)->x1,\
-				myDesingScheme.PtS_Railway3D.GetAt(i+1)->y1,
-				myDesingScheme.PtS_Railway3D.GetAt(i+1)->z1);
-			glEnd();
-		}		
-
-		// 4.»æÖÆµÀ´²±ßÆÂ
-		glBindTexture(GL_TEXTURE_2D, m_cTxtureGdToLJ.GetTxtID());// °ó¶¨µÀ´²±ßÆÂÎÆÀí
-		glColor3f(1,1,0);// ÉèÖÃÑÕÉ«
-		for (int i=0;i<myDesingScheme.PtS_Railway3D.GetSize()-1;i++)
-		{
-			// ÒÔ¾ØĞÎ·½Ê½Á¬½Ó·½Ê½»æÖÆ×ó²àµÀ´²±ßÆÂ	
-			glBegin(GL_POLYGON);
-			glTexCoord2f(1.0f,0.0f);// ÉèÖÃÎÆÀí×ø±ê(µ±Ç°×ó²àµÀ´²±ßÆÂ×ó²àµã)
-			glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i)->x1,\
-				myDesingScheme.PtS_Railway3D.GetAt(i)->y1,
-				myDesingScheme.PtS_Railway3D.GetAt(i)->z1);
-			glTexCoord2f(1.0f,1.0f);// ÉèÖÃÎÆÀí×ø±ê(µ±Ç°×ó²àµÀ´²±ßÆÂÓÒ²àµã)
-			glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i+1)->x1,\
-				myDesingScheme.PtS_Railway3D.GetAt(i+1)->y1,
-				myDesingScheme.PtS_Railway3D.GetAt(i+1)->z1);
-			glTexCoord2f(0.0f,1.0f);// ÉèÖÃÎÆÀí×ø±ê(ÏÂÒ»×ó²àµÀ´²±ßÆÂÓÒ²àµã)
-			glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i+1)->x1,\
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i+1)->y1,
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i+1)->z1);
-			glTexCoord2f(0.0f,0.0f);// ÉèÖÃÎÆÀí×ø±ê(ÏÂÒ»×ó²àµÀ´²±ßÆÂ×ó²àµã)
-			glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i)->x1,\
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i)->y1,
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i)->z1);
-			glEnd();
-			
-			// ÒÔ¾ØĞÎ·½Ê½Á¬½Ó·½Ê½»æÖÆÓÒ²àµÀ´²±ßÆÂ
-			glBegin(GL_POLYGON);
-			glTexCoord2f(0.0f,0.0f);// ÉèÖÃÎÆÀí×ø±ê(µ±Ç°ÓÒ²àµÀ´²±ßÆÂ×ó²àµã)
-			glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i)->x2,\
-				myDesingScheme.PtS_Railway3D.GetAt(i)->y2,
-				myDesingScheme.PtS_Railway3D.GetAt(i)->z2);
-			glTexCoord2f(0.0f,1.0f);// ÉèÖÃÎÆÀí×ø±ê(µ±Ç°ÓÒ²àµÀ´²±ßÆÂÓÒ²àµã)
-			glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i+1)->x2,\
-				myDesingScheme.PtS_Railway3D.GetAt(i+1)->y2,
-				myDesingScheme.PtS_Railway3D.GetAt(i+1)->z2);
-			glTexCoord2f(1.0f,1.0f);// ÉèÖÃÎÆÀí×ø±ê(ÏÂÒ»ÓÒ²àµÀ´²±ßÆÂÓÒ²àµã)
-			glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i+1)->x2,\
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i+1)->y2,
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i+1)->z2);
-			glTexCoord2f(1.0f,0.0f);// ÉèÖÃÎÆÀí×ø±ê(ÏÂÒ»ÓÒ²àµÀ´²±ßÆÂ×ó²àµã)
-			glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i)->x2,\
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i)->y2,
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i)->z2);
-			glEnd();
-		}		
-		
-		// 5.»æÖÆÂ·¼ç
-		glBindTexture(GL_TEXTURE_2D, m_cTxtureLJ.GetTxtID());//°ó¶¨Â·¼çÎÆÀí
-		glColor3f(1,0.5,0.25);
-		for (int i=0;i<myDesingScheme.PtS_RailwayLj3D.GetSize()-1;i++)
-		{
-			//ÒÔ¾ØĞÎ·½Ê½Á¬½Ó·½Ê½»æÖÆ×ó²àÂ·¼ç	
-			glBegin(GL_POLYGON);
-			glTexCoord2f(0.0f,0.0f);// ÉèÖÃÎÆÀí×ø±ê(µ±Ç°×ó²àÂ·¼ç¶ÏÃæ×ó²àµã)
-			glVertex3f(myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->x1,\
-				myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->y1,
-				myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->z1);
-			glTexCoord2f(0.0f,1.0f);// ÉèÖÃÎÆÀí×ø±ê(µ±Ç°×ó²àÂ·¼ç¶ÏÃæÓÒ²àµã)	
-			glVertex3f(myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i+1)->x1,\
-				myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i+1)->y1,
-				myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i+1)->z1);
-			glTexCoord2f(1.0f,1.0f);// ÉèÖÃÎÆÀí×ø±ê(ÏÂÒ»×ó²àÂ·¼ç¶ÏÃæÓÒ²àµã)
-			glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i+1)->x1,\
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i+1)->y1,
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i+1)->z1);
-			glTexCoord2f(1.0f,0.0f);// ÉèÖÃÎÆÀí×ø±ê(ÏÂÒ»×ó²àÂ·¼ç¶ÏÃæ×ó²àµã)
-			glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i)->x1,\
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i)->y1,
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i)->z1);
-			glEnd();			
-
-			// ÒÔ¾ØĞÎ·½Ê½Á¬½Ó·½Ê½»æÖÆÓÒ²àÂ·¼ç	
-			glBegin(GL_POLYGON);
-			glTexCoord2f(0.0f,0.0f);// ÉèÖÃÎÆÀí×ø±ê(µ±Ç°ÓÒ²àÂ·¼ç¶ÏÃæ×ó²àµã)
-			glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i)->x2,\
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i)->y2,
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i)->z2);
-			glTexCoord2f(1.0f,0.0f);// ÉèÖÃÎÆÀí×ø±ê(µ±Ç°ÓÒ²àÂ·¼ç¶ÏÃæÓÒ²àµã)
-			glVertex3f(myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->x2,\
-				myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->y2,
-				myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->z2);
-			glTexCoord2f(1.0f,1.0f);// ÉèÖÃÎÆÀí×ø±ê(ÏÂÒ»ÓÒ²àÂ·¼ç¶ÏÃæÓÒ²àµã)
-			glVertex3f(myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i+1)->x2,\
-				myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i+1)->y2,
-				myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i+1)->z2);
-			glTexCoord2f(0.0f,1.0f);// ÉèÖÃÎÆÀí×ø±ê(ÏÂÒ»ÓÒ²àÂ·¼ç¶ÏÃæ×ó²àµã)
-			glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i+1)->x2,\
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i+1)->y2,
-				myDesingScheme.PtS_RailwayLj3D.GetAt(i+1)->z2);
-			glEnd();
-		}
-
-		// 6.Ìî²¹¶ÏÃæ
-		int JD_Count = myDesingScheme.PtS_JD.GetSize();
-		int b_pIndex = 0;
-		int e_pIndex = JD_Count - 1;
-
-		if(JD_Count > 0)
-		{
-			// ±£´æ2¸öÃæÉÏµÄµãµÄ×ø±êĞÅÏ¢
-			vector<Railway3DCordinate> rc2;
-			vector<Railway3DCordinate> rc1;
-
-			// ¼ÆËãÇ°ºó¶ÏÃæ¸÷µã
-			myDesingScheme.CalculateFillFacePoints(rc2,rc1);
-
-			// ¸ù¾İµã»æÖÆÃæ
-			drawFillFace(rc2);
-			drawFillFace(rc1);
-		}
-		
-
-		glLineWidth(1.0);				// »Ö¸´Ïß¿í
-		glEndList();					// ½áÊøÏÔÊ¾ÁĞ±í
-	
-		b_haveMadeRail3DwayList=TRUE;	// ±êÊ¶ÒÑ¾­´´½¨ÏÔÊ¾ÁĞ±í
-	}
-	else								//Èç¹ûÒÑ¾­¹¹½¨ÏßÂ·ÈıÎ¬Ä£ĞÍµÄÏÔÊ¾ÁĞ±í,ÔòÖ±½Óµ÷ÓÃÏÔÊ¾ÁĞ±í
-	{ 
-		glCallList(m_Rail3DwayList);	//µ÷ÓÃÏßÂ·ÈıÎ¬Ä£ĞÍÏÔÊ¾ÁĞ±í
-	}
-	glPopAttrib();						//µ¯³öÊôĞÔ¶ÑÕ»
-}
-	
-/**************************************/
-/* Function: ¸ù¾İµã»æÖÆÃæ				  */
-/**************************************/
-void CMy3DSymbolLibNewView::drawFillFace(vector<Railway3DCordinate> fillFacePoints)
-{
-	int f_size = fillFacePoints.size();
-	
-	glBindTexture(GL_TEXTURE_2D, m_cFillFaceTxture.GetTxtID());
-	glColor3f(0.5, 0.6, 0.3);  
-	// ÒÔËÄ±ßĞÎÎªµ¥Î»´ÓÉÏµ½ÏÂÒÀ´ÎÌî³ä
-	for(int i=0;i<7;i+=2)
-	{
-		glBegin(GL_QUADS);
-		{
-			glTexCoord2f(0.0f,1.0f);
-			glVertex3f(fillFacePoints[i].x1,fillFacePoints[i].y1,fillFacePoints[i].z1);
-			glTexCoord2f(0.0f,0.0f);
-			glVertex3f(fillFacePoints[i+1].x1,fillFacePoints[i+1].y1,fillFacePoints[i+1].z1);
-
-			glTexCoord2f(1.0f,0.0f);
-			glVertex3f(fillFacePoints[i+1].x2,fillFacePoints[i+1].y2,fillFacePoints[i+1].z2);
-			glTexCoord2f(1.0f,1.0f);
-			glVertex3f(fillFacePoints[i].x2,fillFacePoints[i].y2,fillFacePoints[i].z2);
-			
-		}
-		glEnd();
-	}
+void CMy3DSymbolLibNewView::DrawRailwaythesme() {
+    //å‹å…¥å±æ€§å †æ ˆ
+    glPushAttrib(GL_DEPTH_BUFFER_BIT | GL_ENABLE_BIT | GL_POLYGON_BIT);
+    glEnable(GL_DEPTH_TEST | GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    CString m_style, m_stylePre, m_styleNext;
+    SetDrawMode();                          // è®¾ç½®ç»˜å›¾æ¨¡å¼
+    glViewport(0, 0, WinViewX, WinViewY);   // é‡æ–°è®¾ç½®è§†å£å¤§å°
+    // å¦‚æœè¿˜æ²¡æœ‰æ„å»ºçº¿è·¯ä¸‰ç»´æ¨¡å‹çš„æ˜¾ç¤ºåˆ—è¡¨
+    if (b_haveMadeRail3DwayList == FALSE) {
+        glNewList(m_Rail3DwayList, GL_COMPILE_AND_EXECUTE);  // åˆ›å»ºæ˜¾ç¤ºåˆ—è¡¨
+        glColor3f(0.75, 0.75, 0.75);        // è®¾ç½®é¢œè‰²
+        glLineWidth(2.0);                   // è®¾ç½®çº¿å®½
+        // 1.ç»˜åˆ¶å·¦ä¾§è·¯åŸºè¾¹å¡
+        glColor3f(1, 0, 0);
+        glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());           // ç»‘å®šè·¯åŸºè¾¹å¡çº¹ç†
+        for (int i = 0; i < myDesingScheme.PtS_HuPo.GetSize() - 1; i++) {
+            m_style = myDesingScheme.PtS_3DLineZX.GetAt(i)->strJDStyle; // äº¤ç‚¹ç±»å‹
+            m_styleNext = myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->strJDStyle;
+            // å¦‚æœäº¤ç‚¹ç±»å‹æ˜¯éå…¶ä»–çš„ç‚¹ï¼Œåˆ™ç»˜åˆ¶è·¯åŸºè¾¹å¡
+            if (m_style != "...") {
+                DrawBP(i, 1);  // ç»˜åˆ¶å·¦ä¾§è·¯åŸºè¾¹å¡
+            }
+        }
+        // 2.ç»˜åˆ¶å³ä¾§è·¯åŸºè¾¹å¡
+        glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());               // ç»‘å®šè·¯åŸºè¾¹å¡çº¹ç†
+        for (int i = 0; i < myDesingScheme.PtS_HuPo.GetSize() - 1; i++) {
+            m_style = myDesingScheme.PtS_3DLineZX.GetAt(i)->strJDStyle;     // äº¤ç‚¹ç±»å‹
+            m_styleNext = myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->strJDStyle;  // ä¸‹ä¸€ç‚¹çš„äº¤ç‚¹ç±»å‹
+            if (m_style != "...") {
+                glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
+                DrawBP(i, 2);  // ç»˜åˆ¶å³ä¾§è·¯åŸºè¾¹å¡
+            }
+        }
+        // 3.ç»˜åˆ¶è½¨é“
+        glBindTexture(GL_TEXTURE_2D, m_cTxtureRailway.GetTxtID());          // ç»‘å®šè½¨é“çº¹ç†
+        glLineWidth(2.0);                                                   // è®¾ç½®çº¿å®½
+        for (int i = 0; i < myDesingScheme.PtS_Railway3D.GetSize() - 1; i++) {
+            if (myDesingScheme.PtS_3DLineZX.GetAt(i)->Derh == 0)            // å¦‚æœæŒ–ä¸º0
+                glColor3f(0, 1, 1);                                         // è®¾ç½®é¢œè‰²
+            else
+                glColor3f(1, 0, 1);
+            float L = myDesingScheme.GetDistenceXY(myDesingScheme.PtS_Railway3D.GetAt(i)->x1, \
+                                                   myDesingScheme.PtS_Railway3D.GetAt(i)->z1, \
+                                                   myDesingScheme.PtS_Railway3D.GetAt(i + 1)->x2, \
+                                                   myDesingScheme.PtS_Railway3D.GetAt(i + 1)->z2);
+            // ä»¥çŸ©å½¢æ–¹å¼è¿æ¥å‰åç›¸ä¸´è½¨é“æ–­é¢
+            glBegin(GL_POLYGON);
+            glTexCoord2f(0.0f, 0.0f);  // è®¾ç½®çº¹ç†åæ ‡(å½“å‰è½¨é“æ–­é¢å·¦ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i)->x1, \
+                       myDesingScheme.PtS_Railway3D.GetAt(i)->y1,
+                       myDesingScheme.PtS_Railway3D.GetAt(i)->z1);
+            glTexCoord2f(1.0f, 0.0f);  // è®¾ç½®çº¹ç†åæ ‡(å½“å‰è½¨é“æ–­é¢å³ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i)->x2, \
+                       myDesingScheme.PtS_Railway3D.GetAt(i)->y2,
+                       myDesingScheme.PtS_Railway3D.GetAt(i)->z2);
+            glTexCoord2f(1.0f, L / 10);  // è®¾ç½®çº¹ç†åæ ‡(ä¸‹ä¸€å‰è½¨é“æ–­é¢å³ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i + 1)->x2, \
+                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->y2,
+                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->z2);
+            glTexCoord2f(0.0f, L / 10);  // è®¾ç½®çº¹ç†åæ ‡(ä¸‹ä¸€å‰è½¨é“æ–­é¢å·¦ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i + 1)->x1, \
+                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->y1,
+                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->z1);
+            glEnd();
+        }
+        // 4.ç»˜åˆ¶é“åºŠè¾¹å¡
+        glBindTexture(GL_TEXTURE_2D, m_cTxtureGdToLJ.GetTxtID());  // ç»‘å®šé“åºŠè¾¹å¡çº¹ç†
+        glColor3f(1, 1, 0);  // è®¾ç½®é¢œè‰²
+        for (int i = 0; i < myDesingScheme.PtS_Railway3D.GetSize() - 1; i++) {
+            // ä»¥çŸ©å½¢æ–¹å¼è¿æ¥æ–¹å¼ç»˜åˆ¶å·¦ä¾§é“åºŠè¾¹å¡
+            glBegin(GL_POLYGON);
+            glTexCoord2f(1.0f, 0.0f);  // è®¾ç½®çº¹ç†åæ ‡(å½“å‰å·¦ä¾§é“åºŠè¾¹å¡å·¦ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i)->x1, \
+                       myDesingScheme.PtS_Railway3D.GetAt(i)->y1,
+                       myDesingScheme.PtS_Railway3D.GetAt(i)->z1);
+            glTexCoord2f(1.0f, 1.0f);  // è®¾ç½®çº¹ç†åæ ‡(å½“å‰å·¦ä¾§é“åºŠè¾¹å¡å³ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i + 1)->x1, \
+                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->y1,
+                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->z1);
+            glTexCoord2f(0.0f, 1.0f);  // è®¾ç½®çº¹ç†åæ ‡(ä¸‹ä¸€å·¦ä¾§é“åºŠè¾¹å¡å³ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->x1, \
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->y1,
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->z1);
+            glTexCoord2f(0.0f, 0.0f);  // è®¾ç½®çº¹ç†åæ ‡(ä¸‹ä¸€å·¦ä¾§é“åºŠè¾¹å¡å·¦ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i)->x1, \
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->y1,
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->z1);
+            glEnd();
+            // ä»¥çŸ©å½¢æ–¹å¼è¿æ¥æ–¹å¼ç»˜åˆ¶å³ä¾§é“åºŠè¾¹å¡
+            glBegin(GL_POLYGON);
+            glTexCoord2f(0.0f, 0.0f);  // è®¾ç½®çº¹ç†åæ ‡(å½“å‰å³ä¾§é“åºŠè¾¹å¡å·¦ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i)->x2, \
+                       myDesingScheme.PtS_Railway3D.GetAt(i)->y2,
+                       myDesingScheme.PtS_Railway3D.GetAt(i)->z2);
+            glTexCoord2f(0.0f, 1.0f);  // è®¾ç½®çº¹ç†åæ ‡(å½“å‰å³ä¾§é“åºŠè¾¹å¡å³ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i + 1)->x2, \
+                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->y2,
+                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->z2);
+            glTexCoord2f(1.0f, 1.0f);  // è®¾ç½®çº¹ç†åæ ‡(ä¸‹ä¸€å³ä¾§é“åºŠè¾¹å¡å³ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->x2, \
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->y2,
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->z2);
+            glTexCoord2f(1.0f, 0.0f);  // è®¾ç½®çº¹ç†åæ ‡(ä¸‹ä¸€å³ä¾§é“åºŠè¾¹å¡å·¦ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i)->x2, \
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->y2,
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->z2);
+            glEnd();
+        }
+        // 5.ç»˜åˆ¶è·¯è‚©
+        glBindTexture(GL_TEXTURE_2D, m_cTxtureLJ.GetTxtID());  // ç»‘å®šè·¯è‚©çº¹ç†
+        glColor3f(1, 0.5, 0.25);
+        for (int i = 0; i < myDesingScheme.PtS_RailwayLj3D.GetSize() - 1; i++) {
+            // ä»¥çŸ©å½¢æ–¹å¼è¿æ¥æ–¹å¼ç»˜åˆ¶å·¦ä¾§è·¯è‚©
+            glBegin(GL_POLYGON);
+            glTexCoord2f(0.0f, 0.0f);  // è®¾ç½®çº¹ç†åæ ‡(å½“å‰å·¦ä¾§è·¯è‚©æ–­é¢å·¦ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->x1, \
+                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->y1,
+                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->z1);
+            glTexCoord2f(0.0f, 1.0f);  // è®¾ç½®çº¹ç†åæ ‡(å½“å‰å·¦ä¾§è·¯è‚©æ–­é¢å³ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i + 1)->x1, \
+                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i + 1)->y1,
+                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i + 1)->z1);
+            glTexCoord2f(1.0f, 1.0f);  // è®¾ç½®çº¹ç†åæ ‡(ä¸‹ä¸€å·¦ä¾§è·¯è‚©æ–­é¢å³ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->x1, \
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->y1,
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->z1);
+            glTexCoord2f(1.0f, 0.0f);  // è®¾ç½®çº¹ç†åæ ‡(ä¸‹ä¸€å·¦ä¾§è·¯è‚©æ–­é¢å·¦ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i)->x1, \
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->y1,
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->z1);
+            glEnd();
+            // ä»¥çŸ©å½¢æ–¹å¼è¿æ¥æ–¹å¼ç»˜åˆ¶å³ä¾§è·¯è‚©
+            glBegin(GL_POLYGON);
+            glTexCoord2f(0.0f, 0.0f);  // è®¾ç½®çº¹ç†åæ ‡(å½“å‰å³ä¾§è·¯è‚©æ–­é¢å·¦ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i)->x2, \
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->y2,
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->z2);
+            glTexCoord2f(1.0f, 0.0f);  // è®¾ç½®çº¹ç†åæ ‡(å½“å‰å³ä¾§è·¯è‚©æ–­é¢å³ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->x2, \
+                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->y2,
+                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->z2);
+            glTexCoord2f(1.0f, 1.0f);  // è®¾ç½®çº¹ç†åæ ‡(ä¸‹ä¸€å³ä¾§è·¯è‚©æ–­é¢å³ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i + 1)->x2, \
+                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i + 1)->y2,
+                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i + 1)->z2);
+            glTexCoord2f(0.0f, 1.0f);  // è®¾ç½®çº¹ç†åæ ‡(ä¸‹ä¸€å³ä¾§è·¯è‚©æ–­é¢å·¦ä¾§ç‚¹)
+            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->x2, \
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->y2,
+                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->z2);
+            glEnd();
+        }
+        // 6.å¡«è¡¥æ–­é¢
+        int JD_Count = myDesingScheme.PtS_JD.GetSize();
+        int b_pIndex = 0;
+        int e_pIndex = JD_Count - 1;
+        if (JD_Count > 0) {
+            // ä¿å­˜2ä¸ªé¢ä¸Šçš„ç‚¹çš„åæ ‡ä¿¡æ¯
+            vector<Railway3DCordinate> rc2;
+            vector<Railway3DCordinate> rc1;
+            // è®¡ç®—å‰åæ–­é¢å„ç‚¹
+            myDesingScheme.CalculateFillFacePoints(rc2, rc1);
+            // æ ¹æ®ç‚¹ç»˜åˆ¶é¢
+            drawFillFace(rc2);
+            drawFillFace(rc1);
+        }
+        glLineWidth(1.0);               // æ¢å¤çº¿å®½
+        glEndList();                    // ç»“æŸæ˜¾ç¤ºåˆ—è¡¨
+        b_haveMadeRail3DwayList = TRUE;  // æ ‡è¯†å·²ç»åˆ›å»ºæ˜¾ç¤ºåˆ—è¡¨
+    } else {                            // å¦‚æœå·²ç»æ„å»ºçº¿è·¯ä¸‰ç»´æ¨¡å‹çš„æ˜¾ç¤ºåˆ—è¡¨,åˆ™ç›´æ¥è°ƒç”¨æ˜¾ç¤ºåˆ—è¡¨
+        glCallList(m_Rail3DwayList);    // è°ƒç”¨çº¿è·¯ä¸‰ç»´æ¨¡å‹æ˜¾ç¤ºåˆ—è¡¨
+    }
+    glPopAttrib();                      // å¼¹å‡ºå±æ€§å †æ ˆ
 }
 
 /**************************************/
-/* Function: »æÖÆÖĞĞÄÏß				  */
+/* Function: æ ¹æ®ç‚¹ç»˜åˆ¶é¢                 */
 /**************************************/
-void CMy3DSymbolLibNewView::DrawCenterLine(long index, BOOL ifSelectLine)
-{
-	CString tt;
-	double x1,y1,z1,x2,y2,z2;
-	double x0,y0,z0;
-	float DerDistence=2.0;
-
-	float Dh;
-	
-	m_TempPts.RemoveAll();
-	
-	if(ifSelectLine==TRUE) //ÔÚÑ¡ÏßÉè¼Æ
-	{
-		Dh=5;
-		x1=myDesingScheme.PtS_JD.GetAt(index)->x;
-		//y1=myDesingScheme.PtS_JD.GetAt(index)->y;
-		z1=myDesingScheme.PtS_JD.GetAt(index)->z;
-		y1=GetHeight(x1,z1);
-
-		x2=myDesingScheme.PtS_JD.GetAt(index+1)->x;
-		//y2=myDesingScheme.PtS_JD.GetAt(index+1)->y;
-		z2=myDesingScheme.PtS_JD.GetAt(index+1)->z;
-		y2=GetHeight(x2,z2);
-	}
-	glColor3f(0,0,1);
-
-	PCordinate pt;
-	
-	double L=myDesingScheme.GetDistenceXYZ(x1,y1,z1,x2,y2,z2);
-	double L0=0;
-
-	while(L0<=L)
-	{
-		x0=x1+L0/L*(x2-x1); y0=y1+L0/L*(y2-y1); z0=z1+L0/L*(z2-z1);		
-		//µØÃæ¸ß³Ì
-		float dmh = GetHeight(x0,-z0);
-		if(y0>=dmh-Dh)  //Éè¼ÆÏßµã¸ß³Ì´óÓÚµØÃæ¸ß³Ì
-		{
-			pt=new Cordinate;
-			pt->x =x0; pt->y=y0; pt->z =z0;
-			m_TempPts.Add(pt);
-		}
-		else
-		{
-			if(m_TempPts.GetSize()>1)
-			{		
-				glBegin(GL_LINE_STRIP);
-				for(int k=0;k<m_TempPts.GetSize();k++){
-					glVertex3f(m_TempPts.GetAt(k)->x, m_TempPts.GetAt(k)->y, m_TempPts.GetAt(k)->z);
-				}
-				glEnd();
-				m_TempPts.RemoveAll();
-				L0-=DerDistence;
-			}
-		}
-		L0 += DerDistence;
-		if(L0 >= L)
-		{
-			x0 = x2; y0 = y2; z0 = z2;
-			dmh = GetHeight(x0,-z0);
-			if(y0 >= dmh-Dh )// Éè¼ÆÏßµã¸ß³Ì´óÓÚµØÃæ¸ß³Ì
-			{
-				pt=new Cordinate;
-				pt->x = x0; pt->y = y0; pt->z = z0;
-				m_TempPts.Add(pt);
-				if(m_TempPts.GetSize()>1)
-				{	
-					glBegin(GL_LINE_STRIP);
-					for(int k=0;k<m_TempPts.GetSize();k++){
-						glVertex3f(m_TempPts.GetAt(k)->x, m_TempPts.GetAt(k)->y, m_TempPts.GetAt(k)->z);
-					}
-					glEnd();
-					m_TempPts.RemoveAll();
-				}
-			}
-			break;
-		}
-	}
-	if(m_TempPts.GetSize()>1)
-	{			
-		glBegin(GL_LINE_STRIP);
-		for(int k=0;k<m_TempPts.GetSize();k++)
-		{
-			glVertex3f(m_TempPts.GetAt(k)->x, m_TempPts.GetAt(k)->y, m_TempPts.GetAt(k)->z);
-		}
-		glEnd();
-		m_TempPts.RemoveAll();
-	}
+void CMy3DSymbolLibNewView::drawFillFace(vector<Railway3DCordinate> fillFacePoints) {
+    int f_size = fillFacePoints.size();
+    glBindTexture(GL_TEXTURE_2D, m_cFillFaceTxture.GetTxtID());
+    glColor3f(0.5, 0.6, 0.3);
+    // ä»¥å››è¾¹å½¢ä¸ºå•ä½ä»ä¸Šåˆ°ä¸‹ä¾æ¬¡å¡«å……
+    for (int i = 0; i < 7; i += 2) {
+        glBegin(GL_QUADS);
+        {
+            glTexCoord2f(0.0f, 1.0f);
+            glVertex3f(fillFacePoints[i].x1, fillFacePoints[i].y1, fillFacePoints[i].z1);
+            glTexCoord2f(0.0f, 0.0f);
+            glVertex3f(fillFacePoints[i + 1].x1, fillFacePoints[i + 1].y1, fillFacePoints[i + 1].z1);
+            glTexCoord2f(1.0f, 0.0f);
+            glVertex3f(fillFacePoints[i + 1].x2, fillFacePoints[i + 1].y2, fillFacePoints[i + 1].z2);
+            glTexCoord2f(1.0f, 1.0f);
+            glVertex3f(fillFacePoints[i].x2, fillFacePoints[i].y2, fillFacePoints[i].z2);
+        }
+        glEnd();
+    }
 }
 
 /**************************************/
-/* Function: »æÖÆ±ßÆÂ				  */
+/* Function: ç»˜åˆ¶ä¸­å¿ƒçº¿               */
 /**************************************/
-void CMy3DSymbolLibNewView::DrawBP(long index, int BPside)
-{
-	float mNCDistence = 4.0;
-	long i = index;
-	int j;
-	if(1 == BPside) //×ó±ßÆÂ
-	{
-		int N1 = myDesingScheme.PtS_HuPo.GetAt(i)->Huponums_L;
-		int N2 = myDesingScheme.PtS_HuPo.GetAt(i+1)->Huponums_L;
-
-		if(myDesingScheme.PtS_HuPo.GetAt(i)->TW_left==0 || myDesingScheme.PtS_HuPo.GetAt(i)->TW_right==0){
-			glColor3f(0,1,1);
-		}
-		else{
-			glColor3f(1,0,0);
-		}
-		if(N1<=N2 && N1>0 && N2>0)
-		{
-			for(j=0;j<N1;j++)
-			{
-				glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
-				
-				//Èç¹ûÂ·»ùÀàĞÍÏàÍ¬(Í¬ÎªÂ·Çµ»òÂ·µÌ)
-				if(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].style == myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].style)
-				{
-					glBegin		(GL_POLYGON);
-					glTexCoord2f(0.0f,1.0f); 
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
-					glTexCoord2f(0.0f,0.0f); 
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
-					glTexCoord2f(1.0f,0.0f); 
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].z);
-					glTexCoord2f(1.0f,1.0f); 
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[2].z);
-					glEnd();
-				}
-				else  //Èç¹ûÂ·»ùÀàĞÍÏàÍ¬(Â·Çµ,Â·µÌÏàÁ¬)
-				{
-					glBegin		(GL_POLYGON);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].z);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j+1].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j+1].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j+1].Hp[2].z);
-					glEnd();
-					
-					glBegin(GL_POLYGON);
-						glTexCoord2f(0.0f,0.0f);
-						glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j+1].Hp[2].x,
-							myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j+1].Hp[2].y,
-							myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j+1].Hp[2].z);
-						glTexCoord2f(0.5f,0.5f);
-						glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j+1].Hp[1].x,
-							myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j+1].Hp[1].y,
-							myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j+1].Hp[1].z);
-						glTexCoord2f(0.5f,1.0f);
-						glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[2].x,
-							myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[2].y,
-							myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[2].z);
-						glTexCoord2f(1.0f,0.0f);
-						glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].x,
-							myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].y,
-							myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].z);
-						glEnd();
-				}
-				if(j>0) 
-				{
-					glBindTexture(GL_TEXTURE_2D, m_cTxturePT.GetTxtID());
-					glBegin(GL_POLYGON);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].z);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[0].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[0].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[0].z);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].z);
-					glEnd();
-				}
-			}
-		}
-		else 
-		{
-			for(j=0;j<N2;j++)
-			{
-				glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
-				
-				if(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].style==\
-					myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].style)
-				{
-					glBegin(GL_POLYGON);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].z);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[2].z);
-					glEnd();
-				}
-				else
-				{
-					glBegin(GL_POLYGON);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j+1].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j+1].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j+1].Hp[2].z);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].z);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[2].z);
-					glEnd();
-					
-					glBegin(GL_POLYGON);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j+1].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j+1].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j+1].Hp[2].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j+1].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j+1].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j+1].Hp[1].z);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
-					glEnd();
-					
-				}
-			
-				if(j>0) 
-				{
-					glBindTexture(GL_TEXTURE_2D, m_cTxturePT.GetTxtID());
-					
-					glBegin(GL_POLYGON);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].z);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[0].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[0].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[0].z);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_L[j].Hp[1].z);
-					glEnd();
-				}
-			}
-		}
-	}
-	else if(BPside == 2) 
-	{
-		int N1 = myDesingScheme.PtS_HuPo.GetAt(i)->Huponums_R;
-		int N2 = myDesingScheme.PtS_HuPo.GetAt(i+1)->Huponums_R;
-		if(N1<=N2 && N1>0 && N2>0)
-		{
-			for(j=0;j<N1;j++)
-			{
-				glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
-				if(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].style==\
-					myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].style)
-				{
-					glBegin(GL_POLYGON);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].z);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[2].z);
-					glEnd();
-				}
-				else
-				{
-					glBegin(GL_POLYGON);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].z);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j+1].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j+1].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j+1].Hp[2].z);
-					glEnd();
-					
-					glBegin(GL_POLYGON);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j+1].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j+1].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j+1].Hp[2].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j+1].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j+1].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j+1].Hp[1].z);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[2].z);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].z);
-					glEnd();
-				}
-				
-				if(j>0) 
-				{
-					glBindTexture(GL_TEXTURE_2D, m_cTxturePT.GetTxtID());
-
-					glBegin(GL_POLYGON);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].z);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[0].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[0].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[0].z);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].z);
-					glEnd();
-				}
-			}
-		}
-		else 
-		{
-			for(j=0;j<N2;j++)
-			{
-				glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
-				if(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].style==\
-					myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].style)
-				{
-					glBegin(GL_POLYGON);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].z);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[2].z);
-					glEnd();
-				}
-				else
-				{
-					glBegin(GL_POLYGON);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j+1].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j+1].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j+1].Hp[2].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].z);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[2].z);
-					glEnd();
-					
-					glBegin(GL_POLYGON);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j+1].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j+1].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j+1].Hp[2].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j+1].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j+1].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j+1].Hp[1].z);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
-					glEnd();
-				}
-				
-				if(j>0) 
-				{
-					glBindTexture(GL_TEXTURE_2D, m_cTxturePT.GetTxtID());
-					glBegin(GL_POLYGON);
-					glTexCoord2f(0.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
-					glTexCoord2f(1.0f,0.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].x,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].y,
-						myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].z);
-					glTexCoord2f(1.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[0].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[0].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[0].z);
-					glTexCoord2f(0.0f,1.0f);
-					glVertex3f	(myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].x,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].y,
-						myDesingScheme.PtS_HuPo.GetAt(i+1)->HuPo_R[j].Hp[1].z);
-					glEnd();
-				}
-			}
-		}
-	}
-	glLineWidth(1.0);
-	glColor3f(1,1,1);
+void CMy3DSymbolLibNewView::DrawCenterLine(long index, BOOL ifSelectLine) {
+    CString tt;
+    double x1, y1, z1, x2, y2, z2;
+    double x0, y0, z0;
+    float DerDistence = 2.0;
+    float Dh;
+    m_TempPts.RemoveAll();
+    if (ifSelectLine == TRUE) {  //åœ¨é€‰çº¿è®¾è®¡
+        Dh = 5;
+        x1 = myDesingScheme.PtS_JD.GetAt(index)->x;
+        // y1=myDesingScheme.PtS_JD.GetAt(index)->y;
+        z1 = myDesingScheme.PtS_JD.GetAt(index)->z;
+        y1 = GetHeight(x1, z1);
+        x2 = myDesingScheme.PtS_JD.GetAt(index + 1)->x;
+        // y2=myDesingScheme.PtS_JD.GetAt(index+1)->y;
+        z2 = myDesingScheme.PtS_JD.GetAt(index + 1)->z;
+        y2 = GetHeight(x2, z2);
+    }
+    glColor3f(0, 0, 1);
+    PCordinate pt;
+    double L = myDesingScheme.GetDistenceXYZ(x1, y1, z1, x2, y2, z2);
+    double L0 = 0;
+    while (L0 <= L) {
+        x0 = x1 + L0 / L * (x2 - x1);
+        y0 = y1 + L0 / L * (y2 - y1);
+        z0 = z1 + L0 / L * (z2 - z1);
+        // åœ°é¢é«˜ç¨‹
+        float dmh = GetHeight(x0, -z0);
+        if (y0 >= dmh - Dh) {  // è®¾è®¡çº¿ç‚¹é«˜ç¨‹å¤§äºåœ°é¢é«˜ç¨‹
+            pt = new Cordinate;
+            pt->x = x0;
+            pt->y = y0;
+            pt->z = z0;
+            m_TempPts.Add(pt);
+        } else {
+            if (m_TempPts.GetSize() > 1) {
+                glBegin(GL_LINE_STRIP);
+                for (int k = 0; k < m_TempPts.GetSize(); k++) {
+                    glVertex3f(m_TempPts.GetAt(k)->x, m_TempPts.GetAt(k)->y, m_TempPts.GetAt(k)->z);
+                }
+                glEnd();
+                m_TempPts.RemoveAll();
+                L0 -= DerDistence;
+            }
+        }
+        L0 += DerDistence;
+        if (L0 >= L) {
+            x0 = x2;
+            y0 = y2;
+            z0 = z2;
+            dmh = GetHeight(x0, -z0);
+            if (y0 >= dmh - Dh) {  // è®¾è®¡çº¿ç‚¹é«˜ç¨‹å¤§äºåœ°é¢é«˜ç¨‹
+                pt = new Cordinate;
+                pt->x = x0;
+                pt->y = y0;
+                pt->z = z0;
+                m_TempPts.Add(pt);
+                if (m_TempPts.GetSize() > 1) {
+                    glBegin(GL_LINE_STRIP);
+                    for (int k = 0; k < m_TempPts.GetSize(); k++) {
+                        glVertex3f(m_TempPts.GetAt(k)->x, m_TempPts.GetAt(k)->y, m_TempPts.GetAt(k)->z);
+                    }
+                    glEnd();
+                    m_TempPts.RemoveAll();
+                }
+            }
+            break;
+        }
+    }
+    if (m_TempPts.GetSize() > 1) {
+        glBegin(GL_LINE_STRIP);
+        for (int k = 0; k < m_TempPts.GetSize(); k++) {
+            glVertex3f(m_TempPts.GetAt(k)->x, m_TempPts.GetAt(k)->y, m_TempPts.GetAt(k)->z);
+        }
+        glEnd();
+        m_TempPts.RemoveAll();
+    }
 }
 
 /**************************************/
-/* Function: Çå³ıËùÓĞÏßÂ·				  */
+/* Function: ç»˜åˆ¶è¾¹å¡                 */
 /**************************************/
-void CMy3DSymbolLibNewView::OnMenuClearLines()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	clearLinesData();
-	initLines();
+void CMy3DSymbolLibNewView::DrawBP(long index, int BPside) {
+    float mNCDistence = 4.0;
+    long i = index;
+    int j;
+    if (1 == BPside) {  // å·¦è¾¹å¡
+        int N1 = myDesingScheme.PtS_HuPo.GetAt(i)->Huponums_L;
+        int N2 = myDesingScheme.PtS_HuPo.GetAt(i + 1)->Huponums_L;
+        if (myDesingScheme.PtS_HuPo.GetAt(i)->TW_left == 0 || myDesingScheme.PtS_HuPo.GetAt(i)->TW_right == 0) {
+            glColor3f(0, 1, 1);
+        } else {
+            glColor3f(1, 0, 0);
+        }
+        if (N1 <= N2 && N1 > 0 && N2 > 0) {
+            for (j = 0; j < N1; j++) {
+                glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
+                // å¦‚æœè·¯åŸºç±»å‹ç›¸åŒ(åŒä¸ºè·¯å ‘æˆ–è·¯å ¤)
+                if (myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].style == myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].style) {
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].z);
+                    glEnd();
+                } else {  // å¦‚æœè·¯åŸºç±»å‹ç›¸åŒ(è·¯å ‘,è·¯å ¤ç›¸è¿)
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].z);
+                    glEnd();
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].z);
+                    glTexCoord2f(0.5f, 0.5f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[1].z);
+                    glTexCoord2f(0.5f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glEnd();
+                }
+                if (j > 0) {
+                    glBindTexture(GL_TEXTURE_2D, m_cTxturePT.GetTxtID());
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].z);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glEnd();
+                }
+            }
+        } else {
+            for (j = 0; j < N2; j++) {
+                glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
+                if (myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].style == \
+                        myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].style) {
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].z);
+                    glEnd();
+                } else {
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].z);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].z);
+                    glEnd();
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[1].z);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
+                    glEnd();
+                }
+                if (j > 0) {
+                    glBindTexture(GL_TEXTURE_2D, m_cTxturePT.GetTxtID());
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].z);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glEnd();
+                }
+            }
+        }
+    } else if (BPside == 2) {
+        int N1 = myDesingScheme.PtS_HuPo.GetAt(i)->Huponums_R;
+        int N2 = myDesingScheme.PtS_HuPo.GetAt(i + 1)->Huponums_R;
+        if (N1 <= N2 && N1 > 0 && N2 > 0) {
+            for (j = 0; j < N1; j++) {
+                glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
+                if (myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].style == \
+                        myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].style) {
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].z);
+                    glEnd();
+                } else {
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].z);
+                    glEnd();
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[1].z);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glEnd();
+                }
+                if (j > 0) {
+                    glBindTexture(GL_TEXTURE_2D, m_cTxturePT.GetTxtID());
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].z);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glEnd();
+                }
+            }
+        } else {
+            for (j = 0; j < N2; j++) {
+                glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
+                if (myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].style == \
+                        myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].style) {
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].z);
+                    glEnd();
+                } else {
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].z);
+                    glEnd();
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[1].z);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
+                    glEnd();
+                }
+                if (j > 0) {
+                    glBindTexture(GL_TEXTURE_2D, m_cTxturePT.GetTxtID());
+                    glBegin(GL_POLYGON);
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].z);
+                    glTexCoord2f(1.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glEnd();
+                }
+            }
+        }
+    }
+    glLineWidth(1.0);
+    glColor3f(1, 1, 1);
+}
+
+/**************************************/
+/* Function: æ¸…é™¤æ‰€æœ‰çº¿è·¯                 */
+/**************************************/
+void CMy3DSymbolLibNewView::OnMenuClearLines() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    clearLinesData();
+    initLines();
 }
 
 
 /************************************************************************/
-/* Function: ĞÂ½¨¹¤³Ì							                        */
+/* Function: æ–°å»ºå·¥ç¨‹                                                   */
 /************************************************************************/
-void CMy3DSymbolLibNewView::OnSceneNew()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	
-	//step 1 : ÉèÖÃ¹¤³ÌÎÄ¼şÃû, ´´½¨¸ÃÎÄ¼ş
-	CString 	NeededFile;
-	char 		FileFilter[] = "¹¤³ÌÎÄ¼ş(*.prj)|*.prj|";
-
-	//ÉèÖÃÎÄ¼ş¶Ô»°¿òÊôĞÔ
-	DWORD 		FileDialogFlag = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
-	CFileDialog FileDialogBoxFile(FALSE, NULL, 0, FileDialogFlag, FileFilter, this);
-	FileDialogBoxFile.m_ofn.lpstrTitle = "ĞÂ½¨¹¤³Ì";
-	char		FileName[200];
-
-
-	CString sceneDir = m_AllDataPath + "\\" + m_SceneConfig;
-	FileDialogBoxFile.m_ofn.lpstrInitialDir = sceneDir;
-
-	CString tt[3];
-	if( FileDialogBoxFile.DoModal() == IDOK )			//Èç¹û¶Ô»°¿ò³É¹û´ò¿ª
-	{	
-		NeededFile = FileDialogBoxFile.GetPathName();	//µÃµ½ÎÄ¼şÃû
-		sprintf(FileName, "%s", NeededFile);
-		if(strcmp(FileDialogBoxFile.GetFileExt(),"prj")!=0) 
-			strcat(FileName,".prj");				 
-
-		{
-			CStdioFile file; 
-			file.Open(FileName, CStdioFile::modeCreate | CStdioFile::modeWrite);
-			if(file == NULL)
-			{
-				MessageBox("ERROR!","ERROR", MB_ICONINFORMATION + MB_OK);
-				return;
-			}
-			else
-			{ 
-				CString tmpSceneConfig = "SceneConfig";
-				CString tmpTerrainFolder = "Terrain";
-				CString tmpTerrainTextureFolder = "Tex";		CString tmpTerrainTexture = "Sand512.BMP";
-				CString tmpTerrainContourFolder = "Contour";	CString tmpTerrainContour = "Terrain1.bmp";
-
-				CString tmpSkyBoxFolder = "SkyBox";		CString tmpSkyBoxKindFolder = "default"; 
-				CString tmpSkyBoxTP = "TOP.BMP";		CString tmpSkyBoxLT = "LEFT.BMP";
-				CString tmpSkyBoxBK = "BACK.BMP";		CString tmpSkyBoxRT = "RIGHT.BMP"; 
-				CString tmpSkyBoxFR = "FRONT.BMP";
-
-				CString tmpWeatherFolder = "Weather"; CString tmpWeatherTex = "a0.bmp";
-
-
-				/************************************************************************/
-				/*   ³¡¾°ÅäÖÃÊı¾İ															*/
-				/************************************************************************/
-				file.WriteString(tmpSceneConfig + "\n");
-
-
-				/************************************************************************/
-				/*   µØĞÎÊı¾İ Terrain													*/
-				/************************************************************************/
-				file.WriteString(tmpTerrainFolder + "\n");
-				//	  Tex Sand512.BMP
-				file.WriteString(tmpTerrainTextureFolder + " " + tmpTerrainTexture + "\n"); 
-				//	  Contour Terrain1.bmp
-				file.WriteString(tmpTerrainContourFolder + " " + tmpTerrainContour + "\n"); 
-
-
-				/************************************************************************/
-				/*   Ìì¿ÕºĞÊı¾İ SkyBox													*/
-				/************************************************************************/
-				file.WriteString(tmpSkyBoxFolder + "\n");
-				//	  0È±Ê¡ TOP.BMP LEFT.BMP BACK.BMP RIGHT.BMP FRONT.BMP
-				file.WriteString(tmpSkyBoxKindFolder + " " + tmpSkyBoxTP + " " + tmpSkyBoxLT + " "\
-					+ tmpSkyBoxBK + " " + tmpSkyBoxRT + " " + tmpSkyBoxFR + "\n"); 
-
-
-				/************************************************************************/
-				/*   ÌìÆøÊı¾İ															*/
-				/************************************************************************/
-				file.WriteString(tmpWeatherFolder + "\n");
-				file.WriteString(tmpWeatherTex + "\n");
-
-
-				//µãÏßÃæ·ûºÅÎÄ¼şÁ´½Ó
-				file.WriteString("3\n");	//¸öÊı
-				file.WriteString("0\n");	//point  (0±íÊ¾ÔİÎŞ¸ÃÎÄ¼ş)
-				file.WriteString("0\n");	//line
-				file.WriteString("0");		//area
-
-
-				file.Close();
-			} 
-		}
-	}	
-	else
-		return;
-
-	//step 2 : Í¨¹ıĞÂ½¨µÄ¹¤³ÌÎÄ¼ş¼ÓÔØ¸Ã¹¤³Ìµ½ÊÓÍ¼´°¿ÚÖĞ
-
-	loadSceneFile(FileName);
-	m_CurrentProjectName = FileName;
-
-	OnDraw (GetDC()); //Ë¢ĞÂÈıÎ¬³¡¾°
+void CMy3DSymbolLibNewView::OnSceneNew() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    // step 1 : è®¾ç½®å·¥ç¨‹æ–‡ä»¶å, åˆ›å»ºè¯¥æ–‡ä»¶
+    CString     NeededFile;
+    char        FileFilter[] = "å·¥ç¨‹æ–‡ä»¶(*.prj)|*.prj|";
+    // è®¾ç½®æ–‡ä»¶å¯¹è¯æ¡†å±æ€§
+    DWORD       FileDialogFlag = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
+    CFileDialog FileDialogBoxFile(FALSE, NULL, 0, FileDialogFlag, FileFilter, this);
+    FileDialogBoxFile.m_ofn.lpstrTitle = "æ–°å»ºå·¥ç¨‹";
+    char        FileName[200];
+    CString sceneDir = m_AllDataPath + "\\" + m_SceneConfig;
+    FileDialogBoxFile.m_ofn.lpstrInitialDir = sceneDir;
+    CString tt[3];
+    if (FileDialogBoxFile.DoModal() == IDOK) {           //å¦‚æœå¯¹è¯æ¡†æˆæœæ‰“å¼€
+        NeededFile = FileDialogBoxFile.GetPathName();   //å¾—åˆ°æ–‡ä»¶å
+        sprintf(FileName, "%s", NeededFile);
+        if (strcmp(FileDialogBoxFile.GetFileExt(), "prj") != 0)
+            strcat(FileName, ".prj");
+        {
+            CStdioFile file;
+            file.Open(FileName, CStdioFile::modeCreate | CStdioFile::modeWrite);
+            if (file == NULL) {
+                MessageBox("ERROR!", "ERROR", MB_ICONINFORMATION + MB_OK);
+                return;
+            } else {
+                CString tmpSceneConfig = "SceneConfig";
+                CString tmpTerrainFolder = "Terrain";
+                CString tmpTerrainTextureFolder = "Tex";
+                CString tmpTerrainTexture = "Sand512.BMP";
+                CString tmpTerrainContourFolder = "Contour";
+                CString tmpTerrainContour = "Terrain1.bmp";
+                CString tmpSkyBoxFolder = "SkyBox";
+                CString tmpSkyBoxKindFolder = "default";
+                CString tmpSkyBoxTP = "TOP.BMP";
+                CString tmpSkyBoxLT = "LEFT.BMP";
+                CString tmpSkyBoxBK = "BACK.BMP";
+                CString tmpSkyBoxRT = "RIGHT.BMP";
+                CString tmpSkyBoxFR = "FRONT.BMP";
+                CString tmpWeatherFolder = "Weather";
+                CString tmpWeatherTex = "a0.bmp";
+                /************************************************************************/
+                /*   åœºæ™¯é…ç½®æ•°æ®                                                           */
+                /************************************************************************/
+                file.WriteString(tmpSceneConfig + "\n");
+                /************************************************************************/
+                /*   åœ°å½¢æ•°æ® Terrain                                                   */
+                /************************************************************************/
+                file.WriteString(tmpTerrainFolder + "\n");
+                //    Tex Sand512.BMP
+                file.WriteString(tmpTerrainTextureFolder + " " + tmpTerrainTexture + "\n");
+                //    Contour Terrain1.bmp
+                file.WriteString(tmpTerrainContourFolder + " " + tmpTerrainContour + "\n");
+                /************************************************************************/
+                /*   å¤©ç©ºç›’æ•°æ® SkyBox                                                  */
+                /************************************************************************/
+                file.WriteString(tmpSkyBoxFolder + "\n");
+                //    0ç¼ºçœ TOP.BMP LEFT.BMP BACK.BMP RIGHT.BMP FRONT.BMP
+                file.WriteString(tmpSkyBoxKindFolder + " " + tmpSkyBoxTP + " " + tmpSkyBoxLT + " "\
+                                 + tmpSkyBoxBK + " " + tmpSkyBoxRT + " " + tmpSkyBoxFR + "\n");
+                /************************************************************************/
+                /*   å¤©æ°”æ•°æ®                                                           */
+                /************************************************************************/
+                file.WriteString(tmpWeatherFolder + "\n");
+                file.WriteString(tmpWeatherTex + "\n");
+                //ç‚¹çº¿é¢ç¬¦å·æ–‡ä»¶é“¾æ¥
+                file.WriteString("3\n");    //ä¸ªæ•°
+                file.WriteString("0\n");    //point  (0è¡¨ç¤ºæš‚æ— è¯¥æ–‡ä»¶)
+                file.WriteString("0\n");    //line
+                file.WriteString("0");      //area
+                file.Close();
+            }
+        }
+    } else
+        return;
+    // step 2 : é€šè¿‡æ–°å»ºçš„å·¥ç¨‹æ–‡ä»¶åŠ è½½è¯¥å·¥ç¨‹åˆ°è§†å›¾çª—å£ä¸­
+    loadSceneFile(FileName);
+    m_CurrentProjectName = FileName;
+    OnDraw(GetDC());  //åˆ·æ–°ä¸‰ç»´åœºæ™¯
 }
 
 
-// ÅĞ¶Ïµ±Ç°¹¤³ÌÖĞÊÇ·ñ´æÔÚÒÑ¾­´ò¿ªµÄµã¡¢Ïß¡¢ÃæÎÄ¼ş
-BOOL CMy3DSymbolLibNewView::exist_point_file()
-{
-	return exist_point_flag;
+// åˆ¤æ–­å½“å‰å·¥ç¨‹ä¸­æ˜¯å¦å­˜åœ¨å·²ç»æ‰“å¼€çš„ç‚¹ã€çº¿ã€é¢æ–‡ä»¶
+BOOL CMy3DSymbolLibNewView::exist_point_file() {
+    return exist_point_flag;
 }
-BOOL CMy3DSymbolLibNewView::exist_line_file()
-{
-	return exist_line_flag;
+BOOL CMy3DSymbolLibNewView::exist_line_file() {
+    return exist_line_flag;
 }
-BOOL CMy3DSymbolLibNewView::exist_area_file()
-{
-	return exist_area_flag;
+BOOL CMy3DSymbolLibNewView::exist_area_file() {
+    return exist_area_flag;
 }
 
 
-// ³É¹¦·µ»Ø0 ,·ñÔò·µ»Ø-1; type:0-µã, 1-Ïß, 2-Ãæ, _fileName:´´½¨µÄÎÄ¼şÃûÍ¨¹ıº¯Êı²ÎÊı´«³öÀ´
-int CMy3DSymbolLibNewView::new_symbol_file(unsigned int type, char *_fileName)
-{
-	CString 	NeededFile;
-	char FileFilter[32] = {0};
-
-	char *tmpAgrs[3][5] = {	{"µãÎÄ¼ş(*.pt)|*.pt|",	"ĞÂ½¨µãÎÄ¼ş",	"pt",	".pt",	"POINT\n"	},
-							{"ÏßÎÄ¼ş(*.ln)|*.ln|",	"ĞÂ½¨ÏßÎÄ¼ş",	"ln",	".ln",	"LINE\n"	},
-							{"ÃæÎÄ¼ş(*.gsf)|*.gsf|",	"ĞÂ½¨ÃæÎÄ¼ş",	"gsf",	".gsf",	"AREA\n"	}
-					   };
-
-	
-	strcpy_s(FileFilter, tmpAgrs[type][0]);
-	
-
-	
-
-	//ÉèÖÃÎÄ¼ş¶Ô»°¿òÊôĞÔ
-	DWORD 		FileDialogFlag = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
-	CFileDialog FileDialogBoxFile(FALSE, NULL, 0, FileDialogFlag, FileFilter, this);
-
-	LPCSTR tmpLpcstrTitle = "ĞÂ½¨µãÎÄ¼ş";
-
-	tmpLpcstrTitle = tmpAgrs[type][1];
-	 
-	FileDialogBoxFile.m_ofn.lpstrTitle = tmpLpcstrTitle;
-	char		FileName[200];
-
-
-	CString sceneDir = m_AllDataPath + "\\" + m_SceneConfig;
-	FileDialogBoxFile.m_ofn.lpstrInitialDir = sceneDir;
-
-	CString tt[3];
-	if( FileDialogBoxFile.DoModal() == IDOK )			//Èç¹û¶Ô»°¿ò³É¹û´ò¿ª
-	{	
-		NeededFile = FileDialogBoxFile.GetPathName();	//µÃµ½ÎÄ¼şÃû
-		sprintf(FileName, "%s", NeededFile);
-		if(strcmp(FileDialogBoxFile.GetFileExt(), tmpAgrs[type][2])!=0) 
-			strcat(FileName, tmpAgrs[type][3]);				 
-
-		{
-			CStdioFile file; 
-			file.Open(FileName, CStdioFile::modeCreate | CStdioFile::modeWrite);
-			if(file == NULL)
-			{
-				MessageBox("ERROR!","ERROR", MB_ICONINFORMATION + MB_OK);
-				return -1;
-			}
-			else
-			{ 
-				strcpy(_fileName, FileName);
-				//file.WriteString( tmpAgrs[type][4] );
-				file.Close();
-			} 
-		} 
-		return 0;
-	}		
-
-	return -1;
+// æˆåŠŸè¿”å›0 ,å¦åˆ™è¿”å›-1; type:0-ç‚¹, 1-çº¿, 2-é¢, _fileName:åˆ›å»ºçš„æ–‡ä»¶åé€šè¿‡å‡½æ•°å‚æ•°ä¼ å‡ºæ¥
+int CMy3DSymbolLibNewView::new_symbol_file(unsigned int type, char* _fileName) {
+    CString     NeededFile;
+    char FileFilter[32] = {0};
+    char* tmpAgrs[3][5] = { {"ç‚¹æ–‡ä»¶(*.pt)|*.pt|",  "æ–°å»ºç‚¹æ–‡ä»¶",   "pt",   ".pt",  "POINT\n"   },
+        {"çº¿æ–‡ä»¶(*.ln)|*.ln|",  "æ–°å»ºçº¿æ–‡ä»¶",   "ln",   ".ln",  "LINE\n"    },
+        {"é¢æ–‡ä»¶(*.gsf)|*.gsf|",    "æ–°å»ºé¢æ–‡ä»¶",   "gsf",  ".gsf", "AREA\n"    }
+    };
+    strcpy_s(FileFilter, tmpAgrs[type][0]);
+    // è®¾ç½®æ–‡ä»¶å¯¹è¯æ¡†å±æ€§
+    DWORD       FileDialogFlag = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
+    CFileDialog FileDialogBoxFile(FALSE, NULL, 0, FileDialogFlag, FileFilter, this);
+    LPCSTR tmpLpcstrTitle = "æ–°å»ºç‚¹æ–‡ä»¶";
+    tmpLpcstrTitle = tmpAgrs[type][1];
+    FileDialogBoxFile.m_ofn.lpstrTitle = tmpLpcstrTitle;
+    char        FileName[200];
+    CString sceneDir = m_AllDataPath + "\\" + m_SceneConfig;
+    FileDialogBoxFile.m_ofn.lpstrInitialDir = sceneDir;
+    CString tt[3];
+    if (FileDialogBoxFile.DoModal() == IDOK) {           // å¦‚æœå¯¹è¯æ¡†æˆæœæ‰“å¼€
+        NeededFile = FileDialogBoxFile.GetPathName();   // å¾—åˆ°æ–‡ä»¶å
+        sprintf(FileName, "%s", NeededFile);
+        if (strcmp(FileDialogBoxFile.GetFileExt(), tmpAgrs[type][2]) != 0)
+            strcat(FileName, tmpAgrs[type][3]);
+        {
+            CStdioFile file;
+            file.Open(FileName, CStdioFile::modeCreate | CStdioFile::modeWrite);
+            if (file == NULL) {
+                MessageBox("ERROR!", "ERROR", MB_ICONINFORMATION + MB_OK);
+                return -1;
+            } else {
+                strcpy(_fileName, FileName);
+                // file.WriteString( tmpAgrs[type][4] );
+                file.Close();
+            }
+        }
+        return 0;
+    }
+    return -1;
 }
 
 
-// ĞÂ½¨·ûºÅÎÄ¼ş, 0-µã, 1-Ïß, 2-Ãæ
-int CMy3DSymbolLibNewView::new_point_file()
-{
-	int newFileFlag = 0;
-	char tmpPointFileName[200] = {0};
-	newFileFlag = new_symbol_file(0, tmpPointFileName);
-	m_PointSymbolFile = tmpPointFileName;
-	return newFileFlag;
+// æ–°å»ºç¬¦å·æ–‡ä»¶, 0-ç‚¹, 1-çº¿, 2-é¢
+int CMy3DSymbolLibNewView::new_point_file() {
+    int newFileFlag = 0;
+    char tmpPointFileName[200] = {0};
+    newFileFlag = new_symbol_file(0, tmpPointFileName);
+    m_PointSymbolFile = tmpPointFileName;
+    return newFileFlag;
 }
-int CMy3DSymbolLibNewView::new_line_file()
-{
-	int newFileFlag = 0;
-	char tmpLineFileName[200] = {0};
-	newFileFlag = new_symbol_file(1, tmpLineFileName);
-	m_LineSymbolFile = tmpLineFileName;
-	return newFileFlag;
+int CMy3DSymbolLibNewView::new_line_file() {
+    int newFileFlag = 0;
+    char tmpLineFileName[200] = {0};
+    newFileFlag = new_symbol_file(1, tmpLineFileName);
+    m_LineSymbolFile = tmpLineFileName;
+    return newFileFlag;
 }
-int CMy3DSymbolLibNewView::new_area_file()
-{
-	int newFileFlag = 0;
-	char tmpAreaFileName[200] = {0};
-	newFileFlag = new_symbol_file(2, tmpAreaFileName);
-	m_AreaSymbolFile = tmpAreaFileName;
-	return newFileFlag;
+int CMy3DSymbolLibNewView::new_area_file() {
+    int newFileFlag = 0;
+    char tmpAreaFileName[200] = {0};
+    newFileFlag = new_symbol_file(2, tmpAreaFileName);
+    m_AreaSymbolFile = tmpAreaFileName;
+    return newFileFlag;
 }
 
 
@@ -7421,3263 +5738,2330 @@ int CMy3DSymbolLibNewView::new_area_file()
 
 
 /************************************************************************/
-/*								Ïß·ûºÅ									*/
+/*                              çº¿ç¬¦å·                                  */
 /************************************************************************/
 
-// Ïß±à¼­ ==¡· Ìí¼ÓÏß
-void CMy3DSymbolLibNewView::OnMenuLineAdd()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	if(m_QueryType==LINE_ADD)	 
-		m_QueryType=-1;
-	else							 
-		m_QueryType=LINE_ADD;
+// çº¿ç¼–è¾‘ ==ã€‹ æ·»åŠ çº¿
+void CMy3DSymbolLibNewView::OnMenuLineAdd() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    if (m_QueryType == LINE_ADD)
+        m_QueryType = -1;
+    else
+        m_QueryType = LINE_ADD;
 }
 
 
-// Ïß±à¼­ ==¡·ÈÚºÏ   ÏßÊ¸Á¿ÓëµØ±íÈı½ÇÍøÈÚºÏ
-void CMy3DSymbolLibNewView::OnMenuLineFuse()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	int tmp_rowNum = 0;
-	int tmp_row_index_begin = 0;
-	int tmp_row_index_end = 0;
-
-	int tmp_colNum = 0;
-	int tmp_col_index_begin = 0; 
-	int tmp_col_index_end = 0;
-
-	Line3 tmp_line;
-	tmp_line.pt1 = m_LinesArray[0]->pt1;
-	tmp_line.pt2 = m_LinesArray[0]->pt2;
-
-	//1
-	tmp_line.pt1 = m_LinesArray[0]->pt1;
-	tmp_line.pt2 = m_LinesArray[0]->pt2;
-
-
-
-	//if(abs(tmp_line.pt1._x - tmp_line.pt2._x) < MAP_SCALE)
-	{
-		tmp_line.pt1._x -= 1;
-		tmp_line.pt2._x -= 1;
-	}
-	//else
-	//{
-	//	tmp_line.pt1._z += 5;
-	//	tmp_line.pt2._z += 5;
-	//}
-	
-	
-
-	CalcuateGridNum(&tmp_rowNum, &tmp_row_index_begin, &tmp_row_index_end,
-		&tmp_colNum, &tmp_col_index_begin, &tmp_col_index_end, tmp_line);
-	
-
-	CalcuateJD(tmp_rowNum, tmp_row_index_begin, tmp_row_index_end,
-		tmp_colNum, tmp_col_index_begin, tmp_col_index_end, tmp_line, Line_a_JD_vector);
-
-
-
-	tmp_line.pt1 = m_LinesArray[0]->pt1;
-	tmp_line.pt2 = m_LinesArray[0]->pt2;
-
-	//if(abs(tmp_line.pt1._x - tmp_line.pt2._x) < MAP_SCALE)
-	{
-		tmp_line.pt1._x += 1;
-		tmp_line.pt2._x += 1;
-	}
-	/*else
-	{
-		tmp_line.pt1._z -= 5;
-		tmp_line.pt2._z -= 5;
-	}*/
-
-
-
-	CalcuateGridNum(&tmp_rowNum, &tmp_row_index_begin, &tmp_row_index_end,
-		&tmp_colNum, &tmp_col_index_begin, &tmp_col_index_end, tmp_line);
-
-
-	CalcuateJD(tmp_rowNum, tmp_row_index_begin, tmp_row_index_end,
-		tmp_colNum, tmp_col_index_begin, tmp_col_index_end, tmp_line, Line_b_JD_vector);
-
-
-
-	fuse_Flag = TRUE;
- 
+// çº¿ç¼–è¾‘ ==ã€‹èåˆ   çº¿çŸ¢é‡ä¸åœ°è¡¨ä¸‰è§’ç½‘èåˆ
+void CMy3DSymbolLibNewView::OnMenuLineFuse() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    int tmp_rowNum = 0;
+    int tmp_row_index_begin = 0;
+    int tmp_row_index_end = 0;
+    int tmp_colNum = 0;
+    int tmp_col_index_begin = 0;
+    int tmp_col_index_end = 0;
+    Line3 tmp_line;
+    tmp_line.pt1 = m_LinesArray[0]->pt1;
+    tmp_line.pt2 = m_LinesArray[0]->pt2;
+    //1
+    tmp_line.pt1 = m_LinesArray[0]->pt1;
+    tmp_line.pt2 = m_LinesArray[0]->pt2;
+    // if(abs(tmp_line.pt1._x - tmp_line.pt2._x) < MAP_SCALE)
+    {
+        tmp_line.pt1._x -= 1;
+        tmp_line.pt2._x -= 1;
+    }
+    // else
+    // {
+    //   tmp_line.pt1._z += 5;
+    //   tmp_line.pt2._z += 5;
+    // }
+    CalcuateGridNum(&tmp_rowNum, &tmp_row_index_begin, &tmp_row_index_end,
+                    &tmp_colNum, &tmp_col_index_begin, &tmp_col_index_end, tmp_line);
+    CalcuateJD(tmp_rowNum, tmp_row_index_begin, tmp_row_index_end,
+               tmp_colNum, tmp_col_index_begin, tmp_col_index_end, tmp_line, Line_a_JD_vector);
+    tmp_line.pt1 = m_LinesArray[0]->pt1;
+    tmp_line.pt2 = m_LinesArray[0]->pt2;
+    // if(abs(tmp_line.pt1._x - tmp_line.pt2._x) < MAP_SCALE)
+    {
+        tmp_line.pt1._x += 1;
+        tmp_line.pt2._x += 1;
+    }
+    /*else
+    {
+        tmp_line.pt1._z -= 5;
+        tmp_line.pt2._z -= 5;
+    }*/
+    CalcuateGridNum(&tmp_rowNum, &tmp_row_index_begin, &tmp_row_index_end,
+                    &tmp_colNum, &tmp_col_index_begin, &tmp_col_index_end, tmp_line);
+    CalcuateJD(tmp_rowNum, tmp_row_index_begin, tmp_row_index_end,
+               tmp_colNum, tmp_col_index_begin, tmp_col_index_end, tmp_line, Line_b_JD_vector);
+    fuse_Flag = TRUE;
 }
 
 
-void CMy3DSymbolLibNewView::OnUpdateMenuLineAdd(CCmdUI *pCmdUI)
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî¸üĞÂÓÃ»§½çÃæ´¦Àí³ÌĞò´úÂë
-	pCmdUI->SetCheck(m_QueryType==LINE_ADD);
+void CMy3DSymbolLibNewView::OnUpdateMenuLineAdd(CCmdUI* pCmdUI) {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤æ›´æ–°ç”¨æˆ·ç•Œé¢å¤„ç†ç¨‹åºä»£ç 
+    pCmdUI->SetCheck(m_QueryType == LINE_ADD);
 }
 
 
-//¿Õ¼äµãÇóÍ¶Ó°µ½Æ½ÃæµÄÖ±Ïß·½³ÌÏµÊıABC, Ax+By+C=0
-void CMy3DSymbolLibNewView::getLine2ABC(double *A, double *B, double *C, Point3 p1, Point3 p2)
-{
-	// Ö±ÏßAX+BY+C=0µÄÒ»°ãÊ½·½³Ì¾ÍÊÇ£º
-	//	A = Y2 - Y1
-	//	B = X1 - X2
-	//	C = X2*Y1 - X1*Y2
-
-	*A = p2._z - p1._z;
-	*B = p1._x - p2._x;
-	*C = p2._x*p1._z - p1._x*p2._z;
+//ç©ºé—´ç‚¹æ±‚æŠ•å½±åˆ°å¹³é¢çš„ç›´çº¿æ–¹ç¨‹ç³»æ•°ABC, Ax+By+C=0
+void CMy3DSymbolLibNewView::getLine2ABC(double* A, double* B, double* C, Point3 p1, Point3 p2) {
+    // ç›´çº¿AX+BY+C=0çš„ä¸€èˆ¬å¼æ–¹ç¨‹å°±æ˜¯ï¼š
+    //  A = Y2 - Y1
+    //  B = X1 - X2
+    //  C = X2*Y1 - X1*Y2
+    *A = p2._z - p1._z;
+    *B = p1._x - p2._x;
+    *C = p2._x * p1._z - p1._x * p2._z;
 }
 
 
-// ¼ÆËãÏß¶Î_lineËù¾­¹ıµÄºáÏòºÍ×İÏò¸ñÍøÊı, ¼°Ë÷Òı·¶Î§
-void CMy3DSymbolLibNewView::CalcuateGridNum(int *rowNum, int *row_index_begin, int *row_index_end, 
-					 int *colNum, int *col_index_begin, int *col_index_end, Line3 _line)
-{
-	int tmp_rowNum = 0;
-	int tmp_row_index_begin = 0;
-	int tmp_row_index_end = 0;
-
-	int tmp_colNum = 0;
-	int tmp_col_index_begin = 0;
-	int tmp_col_index_end = 0;
-
-
-	double r1 = abs(_line.pt1._x);
-	double c1 = abs(_line.pt1._z);
-
-
-	double r2 = abs(_line.pt2._x);
-	double c2 = abs(_line.pt2._z);
-
-
-	tmp_row_index_begin =  (int)r1 / (int)MAP_SCALE;
-	tmp_row_index_end = (int)r2 / (int)MAP_SCALE;
-
-
-	tmp_col_index_begin = (int)c1 / (int)MAP_SCALE;
-	tmp_col_index_end = (int)c2 / (int)MAP_SCALE;
-
-
-	*rowNum = abs(tmp_row_index_end - tmp_row_index_begin);
-	*row_index_begin = tmp_row_index_begin;
-	*row_index_end = tmp_row_index_end;
-
-	*colNum = abs(tmp_col_index_end - tmp_col_index_begin);
-	*col_index_begin = tmp_col_index_begin;
-	*col_index_end = tmp_col_index_end;
-
+// è®¡ç®—çº¿æ®µ_lineæ‰€ç»è¿‡çš„æ¨ªå‘å’Œçºµå‘æ ¼ç½‘æ•°, åŠç´¢å¼•èŒƒå›´
+void CMy3DSymbolLibNewView::CalcuateGridNum(int* rowNum, int* row_index_begin, int* row_index_end,
+        int* colNum, int* col_index_begin, int* col_index_end, Line3 _line) {
+    int tmp_rowNum = 0;
+    int tmp_row_index_begin = 0;
+    int tmp_row_index_end = 0;
+    int tmp_colNum = 0;
+    int tmp_col_index_begin = 0;
+    int tmp_col_index_end = 0;
+    double r1 = abs(_line.pt1._x);
+    double c1 = abs(_line.pt1._z);
+    double r2 = abs(_line.pt2._x);
+    double c2 = abs(_line.pt2._z);
+    tmp_row_index_begin = (int)r1 / (int)MAP_SCALE;
+    tmp_row_index_end = (int)r2 / (int)MAP_SCALE;
+    tmp_col_index_begin = (int)c1 / (int)MAP_SCALE;
+    tmp_col_index_end = (int)c2 / (int)MAP_SCALE;
+    *rowNum = abs(tmp_row_index_end - tmp_row_index_begin);
+    *row_index_begin = tmp_row_index_begin;
+    *row_index_end = tmp_row_index_end;
+    *colNum = abs(tmp_col_index_end - tmp_col_index_begin);
+    *col_index_begin = tmp_col_index_begin;
+    *col_index_end = tmp_col_index_end;
 }
 
 
 // sort(_pv.begin(),_pv.end(),comp);
-bool comp(Point3 &p1, Point3 &p2)
-{
-	return p1._x < p2._x;
+bool comp(Point3& p1, Point3& p2) {
+    return p1._x < p2._x;
 }
 
-bool comp2(Point3 &p1, Point3 &p2)
-{
-	return p1._z < p2._z;
+bool comp2(Point3& p1, Point3& p2) {
+    return p1._z < p2._z;
 }
 
 
-// ¼ÆËãÆ½Ãæ½»µã×ø±ê,²¢¼ÆËã³ö½»µã³öµÄ¸ß³ÌÖµ
-void CMy3DSymbolLibNewView::CalcuateJD(int rowNum, int row_index_begin, int row_index_end, 
-				int colNum, int col_index_begin, int col_index_end, Line3 _line, vector<Point3> &_pv)
-{
-	// Ö±Ïß·½³ÌÏµÊıABC, Ax+By+C=0
-	double A, B, C;
-	getLine2ABC(&A, &B, &C, _line.pt1, _line.pt2);
-	
-	Point3 tmp_point;
-
-	JD_vector1.clear();
-	JD_vector2.clear();
-	JD_vector3.clear();
-	_pv.clear();
-
-	// ½»µã1 ---------------------------------------------------------------------
-	// Í¨¹ı¸ñÍøºá×ø±ê ÇóÓëÏß¶Î½»µã
-	if(row_index_begin < row_index_end)
-	{
-		for(int r=row_index_begin+1; r<row_index_end; ++r)
-		{
-
-			tmp_point._x = float(r)*MAP_SCALE;	// Æ½Ãæºá×ø±ê
-
-			// Æ½Ãæ×İ×ø±ê
-			if(DOUBLE_NUMBER_IS_ZERO(B))
-			{
-				
-				break;
-			}
-			else
-			{
-				tmp_point._z = ((-A) * tmp_point._x -C) / B;
-			}
-
-			tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
-
-
-			JD_vector1.push_back(tmp_point);
-		}
-	}
-	else if(row_index_begin > row_index_end)
-	{
-		for(int r=row_index_begin-1; r>row_index_end; --r)
-		{
-
-			tmp_point._x = float(r)*MAP_SCALE;	// Æ½Ãæºá×ø±ê
-
-			// Æ½Ãæ×İ×ø±ê
-			if(DOUBLE_NUMBER_IS_ZERO(B))
-			{
-
-				break;
-			}
-			else
-			{
-				tmp_point._z = ((-A) * tmp_point._x -C) / B;
-			}
-
-			tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
-
-
-			JD_vector1.push_back(tmp_point);
-		}
-		
-	}
-	
-
-	// ½»µã2 ---------------------------------------------------------------------
-	if(col_index_begin < col_index_end)
-	{
-		// Í¨¹ı¸ñÍø×İ×ø±ê ÇóÓëÏß¶Î½»µã
-		for(int c=col_index_begin+1; c<col_index_end; ++c)
-		{
-			tmp_point._z = float(-c)*MAP_SCALE;	// Æ½Ãæ×İ×ø±ê
-
-
-			// Æ½Ãæºá×ø±ê
-			if(DOUBLE_NUMBER_IS_ZERO(A))
-			{
-				break;
-			}
-			else
-			{
-				//Ax+By+C=0
-				tmp_point._x =  ((-B) * tmp_point._z - C) / A;
-			}
-
-			tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
-
-
-
-			JD_vector2.push_back(tmp_point);
-		}
-	}
-	else if(col_index_begin > col_index_end)
-	{
-		// Í¨¹ı¸ñÍø×İ×ø±ê ÇóÓëÏß¶Î½»µã
-		for(int c=col_index_begin-1; c>col_index_end; --c)
-		{
-			tmp_point._z = float(-c)*MAP_SCALE;	// Æ½Ãæ×İ×ø±ê
-
-
-			// Æ½Ãæºá×ø±ê
-			if(DOUBLE_NUMBER_IS_ZERO(A))
-			{
-				break;
-			}
-			else
-			{
-				//Ax+By+C=0
-				tmp_point._x =  ((-B) * tmp_point._z -C) / A;
-			}
-
-			tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
-
-
-
-			JD_vector2.push_back(tmp_point);
-		}
-	}
-
-	// ½»µã3 ---------------------------------------------------------------------
-	 
-	//double line_pos_b = MAP_SCALE * (row_index_begin < row_index_end ? row_index_begin : row_index_end);
-	//double line_pos_e = MAP_SCALE * (row_index_begin > row_index_end ? row_index_begin : row_index_end);
-
-	double line_pos_b =  (_line.pt1._x < _line.pt2._x) ? _line.pt1._x : _line.pt2._x;
-	double line_pos_e =  (_line.pt1._x >= _line.pt2._x) ? _line.pt1._x : _line.pt2._x;;
-
-	for(int r=0; r<MAP_W; ++r)
-	{
-		double b = float(-r)*MAP_SCALE;
-		if(GetJDFrom2Line(&tmp_point, b, A, B, C))
-		{
-			if( (line_pos_b < tmp_point._x) && (tmp_point._x < line_pos_e) )
-			{
-				JD_vector3.push_back(tmp_point);
-			}
-		}
-	}
-	
-
-	// 2¶Ëµã
-	_pv.push_back( _line.pt1);
-	_pv.push_back( _line.pt2);
-
-	//----------------------------------------------
-	for(unsigned int i=0;i<JD_vector1.size();++i)
-	{
-		_pv.push_back(JD_vector1[i]);
-	}
-	for(unsigned int i=0;i<JD_vector2.size();++i)
-	{
-		_pv.push_back(JD_vector2[i]);
-	}
-
-	// Ğ±Ïß½»µã
-	for(unsigned int i=0;i<JD_vector3.size();++i)
-	{
-		_pv.push_back(JD_vector3[i]);
-	}
-
-	sort(_pv.begin(),_pv.end(),comp);
+// è®¡ç®—å¹³é¢äº¤ç‚¹åæ ‡,å¹¶è®¡ç®—å‡ºäº¤ç‚¹å‡ºçš„é«˜ç¨‹å€¼
+void CMy3DSymbolLibNewView::CalcuateJD(int rowNum, int row_index_begin, int row_index_end,
+                                       int colNum, int col_index_begin, int col_index_end, Line3 _line, vector<Point3>& _pv) {
+    // ç›´çº¿æ–¹ç¨‹ç³»æ•°ABC, Ax+By+C=0
+    double A, B, C;
+    getLine2ABC(&A, &B, &C, _line.pt1, _line.pt2);
+    Point3 tmp_point;
+    JD_vector1.clear();
+    JD_vector2.clear();
+    JD_vector3.clear();
+    _pv.clear();
+    // äº¤ç‚¹1 ---------------------------------------------------------------------
+    // é€šè¿‡æ ¼ç½‘æ¨ªåæ ‡ æ±‚ä¸çº¿æ®µäº¤ç‚¹
+    if (row_index_begin < row_index_end) {
+        for (int r = row_index_begin + 1; r < row_index_end; ++r) {
+            tmp_point._x = float(r) * MAP_SCALE;  // å¹³é¢æ¨ªåæ ‡
+            // å¹³é¢çºµåæ ‡
+            if (DOUBLE_NUMBER_IS_ZERO(B)) {
+                break;
+            } else {
+                tmp_point._z = ((-A) * tmp_point._x - C) / B;
+            }
+            tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
+            JD_vector1.push_back(tmp_point);
+        }
+    } else if (row_index_begin > row_index_end) {
+        for (int r = row_index_begin - 1; r > row_index_end; --r) {
+            tmp_point._x = float(r) * MAP_SCALE;  // å¹³é¢æ¨ªåæ ‡
+            // å¹³é¢çºµåæ ‡
+            if (DOUBLE_NUMBER_IS_ZERO(B)) {
+                break;
+            } else {
+                tmp_point._z = ((-A) * tmp_point._x - C) / B;
+            }
+            tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
+            JD_vector1.push_back(tmp_point);
+        }
+    }
+    // äº¤ç‚¹2 ---------------------------------------------------------------------
+    if (col_index_begin < col_index_end) {
+        // é€šè¿‡æ ¼ç½‘çºµåæ ‡ æ±‚ä¸çº¿æ®µäº¤ç‚¹
+        for (int c = col_index_begin + 1; c < col_index_end; ++c) {
+            tmp_point._z = float(-c) * MAP_SCALE;  // å¹³é¢çºµåæ ‡
+            // å¹³é¢æ¨ªåæ ‡
+            if (DOUBLE_NUMBER_IS_ZERO(A)) {
+                break;
+            } else {
+                //Ax+By+C=0
+                tmp_point._x = ((-B) * tmp_point._z - C) / A;
+            }
+            tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
+            JD_vector2.push_back(tmp_point);
+        }
+    } else if (col_index_begin > col_index_end) {
+        // é€šè¿‡æ ¼ç½‘çºµåæ ‡ æ±‚ä¸çº¿æ®µäº¤ç‚¹
+        for (int c = col_index_begin - 1; c > col_index_end; --c) {
+            tmp_point._z = float(-c) * MAP_SCALE;  // å¹³é¢çºµåæ ‡
+            // å¹³é¢æ¨ªåæ ‡
+            if (DOUBLE_NUMBER_IS_ZERO(A)) {
+                break;
+            } else {
+                //Ax+By+C=0
+                tmp_point._x = ((-B) * tmp_point._z - C) / A;
+            }
+            tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
+            JD_vector2.push_back(tmp_point);
+        }
+    }
+    // äº¤ç‚¹3 ---------------------------------------------------------------------
+    // double line_pos_b = MAP_SCALE * (row_index_begin < row_index_end ? row_index_begin : row_index_end);
+    // double line_pos_e = MAP_SCALE * (row_index_begin > row_index_end ? row_index_begin : row_index_end);
+    double line_pos_b = (_line.pt1._x < _line.pt2._x) ? _line.pt1._x : _line.pt2._x;
+    double line_pos_e = (_line.pt1._x >= _line.pt2._x) ? _line.pt1._x : _line.pt2._x;;
+    for (int r = 0; r < MAP_W; ++r) {
+        double b = float(-r) * MAP_SCALE;
+        if (GetJDFrom2Line(&tmp_point, b, A, B, C)) {
+            if ((line_pos_b < tmp_point._x) && (tmp_point._x < line_pos_e)) {
+                JD_vector3.push_back(tmp_point);
+            }
+        }
+    }
+    // 2ç«¯ç‚¹
+    _pv.push_back(_line.pt1);
+    _pv.push_back(_line.pt2);
+    //----------------------------------------------
+    for (unsigned int i = 0; i < JD_vector1.size(); ++i) {
+        _pv.push_back(JD_vector1[i]);
+    }
+    for (unsigned int i = 0; i < JD_vector2.size(); ++i) {
+        _pv.push_back(JD_vector2[i]);
+    }
+    // æ–œçº¿äº¤ç‚¹
+    for (unsigned int i = 0; i < JD_vector3.size(); ++i) {
+        _pv.push_back(JD_vector3[i]);
+    }
+    sort(_pv.begin(), _pv.end(), comp);
 }
 
 
 
-// ¼ÆËã2ÌõÖ±ÏßµÄ½»µãy=x+b, Ax+By+C=0, ·µ»Ø0±íÊ¾ÎŞ½»µã
-BOOL CMy3DSymbolLibNewView::GetJDFrom2Line(PPoint3 p/*out*/,double b, double A, double B, double C)
-{ 
-	if(DOUBLE_NUMBER_IS_ZERO(A)) // A == 0
-	{
-		p->_z = -C/B;
-		p->_x = p->_z - b;
-		p->_y = GetHeight(p->_x, p->_z);
-	}
-	else
-	{
-		if(!(DOUBLE_NUMBER_IS_ZERO(B)))
-		{ 
-			if( DOUBLE_NUMBER_IS_ZERO(-A/B - 1) )
-			{
-				return 0; // 2Ö±ÏßÆ½ĞĞÎŞ½»µã
-			}
-			else
-			{
-				p->_x = (-1)*(B*b+C)/(A+B);
-				p->_z = p->_x + b;
-				p->_y = GetHeight(p->_x, p->_z);
-			}
-
-		}
-		else // B == 0
-		{
-			p->_x = -C/A;
-			p->_z = p->_x + b;
-			p->_y = GetHeight(p->_x, p->_z);
-		}
-	}
-	
-
-	return 1;
+// è®¡ç®—2æ¡ç›´çº¿çš„äº¤ç‚¹y=x+b, Ax+By+C=0, è¿”å›0è¡¨ç¤ºæ— äº¤ç‚¹
+BOOL CMy3DSymbolLibNewView::GetJDFrom2Line(PPoint3 p/*out*/, double b, double A, double B, double C) {
+    if (DOUBLE_NUMBER_IS_ZERO(A)) { // A == 0
+        p->_z = -C / B;
+        p->_x = p->_z - b;
+        p->_y = GetHeight(p->_x, p->_z);
+    } else {
+        if (!(DOUBLE_NUMBER_IS_ZERO(B))) {
+            if (DOUBLE_NUMBER_IS_ZERO(-A / B - 1)) {
+                return 0;  // 2ç›´çº¿å¹³è¡Œæ— äº¤ç‚¹
+            } else {
+                p->_x = (-1) * (B * b + C) / (A + B);
+                p->_z = p->_x + b;
+                p->_y = GetHeight(p->_x, p->_z);
+            }
+        } else {  // B == 0
+            p->_x = -C / A;
+            p->_z = p->_x + b;
+            p->_y = GetHeight(p->_x, p->_z);
+        }
+    }
+    return 1;
 }
 
 
 
-// ËùÓĞÈı½ÇĞÎ¶¥µã×ø±ê×îĞ¡×î´óÖµ
-void CMy3DSymbolLibNewView::GetMinXY(vector<Point3> &_pv1,  vector<Point3> &_pv2, double *_minX, double *_minY, double *_maxX, double *_maxY)
-{
-	vector<Point3> tmpPV;
-	unsigned int i = 0;
-	for(i=0;i<_pv1.size();++i)
-	{
-		tmpPV.push_back(_pv1[i]);
-	}
-	for(i=0;i<_pv2.size();++i)
-	{
-		tmpPV.push_back(_pv2[i]);
-	}
-	sort(tmpPV.begin(), tmpPV.end(), comp);
-
-	*_minX = abs(tmpPV[0]._x);
-	*_maxX = abs(tmpPV[tmpPV.size()-1]._x);
-
-	sort(tmpPV.begin(), tmpPV.end(), comp2);
-	*_maxY = abs(tmpPV[0]._z);
-	*_minY = abs(tmpPV[tmpPV.size()-1]._z);
+// æ‰€æœ‰ä¸‰è§’å½¢é¡¶ç‚¹åæ ‡æœ€å°æœ€å¤§å€¼
+void CMy3DSymbolLibNewView::GetMinXY(vector<Point3>& _pv1,  vector<Point3>& _pv2, double* _minX, double* _minY, double* _maxX, double* _maxY) {
+    vector<Point3> tmpPV;
+    unsigned int i = 0;
+    for (i = 0; i < _pv1.size(); ++i) {
+        tmpPV.push_back(_pv1[i]);
+    }
+    for (i = 0; i < _pv2.size(); ++i) {
+        tmpPV.push_back(_pv2[i]);
+    }
+    sort(tmpPV.begin(), tmpPV.end(), comp);
+    *_minX = abs(tmpPV[0]._x);
+    *_maxX = abs(tmpPV[tmpPV.size() - 1]._x);
+    sort(tmpPV.begin(), tmpPV.end(), comp2);
+    *_maxY = abs(tmpPV[0]._z);
+    *_minY = abs(tmpPV[tmpPV.size() - 1]._z);
 }
 
-// Ïß·ûºÅÎÆÀí×ø±ê
-void CMy3DSymbolLibNewView::GetUV(double _x, double _y, double _minX, double _minY, double _maxX, double _maxY, double *_u, double *_v)
-{
-	*_u = (abs(_x) - _minX) / (_maxX - _minX);
-	*_v = (abs(_y) - _minY) / (_maxY - _minY);
+// çº¿ç¬¦å·çº¹ç†åæ ‡
+void CMy3DSymbolLibNewView::GetUV(double _x, double _y, double _minX, double _minY, double _maxX, double _maxY, double* _u, double* _v) {
+    *_u = (abs(_x) - _minX) / (_maxX - _minX);
+    *_v = (abs(_y) - _minY) / (_maxY - _minY);
 }
 
 
-// »æÖÆ½»µãÁ¬Ïß
-void CMy3DSymbolLibNewView::DrawJDLine(vector<Point3> &_pv1, vector<Point3> &_pv2)
-{
-	 
-	double DD = 1.0f;
-
-	double tmpMinX = 0.0, tmpMinY = 0.0, tmpMaxX = 0.0, tmpMaxY = 0.0, tmpU = 0.0, tmpV = 0.0;
-	GetMinXY(_pv1, _pv2, &tmpMinX, &tmpMinY, &tmpMaxX, &tmpMaxY);
-
-
-	// ÅäÖÃµØĞÎ
-	
-	double tmpX = 0.0, tmpY = 0.0, tmpZ=0.0;
-	// Èı½ÇÍø
-	
-	glEnable(GL_TEXTURE_2D);	// ¿ªÆôÎÆÀí
-	//glBindTexture(GL_TEXTURE_2D, m_cTxtureRailway.GetTxtID());
-
-	GLuint rd;
-	char cc[256] = "E:/CG/My3DSymbolLibFiles/DataFormated/RoadTexture/ÌúÂ·/ww.bmp";
-	LoadT8(cc,	rd);	
-
-	glBindTexture(GL_TEXTURE_2D, rd);
-	glTexEnvf    (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-
-
-	if(fuse_Flag == TRUE) 
-	{
-		glPushAttrib(GL_CURRENT_BIT);// ±£´æÏÖÓĞÑÕÉ«ÊôĞÔ
-
-		glPushMatrix();				// Ñ¹Èë¾ØÕó¶ÑÕ»
-		glLineWidth(2.0);			// ÉèÖÃÏß¿í
-		glColor3f(0,0.5,1);			// ÉèÖÃÑÕÉ«
-
-		glBegin(GL_TRIANGLE_STRIP);
-
-		for(unsigned int i = 0, j = 0, k = 0; i < _pv1.size(), j < _pv2.size(); ++i, ++j, ++k)
-		{
-			if(k % 2 == 0){
-				tmpX = _pv1[i]._x; tmpY = _pv1[i]._y + DD; tmpZ = _pv1[i]._z;
-			}
-			else{
-				tmpX = _pv2[j]._x; tmpY = _pv2[j]._y + DD; tmpZ = _pv2[j]._z;
-			}
-			
-			tmpMinX = 0.0, tmpMinY = 0.0, tmpMaxX = 10.0, tmpMaxY = 10.0;
-
-			GetUV(tmpX, tmpZ, tmpMinX, tmpMinY, tmpMaxX, tmpMaxY, &tmpU, &tmpV);
-
-			glTexCoord2f(tmpU, tmpV);
-
-			glVertex3f(tmpX, tmpY, tmpZ);
-		}
-
-
-		glEnd();
-
-		glLineWidth(1.0);			// »Ö¸´Ïß¿í
-		glPopAttrib();					
-
-		glPopMatrix();				// µ¯³ö¾ØÕó¶ÑÕ»
-	}
-
-
-
-
-	
+// ç»˜åˆ¶äº¤ç‚¹è¿çº¿
+void CMy3DSymbolLibNewView::DrawJDLine(vector<Point3>& _pv1, vector<Point3>& _pv2) {
+    double DD = 1.0f;
+    double tmpMinX = 0.0, tmpMinY = 0.0, tmpMaxX = 0.0, tmpMaxY = 0.0, tmpU = 0.0, tmpV = 0.0;
+    GetMinXY(_pv1, _pv2, &tmpMinX, &tmpMinY, &tmpMaxX, &tmpMaxY);
+    // é…ç½®åœ°å½¢
+    double tmpX = 0.0, tmpY = 0.0, tmpZ = 0.0;
+    // ä¸‰è§’ç½‘
+    glEnable(GL_TEXTURE_2D);    // å¼€å¯çº¹ç†
+    // glBindTexture(GL_TEXTURE_2D, m_cTxtureRailway.GetTxtID());
+    GLuint rd;
+    char cc[256] = "E:/CG/My3DSymbolLibFiles/DataFormated/RoadTexture/é“è·¯/ww.bmp";
+    LoadT8(cc,  rd);
+    glBindTexture(GL_TEXTURE_2D, rd);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+    if (fuse_Flag == TRUE) {
+        glPushAttrib(GL_CURRENT_BIT);  // ä¿å­˜ç°æœ‰é¢œè‰²å±æ€§
+        glPushMatrix();             // å‹å…¥çŸ©é˜µå †æ ˆ
+        glLineWidth(2.0);           // è®¾ç½®çº¿å®½
+        glColor3f(0, 0.5, 1);       // è®¾ç½®é¢œè‰²
+        glBegin(GL_TRIANGLE_STRIP);
+        for (unsigned int i = 0, j = 0, k = 0; i < _pv1.size(), j < _pv2.size(); ++i, ++j, ++k) {
+            if (k % 2 == 0) {
+                tmpX = _pv1[i]._x;
+                tmpY = _pv1[i]._y + DD;
+                tmpZ = _pv1[i]._z;
+            } else {
+                tmpX = _pv2[j]._x;
+                tmpY = _pv2[j]._y + DD;
+                tmpZ = _pv2[j]._z;
+            }
+            tmpMinX = 0.0, tmpMinY = 0.0, tmpMaxX = 10.0, tmpMaxY = 10.0;
+            GetUV(tmpX, tmpZ, tmpMinX, tmpMinY, tmpMaxX, tmpMaxY, &tmpU, &tmpV);
+            glTexCoord2f(tmpU, tmpV);
+            glVertex3f(tmpX, tmpY, tmpZ);
+        }
+        glEnd();
+        glLineWidth(1.0);           // æ¢å¤çº¿å®½
+        glPopAttrib();
+        glPopMatrix();              // å¼¹å‡ºçŸ©é˜µå †æ ˆ
+    }
 }
 
 
 
-// Ôö¼ÓÏß·ûºÅµÄ¿í¶ÈĞÅÏ¢
-void CMy3DSymbolLibNewView::OnMenuAddLineWidth()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	
+// å¢åŠ çº¿ç¬¦å·çš„å®½åº¦ä¿¡æ¯
+void CMy3DSymbolLibNewView::OnMenuAddLineWidth() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 }
 
 
 /************************************************************************/
-/*								Ãæ·ûºÅ									*/
+/*                              é¢ç¬¦å·                                  */
 /************************************************************************/
 
 
-// Ìí¼ÓÃæ·ûºÅ
-void CMy3DSymbolLibNewView::OnMenuAddAreaSlib()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-
-	int newFlag = 0;
-
-	if(!exist_area_file())
-	{	
-		INT_PTR nRes;
-		nRes = MessageBox("Ã»ÓĞ´ò¿ªµÄÃæÎÄ¼ş£¬ĞèÒªĞÂ½¨ÎÄ¼şÂğ£¿", "ÕÒ²»µ½ÃæÎÄ¼ş", MB_YESNO | MB_ICONQUESTION);
-		if(nRes == IDYES)
-		{
-			newFlag = new_area_file();
-			if(0 == newFlag)
-			{
-				exist_area_flag = TRUE;
-			}
-		}	
-	}
-	else
-	{
-		if(m_QueryType == AREA_ADD)	 
-			m_QueryType = -1;
-		else							 
-			m_QueryType = AREA_ADD;
-	}
+// æ·»åŠ é¢ç¬¦å·
+void CMy3DSymbolLibNewView::OnMenuAddAreaSlib() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    int newFlag = 0;
+    if (!exist_area_file()) {
+        INT_PTR nRes;
+        nRes = MessageBox("æ²¡æœ‰æ‰“å¼€çš„é¢æ–‡ä»¶ï¼Œéœ€è¦æ–°å»ºæ–‡ä»¶å—ï¼Ÿ", "æ‰¾ä¸åˆ°é¢æ–‡ä»¶", MB_YESNO | MB_ICONQUESTION);
+        if (nRes == IDYES) {
+            newFlag = new_area_file();
+            if (0 == newFlag) {
+                exist_area_flag = TRUE;
+            }
+        }
+    } else {
+        if (m_QueryType == AREA_ADD)
+            m_QueryType = -1;
+        else
+            m_QueryType = AREA_ADD;
+    }
 }
 
-// ¸üĞÂÌí¼ÓÃæ·ûºÅ¹´Ñ¡×´Ì¬
-void CMy3DSymbolLibNewView::OnUpdateMenuAddAreaSlib(CCmdUI *pCmdUI)
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî¸üĞÂÓÃ»§½çÃæ´¦Àí³ÌĞò´úÂë
-	pCmdUI->SetCheck(m_QueryType == AREA_ADD);
+// æ›´æ–°æ·»åŠ é¢ç¬¦å·å‹¾é€‰çŠ¶æ€
+void CMy3DSymbolLibNewView::OnUpdateMenuAddAreaSlib(CCmdUI* pCmdUI) {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤æ›´æ–°ç”¨æˆ·ç•Œé¢å¤„ç†ç¨‹åºä»£ç 
+    pCmdUI->SetCheck(m_QueryType == AREA_ADD);
 }
 
 
-// ¶à±ßĞÎÊ¸Á¿ÓëDEMÈÚºÏ
-void CMy3DSymbolLibNewView::OnMenuAreaFuse()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	
-	int tmp_rowNum = 0;
-	int tmp_row_index_begin = 0;
-	int tmp_row_index_end = 0;
+// å¤šè¾¹å½¢çŸ¢é‡ä¸DEMèåˆ
+void CMy3DSymbolLibNewView::OnMenuAreaFuse() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    int tmp_rowNum = 0;
+    int tmp_row_index_begin = 0;
+    int tmp_row_index_end = 0;
+    int tmp_colNum = 0;
+    int tmp_col_index_begin = 0;
+    int tmp_col_index_end = 0;
+    Area_4 tmp_area4;
+    if (m_Area4_Array.GetSize() <= 0) {
+        return;
+    }
+    
+    // =========================================================================================
+    unsigned int tmp_size = m_Area4_Array.GetSize();
+    for (unsigned int i = 0; i < tmp_size; ++i) {
+        Area_4 tmp_area4;
+        tmp_area4.pt1 = m_Area4_Array[i]->pt1;
+        tmp_area4.pt2 = m_Area4_Array[i]->pt2;
+        tmp_area4.pt3 = m_Area4_Array[i]->pt3;
+        tmp_area4.pt4 = m_Area4_Array[i]->pt4;
+        FindAllTrianglesInPolygon(tmp_area4);
+        m_Area4_Array[i]->pt1 = tmp_area4.pt1;
+        m_Area4_Array[i]->pt2 = tmp_area4.pt2;
+        m_Area4_Array[i]->pt3 = tmp_area4.pt3;
+        m_Area4_Array[i]->pt4 = tmp_area4.pt4;
+        m_Area4_Array[i]->LocalTrianglesVecotr1 = tmp_area4.LocalTrianglesVecotr1;
+        m_Area4_Array[i]->LocalTrianglesVecotr1_1 = tmp_area4.LocalTrianglesVecotr1_1;
+        m_Area4_Array[i]->LocalTrianglesVecotr2 = tmp_area4.LocalTrianglesVecotr2;
+        m_Area4_Array[i]->LocalTrianglesVecotr2_1 = tmp_area4.LocalTrianglesVecotr2_1;
+        m_Area4_Array[i]->LocalTrianglesVecotr_last = tmp_area4.LocalTrianglesVecotr_last;
+        m_Area4_Array[i]->TrianglesInPolygonVecotr = tmp_area4.TrianglesInPolygonVecotr;
+        // ==================================================================================
+        CString scenePath = g_sceneDataPath.c_str();
+        CString area_texture = scenePath + "\\AreaTexture\\grassland\\area.bmp";
+        // é¢ç¬¦å·çº¹ç†
+        // m_Area4_Array[i]->area_texture = area_texture;
+        /*  if(i == 1)
+        {
+        area_texture = scenePath + "\\Terrain\\Tex\\cd5.bmp";
 
-	int tmp_colNum = 0;
-	int tmp_col_index_begin = 0; 
-	int tmp_col_index_end = 0;
+        m_Area4_Array[i]->area_texture = area_texture;
+        }
+        else if(i == 2)
+        {
+        area_texture = scenePath + "\\Terrain\\Tex\\cd4.bmp";
 
-	
-	Area_4 tmp_area4;
-
-	if(m_Area4_Array.GetSize() <= 0)
-	{
-		return;
-	}
-
-	//Line3 tmp_line;
-	//tmp_area4.pt1 = m_Area4_Array[0]->pt1;
-	//tmp_area4.pt2 = m_Area4_Array[0]->pt2;
-	//tmp_area4.pt3 = m_Area4_Array[0]->pt3;
-	//tmp_area4.pt4 = m_Area4_Array[0]->pt4;
-	////1 -------------------12-----------------------------------------------
-	//tmp_line.pt1 = tmp_area4.pt1;
-	//tmp_line.pt2 = tmp_area4.pt2;
-	//
-	//CalcuateGridNum(&tmp_rowNum, &tmp_row_index_begin, &tmp_row_index_end,
-	//	&tmp_colNum, &tmp_col_index_begin, &tmp_col_index_end, tmp_line);
-	//
-	//CalcuateJD(tmp_rowNum, tmp_row_index_begin, tmp_row_index_end,
-	//	tmp_colNum, tmp_col_index_begin, tmp_col_index_end, tmp_line, Line_1_JD_vector);
-	////2 -----------------23-------------------------------------------------
-	//tmp_line.pt1 = tmp_area4.pt2;
-	//tmp_line.pt2 = tmp_area4.pt3;
-	// 
-	//CalcuateGridNum(&tmp_rowNum, &tmp_row_index_begin, &tmp_row_index_end,
-	//	&tmp_colNum, &tmp_col_index_begin, &tmp_col_index_end, tmp_line);
-	//
-	//CalcuateJD(tmp_rowNum, tmp_row_index_begin, tmp_row_index_end,
-	//	tmp_colNum, tmp_col_index_begin, tmp_col_index_end, tmp_line, Line_2_JD_vector);
-	//
-	//
-	////3 -----------------34-------------------------------------------------
-	//tmp_line.pt1 = tmp_area4.pt3;
-	//tmp_line.pt2 = tmp_area4.pt4;
-	//
-	// 
-	//CalcuateGridNum(&tmp_rowNum, &tmp_row_index_begin, &tmp_row_index_end,
-	//	&tmp_colNum, &tmp_col_index_begin, &tmp_col_index_end, tmp_line);
-	//
-	//CalcuateJD(tmp_rowNum, tmp_row_index_begin, tmp_row_index_end,
-	//	tmp_colNum, tmp_col_index_begin, tmp_col_index_end, tmp_line, Line_3_JD_vector);
-	//
-	//
-	////4 -----------------41-------------------------------------------------
-	//tmp_line.pt1 = tmp_area4.pt4;
-	//tmp_line.pt2 = tmp_area4.pt1;
-	//
-	// 
-	//CalcuateGridNum(&tmp_rowNum, &tmp_row_index_begin, &tmp_row_index_end,
-	//	&tmp_colNum, &tmp_col_index_begin, &tmp_col_index_end, tmp_line);
-	//
-	//CalcuateJD(tmp_rowNum, tmp_row_index_begin, tmp_row_index_end,
-	//	tmp_colNum, tmp_col_index_begin, tmp_col_index_end, tmp_line, Line_4_JD_vector);
-
-
-
-
-
-	// =========================================================================================
-
-
-	
-
-
-	unsigned int tmp_size = m_Area4_Array.GetSize();
- 
-	for(unsigned int i=0; i<tmp_size; ++i)
-	{
-		Area_4 tmp_area4;
-		tmp_area4.pt1 = m_Area4_Array[i]->pt1;
-		tmp_area4.pt2 = m_Area4_Array[i]->pt2;
-		tmp_area4.pt3 = m_Area4_Array[i]->pt3;
-		tmp_area4.pt4 = m_Area4_Array[i]->pt4;
-
-
-
-		FindAllTrianglesInPolygon(tmp_area4);
-
-
-		m_Area4_Array[i]->pt1 = tmp_area4.pt1;
-		m_Area4_Array[i]->pt2 = tmp_area4.pt2;
-		m_Area4_Array[i]->pt3 = tmp_area4.pt3;
-		m_Area4_Array[i]->pt4 = tmp_area4.pt4;
-
-		m_Area4_Array[i]->LocalTrianglesVecotr1 = tmp_area4.LocalTrianglesVecotr1;
-		m_Area4_Array[i]->LocalTrianglesVecotr1_1 = tmp_area4.LocalTrianglesVecotr1_1;
-		m_Area4_Array[i]->LocalTrianglesVecotr2 = tmp_area4.LocalTrianglesVecotr2;
-		m_Area4_Array[i]->LocalTrianglesVecotr2_1 = tmp_area4.LocalTrianglesVecotr2_1;
-
-		m_Area4_Array[i]->LocalTrianglesVecotr_last = tmp_area4.LocalTrianglesVecotr_last;
-		m_Area4_Array[i]->TrianglesInPolygonVecotr = tmp_area4.TrianglesInPolygonVecotr;
-
-
-		// ==================================================================================
-
-		CString scenePath = g_sceneDataPath.c_str();
-		CString area_texture = scenePath + "\\AreaTexture\\grassland\\area.bmp";
-
-		// Ãæ·ûºÅÎÆÀí
-		//m_Area4_Array[i]->area_texture = area_texture;
-
-	
-		
-		
-
-		/*	if(i == 1)
-		{
-		area_texture = scenePath + "\\Terrain\\Tex\\cd5.bmp";
-
-		m_Area4_Array[i]->area_texture = area_texture;
-		}
-		else if(i == 2)
-		{
-		area_texture = scenePath + "\\Terrain\\Tex\\cd4.bmp";
-
-		m_Area4_Array[i]->area_texture = area_texture;
-		}
-		else
-		{
-		m_Area4_Array[i]->area_texture = area_texture;
-		}*/
-
-
-
-		if(m_Area4_Array[i]->area_texture == "")
-		{
-			//AfxMessageBox("texture == NULL");
-			m_Area4_Array[i]->area_texture = area_texture;
-			LoadAreaTexture(area_texture, m_Area4_Array[i]->area_texture_rd);
-
-		}
-		else
-		{
-			LoadAreaTexture(m_Area4_Array[i]->area_texture, m_Area4_Array[i]->area_texture_rd);
-		}
-
-	}
-	
-	Area_fuse_Flag = TRUE;
-
-
+        m_Area4_Array[i]->area_texture = area_texture;
+        }
+        else
+        {
+        m_Area4_Array[i]->area_texture = area_texture;
+        }*/
+        if (m_Area4_Array[i]->area_texture == "") {
+            // AfxMessageBox("texture == NULL");
+            m_Area4_Array[i]->area_texture = area_texture;
+            LoadAreaTexture(area_texture, m_Area4_Array[i]->area_texture_rd);
+        } else {
+            LoadAreaTexture(m_Area4_Array[i]->area_texture, m_Area4_Array[i]->area_texture_rd);
+        }
+    }
+    Area_fuse_Flag = TRUE;
 }
 
-// ¶à±ßĞÎÈı½Ç»¯
-void CMy3DSymbolLibNewView::Area_Triangled(PArea_4 &_area4)
-{ 
-	if(Area_fuse_Flag == TRUE && m_Drawmode == 3) 
-	{
-		glPushAttrib(GL_CURRENT_BIT);// ±£´æÏÖÓĞÑÕÉ«ÊôĞÔ
-
-		glPushMatrix();				// Ñ¹Èë¾ØÕó¶ÑÕ»
-		glLineWidth(3.0);			// ÉèÖÃÏß¿í
-		glColor3f(0,0.5,1);			// ÉèÖÃÑÕÉ«
- 
-		{
-			//static GLuint rd;
-			//static char cc[256] = "";
-
-			//CString scenePath = g_sceneDataPath.c_str();
-			//CString area_texture = scenePath + "\\Terrain\\Tex\\area.bmp";
-
-			//strcpy(cc, _area4->area_texture);
-
-			//
-
-			//strcpy(cc,  area_texture);
-			////strcpy(cc, _area4->area_texture);
-
-			//LoadT8(cc,	rd);	
-
-			//glBindTexture(GL_TEXTURE_2D, rd);
-			//glBindTexture(GL_TEXTURE_2D, m_area_texture);
-
-
-			glBindTexture(GL_TEXTURE_2D, _area4->area_texture_rd);
-
-			glTexEnvf    (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST); 
-
-
-			static const double deta = 1.00;
-
-			// 1.¶à±ßĞÎÄÚÔ­ÏÈÍêÕûµÄÈı½ÇĞÎ
-			for(unsigned int i=0;i<_area4->TrianglesInPolygonVecotr.size();++i)
-			{
-				glColor3f( 1.0000 , 0.9804 , 0.9804); 
-				glBegin(GL_TRIANGLES);
-				{
-					glTexCoord2f(0.0f, 0.0f);
-					glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1._x, _area4->TrianglesInPolygonVecotr[i].pt1._y+deta, _area4->TrianglesInPolygonVecotr[i].pt1._z);					
-					glTexCoord2f(0.0f, 1.0f);
-					glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2._x, _area4->TrianglesInPolygonVecotr[i].pt2._y+deta, _area4->TrianglesInPolygonVecotr[i].pt2._z);
-					glTexCoord2f(1.0f, 0.0f);
-					glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3._x, _area4->TrianglesInPolygonVecotr[i].pt3._y+deta, _area4->TrianglesInPolygonVecotr[i].pt3._z);
-				}
-				glEnd();
-			}
-
-
-			// 2. ¾­¹ı¾Ö²¿Èı½Ç»¯µÄÈı½ÇĞÎ
-			for(unsigned int i=0;i<_area4->LocalTrianglesVecotr1.size();++i)
-			{
-				glColor3f(0.0980 , 0.0980 , 0.4392); 
-				glBegin(GL_TRIANGLES);
-				{
-					glTexCoord2f(0.0f, 0.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1._x, _area4->LocalTrianglesVecotr1[i].pt1._y+deta, _area4->LocalTrianglesVecotr1[i].pt1._z);					
-					glTexCoord2f(0.0f, 1.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2._x, _area4->LocalTrianglesVecotr1[i].pt2._y+deta, _area4->LocalTrianglesVecotr1[i].pt2._z);
-					glTexCoord2f(1.0f, 0.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3._x, _area4->LocalTrianglesVecotr1[i].pt3._y+deta, _area4->LocalTrianglesVecotr1[i].pt3._z);
-				}
-				glEnd();
-			}
-
-			for(unsigned int i=0;i<_area4->LocalTrianglesVecotr2.size();++i)
-			{
-				glColor3f(0.611, 0.400, 0.121); 
-				glBegin(GL_TRIANGLES);
-				{
-					glTexCoord2f(0.0f, 0.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1._x, _area4->LocalTrianglesVecotr2[i].pt1._y+deta, _area4->LocalTrianglesVecotr2[i].pt1._z);					
-					glTexCoord2f(0.0f, 1.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2._x, _area4->LocalTrianglesVecotr2[i].pt2._y+deta, _area4->LocalTrianglesVecotr2[i].pt2._z);
-					glTexCoord2f(1.0f, 0.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3._x, _area4->LocalTrianglesVecotr2[i].pt3._y+deta, _area4->LocalTrianglesVecotr2[i].pt3._z);
-				}
-				glEnd();
-			}
-
-
-			// 2.1 ¶à±ßĞÎ ¶¥µã´¦
-			for(unsigned int i=0;i<_area4->LocalTrianglesVecotr1_1.size();++i)
-			{
-				glColor3f( 1.0000 , 0.3882 , 0.2784); 
-				glBegin(GL_TRIANGLES);
-				{
-					glTexCoord2f(0.0f, 0.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1._x, _area4->LocalTrianglesVecotr1_1[i].pt1._y+deta, _area4->LocalTrianglesVecotr1_1[i].pt1._z);					
-					glTexCoord2f(0.0f, 1.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2._x, _area4->LocalTrianglesVecotr1_1[i].pt2._y+deta, _area4->LocalTrianglesVecotr1_1[i].pt2._z);
-					glTexCoord2f(1.0f, 0.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3._x, _area4->LocalTrianglesVecotr1_1[i].pt3._y+deta, _area4->LocalTrianglesVecotr1_1[i].pt3._z);
-				}
-				glEnd();
-			}
-
-			for(unsigned int i=0;i<_area4->LocalTrianglesVecotr2_1.size();++i)
-			{
-				glColor3f(  0.6980 , 0.1333 , 0.1333); 
-				glBegin(GL_TRIANGLES);
-				{
-					glTexCoord2f(0.0f, 0.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1._x, _area4->LocalTrianglesVecotr2_1[i].pt1._y+deta, _area4->LocalTrianglesVecotr2_1[i].pt1._z);					
-					glTexCoord2f(0.0f, 1.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2._x, _area4->LocalTrianglesVecotr2_1[i].pt2._y+deta, _area4->LocalTrianglesVecotr2_1[i].pt2._z);
-					glTexCoord2f(1.0f, 0.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3._x, _area4->LocalTrianglesVecotr2_1[i].pt3._y+deta, _area4->LocalTrianglesVecotr2_1[i].pt3._z);
-				}
-				glEnd();
-			}
-
-
-			for(unsigned int i=0;i<_area4->LocalTrianglesVecotr_last.size();++i)
-			{
-				glColor3f( 0.6275,  0.1255,  0.9412); 
-				glBegin(GL_TRIANGLES);
-				{
-					glTexCoord2f(0.0f, 0.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1._x, _area4->LocalTrianglesVecotr_last[i].pt1._y+deta, _area4->LocalTrianglesVecotr_last[i].pt1._z);					
-					glTexCoord2f(0.0f, 1.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2._x, _area4->LocalTrianglesVecotr_last[i].pt2._y+deta, _area4->LocalTrianglesVecotr_last[i].pt2._z);
-					glTexCoord2f(1.0f, 0.0f);
-					glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3._x, _area4->LocalTrianglesVecotr_last[i].pt3._y+deta, _area4->LocalTrianglesVecotr_last[i].pt3._z);
-				}
-				glEnd();
-			}
-		}
-
-		glLineWidth(1.0);			// »Ö¸´Ïß¿í
-		glPopAttrib();					
-
-		glPopMatrix();				// µ¯³ö¾ØÕó¶ÑÕ»
-	}
-
-	//...............................................................
-	
-	if(Area_fuse_Flag == TRUE && m_Drawmode == 1) 
-	{
-		glPushAttrib(GL_CURRENT_BIT);// ±£´æÏÖÓĞÑÕÉ«ÊôĞÔ
-
-		glPushMatrix();				// Ñ¹Èë¾ØÕó¶ÑÕ»
-		glLineWidth(3.0);			// ÉèÖÃÏß¿í
-		glColor3f(0,0.5,1);			// ÉèÖÃÑÕÉ«
-
-		//test begin
-		{
-			/*unsigned int i = 0;
-			
-
-			glColor3f(0.8,0.1,1); 
-			glBegin(GL_LINE_STRIP);
-			for(i=0;i<Line_1_JD_vector.size();++i)
-			{
-				glVertex3f(Line_1_JD_vector[i]._x, Line_1_JD_vector[i]._y + l_deta, Line_1_JD_vector[i]._z);
-			}
-			glEnd();
+// å¤šè¾¹å½¢ä¸‰è§’åŒ–
+void CMy3DSymbolLibNewView::Area_Triangled(PArea_4& _area4) {
+    if (Area_fuse_Flag == TRUE && m_Drawmode == 3) {
+        glPushAttrib(GL_CURRENT_BIT);  // ä¿å­˜ç°æœ‰é¢œè‰²å±æ€§
+        glPushMatrix();             // å‹å…¥çŸ©é˜µå †æ ˆ
+        glLineWidth(3.0);           // è®¾ç½®çº¿å®½
+        glColor3f(0, 0.5, 1);       // è®¾ç½®é¢œè‰²
+        {
+            // static GLuint rd;
+            // static char cc[256] = "";
+            // CString scenePath = g_sceneDataPath.c_str();
+            // CString area_texture = scenePath + "\\Terrain\\Tex\\area.bmp";
+            // strcpy(cc, _area4->area_texture);
+            //
+            // strcpy(cc,  area_texture);
+            // strcpy(cc, _area4->area_texture);
+            // LoadT8(cc,    rd);
+            // glBindTexture(GL_TEXTURE_2D, rd);
+            // glBindTexture(GL_TEXTURE_2D, m_area_texture);
+            glBindTexture(GL_TEXTURE_2D, _area4->area_texture_rd);
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+            static const double deta = 1.00;
+            // 1.å¤šè¾¹å½¢å†…åŸå…ˆå®Œæ•´çš„ä¸‰è§’å½¢
+            for (unsigned int i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
+                glColor3f(1.0000 , 0.9804 , 0.9804);
+                glBegin(GL_TRIANGLES);
+                {
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1._x, _area4->TrianglesInPolygonVecotr[i].pt1._y + deta, _area4->TrianglesInPolygonVecotr[i].pt1._z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2._x, _area4->TrianglesInPolygonVecotr[i].pt2._y + deta, _area4->TrianglesInPolygonVecotr[i].pt2._z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3._x, _area4->TrianglesInPolygonVecotr[i].pt3._y + deta, _area4->TrianglesInPolygonVecotr[i].pt3._z);
+                }
+                glEnd();
+            }
+            // 2. ç»è¿‡å±€éƒ¨ä¸‰è§’åŒ–çš„ä¸‰è§’å½¢
+            for (unsigned int i = 0; i < _area4->LocalTrianglesVecotr1.size(); ++i) {
+                glColor3f(0.0980 , 0.0980 , 0.4392);
+                glBegin(GL_TRIANGLES);
+                {
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1._x, _area4->LocalTrianglesVecotr1[i].pt1._y + deta, _area4->LocalTrianglesVecotr1[i].pt1._z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2._x, _area4->LocalTrianglesVecotr1[i].pt2._y + deta, _area4->LocalTrianglesVecotr1[i].pt2._z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3._x, _area4->LocalTrianglesVecotr1[i].pt3._y + deta, _area4->LocalTrianglesVecotr1[i].pt3._z);
+                }
+                glEnd();
+            }
+            for (unsigned int i = 0; i < _area4->LocalTrianglesVecotr2.size(); ++i) {
+                glColor3f(0.611, 0.400, 0.121);
+                glBegin(GL_TRIANGLES);
+                {
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1._x, _area4->LocalTrianglesVecotr2[i].pt1._y + deta, _area4->LocalTrianglesVecotr2[i].pt1._z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2._x, _area4->LocalTrianglesVecotr2[i].pt2._y + deta, _area4->LocalTrianglesVecotr2[i].pt2._z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3._x, _area4->LocalTrianglesVecotr2[i].pt3._y + deta, _area4->LocalTrianglesVecotr2[i].pt3._z);
+                }
+                glEnd();
+            }
+            // 2.1 å¤šè¾¹å½¢ é¡¶ç‚¹å¤„
+            for (unsigned int i = 0; i < _area4->LocalTrianglesVecotr1_1.size(); ++i) {
+                glColor3f(1.0000 , 0.3882 , 0.2784);
+                glBegin(GL_TRIANGLES);
+                {
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1._x, _area4->LocalTrianglesVecotr1_1[i].pt1._y + deta, _area4->LocalTrianglesVecotr1_1[i].pt1._z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2._x, _area4->LocalTrianglesVecotr1_1[i].pt2._y + deta, _area4->LocalTrianglesVecotr1_1[i].pt2._z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3._x, _area4->LocalTrianglesVecotr1_1[i].pt3._y + deta, _area4->LocalTrianglesVecotr1_1[i].pt3._z);
+                }
+                glEnd();
+            }
+            for (unsigned int i = 0; i < _area4->LocalTrianglesVecotr2_1.size(); ++i) {
+                glColor3f(0.6980 , 0.1333 , 0.1333);
+                glBegin(GL_TRIANGLES);
+                {
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1._x, _area4->LocalTrianglesVecotr2_1[i].pt1._y + deta, _area4->LocalTrianglesVecotr2_1[i].pt1._z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2._x, _area4->LocalTrianglesVecotr2_1[i].pt2._y + deta, _area4->LocalTrianglesVecotr2_1[i].pt2._z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3._x, _area4->LocalTrianglesVecotr2_1[i].pt3._y + deta, _area4->LocalTrianglesVecotr2_1[i].pt3._z);
+                }
+                glEnd();
+            }
+            for (unsigned int i = 0; i < _area4->LocalTrianglesVecotr_last.size(); ++i) {
+                glColor3f(0.6275,  0.1255,  0.9412);
+                glBegin(GL_TRIANGLES);
+                {
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1._x, _area4->LocalTrianglesVecotr_last[i].pt1._y + deta, _area4->LocalTrianglesVecotr_last[i].pt1._z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2._x, _area4->LocalTrianglesVecotr_last[i].pt2._y + deta, _area4->LocalTrianglesVecotr_last[i].pt2._z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3._x, _area4->LocalTrianglesVecotr_last[i].pt3._y + deta, _area4->LocalTrianglesVecotr_last[i].pt3._z);
+                }
+                glEnd();
+            }
+        }
+        glLineWidth(1.0);           // æ¢å¤çº¿å®½
+        glPopAttrib();
+        glPopMatrix();              // å¼¹å‡ºçŸ©é˜µå †æ ˆ
+    }
+    //...............................................................
+    if (Area_fuse_Flag == TRUE && m_Drawmode == 1) {
+        glPushAttrib(GL_CURRENT_BIT);  // ä¿å­˜ç°æœ‰é¢œè‰²å±æ€§
+        glPushMatrix();             // å‹å…¥çŸ©é˜µå †æ ˆ
+        glLineWidth(3.0);           // è®¾ç½®çº¿å®½
+        glColor3f(0, 0.5, 1);       // è®¾ç½®é¢œè‰²
+        //test begin
+        {
+            /*unsigned int i = 0;
 
 
-			glColor3f(0.1,0.5,0.2); 
-			glBegin(GL_LINE_STRIP);
-			for(i=0;i<Line_2_JD_vector.size();++i)
-			{
-				glVertex3f(Line_2_JD_vector[i]._x, Line_2_JD_vector[i]._y + l_deta, Line_2_JD_vector[i]._z);
-			}
-			glEnd();
+            glColor3f(0.8,0.1,1);
+            glBegin(GL_LINE_STRIP);
+            for(i=0;i<Line_1_JD_vector.size();++i)
+            {
+                glVertex3f(Line_1_JD_vector[i]._x, Line_1_JD_vector[i]._y + l_deta, Line_1_JD_vector[i]._z);
+            }
+            glEnd();
 
 
-			glColor3f(0.6,0.8,0.9); 
-			glBegin(GL_LINE_STRIP);
-			for(i=0;i<Line_3_JD_vector.size();++i)
-			{
-				glVertex3f(Line_3_JD_vector[i]._x, Line_3_JD_vector[i]._y + l_deta, Line_3_JD_vector[i]._z);
-			}
-			glEnd();
+            glColor3f(0.1,0.5,0.2);
+            glBegin(GL_LINE_STRIP);
+            for(i=0;i<Line_2_JD_vector.size();++i)
+            {
+                glVertex3f(Line_2_JD_vector[i]._x, Line_2_JD_vector[i]._y + l_deta, Line_2_JD_vector[i]._z);
+            }
+            glEnd();
 
 
-			glColor3f(0.1,0.8,0.4); 
-			glBegin(GL_LINE_STRIP);
-			for(i=0;i<Line_4_JD_vector.size();++i)
-			{
-				glVertex3f(Line_4_JD_vector[i]._x, Line_4_JD_vector[i]._y + l_deta, Line_4_JD_vector[i]._z);
-			}
-			glEnd();*/
-		}
-		//test end
+            glColor3f(0.6,0.8,0.9);
+            glBegin(GL_LINE_STRIP);
+            for(i=0;i<Line_3_JD_vector.size();++i)
+            {
+                glVertex3f(Line_3_JD_vector[i]._x, Line_3_JD_vector[i]._y + l_deta, Line_3_JD_vector[i]._z);
+            }
+            glEnd();
 
 
-		{
- 
-			// 1.¶à±ßĞÎÄÚÔ­ÏÈÍêÕûµÄÈı½ÇĞÎ
-			for(unsigned int i=0;i<_area4->TrianglesInPolygonVecotr.size();++i)
-			{
-				glColor3f( 1.0000 , 0.9804 , 0.9804); 
-				glBegin(GL_TRIANGLES);
-				{
-					 
-					glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1._x, _area4->TrianglesInPolygonVecotr[i].pt1._y , _area4->TrianglesInPolygonVecotr[i].pt1._z);					
-					 
-					glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2._x, _area4->TrianglesInPolygonVecotr[i].pt2._y , _area4->TrianglesInPolygonVecotr[i].pt2._z);
-					 
-					glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3._x, _area4->TrianglesInPolygonVecotr[i].pt3._y , _area4->TrianglesInPolygonVecotr[i].pt3._z);
-				}
-				glEnd();
-			}
-
-
-			// 2. ¾­¹ı¾Ö²¿Èı½Ç»¯µÄÈı½ÇĞÎ
-			for(unsigned int i=0;i<_area4->LocalTrianglesVecotr1.size();++i)
-			{
-				glColor3f(1.0,1.0,0.1); 
-				glBegin(GL_TRIANGLES);
-				{
-
-					glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1._x, _area4->LocalTrianglesVecotr1[i].pt1._y , _area4->LocalTrianglesVecotr1[i].pt1._z);					
-
-					glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2._x, _area4->LocalTrianglesVecotr1[i].pt2._y , _area4->LocalTrianglesVecotr1[i].pt2._z);
-
-					glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3._x, _area4->LocalTrianglesVecotr1[i].pt3._y , _area4->LocalTrianglesVecotr1[i].pt3._z);
-				}
-				glEnd();
-			}
-
-			for(unsigned int i=0;i<_area4->LocalTrianglesVecotr2.size();++i)
-			{
-				glColor3f(0.611, 0.400, 0.121); 
-				glBegin(GL_TRIANGLES);
-				{
-
-					glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1._x, _area4->LocalTrianglesVecotr2[i].pt1._y , _area4->LocalTrianglesVecotr2[i].pt1._z);					
-
-					glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2._x, _area4->LocalTrianglesVecotr2[i].pt2._y , _area4->LocalTrianglesVecotr2[i].pt2._z);
-
-					glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3._x, _area4->LocalTrianglesVecotr2[i].pt3._y , _area4->LocalTrianglesVecotr2[i].pt3._z);
-				}
-				glEnd();
-			}
-
-
-			// 2.1 ¶à±ßĞÎ ¶¥µã´¦
-			for(unsigned int i=0;i<_area4->LocalTrianglesVecotr1_1.size();++i)
-			{
-				glColor3f( 1.0000 , 0.3882 , 0.2784); 
-				glBegin(GL_TRIANGLES);
-				{
-
-					glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1._x, _area4->LocalTrianglesVecotr1_1[i].pt1._y , _area4->LocalTrianglesVecotr1_1[i].pt1._z);					
-
-					glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2._x, _area4->LocalTrianglesVecotr1_1[i].pt2._y , _area4->LocalTrianglesVecotr1_1[i].pt2._z);
-
-					glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3._x, _area4->LocalTrianglesVecotr1_1[i].pt3._y , _area4->LocalTrianglesVecotr1_1[i].pt3._z);
-				}
-				glEnd();
-			}
-
-			for(unsigned int i=0;i<_area4->LocalTrianglesVecotr2_1.size();++i)
-			{
-				glColor3f(  0.6980 , 0.1333 , 0.1333); 
-				glBegin(GL_TRIANGLES);
-				{
-
-					glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1._x, _area4->LocalTrianglesVecotr2_1[i].pt1._y, _area4->LocalTrianglesVecotr2_1[i].pt1._z);					
-
-					glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2._x, _area4->LocalTrianglesVecotr2_1[i].pt2._y, _area4->LocalTrianglesVecotr2_1[i].pt2._z);
-
-					glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3._x, _area4->LocalTrianglesVecotr2_1[i].pt3._y, _area4->LocalTrianglesVecotr2_1[i].pt3._z);
-				}
-				glEnd();
-			}
-
-
-			for(unsigned int i=0;i<_area4->LocalTrianglesVecotr_last.size();++i)
-			{
-				glColor3f( 0.6275,  0.1255,  0.9412); 
-				glBegin(GL_TRIANGLES);
-				{
-
-					glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1._x, _area4->LocalTrianglesVecotr_last[i].pt1._y, _area4->LocalTrianglesVecotr_last[i].pt1._z);					
-
-					glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2._x, _area4->LocalTrianglesVecotr_last[i].pt2._y, _area4->LocalTrianglesVecotr_last[i].pt2._z);
-
-					glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3._x, _area4->LocalTrianglesVecotr_last[i].pt3._y, _area4->LocalTrianglesVecotr_last[i].pt3._z);
-				}
-				glEnd();
-			}
- 
-		}
-
-		glLineWidth(1.0);			// »Ö¸´Ïß¿í
-		glPopAttrib();					
-
-		glPopMatrix();				// µ¯³ö¾ØÕó¶ÑÕ»
-	}
-
+            glColor3f(0.1,0.8,0.4);
+            glBegin(GL_LINE_STRIP);
+            for(i=0;i<Line_4_JD_vector.size();++i)
+            {
+                glVertex3f(Line_4_JD_vector[i]._x, Line_4_JD_vector[i]._y + l_deta, Line_4_JD_vector[i]._z);
+            }
+            glEnd();*/
+        }
+        // test end
+        {
+            // 1.å¤šè¾¹å½¢å†…åŸå…ˆå®Œæ•´çš„ä¸‰è§’å½¢
+            for (unsigned int i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
+                glColor3f(1.0000 , 0.9804 , 0.9804);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1._x, _area4->TrianglesInPolygonVecotr[i].pt1._y , _area4->TrianglesInPolygonVecotr[i].pt1._z);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2._x, _area4->TrianglesInPolygonVecotr[i].pt2._y , _area4->TrianglesInPolygonVecotr[i].pt2._z);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3._x, _area4->TrianglesInPolygonVecotr[i].pt3._y , _area4->TrianglesInPolygonVecotr[i].pt3._z);
+                }
+                glEnd();
+            }
+            // 2. ç»è¿‡å±€éƒ¨ä¸‰è§’åŒ–çš„ä¸‰è§’å½¢
+            for (unsigned int i = 0; i < _area4->LocalTrianglesVecotr1.size(); ++i) {
+                glColor3f(1.0, 1.0, 0.1);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1._x, _area4->LocalTrianglesVecotr1[i].pt1._y , _area4->LocalTrianglesVecotr1[i].pt1._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2._x, _area4->LocalTrianglesVecotr1[i].pt2._y , _area4->LocalTrianglesVecotr1[i].pt2._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3._x, _area4->LocalTrianglesVecotr1[i].pt3._y , _area4->LocalTrianglesVecotr1[i].pt3._z);
+                }
+                glEnd();
+            }
+            for (unsigned int i = 0; i < _area4->LocalTrianglesVecotr2.size(); ++i) {
+                glColor3f(0.611, 0.400, 0.121);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1._x, _area4->LocalTrianglesVecotr2[i].pt1._y , _area4->LocalTrianglesVecotr2[i].pt1._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2._x, _area4->LocalTrianglesVecotr2[i].pt2._y , _area4->LocalTrianglesVecotr2[i].pt2._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3._x, _area4->LocalTrianglesVecotr2[i].pt3._y , _area4->LocalTrianglesVecotr2[i].pt3._z);
+                }
+                glEnd();
+            }
+            // 2.1 å¤šè¾¹å½¢ é¡¶ç‚¹å¤„
+            for (unsigned int i = 0; i < _area4->LocalTrianglesVecotr1_1.size(); ++i) {
+                glColor3f(1.0000 , 0.3882 , 0.2784);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1._x, _area4->LocalTrianglesVecotr1_1[i].pt1._y , _area4->LocalTrianglesVecotr1_1[i].pt1._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2._x, _area4->LocalTrianglesVecotr1_1[i].pt2._y , _area4->LocalTrianglesVecotr1_1[i].pt2._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3._x, _area4->LocalTrianglesVecotr1_1[i].pt3._y , _area4->LocalTrianglesVecotr1_1[i].pt3._z);
+                }
+                glEnd();
+            }
+            for (unsigned int i = 0; i < _area4->LocalTrianglesVecotr2_1.size(); ++i) {
+                glColor3f(0.6980 , 0.1333 , 0.1333);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1._x, _area4->LocalTrianglesVecotr2_1[i].pt1._y, _area4->LocalTrianglesVecotr2_1[i].pt1._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2._x, _area4->LocalTrianglesVecotr2_1[i].pt2._y, _area4->LocalTrianglesVecotr2_1[i].pt2._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3._x, _area4->LocalTrianglesVecotr2_1[i].pt3._y, _area4->LocalTrianglesVecotr2_1[i].pt3._z);
+                }
+                glEnd();
+            }
+            for (unsigned int i = 0; i < _area4->LocalTrianglesVecotr_last.size(); ++i) {
+                glColor3f(0.6275,  0.1255,  0.9412);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1._x, _area4->LocalTrianglesVecotr_last[i].pt1._y, _area4->LocalTrianglesVecotr_last[i].pt1._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2._x, _area4->LocalTrianglesVecotr_last[i].pt2._y, _area4->LocalTrianglesVecotr_last[i].pt2._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3._x, _area4->LocalTrianglesVecotr_last[i].pt3._y, _area4->LocalTrianglesVecotr_last[i].pt3._z);
+                }
+                glEnd();
+            }
+        }
+        glLineWidth(1.0);           // æ¢å¤çº¿å®½
+        glPopAttrib();
+        glPopMatrix();              // å¼¹å‡ºçŸ©é˜µå †æ ˆ
+    }
 }
 
 
 
-void CMy3DSymbolLibNewView::LoadAreaTexture(CString _areaTexture_str, UINT &texture_id)// ¼ÓÔØÃæ·ûºÅÎÆÀí
-{
-	 
-	char cc[256] = "";
-
-	strcpy(cc,  _areaTexture_str);
-	 
-
-	LoadT8(cc,	texture_id);	
-
+void CMy3DSymbolLibNewView::LoadAreaTexture(CString _areaTexture_str, UINT& texture_id) { // åŠ è½½é¢ç¬¦å·çº¹ç†
+    char cc[256] = "";
+    strcpy(cc,  _areaTexture_str);
+    LoadT8(cc,  texture_id);
 }
 
-// ¼ÆËã³öËùÓĞ°üº¬ÔÚ¶à±ßĞÎÄÚµÄµã
-int CMy3DSymbolLibNewView::FindAllPointsInPolygon(Area_4 &m_area4)
-{
-	CPointPolygonRelationship tmp_ppr;
-
-	PPR_Polygon tmp_polygon;
-	PPR_Point tmp_point;
-
-	tmp_point.x = m_area4.pt1._x;
-	tmp_point.y = m_area4.pt1._z;
-	tmp_polygon.push_back(tmp_point);
-
-
-	tmp_point.x = m_area4.pt2._x;
-	tmp_point.y = m_area4.pt2._z;
-	tmp_polygon.push_back(tmp_point);
-
-
-	tmp_point.x = m_area4.pt3._x;
-	tmp_point.y = m_area4.pt3._z;
-	tmp_polygon.push_back(tmp_point);
-
-
-	tmp_point.x = m_area4.pt4._x;
-	tmp_point.y = m_area4.pt4._z;
-	tmp_polygon.push_back(tmp_point);
-
-
-
-	PPR_Point tmp_dem_point;
-
-
-	pointsInPolygonVector.clear();
-
-	
-	int Vertex = 0;
-	for (int z = 0; z < MAP_W; z++)
-	{
-		for (int x = 0; x < MAP_W; x++)		
-		{
-			Vertex = z * MAP_W + x;
-
-			tmp_dem_point.x = g_terrain [Vertex][0];
-			tmp_dem_point.y = g_terrain [Vertex][2];
-
-
-			int inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, tmp_dem_point);
-
-			if(inPolygonFlag == 0) // µãÔÚ¶à±ßĞÎÄÚ
-			{
-				Point3 tmp_point3;
-				tmp_point3._x = g_terrain [Vertex][0];
-				tmp_point3._y = g_terrain [Vertex][1];
-				tmp_point3._z = g_terrain [Vertex][2];
-				pointsInPolygonVector.push_back(tmp_point3);
-
-				inPolygonArrayFlag[x][z] = 1;
-			}
-			else
-			{
-				inPolygonArrayFlag[x][z] = 0;
-			}
-
-
-		}
-	}
-
-
-	return 0;
+// è®¡ç®—å‡ºæ‰€æœ‰åŒ…å«åœ¨å¤šè¾¹å½¢å†…çš„ç‚¹
+int CMy3DSymbolLibNewView::FindAllPointsInPolygon(Area_4& m_area4) {
+    CPointPolygonRelationship tmp_ppr;
+    PPR_Polygon tmp_polygon;
+    PPR_Point tmp_point;
+    tmp_point.x = m_area4.pt1._x;
+    tmp_point.y = m_area4.pt1._z;
+    tmp_polygon.push_back(tmp_point);
+    tmp_point.x = m_area4.pt2._x;
+    tmp_point.y = m_area4.pt2._z;
+    tmp_polygon.push_back(tmp_point);
+    tmp_point.x = m_area4.pt3._x;
+    tmp_point.y = m_area4.pt3._z;
+    tmp_polygon.push_back(tmp_point);
+    tmp_point.x = m_area4.pt4._x;
+    tmp_point.y = m_area4.pt4._z;
+    tmp_polygon.push_back(tmp_point);
+    PPR_Point tmp_dem_point;
+    pointsInPolygonVector.clear();
+    int Vertex = 0;
+    for (int z = 0; z < MAP_W; z++) {
+        for (int x = 0; x < MAP_W; x++) {
+            Vertex = z * MAP_W + x;
+            tmp_dem_point.x = g_terrain [Vertex][0];
+            tmp_dem_point.y = g_terrain [Vertex][2];
+            int inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, tmp_dem_point);
+            if (inPolygonFlag == 0) { // ç‚¹åœ¨å¤šè¾¹å½¢å†…
+                Point3 tmp_point3;
+                tmp_point3._x = g_terrain [Vertex][0];
+                tmp_point3._y = g_terrain [Vertex][1];
+                tmp_point3._z = g_terrain [Vertex][2];
+                pointsInPolygonVector.push_back(tmp_point3);
+                inPolygonArrayFlag[x][z] = 1;
+            } else {
+                inPolygonArrayFlag[x][z] = 0;
+            }
+        }
+    }
+    return 0;
 }
 
 
-// ÕÒ³öËùÓĞ°üº¬ÔÚ¶à±ßĞÎÄÚµÄÈı½ÇĞÎ(°üÀ¨ÍêÕûÈı½ÇĞÎºÍ¾­¹ı¾Ö²¿Èı½Ç»¯µÄÈı½ÇĞÎ)
-int CMy3DSymbolLibNewView::FindAllTrianglesInPolygon(Area_4 &m_area4)
-{
-	FindAllPointsInPolygon(m_area4);
-
-
-	// 1.¶à±ßĞÎÄÚÍêÕûµÄÈı½ÇĞÎ
-	m_area4.TrianglesInPolygonVecotr.clear();
-	FindTriangles_3_point_inPolygon(m_area4);
-
-
-	// 2.¾­¹ı¾Ö²¿Èı½Ç»¯µÄÈı½ÇĞÎ
-	m_area4.LocalTrianglesVecotr1.clear();
-	FindTriangles_1_point_inPolygon(m_area4);
-
-	m_area4.LocalTrianglesVecotr2.clear();
-	FindTriangles_2_point_inPolygon(m_area4);
-
-
-
-
-	// 2.1 ¶à±ßĞÎ¶¥µã´¦
-
-	m_area4.LocalTrianglesVecotr1_1.clear();
-	m_area4.LocalTrianglesVecotr2_1.clear();
-	m_area4.LocalTrianglesVecotr_last.clear();
-
-
-
-	FindTriangles_polygon_has_vertex_in_triangle(m_area4);
-
-
-	return 0;
+// æ‰¾å‡ºæ‰€æœ‰åŒ…å«åœ¨å¤šè¾¹å½¢å†…çš„ä¸‰è§’å½¢(åŒ…æ‹¬å®Œæ•´ä¸‰è§’å½¢å’Œç»è¿‡å±€éƒ¨ä¸‰è§’åŒ–çš„ä¸‰è§’å½¢)
+int CMy3DSymbolLibNewView::FindAllTrianglesInPolygon(Area_4& m_area4) {
+    FindAllPointsInPolygon(m_area4);
+    // 1.å¤šè¾¹å½¢å†…å®Œæ•´çš„ä¸‰è§’å½¢
+    m_area4.TrianglesInPolygonVecotr.clear();
+    FindTriangles_3_point_inPolygon(m_area4);
+    // 2.ç»è¿‡å±€éƒ¨ä¸‰è§’åŒ–çš„ä¸‰è§’å½¢
+    m_area4.LocalTrianglesVecotr1.clear();
+    FindTriangles_1_point_inPolygon(m_area4);
+    m_area4.LocalTrianglesVecotr2.clear();
+    FindTriangles_2_point_inPolygon(m_area4);
+    // 2.1 å¤šè¾¹å½¢é¡¶ç‚¹å¤„
+    m_area4.LocalTrianglesVecotr1_1.clear();
+    m_area4.LocalTrianglesVecotr2_1.clear();
+    m_area4.LocalTrianglesVecotr_last.clear();
+    FindTriangles_polygon_has_vertex_in_triangle(m_area4);
+    return 0;
 }
 
 
 
-// ÓĞ3¸öµãÔÚ¶à±ßĞÎĞÎÄÚµÄÈı½ÇĞÎ
-int CMy3DSymbolLibNewView::FindTriangles_3_point_inPolygon(Area_4 &_area4)
-{
-	int Vertex = 0;
-	for (int z = 0; z < MAP_W-1; z++)
-	{
-		for (int x = 0; x < MAP_W-1; x++)					
-		{
-			Vertex = z * MAP_W + x;
-			Triangle tmp_triangle;
-			// 3¸öµã¶¼ÔÚ¶à±ßĞÎÄÚ
-			if(inPolygonArrayFlag[x][z]==1 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==1)
-			{
-				Vertex = z * MAP_W + x;
-
-				tmp_triangle.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle.pt1._z = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + x;
-				tmp_triangle.pt2._x = g_terrain [Vertex][0];
-				tmp_triangle.pt2._y = g_terrain [Vertex][1];
-				tmp_triangle.pt2._z = g_terrain [Vertex][2];
-
-
-				Vertex = z * MAP_W + (x+1);
-				tmp_triangle.pt3._x = g_terrain [Vertex][0];
-				tmp_triangle.pt3._y = g_terrain [Vertex][1];
-				tmp_triangle.pt3._z = g_terrain [Vertex][2];
-
-				_area4.TrianglesInPolygonVecotr.push_back(tmp_triangle); 
-			}
-			// 3¸öµã¶¼ÔÚ¶à±ßĞÎÄÚ
-			if(inPolygonArrayFlag[x+1][z]==1 && inPolygonArrayFlag[x+1][z+1]==1  && inPolygonArrayFlag[x][z+1]==1)
-			{
-				Vertex = z * MAP_W + (x+1);
-				tmp_triangle.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle.pt1._z = g_terrain [Vertex][2];
-
-
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_triangle.pt2._x = g_terrain [Vertex][0];
-				tmp_triangle.pt2._y = g_terrain [Vertex][1];
-				tmp_triangle.pt2._z = g_terrain [Vertex][2];
-
-
-				Vertex = (z+1) * MAP_W + x;
-				tmp_triangle.pt3._x = g_terrain [Vertex][0];
-				tmp_triangle.pt3._y = g_terrain [Vertex][1];
-				tmp_triangle.pt3._z = g_terrain [Vertex][2];
-
-				_area4.TrianglesInPolygonVecotr.push_back(tmp_triangle); 
-			}
-
-		}
-	}
-	return 0;
+// æœ‰3ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å½¢å†…çš„ä¸‰è§’å½¢
+int CMy3DSymbolLibNewView::FindTriangles_3_point_inPolygon(Area_4& _area4) {
+    int Vertex = 0;
+    for (int z = 0; z < MAP_W - 1; z++) {
+        for (int x = 0; x < MAP_W - 1; x++) {
+            Vertex = z * MAP_W + x;
+            Triangle tmp_triangle;
+            // 3ä¸ªç‚¹éƒ½åœ¨å¤šè¾¹å½¢å†…
+            if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 1) {
+                Vertex = z * MAP_W + x;
+                tmp_triangle.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + x;
+                tmp_triangle.pt2._x = g_terrain [Vertex][0];
+                tmp_triangle.pt2._y = g_terrain [Vertex][1];
+                tmp_triangle.pt2._z = g_terrain [Vertex][2];
+                Vertex = z * MAP_W + (x + 1);
+                tmp_triangle.pt3._x = g_terrain [Vertex][0];
+                tmp_triangle.pt3._y = g_terrain [Vertex][1];
+                tmp_triangle.pt3._z = g_terrain [Vertex][2];
+                _area4.TrianglesInPolygonVecotr.push_back(tmp_triangle);
+            }
+            // 3ä¸ªç‚¹éƒ½åœ¨å¤šè¾¹å½¢å†…
+            if (inPolygonArrayFlag[x + 1][z] == 1 && inPolygonArrayFlag[x + 1][z + 1] == 1  && inPolygonArrayFlag[x][z + 1] == 1) {
+                Vertex = z * MAP_W + (x + 1);
+                tmp_triangle.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_triangle.pt2._x = g_terrain [Vertex][0];
+                tmp_triangle.pt2._y = g_terrain [Vertex][1];
+                tmp_triangle.pt2._z = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + x;
+                tmp_triangle.pt3._x = g_terrain [Vertex][0];
+                tmp_triangle.pt3._y = g_terrain [Vertex][1];
+                tmp_triangle.pt3._z = g_terrain [Vertex][2];
+                _area4.TrianglesInPolygonVecotr.push_back(tmp_triangle);
+            }
+        }
+    }
+    return 0;
 }
 
 
-// Ö»ÓĞ1¸öµãÔÚ¶à±ßĞÎĞÎÄÚµÄÈı½ÇĞÎ(ĞèÖØĞÂÈı½Ç»¯)
-int CMy3DSymbolLibNewView::FindTriangles_1_point_inPolygon(Area_4 &m_area4)
-{
-	{
-		int Vertex;
-		for (int z = 0; z < MAP_W-1; z++)
-		{
-			for (int x = 0; x < MAP_W-1; x++)						
-			{
-				Vertex = z * MAP_W + x;
-				Triangle tmp_triangle;
-
-				// Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ
-				if(inPolygonArrayFlag[x][z]==1 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==0)
-				{
-					Vertex = (z) * MAP_W + (x);
-					tmp_triangle.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle.pt1._z = g_terrain [Vertex][2];
-
-					// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-					CPointPolygonRelationship tmp_PPR;
-					PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
-					
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-					Find_triangles_1_line_2_JD(m_area4, tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
-				}
-
-
-				if(inPolygonArrayFlag[x][z]==0 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==0)
-				{
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_triangle.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle.pt1._z = g_terrain [Vertex][2];
-
-					// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-					CPointPolygonRelationship tmp_PPR;
-					PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
-
-
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-					Find_triangles_1_line_2_JD(m_area4, tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
-
-				}
-
-
-				// Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ
-				if(inPolygonArrayFlag[x][z]==0 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==1)
-				{
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_triangle.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle.pt1._z = g_terrain [Vertex][2];
-
-					// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-					CPointPolygonRelationship tmp_PPR;
-					PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
-
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-
-					Find_triangles_1_line_2_JD(m_area4, tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
-
-				}
-
-				
-				// ==========================================================================================
-
-
-				// Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ
-				if(inPolygonArrayFlag[x+1][z+1]==1 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==0)
-				{
-					Vertex = (z+1) * MAP_W + (x+1);
-					tmp_triangle.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle.pt1._z = g_terrain [Vertex][2];
-
-					// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-					CPointPolygonRelationship tmp_PPR;
-					PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
-
-
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-					Find_triangles_1_line_2_JD(m_area4, tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
-				}
-
-
-				if(inPolygonArrayFlag[x+1][z+1]==0 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==0)
-				{
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_triangle.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle.pt1._z = g_terrain [Vertex][2];
-
-					// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-					CPointPolygonRelationship tmp_PPR;
-					PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
-
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x+1);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-					Find_triangles_1_line_2_JD(m_area4, tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
-				}
-
-
-				// Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ
-				if(inPolygonArrayFlag[x+1][z+1]==0 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==1)
-				{
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_triangle.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle.pt1._z = g_terrain [Vertex][2];
-
-					// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-					CPointPolygonRelationship tmp_PPR;
-					PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
-
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x+1);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-					
-					Find_triangles_1_line_2_JD(m_area4, tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
-
-				}
-			}
-		}
-	}
-
-	return 0;
+// åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å½¢å†…çš„ä¸‰è§’å½¢(éœ€é‡æ–°ä¸‰è§’åŒ–)
+int CMy3DSymbolLibNewView::FindTriangles_1_point_inPolygon(Area_4& m_area4) {
+    {
+        int Vertex;
+        for (int z = 0; z < MAP_W - 1; z++) {
+            for (int x = 0; x < MAP_W - 1; x++) {
+                Vertex = z * MAP_W + x;
+                Triangle tmp_triangle;
+                // ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…
+                if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 0) {
+                    Vertex = (z) * MAP_W + (x);
+                    tmp_triangle.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                    // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                    CPointPolygonRelationship tmp_PPR;
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22; // ä¸‰è§’å½¢ä¸‰ç‚¹
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    Find_triangles_1_line_2_JD(m_area4, tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
+                }
+                if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_triangle.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                    // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                    CPointPolygonRelationship tmp_PPR;
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22;  // ä¸‰è§’å½¢ä¸‰ç‚¹
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    Find_triangles_1_line_2_JD(m_area4, tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
+                }
+                // ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…
+                if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_triangle.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                    // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                    CPointPolygonRelationship tmp_PPR;
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22;  // ä¸‰è§’å½¢ä¸‰ç‚¹
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    Find_triangles_1_line_2_JD(m_area4, tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
+                }
+                // ==========================================================================================
+                // ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…
+                if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 0) {
+                    Vertex = (z + 1) * MAP_W + (x + 1);
+                    tmp_triangle.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                    // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                    CPointPolygonRelationship tmp_PPR;
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22;  // ä¸‰è§’å½¢ä¸‰ç‚¹
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    Find_triangles_1_line_2_JD(m_area4, tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
+                }
+                if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_triangle.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                    // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                    CPointPolygonRelationship tmp_PPR;
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22;  // ä¸‰è§’å½¢ä¸‰ç‚¹
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x + 1);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    Find_triangles_1_line_2_JD(m_area4, tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
+                }
+                // ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…
+                if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_triangle.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                    // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                    CPointPolygonRelationship tmp_PPR;
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22;
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x + 1);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    Find_triangles_1_line_2_JD(m_area4, tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 
-// Ö»ÓĞ2¸öµãÔÚ¶à±ßĞÎĞÎÄÚµÄÈı½ÇĞÎ(ĞèÖØĞÂÈı½Ç»¯)
-int CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4 &m_area4)
-{
-	{
-		int Vertex;
-		for (int z = 0; z < MAP_W-1; z++)
-		{
-			for (int x = 0; x < MAP_W-1; x++)						
-			{
-				Vertex = z * MAP_W + x;
-				Triangle tmp_triangle1;
-				Triangle tmp_triangle2;
-
-				//ok1
-
-				if(inPolygonArrayFlag[x][z]==1 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==0)
-				{
-					Vertex = (z) * MAP_W + (x);
-					tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-					tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_triangle1.pt2._x = g_terrain [Vertex][0];
-					tmp_triangle1.pt2._y = g_terrain [Vertex][1];
-					tmp_triangle1.pt2._z = g_terrain [Vertex][2];
-
-
-
-					// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-					CPointPolygonRelationship tmp_PPR;
-					PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
-
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-					
-
-					//Find_triangles_1_line_2_JD(tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
-
-					PPR_Point tmp_point3, tmp_point4; // ¶à±ßĞÎ±ßµÄ¶Ëµã
-
-					PPR_Point JD1, JD2;
-
-					//CString msg;
-					bool intersectFlag1 = false;  bool intersectFlag2 = false;
-
-					short tmp_cout = 4;
-					while(tmp_cout > 0)
-					{
-						if(4 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt1._x;	tmp_point3.y = m_area4.pt1._z;
-							tmp_point4.x = m_area4.pt2._x;	tmp_point4.y = m_area4.pt2._z;
-						}else if(3 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt2._x;  tmp_point3.y = m_area4.pt2._z;
-							tmp_point4.x = m_area4.pt3._x;  tmp_point4.y = m_area4.pt3._z;
-						}else if(2 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt3._x;  tmp_point3.y = m_area4.pt3._z;
-							tmp_point4.x = m_area4.pt4._x;  tmp_point4.y = m_area4.pt4._z;
-						}else if(1 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt4._x;  tmp_point3.y = m_area4.pt4._z;
-							tmp_point4.x = m_area4.pt1._x;  tmp_point4.y = m_area4.pt1._z;
-						}
-
-						intersectFlag1 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-						intersectFlag2 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-						if(intersectFlag1 && intersectFlag2)
-						{
-							JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-
-							JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-							double tmp_min_y = (tmp_triangle1.pt1._z < tmp_triangle1.pt2._z) ? tmp_triangle1.pt1._z : tmp_triangle1.pt2._z;
-							double tmp_max_y = (tmp_triangle1.pt1._z > tmp_triangle1.pt2._z) ? tmp_triangle1.pt1._z : tmp_triangle1.pt2._z;
-
-							double tmp_min_x = (tmp_triangle1.pt1._x < tmp_point1.x) ? tmp_triangle1.pt1._z : tmp_point1.x;
-							double tmp_max_x = (tmp_triangle1.pt1._x > tmp_point1.x) ? tmp_triangle1.pt1._z : tmp_point1.x;
-
-							bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
-							bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
-
-
-							bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
-							bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
-
-
-							if(b11 && b12)
-							{
-								tmp_triangle1.pt3._x = JD1.x; tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y); tmp_triangle1.pt3._z = JD1.y;
-							}
-							else if(b21 && b22)
-							{
-								tmp_triangle1.pt3._x = JD2.x; tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle1.pt3._z = JD2.y;
-							}
-							else
-							{
-								AfxMessageBox("warning: ");
-								
-							}
-
-
-							tmp_triangle2.pt2._x = JD1.x; tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y); tmp_triangle2.pt2._z = JD1.y;
-							tmp_triangle2.pt3._x = JD2.x; tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle2.pt3._z = JD2.y;
-							//AfxMessageBox("1");
-
-							m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
-							m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
-							
-
-						}
-						tmp_cout--;
-					}
-					
-				}
-
-
-
-				//ok2
-
-				if(inPolygonArrayFlag[x][z]==1 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==1)
-				{
-					
-					Vertex = (z) * MAP_W + (x);
-					tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-					tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_triangle1.pt2._x = g_terrain [Vertex][0];
-					tmp_triangle1.pt2._y = g_terrain [Vertex][1];
-					tmp_triangle1.pt2._z = g_terrain [Vertex][2];
-
-
-
-					// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-					CPointPolygonRelationship tmp_PPR;
-					PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
-
-					
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-					
-
-					//Find_triangles_1_line_2_JD(tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
-
-					PPR_Point tmp_point3, tmp_point4; // ¶à±ßĞÎ±ßµÄ¶Ëµã
-
-					PPR_Point JD1, JD2;
-
-					CString msg;
-					bool intersectFlag1 = false;  bool intersectFlag2 = false;
-
-					int tmp_cout = 4;
-					while(tmp_cout > 0)
-					{
-						if(4 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt1._x;	tmp_point3.y = m_area4.pt1._z;
-							tmp_point4.x = m_area4.pt2._x;	tmp_point4.y = m_area4.pt2._z;
-						}else if(3 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt2._x;  tmp_point3.y = m_area4.pt2._z;
-							tmp_point4.x = m_area4.pt3._x;  tmp_point4.y = m_area4.pt3._z;
-						}else if(2 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt3._x;  tmp_point3.y = m_area4.pt3._z;
-							tmp_point4.x = m_area4.pt4._x;  tmp_point4.y = m_area4.pt4._z;
-						}else if(1 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt4._x;  tmp_point3.y = m_area4.pt4._z;
-							tmp_point4.x = m_area4.pt1._x;  tmp_point4.y = m_area4.pt1._z;
-						}
-
-						intersectFlag1 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-						intersectFlag2 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-						if(intersectFlag1 && intersectFlag2)
-						{
-							JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-
-							JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-							double tmp_min_y = (tmp_triangle1.pt1._z < tmp_point1.y) ? tmp_triangle1.pt1._z : tmp_point1.y;
-							double tmp_max_y = (tmp_triangle1.pt1._z > tmp_point1.y) ? tmp_triangle1.pt1._z : tmp_point1.y;
-
-							double tmp_min_x = (tmp_triangle1.pt1._x < tmp_triangle1.pt2._x) ? tmp_triangle1.pt1._x : tmp_triangle1.pt2._x;
-							double tmp_max_x = (tmp_triangle1.pt1._x > tmp_triangle1.pt2._x) ? tmp_triangle1.pt1._x : tmp_triangle1.pt2._x;
-
-							bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
-							bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
-
-
-							bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
-							bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
-
-
-							if(b11 && b12)
-							{
-								tmp_triangle1.pt3._x = JD1.x; tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y); tmp_triangle1.pt3._z = JD1.y;
-							}
-							else if(b21 && b22)
-							{
-								tmp_triangle1.pt3._x = JD2.x; tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle1.pt3._z = JD2.y;
-							}
-							else
-							{
-								AfxMessageBox("warning: ");
-								//AfxMessageBox(__LINE__);
-							}
-
-
-							tmp_triangle2.pt2._x = JD1.x; tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y); tmp_triangle2.pt2._z = JD1.y;
-							tmp_triangle2.pt3._x = JD2.x; tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle2.pt3._z = JD2.y;
-							//AfxMessageBox("2");
-
-							m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
-							m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
-							
-
-						}
-						tmp_cout--;
-					}
-					
-				}
-
-				//ok3
-
-				if(inPolygonArrayFlag[x][z]==0 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==1)
-				{
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-		
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_triangle1.pt2._x = g_terrain [Vertex][0];
-					tmp_triangle1.pt2._y = g_terrain [Vertex][1];
-					tmp_triangle1.pt2._z = g_terrain [Vertex][2];
-
-
-					tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-
-					// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-					CPointPolygonRelationship tmp_PPR;
-					PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
-
-					
-
-					Vertex = (z) * MAP_W + (x);
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-					
-
-					//Find_triangles_1_line_2_JD(tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
-
-					PPR_Point tmp_point3, tmp_point4; // ¶à±ßĞÎ±ßµÄ¶Ëµã
-
-					PPR_Point JD1, JD2;
-
-					CString msg;
-					bool intersectFlag1 = false;  bool intersectFlag2 = false;
-
-					int tmp_cout = 4;
-					while(tmp_cout > 0)
-					{
-						if(4 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt1._x;	tmp_point3.y = m_area4.pt1._z;
-							tmp_point4.x = m_area4.pt2._x;	tmp_point4.y = m_area4.pt2._z;
-						}else if(3 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt2._x;  tmp_point3.y = m_area4.pt2._z;
-							tmp_point4.x = m_area4.pt3._x;  tmp_point4.y = m_area4.pt3._z;
-						}else if(2 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt3._x;  tmp_point3.y = m_area4.pt3._z;
-							tmp_point4.x = m_area4.pt4._x;  tmp_point4.y = m_area4.pt4._z;
-						}else if(1 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt4._x;  tmp_point3.y = m_area4.pt4._z;
-							tmp_point4.x = m_area4.pt1._x;  tmp_point4.y = m_area4.pt1._z;
-						}
-
-						intersectFlag1 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-						intersectFlag2 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-						if(intersectFlag1 && intersectFlag2)
-						{
-							JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-
-							JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-							
-							double len1 = (tmp_triangle1.pt1._x - JD1.x)*(tmp_triangle1.pt1._x - JD1.x) + (tmp_triangle1.pt1._z - JD1.y)*(tmp_triangle1.pt1._z - JD1.y);
-							double len2 = (tmp_triangle1.pt1._x - JD2.x)*(tmp_triangle1.pt1._x - JD2.x) + (tmp_triangle1.pt1._z - JD2.y)*(tmp_triangle1.pt1._z - JD2.y);
-
-
-							if(len1 < len2)
-							{
-								tmp_triangle1.pt3._x = JD1.x; tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y); tmp_triangle1.pt3._z = JD1.y;
-							}
-							else if(len1 > len2)
-							{
-								tmp_triangle1.pt3._x = JD2.x; tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle1.pt3._z = JD2.y;
-							}
-							else
-							{
-								AfxMessageBox("warning");
-							}
-
-
-							tmp_triangle2.pt2._x = JD1.x; tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y); tmp_triangle2.pt2._z = JD1.y;
-							tmp_triangle2.pt3._x = JD2.x; tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle2.pt3._z = JD2.y;
-
-							//AfxMessageBox("3");
-							m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
-							m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
-							
-
-						}
-						tmp_cout--;
-					}
-					
-				}
-
-
-
-				// ========================================================================================
-
-				 
-				//ok - 1
-
-				if(inPolygonArrayFlag[x+1][z+1]==1 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==0)
-				{
-					 
-					Vertex = (z+1) * MAP_W + (x+1);
-					tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-					tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_triangle1.pt2._x = g_terrain [Vertex][0];
-					tmp_triangle1.pt2._y = g_terrain [Vertex][1];
-					tmp_triangle1.pt2._z = g_terrain [Vertex][2];
-
-
-
-					// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-					CPointPolygonRelationship tmp_PPR;
-					PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
- 
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x+1);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-					
-
-					//Find_triangles_1_line_2_JD(tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
-
-					PPR_Point tmp_point3, tmp_point4; // ¶à±ßĞÎ±ßµÄ¶Ëµã
-
-					PPR_Point JD1, JD2;
-
-					CString msg;
-					bool intersectFlag1 = false;  bool intersectFlag2 = false;
-
-					int tmp_cout = 4;
-					while(tmp_cout > 0)
-					{
-						if(4 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt1._x;	tmp_point3.y = m_area4.pt1._z;
-							tmp_point4.x = m_area4.pt2._x;	tmp_point4.y = m_area4.pt2._z;
-						}else if(3 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt2._x;  tmp_point3.y = m_area4.pt2._z;
-							tmp_point4.x = m_area4.pt3._x;  tmp_point4.y = m_area4.pt3._z;
-						}else if(2 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt3._x;  tmp_point3.y = m_area4.pt3._z;
-							tmp_point4.x = m_area4.pt4._x;  tmp_point4.y = m_area4.pt4._z;
-						}else if(1 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt4._x;  tmp_point3.y = m_area4.pt4._z;
-							tmp_point4.x = m_area4.pt1._x;  tmp_point4.y = m_area4.pt1._z;
-						}
-
-						intersectFlag1 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-						intersectFlag2 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-						if(intersectFlag1 && intersectFlag2)
-						{
-							JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-
-							JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-							double tmp_min_x = (tmp_triangle1.pt1._x < tmp_triangle1.pt2._x) ? tmp_triangle1.pt1._x : tmp_triangle1.pt2._x;
-							double tmp_max_x = (tmp_triangle1.pt1._x > tmp_triangle1.pt2._x) ? tmp_triangle1.pt1._x : tmp_triangle1.pt2._x;
-
-							double tmp_min_y = (tmp_triangle1.pt1._z < tmp_point1.y) ? tmp_triangle1.pt1._z : tmp_point1.y;
-							double tmp_max_y = (tmp_triangle1.pt1._z > tmp_point1.y) ? tmp_triangle1.pt1._z : tmp_point1.y;
-
-							bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
-							bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
-
-
-							bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
-							bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
-
-
-							if(b11 && b12)
-							{
-								tmp_triangle1.pt3._x = JD1.x; tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y); tmp_triangle1.pt3._z = JD1.y;
-							}
-							else if(b21 && b22)
-							{
-								tmp_triangle1.pt3._x = JD2.x; tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle1.pt3._z = JD2.y;
-							}
-							else
-							{
-								AfxMessageBox("warning... ");
-								//AfxMessageBox(__LINE__);
-							}
-
-
-							tmp_triangle2.pt2._x = JD1.x; tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y); tmp_triangle2.pt2._z = JD1.y;
-							tmp_triangle2.pt3._x = JD2.x; tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle2.pt3._z = JD2.y;
-						//	AfxMessageBox(" - 1");
-
-							m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
-							m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
-							
-
-						}
-						tmp_cout--;
-					}
-					
-				}
-
-
-
-				//ok - 2
-
-				if(inPolygonArrayFlag[x+1][z+1]==1 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==1)
-				{
-					 
-					Vertex = (z+1) * MAP_W + (x+1);
-					tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-					tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_triangle1.pt2._x = g_terrain [Vertex][0];
-					tmp_triangle1.pt2._y = g_terrain [Vertex][1];
-					tmp_triangle1.pt2._z = g_terrain [Vertex][2];
-
-
-
-					// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-					CPointPolygonRelationship tmp_PPR;
-					PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
-
-					 
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x+1);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-					
-
-					//Find_triangles_1_line_2_JD(tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
-
-					PPR_Point tmp_point3, tmp_point4; // ¶à±ßĞÎ±ßµÄ¶Ëµã
-
-					PPR_Point JD1, JD2;
-
-					CString msg;
-					bool intersectFlag1 = false;  bool intersectFlag2 = false;
-
-					int tmp_cout = 4;
-					while(tmp_cout > 0)
-					{
-						if(4 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt1._x;	tmp_point3.y = m_area4.pt1._z;
-							tmp_point4.x = m_area4.pt2._x;	tmp_point4.y = m_area4.pt2._z;
-						}else if(3 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt2._x;  tmp_point3.y = m_area4.pt2._z;
-							tmp_point4.x = m_area4.pt3._x;  tmp_point4.y = m_area4.pt3._z;
-						}else if(2 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt3._x;  tmp_point3.y = m_area4.pt3._z;
-							tmp_point4.x = m_area4.pt4._x;  tmp_point4.y = m_area4.pt4._z;
-						}else if(1 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt4._x;  tmp_point3.y = m_area4.pt4._z;
-							tmp_point4.x = m_area4.pt1._x;  tmp_point4.y = m_area4.pt1._z;
-						}
-
-						intersectFlag1 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-						intersectFlag2 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-						if(intersectFlag1 && intersectFlag2)
-						{
-							JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-
-							JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-							double tmp_min_x = (tmp_triangle1.pt1._x < tmp_point1.x) ? tmp_triangle1.pt1._x : tmp_point1.x;
-							double tmp_max_x = (tmp_triangle1.pt1._x > tmp_point1.x) ? tmp_triangle1.pt1._x : tmp_point1.x;
-
-							double tmp_min_y = (tmp_triangle1.pt1._z < tmp_triangle1.pt2._z) ? tmp_triangle1.pt1._z : tmp_triangle1.pt2._z;
-							double tmp_max_y = (tmp_triangle1.pt1._z > tmp_triangle1.pt2._z) ? tmp_triangle1.pt1._z : tmp_triangle1.pt2._z;
-
-							bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
-							bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
-
-
-							bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
-							bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
-
-
-							if(b11 && b12)
-							{
-								tmp_triangle1.pt3._x = JD1.x; tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y); tmp_triangle1.pt3._z = JD1.y;
-							}
-							else if(b21 && b22)
-							{
-								tmp_triangle1.pt3._x = JD2.x; tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle1.pt3._z = JD2.y;
-							}
-							else
-							{
-								AfxMessageBox("warning... ");
-								//AfxMessageBox(__LINE__);
-							}
-
-
-							tmp_triangle2.pt2._x = JD1.x; tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y); tmp_triangle2.pt2._z = JD1.y;
-							tmp_triangle2.pt3._x = JD2.x; tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle2.pt3._z = JD2.y;
-							//AfxMessageBox(" - 2");
-
-							m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
-							m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
-							
-
-						}
-						tmp_cout--;
-					}
-					
-				}
-
-				//ok - 3
-
-				if(inPolygonArrayFlag[x+1][z+1]==0 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==1)
-				{
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_triangle1.pt2._x = g_terrain [Vertex][0];
-					tmp_triangle1.pt2._y = g_terrain [Vertex][1];
-					tmp_triangle1.pt2._z = g_terrain [Vertex][2];
-
-
-					tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-					tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-					tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-
-					// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-					CPointPolygonRelationship tmp_PPR;
-					PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
-
-					
-
-					Vertex = (z+1) * MAP_W + (x+1);
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-					
-
-					//Find_triangles_1_line_2_JD(tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
-
-					PPR_Point tmp_point3, tmp_point4; // ¶à±ßĞÎ±ßµÄ¶Ëµã
-
-					PPR_Point JD1, JD2;
-
-					CString msg;
-					bool intersectFlag1 = false;  bool intersectFlag2 = false;
-
-					int tmp_cout = 4;
-					while(tmp_cout > 0)
-					{
-						if(4 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt1._x;	tmp_point3.y = m_area4.pt1._z;
-							tmp_point4.x = m_area4.pt2._x;	tmp_point4.y = m_area4.pt2._z;
-						}else if(3 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt2._x;  tmp_point3.y = m_area4.pt2._z;
-							tmp_point4.x = m_area4.pt3._x;  tmp_point4.y = m_area4.pt3._z;
-						}else if(2 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt3._x;  tmp_point3.y = m_area4.pt3._z;
-							tmp_point4.x = m_area4.pt4._x;  tmp_point4.y = m_area4.pt4._z;
-						}else if(1 == tmp_cout)
-						{
-							tmp_point3.x = m_area4.pt4._x;  tmp_point3.y = m_area4.pt4._z;
-							tmp_point4.x = m_area4.pt1._x;  tmp_point4.y = m_area4.pt1._z;
-						}
-
-						intersectFlag1 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-						intersectFlag2 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-						if(intersectFlag1 && intersectFlag2)
-						{
-							JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-
-							JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-							
-							double len1 = (tmp_triangle1.pt1._x - JD1.x)*(tmp_triangle1.pt1._x - JD1.x) + (tmp_triangle1.pt1._z - JD1.y)*(tmp_triangle1.pt1._z - JD1.y);
-							double len2 = (tmp_triangle1.pt1._x - JD2.x)*(tmp_triangle1.pt1._x - JD2.x) + (tmp_triangle1.pt1._z - JD2.y)*(tmp_triangle1.pt1._z - JD2.y);
-
-
-							if(len1 < len2)
-							{
-								tmp_triangle1.pt3._x = JD1.x; tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y); tmp_triangle1.pt3._z = JD1.y;
-							}
-							else if(len1 > len2)
-							{
-								tmp_triangle1.pt3._x = JD2.x; tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle1.pt3._z = JD2.y;
-							}
-							else
-							{
-								AfxMessageBox("...warning!");
-							}
-
-
-							tmp_triangle2.pt2._x = JD1.x; tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y); tmp_triangle2.pt2._z = JD1.y;
-							tmp_triangle2.pt3._x = JD2.x; tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle2.pt3._z = JD2.y;
-
-							//AfxMessageBox(" - 3");
-							m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
-							m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
-							
-						}
-						tmp_cout--;
-					}
-					
-				}
-
-
-			}
-		}
-	}
-
-	return 0;
+// åªæœ‰2ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å½¢å†…çš„ä¸‰è§’å½¢(éœ€é‡æ–°ä¸‰è§’åŒ–)
+int CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) {
+    {
+        int Vertex;
+        for (int z = 0; z < MAP_W - 1; z++) {
+            for (int x = 0; x < MAP_W - 1; x++) {
+                Vertex = z * MAP_W + x;
+                Triangle tmp_triangle1;
+                Triangle tmp_triangle2;
+                //ok1
+                if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
+                    Vertex = (z) * MAP_W + (x);
+                    tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_triangle1.pt2._x = g_terrain [Vertex][0];
+                    tmp_triangle1.pt2._y = g_terrain [Vertex][1];
+                    tmp_triangle1.pt2._z = g_terrain [Vertex][2];
+                    // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                    CPointPolygonRelationship tmp_PPR;
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22;
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    // Find_triangles_1_line_2_JD(tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
+                    PPR_Point tmp_point3, tmp_point4;  // å¤šè¾¹å½¢è¾¹çš„ç«¯ç‚¹
+                    PPR_Point JD1, JD2;
+                    // CString msg;
+                    bool intersectFlag1 = false;
+                    bool intersectFlag2 = false;
+                    short tmp_cout = 4;
+                    while (tmp_cout > 0) {
+                        if (4 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt1._x;
+                            tmp_point3.y = m_area4.pt1._z;
+                            tmp_point4.x = m_area4.pt2._x;
+                            tmp_point4.y = m_area4.pt2._z;
+                        } else if (3 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt2._x;
+                            tmp_point3.y = m_area4.pt2._z;
+                            tmp_point4.x = m_area4.pt3._x;
+                            tmp_point4.y = m_area4.pt3._z;
+                        } else if (2 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt3._x;
+                            tmp_point3.y = m_area4.pt3._z;
+                            tmp_point4.x = m_area4.pt4._x;
+                            tmp_point4.y = m_area4.pt4._z;
+                        } else if (1 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt4._x;
+                            tmp_point3.y = m_area4.pt4._z;
+                            tmp_point4.x = m_area4.pt1._x;
+                            tmp_point4.y = m_area4.pt1._z;
+                        }
+                        intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+                        intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+                        if (intersectFlag1 && intersectFlag2) {
+                            JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+                            JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+                            double tmp_min_y = (tmp_triangle1.pt1._z < tmp_triangle1.pt2._z) ? tmp_triangle1.pt1._z : tmp_triangle1.pt2._z;
+                            double tmp_max_y = (tmp_triangle1.pt1._z > tmp_triangle1.pt2._z) ? tmp_triangle1.pt1._z : tmp_triangle1.pt2._z;
+                            double tmp_min_x = (tmp_triangle1.pt1._x < tmp_point1.x) ? tmp_triangle1.pt1._z : tmp_point1.x;
+                            double tmp_max_x = (tmp_triangle1.pt1._x > tmp_point1.x) ? tmp_triangle1.pt1._z : tmp_point1.x;
+                            bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
+                            bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
+                            bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
+                            bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
+                            if (b11 && b12) {
+                                tmp_triangle1.pt3._x = JD1.x;
+                                tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y);
+                                tmp_triangle1.pt3._z = JD1.y;
+                            } else if (b21 && b22) {
+                                tmp_triangle1.pt3._x = JD2.x;
+                                tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y);
+                                tmp_triangle1.pt3._z = JD2.y;
+                            } else {
+                                AfxMessageBox("warning: ");
+                            }
+                            tmp_triangle2.pt2._x = JD1.x;
+                            tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y);
+                            tmp_triangle2.pt2._z = JD1.y;
+                            tmp_triangle2.pt3._x = JD2.x;
+                            tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
+                            tmp_triangle2.pt3._z = JD2.y;
+                            // AfxMessageBox("1");
+                            m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
+                            m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
+                        }
+                        tmp_cout--;
+                    }
+                }
+                // ok2
+                if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
+                    Vertex = (z) * MAP_W + (x);
+                    tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_triangle1.pt2._x = g_terrain [Vertex][0];
+                    tmp_triangle1.pt2._y = g_terrain [Vertex][1];
+                    tmp_triangle1.pt2._z = g_terrain [Vertex][2];
+                    // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                    CPointPolygonRelationship tmp_PPR;
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22; // ä¸‰è§’å½¢ä¸‰ç‚¹
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    // Find_triangles_1_line_2_JD(tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
+                    PPR_Point tmp_point3, tmp_point4;  // å¤šè¾¹å½¢è¾¹çš„ç«¯ç‚¹
+                    PPR_Point JD1, JD2;
+                    CString msg;
+                    bool intersectFlag1 = false;
+                    bool intersectFlag2 = false;
+                    int tmp_cout = 4;
+                    while (tmp_cout > 0) {
+                        if (4 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt1._x;
+                            tmp_point3.y = m_area4.pt1._z;
+                            tmp_point4.x = m_area4.pt2._x;
+                            tmp_point4.y = m_area4.pt2._z;
+                        } else if (3 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt2._x;
+                            tmp_point3.y = m_area4.pt2._z;
+                            tmp_point4.x = m_area4.pt3._x;
+                            tmp_point4.y = m_area4.pt3._z;
+                        } else if (2 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt3._x;
+                            tmp_point3.y = m_area4.pt3._z;
+                            tmp_point4.x = m_area4.pt4._x;
+                            tmp_point4.y = m_area4.pt4._z;
+                        } else if (1 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt4._x;
+                            tmp_point3.y = m_area4.pt4._z;
+                            tmp_point4.x = m_area4.pt1._x;
+                            tmp_point4.y = m_area4.pt1._z;
+                        }
+                        intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+                        intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+                        if (intersectFlag1 && intersectFlag2) {
+                            JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+                            JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+                            double tmp_min_y = (tmp_triangle1.pt1._z < tmp_point1.y) ? tmp_triangle1.pt1._z : tmp_point1.y;
+                            double tmp_max_y = (tmp_triangle1.pt1._z > tmp_point1.y) ? tmp_triangle1.pt1._z : tmp_point1.y;
+                            double tmp_min_x = (tmp_triangle1.pt1._x < tmp_triangle1.pt2._x) ? tmp_triangle1.pt1._x : tmp_triangle1.pt2._x;
+                            double tmp_max_x = (tmp_triangle1.pt1._x > tmp_triangle1.pt2._x) ? tmp_triangle1.pt1._x : tmp_triangle1.pt2._x;
+                            bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
+                            bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
+                            bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
+                            bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
+                            if (b11 && b12) {
+                                tmp_triangle1.pt3._x = JD1.x;
+                                tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y);
+                                tmp_triangle1.pt3._z = JD1.y;
+                            } else if (b21 && b22) {
+                                tmp_triangle1.pt3._x = JD2.x;
+                                tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y);
+                                tmp_triangle1.pt3._z = JD2.y;
+                            } else {
+                                AfxMessageBox("warning: ");
+                                // AfxMessageBox(__LINE__);
+                            }
+                            tmp_triangle2.pt2._x = JD1.x;
+                            tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y);
+                            tmp_triangle2.pt2._z = JD1.y;
+                            tmp_triangle2.pt3._x = JD2.x;
+                            tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
+                            tmp_triangle2.pt3._z = JD2.y;
+                            // AfxMessageBox("2");
+                            m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
+                            m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
+                        }
+                        tmp_cout--;
+                    }
+                }
+                // ok3
+                if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 1) {
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_triangle1.pt2._x = g_terrain [Vertex][0];
+                    tmp_triangle1.pt2._y = g_terrain [Vertex][1];
+                    tmp_triangle1.pt2._z = g_terrain [Vertex][2];
+                    tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                    // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                    CPointPolygonRelationship tmp_PPR;
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22;  // ä¸‰è§’å½¢ä¸‰ç‚¹
+                    Vertex = (z) * MAP_W + (x);
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    // Find_triangles_1_line_2_JD(tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
+                    PPR_Point tmp_point3, tmp_point4;  // å¤šè¾¹å½¢è¾¹çš„ç«¯ç‚¹
+                    PPR_Point JD1, JD2;
+                    CString msg;
+                    bool intersectFlag1 = false;
+                    bool intersectFlag2 = false;
+                    int tmp_cout = 4;
+                    while (tmp_cout > 0) {
+                        if (4 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt1._x;
+                            tmp_point3.y = m_area4.pt1._z;
+                            tmp_point4.x = m_area4.pt2._x;
+                            tmp_point4.y = m_area4.pt2._z;
+                        } else if (3 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt2._x;
+                            tmp_point3.y = m_area4.pt2._z;
+                            tmp_point4.x = m_area4.pt3._x;
+                            tmp_point4.y = m_area4.pt3._z;
+                        } else if (2 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt3._x;
+                            tmp_point3.y = m_area4.pt3._z;
+                            tmp_point4.x = m_area4.pt4._x;
+                            tmp_point4.y = m_area4.pt4._z;
+                        } else if (1 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt4._x;
+                            tmp_point3.y = m_area4.pt4._z;
+                            tmp_point4.x = m_area4.pt1._x;
+                            tmp_point4.y = m_area4.pt1._z;
+                        }
+                        intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+                        intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+                        if (intersectFlag1 && intersectFlag2) {
+                            JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+                            JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+                            double len1 = (tmp_triangle1.pt1._x - JD1.x) * (tmp_triangle1.pt1._x - JD1.x) + (tmp_triangle1.pt1._z - JD1.y) * (tmp_triangle1.pt1._z - JD1.y);
+                            double len2 = (tmp_triangle1.pt1._x - JD2.x) * (tmp_triangle1.pt1._x - JD2.x) + (tmp_triangle1.pt1._z - JD2.y) * (tmp_triangle1.pt1._z - JD2.y);
+                            if (len1 < len2) {
+                                tmp_triangle1.pt3._x = JD1.x;
+                                tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y);
+                                tmp_triangle1.pt3._z = JD1.y;
+                            } else if (len1 > len2) {
+                                tmp_triangle1.pt3._x = JD2.x;
+                                tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y);
+                                tmp_triangle1.pt3._z = JD2.y;
+                            } else {
+                                AfxMessageBox("warning");
+                            }
+                            tmp_triangle2.pt2._x = JD1.x;
+                            tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y);
+                            tmp_triangle2.pt2._z = JD1.y;
+                            tmp_triangle2.pt3._x = JD2.x;
+                            tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
+                            tmp_triangle2.pt3._z = JD2.y;
+                            //AfxMessageBox("3");
+                            m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
+                            m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
+                        }
+                        tmp_cout--;
+                    }
+                }
+                // ========================================================================================
+                // ok - 1
+                if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
+                    Vertex = (z + 1) * MAP_W + (x + 1);
+                    tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_triangle1.pt2._x = g_terrain [Vertex][0];
+                    tmp_triangle1.pt2._y = g_terrain [Vertex][1];
+                    tmp_triangle1.pt2._z = g_terrain [Vertex][2];
+                    // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                    CPointPolygonRelationship tmp_PPR;
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22; // ä¸‰è§’å½¢ä¸‰ç‚¹
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x + 1);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    // Find_triangles_1_line_2_JD(tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
+                    PPR_Point tmp_point3, tmp_point4;  // å¤šè¾¹å½¢è¾¹çš„ç«¯ç‚¹
+                    PPR_Point JD1, JD2;
+                    CString msg;
+                    bool intersectFlag1 = false;
+                    bool intersectFlag2 = false;
+                    int tmp_cout = 4;
+                    while (tmp_cout > 0) {
+                        if (4 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt1._x;
+                            tmp_point3.y = m_area4.pt1._z;
+                            tmp_point4.x = m_area4.pt2._x;
+                            tmp_point4.y = m_area4.pt2._z;
+                        } else if (3 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt2._x;
+                            tmp_point3.y = m_area4.pt2._z;
+                            tmp_point4.x = m_area4.pt3._x;
+                            tmp_point4.y = m_area4.pt3._z;
+                        } else if (2 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt3._x;
+                            tmp_point3.y = m_area4.pt3._z;
+                            tmp_point4.x = m_area4.pt4._x;
+                            tmp_point4.y = m_area4.pt4._z;
+                        } else if (1 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt4._x;
+                            tmp_point3.y = m_area4.pt4._z;
+                            tmp_point4.x = m_area4.pt1._x;
+                            tmp_point4.y = m_area4.pt1._z;
+                        }
+                        intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+                        intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+                        if (intersectFlag1 && intersectFlag2) {
+                            JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+                            JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+                            double tmp_min_x = (tmp_triangle1.pt1._x < tmp_triangle1.pt2._x) ? tmp_triangle1.pt1._x : tmp_triangle1.pt2._x;
+                            double tmp_max_x = (tmp_triangle1.pt1._x > tmp_triangle1.pt2._x) ? tmp_triangle1.pt1._x : tmp_triangle1.pt2._x;
+                            double tmp_min_y = (tmp_triangle1.pt1._z < tmp_point1.y) ? tmp_triangle1.pt1._z : tmp_point1.y;
+                            double tmp_max_y = (tmp_triangle1.pt1._z > tmp_point1.y) ? tmp_triangle1.pt1._z : tmp_point1.y;
+                            bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
+                            bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
+                            bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
+                            bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
+                            if (b11 && b12) {
+                                tmp_triangle1.pt3._x = JD1.x;
+                                tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y);
+                                tmp_triangle1.pt3._z = JD1.y;
+                            } else if (b21 && b22) {
+                                tmp_triangle1.pt3._x = JD2.x;
+                                tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y);
+                                tmp_triangle1.pt3._z = JD2.y;
+                            } else {
+                                AfxMessageBox("warning... ");
+                                // AfxMessageBox(__LINE__);
+                            }
+                            tmp_triangle2.pt2._x = JD1.x;
+                            tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y);
+                            tmp_triangle2.pt2._z = JD1.y;
+                            tmp_triangle2.pt3._x = JD2.x;
+                            tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
+                            tmp_triangle2.pt3._z = JD2.y;
+                            // AfxMessageBox(" - 1");
+                            m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
+                            m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
+                        }
+                        tmp_cout--;
+                    }
+                }
+                // ok - 2
+                if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
+                    Vertex = (z + 1) * MAP_W + (x + 1);
+                    tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_triangle1.pt2._x = g_terrain [Vertex][0];
+                    tmp_triangle1.pt2._y = g_terrain [Vertex][1];
+                    tmp_triangle1.pt2._z = g_terrain [Vertex][2];
+                    // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                    CPointPolygonRelationship tmp_PPR;
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22; // ä¸‰è§’å½¢ä¸‰ç‚¹
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x + 1);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    // Find_triangles_1_line_2_JD(tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
+                    PPR_Point tmp_point3, tmp_point4;  // å¤šè¾¹å½¢è¾¹çš„ç«¯ç‚¹
+                    PPR_Point JD1, JD2;
+                    CString msg;
+                    bool intersectFlag1 = false;
+                    bool intersectFlag2 = false;
+                    int tmp_cout = 4;
+                    while (tmp_cout > 0) {
+                        if (4 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt1._x;
+                            tmp_point3.y = m_area4.pt1._z;
+                            tmp_point4.x = m_area4.pt2._x;
+                            tmp_point4.y = m_area4.pt2._z;
+                        } else if (3 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt2._x;
+                            tmp_point3.y = m_area4.pt2._z;
+                            tmp_point4.x = m_area4.pt3._x;
+                            tmp_point4.y = m_area4.pt3._z;
+                        } else if (2 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt3._x;
+                            tmp_point3.y = m_area4.pt3._z;
+                            tmp_point4.x = m_area4.pt4._x;
+                            tmp_point4.y = m_area4.pt4._z;
+                        } else if (1 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt4._x;
+                            tmp_point3.y = m_area4.pt4._z;
+                            tmp_point4.x = m_area4.pt1._x;
+                            tmp_point4.y = m_area4.pt1._z;
+                        }
+                        intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+                        intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+                        if (intersectFlag1 && intersectFlag2) {
+                            JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+                            JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+                            double tmp_min_x = (tmp_triangle1.pt1._x < tmp_point1.x) ? tmp_triangle1.pt1._x : tmp_point1.x;
+                            double tmp_max_x = (tmp_triangle1.pt1._x > tmp_point1.x) ? tmp_triangle1.pt1._x : tmp_point1.x;
+                            double tmp_min_y = (tmp_triangle1.pt1._z < tmp_triangle1.pt2._z) ? tmp_triangle1.pt1._z : tmp_triangle1.pt2._z;
+                            double tmp_max_y = (tmp_triangle1.pt1._z > tmp_triangle1.pt2._z) ? tmp_triangle1.pt1._z : tmp_triangle1.pt2._z;
+                            bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
+                            bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
+                            bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
+                            bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
+                            if (b11 && b12) {
+                                tmp_triangle1.pt3._x = JD1.x;
+                                tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y);
+                                tmp_triangle1.pt3._z = JD1.y;
+                            } else if (b21 && b22) {
+                                tmp_triangle1.pt3._x = JD2.x;
+                                tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y);
+                                tmp_triangle1.pt3._z = JD2.y;
+                            } else {
+                                AfxMessageBox("warning... ");
+                                // AfxMessageBox(__LINE__);
+                            }
+                            tmp_triangle2.pt2._x = JD1.x;
+                            tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y);
+                            tmp_triangle2.pt2._z = JD1.y;
+                            tmp_triangle2.pt3._x = JD2.x;
+                            tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
+                            tmp_triangle2.pt3._z = JD2.y;
+                            // AfxMessageBox(" - 2");
+                            m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
+                            m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
+                        }
+                        tmp_cout--;
+                    }
+                }
+                // ok - 3
+                if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 1) {
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_triangle1.pt2._x = g_terrain [Vertex][0];
+                    tmp_triangle1.pt2._y = g_terrain [Vertex][1];
+                    tmp_triangle1.pt2._z = g_terrain [Vertex][2];
+                    tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                    tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                    tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                    // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                    CPointPolygonRelationship tmp_PPR;
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22;  // ä¸‰è§’å½¢ä¸‰ç‚¹
+                    Vertex = (z + 1) * MAP_W + (x + 1);
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    // Find_triangles_1_line_2_JD(tmp_triangle, tmp_PPR, tmp_point1, tmp_point21, tmp_point22);
+                    PPR_Point tmp_point3, tmp_point4;  // å¤šè¾¹å½¢è¾¹çš„ç«¯ç‚¹
+                    PPR_Point JD1, JD2;
+                    CString msg;
+                    bool intersectFlag1 = false;
+                    bool intersectFlag2 = false;
+                    int tmp_cout = 4;
+                    while (tmp_cout > 0) {
+                        if (4 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt1._x;
+                            tmp_point3.y = m_area4.pt1._z;
+                            tmp_point4.x = m_area4.pt2._x;
+                            tmp_point4.y = m_area4.pt2._z;
+                        } else if (3 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt2._x;
+                            tmp_point3.y = m_area4.pt2._z;
+                            tmp_point4.x = m_area4.pt3._x;
+                            tmp_point4.y = m_area4.pt3._z;
+                        } else if (2 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt3._x;
+                            tmp_point3.y = m_area4.pt3._z;
+                            tmp_point4.x = m_area4.pt4._x;
+                            tmp_point4.y = m_area4.pt4._z;
+                        } else if (1 == tmp_cout) {
+                            tmp_point3.x = m_area4.pt4._x;
+                            tmp_point3.y = m_area4.pt4._z;
+                            tmp_point4.x = m_area4.pt1._x;
+                            tmp_point4.y = m_area4.pt1._z;
+                        }
+                        intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+                        intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+                        if (intersectFlag1 && intersectFlag2) {
+                            JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+                            JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+                            double len1 = (tmp_triangle1.pt1._x - JD1.x) * (tmp_triangle1.pt1._x - JD1.x) + (tmp_triangle1.pt1._z - JD1.y) * (tmp_triangle1.pt1._z - JD1.y);
+                            double len2 = (tmp_triangle1.pt1._x - JD2.x) * (tmp_triangle1.pt1._x - JD2.x) + (tmp_triangle1.pt1._z - JD2.y) * (tmp_triangle1.pt1._z - JD2.y);
+                            if (len1 < len2) {
+                                tmp_triangle1.pt3._x = JD1.x;
+                                tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y);
+                                tmp_triangle1.pt3._z = JD1.y;
+                            } else if (len1 > len2) {
+                                tmp_triangle1.pt3._x = JD2.x;
+                                tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y);
+                                tmp_triangle1.pt3._z = JD2.y;
+                            } else {
+                                AfxMessageBox("...warning!");
+                            }
+                            tmp_triangle2.pt2._x = JD1.x;
+                            tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y);
+                            tmp_triangle2.pt2._z = JD1.y;
+                            tmp_triangle2.pt3._x = JD2.x;
+                            tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
+                            tmp_triangle2.pt3._z = JD2.y;
+                            //AfxMessageBox(" - 3");
+                            m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
+                            m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
+                        }
+                        tmp_cout--;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 
 
-//ÕÒ³ö·ûºÏÌõ¼şµÄÈı½ÇĞÎ(Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ, ÇÒ¶à±ßĞÎµÄÄ³Ìõ±ßÓëÈı½ÇĞÎÓĞ2¸ö½»µã)
-void CMy3DSymbolLibNewView::Find_triangles_1_line_2_JD(Area_4 &m_area4, Triangle &tmp_triangle, CPointPolygonRelationship &tmp_PPR, const PPR_Point &tmp_point1, const PPR_Point &tmp_point21, const PPR_Point &tmp_point22)
-{
- 
-
-	PPR_Point tmp_point3, tmp_point4; // ¶à±ßĞÎ±ßµÄ¶Ëµã
-
-	PPR_Point JD1, JD2;
-
-	//CString msg;
-	bool intersectFlag1 = false;  bool intersectFlag2 = false;
-
-	short tmp_cout = 4;
-	while(tmp_cout > 0)
-	{
-		if(4 == tmp_cout)
-		{
-			tmp_point3.x = m_area4.pt1._x;	tmp_point3.y = m_area4.pt1._z;
-			tmp_point4.x = m_area4.pt2._x;	tmp_point4.y = m_area4.pt2._z;
-		}else if(3 == tmp_cout)
-		{
-			tmp_point3.x = m_area4.pt2._x;  tmp_point3.y = m_area4.pt2._z;
-			tmp_point4.x = m_area4.pt3._x;  tmp_point4.y = m_area4.pt3._z;
-		}else if(2 == tmp_cout)
-		{
-			tmp_point3.x = m_area4.pt3._x;  tmp_point3.y = m_area4.pt3._z;
-			tmp_point4.x = m_area4.pt4._x;  tmp_point4.y = m_area4.pt4._z;
-		}else if(1 == tmp_cout)
-		{
-			tmp_point3.x = m_area4.pt4._x;  tmp_point3.y = m_area4.pt4._z;
-			tmp_point4.x = m_area4.pt1._x;  tmp_point4.y = m_area4.pt1._z;
-		}
-
-		intersectFlag1 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-		intersectFlag2 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-
-		if(intersectFlag1 && intersectFlag2)
-		{
-			JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_point3, tmp_point4);
-
-			JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_point3, tmp_point4);
-
-			tmp_triangle.pt2._x = JD1.x; tmp_triangle.pt2._y = GetHeight(JD1.x, JD1.y); tmp_triangle.pt2._z = JD1.y;
-			tmp_triangle.pt3._x = JD2.x; tmp_triangle.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle.pt3._z = JD2.y;
-			m_area4.LocalTrianglesVecotr1.push_back(tmp_triangle);
-
-			
-		}
-		tmp_cout--;
-	}
+// æ‰¾å‡ºç¬¦åˆæ¡ä»¶çš„ä¸‰è§’å½¢(ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…, ä¸”å¤šè¾¹å½¢çš„æŸæ¡è¾¹ä¸ä¸‰è§’å½¢æœ‰2ä¸ªäº¤ç‚¹)
+void CMy3DSymbolLibNewView::Find_triangles_1_line_2_JD(Area_4& m_area4, Triangle& tmp_triangle, CPointPolygonRelationship& tmp_PPR, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22) {
+    PPR_Point tmp_point3, tmp_point4;  // å¤šè¾¹å½¢è¾¹çš„ç«¯ç‚¹
+    PPR_Point JD1, JD2;
+    //CString msg;
+    bool intersectFlag1 = false;
+    bool intersectFlag2 = false;
+    short tmp_cout = 4;
+    while (tmp_cout > 0) {
+        if (4 == tmp_cout) {
+            tmp_point3.x = m_area4.pt1._x;
+            tmp_point3.y = m_area4.pt1._z;
+            tmp_point4.x = m_area4.pt2._x;
+            tmp_point4.y = m_area4.pt2._z;
+        } else if (3 == tmp_cout) {
+            tmp_point3.x = m_area4.pt2._x;
+            tmp_point3.y = m_area4.pt2._z;
+            tmp_point4.x = m_area4.pt3._x;
+            tmp_point4.y = m_area4.pt3._z;
+        } else if (2 == tmp_cout) {
+            tmp_point3.x = m_area4.pt3._x;
+            tmp_point3.y = m_area4.pt3._z;
+            tmp_point4.x = m_area4.pt4._x;
+            tmp_point4.y = m_area4.pt4._z;
+        } else if (1 == tmp_cout) {
+            tmp_point3.x = m_area4.pt4._x;
+            tmp_point3.y = m_area4.pt4._z;
+            tmp_point4.x = m_area4.pt1._x;
+            tmp_point4.y = m_area4.pt1._z;
+        }
+        intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+        intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+        if (intersectFlag1 && intersectFlag2) {
+            JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
+            JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
+            tmp_triangle.pt2._x = JD1.x;
+            tmp_triangle.pt2._y = GetHeight(JD1.x, JD1.y);
+            tmp_triangle.pt2._z = JD1.y;
+            tmp_triangle.pt3._x = JD2.x;
+            tmp_triangle.pt3._y = GetHeight(JD2.x, JD2.y);
+            tmp_triangle.pt3._z = JD2.y;
+            m_area4.LocalTrianglesVecotr1.push_back(tmp_triangle);
+        }
+        tmp_cout--;
+    }
 }
 
 
 
-// ¶à±ßĞÎ¶¥µã´¦µÄÈı½ÇĞÎ
-void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4 &m_area4)
-{
-	int Vertex;
-	for (int z = 0; z < MAP_W-1; z++)
-	{
-		for (int x = 0; x < MAP_W-1; x++)		
-		{
-			Vertex = z * MAP_W + x;
-
-			Triangle tmp_triangle1;
-			Triangle tmp_triangle2;
-
-
-			PPR_Point tmp_point1, tmp_point21, tmp_point22; // Èı½ÇĞÎÈıµã
-
-			/************************************************************************/
-			/*       Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ											*/
-			/************************************************************************/
-
-			// ------------------------------------
-
-			if(inPolygonArrayFlag[x][z]==0 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==1)
-			{				
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-				 
-				
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-				FindTriangles_polygon_has_vertex_in_triangle_1_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_point1, tmp_point21, tmp_point22);
-			}
-
-			// Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ
-			if(inPolygonArrayFlag[x][z]==0 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==0)
-			{
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-
-				FindTriangles_polygon_has_vertex_in_triangle_1_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_point1, tmp_point21, tmp_point22);
-
-			}
-
-
-			// Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ
-			if(inPolygonArrayFlag[x][z]==1 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==0)
-			{
-				Vertex = (z) * MAP_W + (x);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-				 
-
-				Vertex = (z) * MAP_W + (x);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-				FindTriangles_polygon_has_vertex_in_triangle_1_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_point1, tmp_point21, tmp_point22);
-			}
-
-
-
-
-			// ------------------------------------
-
-			// Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ
-			if(inPolygonArrayFlag[x+1][z+1]==0 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==1)
-			{				
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-				FindTriangles_polygon_has_vertex_in_triangle_1_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_point1, tmp_point21, tmp_point22);
-			}
-
-			// Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ
-			if(inPolygonArrayFlag[x+1][z+1]==0 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==0)
-			{
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-
-				FindTriangles_polygon_has_vertex_in_triangle_1_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_point1, tmp_point21, tmp_point22);
-
-			}
-
-
-			// Èı½ÇĞÎÖ»ÓĞ1¸öµãÔÚ¶à±ßĞÎÄÚ
-			if(inPolygonArrayFlag[x+1][z+1]==1 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==0)
-			{
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				// Çó¶à±ßĞÎ±ß½çÓëÈı½ÇĞÎ±ßµÄ½»µã
-
-
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-				FindTriangles_polygon_has_vertex_in_triangle_1_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_point1, tmp_point21, tmp_point22);
-			}
-		
-
-
-
-
-			/************************************************************************/
-			/*       Èı½ÇĞÎÖ»ÓĞ2¸öµãÔÚ¶à±ßĞÎÄÚ											*/
-			/************************************************************************/
-
-			// Èı½Ç»¯½«ºó²úÉú3¸öĞ¡Èı½ÇĞÎ
-
-			Triangle tmp_triangle3;
-
-			// ------------------------------------
-
-			//1-1
-			if(inPolygonArrayFlag[x][z]==1 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==0)
-			{				
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt1._z = g_terrain [Vertex][2];
-
-
-
-				Vertex = (z) * MAP_W + (x);
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt2._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt2._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt2._z = g_terrain [Vertex][2];
-
-
-				// ´ËÊ± tmp_point1Ó¦ÎªÔÚ¶à±ßĞÎÍâµÄÒ»µã
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-				FindTriangles_polygon_has_vertex_in_triangle_2_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_point1, tmp_point21, tmp_point22);
-			}
-
-			//1-2
-			if(inPolygonArrayFlag[x][z]==1 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==1)
-			{				
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt1._z = g_terrain [Vertex][2];
-
-
-
-				Vertex = (z) * MAP_W + (x);
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt2._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt2._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt2._z = g_terrain [Vertex][2];
-
-
-				// ´ËÊ± tmp_point1Ó¦ÎªÔÚ¶à±ßĞÎÍâµÄÒ»µã
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-				FindTriangles_polygon_has_vertex_in_triangle_2_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_point1, tmp_point21, tmp_point22);
-			}
-
-
-			//1-3
-			if(inPolygonArrayFlag[x][z]==0 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==1)
-			{				
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt1._z = g_terrain [Vertex][2];
-
-
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt2._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt2._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt2._z = g_terrain [Vertex][2];
-
-
-				// ´ËÊ± tmp_point1Ó¦ÎªÔÚ¶à±ßĞÎÍâµÄÒ»µã
-				Vertex = (z) * MAP_W + (x);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-				FindTriangles_polygon_has_vertex_in_triangle_2_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_point1, tmp_point21, tmp_point22);
-			}
-
-
-
-			//2-1
-			if(inPolygonArrayFlag[x+1][z+1]==1 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==0)
-			{				
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt1._z = g_terrain [Vertex][2];
-
-
-
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt2._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt2._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt2._z = g_terrain [Vertex][2];
-
-
-				// ´ËÊ± tmp_point1Ó¦ÎªÔÚ¶à±ßĞÎÍâµÄÒ»µã
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-				FindTriangles_polygon_has_vertex_in_triangle_2_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_point1, tmp_point21, tmp_point22);
-			}
-
-			//2-2
-			if(inPolygonArrayFlag[x+1][z+1]==1 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==1)
-			{				
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt1._z = g_terrain [Vertex][2];
-
-
-
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt2._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt2._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt2._z = g_terrain [Vertex][2];
-
-
-				// ´ËÊ± tmp_point1Ó¦ÎªÔÚ¶à±ßĞÎÍâµÄÒ»µã
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-				FindTriangles_polygon_has_vertex_in_triangle_2_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_point1, tmp_point21, tmp_point22);
-			}
-
-
-			//2-3
-			if(inPolygonArrayFlag[x+1][z+1]==0 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==1)
-			{				
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt1._z = g_terrain [Vertex][2];
-
-
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt2._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt2._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt2._z = g_terrain [Vertex][2];
-
-
-				// ´ËÊ± tmp_point1Ó¦ÎªÔÚ¶à±ßĞÎÍâµÄÒ»µã
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-				FindTriangles_polygon_has_vertex_in_triangle_2_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_point1, tmp_point21, tmp_point22);
-			}
-
-
-
-
-
-
-
-			/************************************************************************/
-			/* ¶à±ßĞÎµÄ1¸ö¶¥µãÔÚÄ³¸öÈı½ÇĞÎÖĞ£¬µ«¸ÃÈı½ÇĞÎµÄ3¸ö¶¥µã¶¼ÔÚ¶à±ßĞÎÍâ				*/
-			/************************************************************************/
-
-			// ´ËÊ±Èı½Ç»¯ºó½«²úÉú4¸öÈı½ÇĞÎ
-			Triangle tmp_triangle4;
-			//1- 1
-			if(inPolygonArrayFlag[x][z]==1 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==0)
-			{		
-
-				Vertex = (z) * MAP_W + (x);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt1._z = g_terrain [Vertex][2];
-
-
- 
-				// Èı½ÇĞÎ¹²Ğ±±ßµÄ¶Ô½ÇÈı½ÇĞÎ
-				PPR_Point tmp_point0;
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_point0.x = g_terrain [Vertex][0];   tmp_point0.y = g_terrain [Vertex][2];
-
-				 
-				Vertex = (z) * MAP_W + (x);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-
-				
-				FindTriangles_polygon_has_vertex_in_triangle_last(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3,tmp_triangle4, tmp_point0, tmp_point1, tmp_point21, tmp_point22);
-
-			}
-			//1-2
-			if(inPolygonArrayFlag[x][z]==0 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==0)
-			{		
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt1._z = g_terrain [Vertex][2];
-
-
-
-				// ¶Ô½ÇÈı½ÇĞÎ
-				if(z >= 1)
-				{
-					PPR_Point tmp_point0;
-					Vertex = (z-1) * MAP_W + (x+1);
-					tmp_point0.x = g_terrain [Vertex][0];   tmp_point0.y = g_terrain [Vertex][2];
-
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-
-
-					FindTriangles_polygon_has_vertex_in_triangle_last(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3,tmp_triangle4, tmp_point0, tmp_point1, tmp_point21, tmp_point22);
-
-				}
-				
-			}
-
-			//1-3
-			if(inPolygonArrayFlag[x][z]==0 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==1)
-			{		
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt1._z = g_terrain [Vertex][2];
-
-
-
-				// ¶Ô½ÇÈı½ÇĞÎ
-				if(x >= 1)
-				{
-					PPR_Point tmp_point0;
-					Vertex = (z+1) * MAP_W + (x-1);
-					tmp_point0.x = g_terrain [Vertex][0];   tmp_point0.y = g_terrain [Vertex][2];
-
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-
-
-					FindTriangles_polygon_has_vertex_in_triangle_last(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3,tmp_triangle4, tmp_point0, tmp_point1, tmp_point21, tmp_point22);
-
-				}
-
-			}
-
-
-
-
-
-
-
-
-			// 2-1
-			if(inPolygonArrayFlag[x+1][z+1]==1 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==0)
-			{		
-
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt1._z = g_terrain [Vertex][2];
-
-
-
-				// Èı½ÇĞÎ¹²Ğ±±ßµÄ¶Ô½ÇÈı½ÇĞÎ
-				PPR_Point tmp_point0;
-				Vertex = (z) * MAP_W + (x);
-				tmp_point0.x = g_terrain [Vertex][0];   tmp_point0.y = g_terrain [Vertex][2];
-
-
-				Vertex = (z+1) * MAP_W + (x+1);
-				tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-
-				
-				FindTriangles_polygon_has_vertex_in_triangle_last(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3,tmp_triangle4, tmp_point0, tmp_point1, tmp_point21, tmp_point22);
-				
-			}
-
-
-
-			//2-2
-			if(inPolygonArrayFlag[x+1][z+1]==0 && inPolygonArrayFlag[x][z+1]==1  && inPolygonArrayFlag[x+1][z]==0)
-			{		
-				
-				Vertex = (z+1) * MAP_W + (x);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt1._z = g_terrain [Vertex][2];
-
-
-
-				// ¶Ô½ÇÈı½ÇĞÎ
-				if(x < MAP_W-2)
-				{
-					PPR_Point tmp_point0;
-					Vertex = (z) * MAP_W + (x+2);
-					tmp_point0.x = g_terrain [Vertex][0];   tmp_point0.y = g_terrain [Vertex][2];
-
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x+1);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-
-
-					FindTriangles_polygon_has_vertex_in_triangle_last(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3,tmp_triangle4, tmp_point0, tmp_point1, tmp_point21, tmp_point22);
-
-				}
-
-			}
-
-			//2-3
-			if(inPolygonArrayFlag[x+1][z+1]==0 && inPolygonArrayFlag[x][z+1]==0  && inPolygonArrayFlag[x+1][z]==1)
-			{		
-
-				Vertex = (z) * MAP_W + (x+1);
-				tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-
-				tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-				tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-				tmp_triangle3.pt1._z = g_terrain [Vertex][2];
-
-
-
-				// ¶Ô½ÇÈı½ÇĞÎ
-				if(z < MAP_W-2)
-				{
-					PPR_Point tmp_point0;
-					Vertex = (z+2) * MAP_W + (x);
-					tmp_point0.x = g_terrain [Vertex][0];   tmp_point0.y = g_terrain [Vertex][2];
-
-
-					Vertex = (z) * MAP_W + (x+1);
-					tmp_point1.x = g_terrain [Vertex][0];   tmp_point1.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x);
-					tmp_point21.x = g_terrain [Vertex][0];  tmp_point21.y = g_terrain [Vertex][2];
-
-					Vertex = (z+1) * MAP_W + (x+1);
-					tmp_point22.x = g_terrain [Vertex][0];  tmp_point22.y = g_terrain [Vertex][2];
-
-
-
-					FindTriangles_polygon_has_vertex_in_triangle_last(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3,tmp_triangle4, tmp_point0, tmp_point1, tmp_point21, tmp_point22);
-
-				}
-
-			}
-
-		}
-	}
+// å¤šè¾¹å½¢é¡¶ç‚¹å¤„çš„ä¸‰è§’å½¢
+void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4& m_area4) {
+    int Vertex;
+    for (int z = 0; z < MAP_W - 1; z++) {
+        for (int x = 0; x < MAP_W - 1; x++) {
+            Vertex = z * MAP_W + x;
+            Triangle tmp_triangle1;
+            Triangle tmp_triangle2;
+            PPR_Point tmp_point1, tmp_point21, tmp_point22;  // ä¸‰è§’å½¢ä¸‰ç‚¹
+            /************************************************************************/
+            /*       ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…                                          */
+            /************************************************************************/
+            // ------------------------------------
+            if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_1_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_point1, tmp_point21, tmp_point22);
+            }
+            // ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…
+            if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_1_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_point1, tmp_point21, tmp_point22);
+            }
+            // ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…
+            if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 0) {
+                Vertex = (z) * MAP_W + (x);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                Vertex = (z) * MAP_W + (x);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_1_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_point1, tmp_point21, tmp_point22);
+            }
+            // ------------------------------------
+            // ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…
+            if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_1_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_point1, tmp_point21, tmp_point22);
+            }
+            // ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…
+            if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_1_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_point1, tmp_point21, tmp_point22);
+            }
+            // ä¸‰è§’å½¢åªæœ‰1ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…
+            if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 0) {
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                // æ±‚å¤šè¾¹å½¢è¾¹ç•Œä¸ä¸‰è§’å½¢è¾¹çš„äº¤ç‚¹
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_1_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_point1, tmp_point21, tmp_point22);
+            }
+            /************************************************************************/
+            /*       ä¸‰è§’å½¢åªæœ‰2ä¸ªç‚¹åœ¨å¤šè¾¹å½¢å†…                                          */
+            /************************************************************************/
+            // ä¸‰è§’åŒ–å°†åäº§ç”Ÿ3ä¸ªå°ä¸‰è§’å½¢
+            Triangle tmp_triangle3;
+            // ------------------------------------
+            // 1-1
+            if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x);
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt2._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt2._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt2._z = g_terrain [Vertex][2];
+                // æ­¤æ—¶ tmp_point1åº”ä¸ºåœ¨å¤šè¾¹å½¢å¤–çš„ä¸€ç‚¹
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_2_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_point1, tmp_point21, tmp_point22);
+            }
+            // 1-2
+            if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x);
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt2._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt2._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt2._z = g_terrain [Vertex][2];
+                // æ­¤æ—¶ tmp_point1åº”ä¸ºåœ¨å¤šè¾¹å½¢å¤–çš„ä¸€ç‚¹
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_2_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_point1, tmp_point21, tmp_point22);
+            }
+            // 1-3
+            if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 1) {
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt2._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt2._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt2._z = g_terrain [Vertex][2];
+                // æ­¤æ—¶ tmp_point1åº”ä¸ºåœ¨å¤šè¾¹å½¢å¤–çš„ä¸€ç‚¹
+                Vertex = (z) * MAP_W + (x);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_2_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_point1, tmp_point21, tmp_point22);
+            }
+            // 2-1
+            if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt2._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt2._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt2._z = g_terrain [Vertex][2];
+                // æ­¤æ—¶ tmp_point1åº”ä¸ºåœ¨å¤šè¾¹å½¢å¤–çš„ä¸€ç‚¹
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_2_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_point1, tmp_point21, tmp_point22);
+            }
+            // 2-2
+            if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt2._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt2._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt2._z = g_terrain [Vertex][2];
+                // æ­¤æ—¶ tmp_point1åº”ä¸ºåœ¨å¤šè¾¹å½¢å¤–çš„ä¸€ç‚¹
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_2_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_point1, tmp_point21, tmp_point22);
+            }
+            // 2-3
+            if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 1) {
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt2._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt2._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt2._z = g_terrain [Vertex][2];
+                // æ­¤æ—¶ tmp_point1åº”ä¸ºåœ¨å¤šè¾¹å½¢å¤–çš„ä¸€ç‚¹
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_2_1(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_point1, tmp_point21, tmp_point22);
+            }
+            /************************************************************************/
+            /* å¤šè¾¹å½¢çš„1ä¸ªé¡¶ç‚¹åœ¨æŸä¸ªä¸‰è§’å½¢ä¸­ï¼Œä½†è¯¥ä¸‰è§’å½¢çš„3ä¸ªé¡¶ç‚¹éƒ½åœ¨å¤šè¾¹å½¢å¤–               */
+            /************************************************************************/
+            // æ­¤æ—¶ä¸‰è§’åŒ–åå°†äº§ç”Ÿ4ä¸ªä¸‰è§’å½¢
+            Triangle tmp_triangle4;
+            // 1- 1
+            if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 0) {
+                Vertex = (z) * MAP_W + (x);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                // ä¸‰è§’å½¢å…±æ–œè¾¹çš„å¯¹è§’ä¸‰è§’å½¢
+                PPR_Point tmp_point0;
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_point0.x = g_terrain [Vertex][0];
+                tmp_point0.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_last(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_triangle4, tmp_point0, tmp_point1, tmp_point21, tmp_point22);
+            }
+            // 1-2
+            if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                // å¯¹è§’ä¸‰è§’å½¢
+                if (z >= 1) {
+                    PPR_Point tmp_point0;
+                    Vertex = (z - 1) * MAP_W + (x + 1);
+                    tmp_point0.x = g_terrain [Vertex][0];
+                    tmp_point0.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    FindTriangles_polygon_has_vertex_in_triangle_last(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_triangle4, tmp_point0, tmp_point1, tmp_point21, tmp_point22);
+                }
+            }
+            // 1-3
+            if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                // å¯¹è§’ä¸‰è§’å½¢
+                if (x >= 1) {
+                    PPR_Point tmp_point0;
+                    Vertex = (z + 1) * MAP_W + (x - 1);
+                    tmp_point0.x = g_terrain [Vertex][0];
+                    tmp_point0.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    FindTriangles_polygon_has_vertex_in_triangle_last(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_triangle4, tmp_point0, tmp_point1, tmp_point21, tmp_point22);
+                }
+            }
+            // 2-1
+            if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 0) {
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                // ä¸‰è§’å½¢å…±æ–œè¾¹çš„å¯¹è§’ä¸‰è§’å½¢
+                PPR_Point tmp_point0;
+                Vertex = (z) * MAP_W + (x);
+                tmp_point0.x = g_terrain [Vertex][0];
+                tmp_point0.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x + 1);
+                tmp_point1.x = g_terrain [Vertex][0];
+                tmp_point1.y = g_terrain [Vertex][2];
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_point21.x = g_terrain [Vertex][0];
+                tmp_point21.y = g_terrain [Vertex][2];
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_point22.x = g_terrain [Vertex][0];
+                tmp_point22.y = g_terrain [Vertex][2];
+                FindTriangles_polygon_has_vertex_in_triangle_last(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_triangle4, tmp_point0, tmp_point1, tmp_point21, tmp_point22);
+            }
+            // 2-2
+            if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
+                Vertex = (z + 1) * MAP_W + (x);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                // å¯¹è§’ä¸‰è§’å½¢
+                if (x < MAP_W - 2) {
+                    PPR_Point tmp_point0;
+                    Vertex = (z) * MAP_W + (x + 2);
+                    tmp_point0.x = g_terrain [Vertex][0];
+                    tmp_point0.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x + 1);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    FindTriangles_polygon_has_vertex_in_triangle_last(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_triangle4, tmp_point0, tmp_point1, tmp_point21, tmp_point22);
+                }
+            }
+            // 2-3
+            if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
+                Vertex = (z) * MAP_W + (x + 1);
+                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
+                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
+                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                // å¯¹è§’ä¸‰è§’å½¢
+                if (z < MAP_W - 2) {
+                    PPR_Point tmp_point0;
+                    Vertex = (z + 2) * MAP_W + (x);
+                    tmp_point0.x = g_terrain [Vertex][0];
+                    tmp_point0.y = g_terrain [Vertex][2];
+                    Vertex = (z) * MAP_W + (x + 1);
+                    tmp_point1.x = g_terrain [Vertex][0];
+                    tmp_point1.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x);
+                    tmp_point21.x = g_terrain [Vertex][0];
+                    tmp_point21.y = g_terrain [Vertex][2];
+                    Vertex = (z + 1) * MAP_W + (x + 1);
+                    tmp_point22.x = g_terrain [Vertex][0];
+                    tmp_point22.y = g_terrain [Vertex][2];
+                    FindTriangles_polygon_has_vertex_in_triangle_last(m_area4, tmp_triangle1, tmp_triangle2, tmp_triangle3, tmp_triangle4, tmp_point0, tmp_point1, tmp_point21, tmp_point22);
+                }
+            }
+        }
+    }
 }
 
 
-void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_1_1(Area_4 &m_area4, Triangle &tmp_triangle1, Triangle &tmp_triangle2, const PPR_Point &tmp_point1, const PPR_Point &tmp_point21, const PPR_Point &tmp_point22)
-{
-	CPointPolygonRelationship tmp_PPR;
-
-	// ÓĞ1¸ö¶¥µãÔÚ¶à±ßĞÎÄÚµÄÈı½ÇĞÎ
-	PPR_Polygon tmp_polygon_tri;
-	tmp_polygon_tri.push_back(tmp_point1);
-	tmp_polygon_tri.push_back(tmp_point21);
-	tmp_polygon_tri.push_back(tmp_point22);
-
-	PPR_Point tmp_polygon_point;	// ¶à±ßĞÎ¶¥µã
-	PPR_Point tmp_polygon_point_ra; // ¶à±ßĞÎ¶¥µã ÏàÁÚµÄ Ò»¸ö¶¥µã
-	PPR_Point tmp_polygon_point_rb; // ¶à±ßĞÎ¶¥µã ÏàÁÚµÄ ÁíÒ»¸ö¶¥µã
-
-	PPR_Point JD1, JD2;
-
-	//CString msg;
-	bool intersectFlag11 = false;  bool intersectFlag12 = false;
-	bool intersectFlag21 = false;  bool intersectFlag22 = false;
-
-	short tmp_cout = 4;
-	while(tmp_cout > 0)
-	{
-		if(4 == tmp_cout)
-		{
-			tmp_polygon_point.x = m_area4.pt1._x;	tmp_polygon_point.y = m_area4.pt1._z;
-
-			tmp_polygon_point_ra.x = m_area4.pt2._x;	tmp_polygon_point_ra.y = m_area4.pt2._z;
-			tmp_polygon_point_rb.x = m_area4.pt4._x;	tmp_polygon_point_rb.y = m_area4.pt4._z;
-		}else if(3 == tmp_cout)
-		{
-			tmp_polygon_point.x = m_area4.pt2._x;  tmp_polygon_point.y = m_area4.pt2._z;
-
-			tmp_polygon_point_ra.x = m_area4.pt1._x;	tmp_polygon_point_ra.y = m_area4.pt1._z;
-			tmp_polygon_point_rb.x = m_area4.pt3._x;	tmp_polygon_point_rb.y = m_area4.pt3._z;
-		}else if(2 == tmp_cout)
-		{
-			tmp_polygon_point.x = m_area4.pt3._x;  tmp_polygon_point.y = m_area4.pt3._z;
-
-			tmp_polygon_point_ra.x = m_area4.pt2._x;	tmp_polygon_point_ra.y = m_area4.pt2._z;
-			tmp_polygon_point_rb.x = m_area4.pt4._x;	tmp_polygon_point_rb.y = m_area4.pt4._z;
-		}else if(1 == tmp_cout)
-		{
-			tmp_polygon_point.x = m_area4.pt4._x;  tmp_polygon_point.y = m_area4.pt4._z;
-
-			tmp_polygon_point_ra.x = m_area4.pt1._x;	tmp_polygon_point_ra.y = m_area4.pt1._z;
-			tmp_polygon_point_rb.x = m_area4.pt3._x;	tmp_polygon_point_rb.y = m_area4.pt3._z;
-		}
-
-
-
-		int inTriangleFlag = -1;
-		inTriangleFlag = tmp_PPR.InPolygon(tmp_polygon_tri, tmp_polygon_point);
-
-		// Èç¹û¶à±ßĞÎµÄ¶¥µãÒ²ÔÚÈı½ÇĞÎÖĞ
-		if(inTriangleFlag == 0)
-		{
-			
-			intersectFlag11 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_polygon_point, tmp_polygon_point_ra);
-			intersectFlag12 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_polygon_point, tmp_polygon_point_rb);
-
-
-			intersectFlag21 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
-			intersectFlag22 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
-
-			if( (intersectFlag11 || intersectFlag12) && (intersectFlag21 || intersectFlag22) )
-			{
-				if(intersectFlag11)
-					JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_polygon_point, tmp_polygon_point_ra);
-				if(intersectFlag12)
-					JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_polygon_point, tmp_polygon_point_rb);
-
-				if(intersectFlag21)
-					JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
-				if(intersectFlag22)
-					JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
-
-				tmp_triangle1.pt2._x = JD1.x; tmp_triangle1.pt2._y = GetHeight(JD1.x, JD1.y); tmp_triangle1.pt2._z = JD1.y;
-				tmp_triangle1.pt3._x = tmp_polygon_point.x; tmp_triangle1.pt3._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y); tmp_triangle1.pt3._z = tmp_polygon_point.y;
-
-
-				tmp_triangle2.pt2._x = tmp_polygon_point.x; tmp_triangle2.pt2._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y); tmp_triangle2.pt2._z = tmp_polygon_point.y;
-				tmp_triangle2.pt3._x = JD2.x; tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle2.pt3._z = JD2.y;
-
-
-				m_area4.LocalTrianglesVecotr1_1.push_back(tmp_triangle1);
-				m_area4.LocalTrianglesVecotr1_1.push_back(tmp_triangle2);
-
-			}
-
-		}
-		tmp_cout--;
-	}
+void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_1_1(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22) {
+    CPointPolygonRelationship tmp_PPR;
+    // æœ‰1ä¸ªé¡¶ç‚¹åœ¨å¤šè¾¹å½¢å†…çš„ä¸‰è§’å½¢
+    PPR_Polygon tmp_polygon_tri;
+    tmp_polygon_tri.push_back(tmp_point1);
+    tmp_polygon_tri.push_back(tmp_point21);
+    tmp_polygon_tri.push_back(tmp_point22);
+    PPR_Point tmp_polygon_point;    // å¤šè¾¹å½¢é¡¶ç‚¹
+    PPR_Point tmp_polygon_point_ra; // å¤šè¾¹å½¢é¡¶ç‚¹ ç›¸é‚»çš„ ä¸€ä¸ªé¡¶ç‚¹
+    PPR_Point tmp_polygon_point_rb; // å¤šè¾¹å½¢é¡¶ç‚¹ ç›¸é‚»çš„ å¦ä¸€ä¸ªé¡¶ç‚¹
+    PPR_Point JD1, JD2;
+    // CString msg;
+    bool intersectFlag11 = false;
+    bool intersectFlag12 = false;
+    bool intersectFlag21 = false;
+    bool intersectFlag22 = false;
+    short tmp_cout = 4;
+    while (tmp_cout > 0) {
+        if (4 == tmp_cout) {
+            tmp_polygon_point.x = m_area4.pt1._x;
+            tmp_polygon_point.y = m_area4.pt1._z;
+            tmp_polygon_point_ra.x = m_area4.pt2._x;
+            tmp_polygon_point_ra.y = m_area4.pt2._z;
+            tmp_polygon_point_rb.x = m_area4.pt4._x;
+            tmp_polygon_point_rb.y = m_area4.pt4._z;
+        } else if (3 == tmp_cout) {
+            tmp_polygon_point.x = m_area4.pt2._x;
+            tmp_polygon_point.y = m_area4.pt2._z;
+            tmp_polygon_point_ra.x = m_area4.pt1._x;
+            tmp_polygon_point_ra.y = m_area4.pt1._z;
+            tmp_polygon_point_rb.x = m_area4.pt3._x;
+            tmp_polygon_point_rb.y = m_area4.pt3._z;
+        } else if (2 == tmp_cout) {
+            tmp_polygon_point.x = m_area4.pt3._x;
+            tmp_polygon_point.y = m_area4.pt3._z;
+            tmp_polygon_point_ra.x = m_area4.pt2._x;
+            tmp_polygon_point_ra.y = m_area4.pt2._z;
+            tmp_polygon_point_rb.x = m_area4.pt4._x;
+            tmp_polygon_point_rb.y = m_area4.pt4._z;
+        } else if (1 == tmp_cout) {
+            tmp_polygon_point.x = m_area4.pt4._x;
+            tmp_polygon_point.y = m_area4.pt4._z;
+            tmp_polygon_point_ra.x = m_area4.pt1._x;
+            tmp_polygon_point_ra.y = m_area4.pt1._z;
+            tmp_polygon_point_rb.x = m_area4.pt3._x;
+            tmp_polygon_point_rb.y = m_area4.pt3._z;
+        }
+        int inTriangleFlag = -1;
+        inTriangleFlag = tmp_PPR.InPolygon(tmp_polygon_tri, tmp_polygon_point);
+        // å¦‚æœå¤šè¾¹å½¢çš„é¡¶ç‚¹ä¹Ÿåœ¨ä¸‰è§’å½¢ä¸­
+        if (inTriangleFlag == 0) {
+            intersectFlag11 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_polygon_point, tmp_polygon_point_ra);
+            intersectFlag12 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_polygon_point, tmp_polygon_point_rb);
+            intersectFlag21 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
+            intersectFlag22 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
+            if ((intersectFlag11 || intersectFlag12) && (intersectFlag21 || intersectFlag22)) {
+                if (intersectFlag11)
+                    JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_polygon_point, tmp_polygon_point_ra);
+                if (intersectFlag12)
+                    JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_polygon_point, tmp_polygon_point_rb);
+                if (intersectFlag21)
+                    JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
+                if (intersectFlag22)
+                    JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
+                tmp_triangle1.pt2._x = JD1.x;
+                tmp_triangle1.pt2._y = GetHeight(JD1.x, JD1.y);
+                tmp_triangle1.pt2._z = JD1.y;
+                tmp_triangle1.pt3._x = tmp_polygon_point.x;
+                tmp_triangle1.pt3._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
+                tmp_triangle1.pt3._z = tmp_polygon_point.y;
+                tmp_triangle2.pt2._x = tmp_polygon_point.x;
+                tmp_triangle2.pt2._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
+                tmp_triangle2.pt2._z = tmp_polygon_point.y;
+                tmp_triangle2.pt3._x = JD2.x;
+                tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
+                tmp_triangle2.pt3._z = JD2.y;
+                m_area4.LocalTrianglesVecotr1_1.push_back(tmp_triangle1);
+                m_area4.LocalTrianglesVecotr1_1.push_back(tmp_triangle2);
+            }
+        }
+        tmp_cout--;
+    }
 }
 
 
 
-void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_2_1(Area_4 &m_area4, Triangle &tmp_triangle1, Triangle &tmp_triangle2, Triangle &tmp_triangle3, const PPR_Point &tmp_point1, const PPR_Point &tmp_point21, const PPR_Point &tmp_point22)
-{
-	CPointPolygonRelationship tmp_PPR;
-
-	// ÓĞ2¸ö¶¥µãÔÚ¶à±ßĞÎÄÚµÄÈı½ÇĞÎ
-	PPR_Polygon tmp_polygon_tri;
-	tmp_polygon_tri.push_back(tmp_point1);
-	tmp_polygon_tri.push_back(tmp_point21);
-	tmp_polygon_tri.push_back(tmp_point22);
-
-	PPR_Point tmp_polygon_point;	// ¶à±ßĞÎ¶¥µã
-	PPR_Point tmp_polygon_point_ra; // ¶à±ßĞÎ¶¥µã ÏàÁÚµÄ Ò»¸ö¶¥µã
-	PPR_Point tmp_polygon_point_rb; // ¶à±ßĞÎ¶¥µã ÏàÁÚµÄ ÁíÒ»¸ö¶¥µã
-
-	PPR_Point JD1, JD2;
-
-	//CString msg;
-	bool intersectFlag11 = false;  bool intersectFlag12 = false;
-	bool intersectFlag21 = false;  bool intersectFlag22 = false;
-
-	short tmp_cout = 4;
-	while(tmp_cout > 0)
-	{
-		if(4 == tmp_cout)
-		{
-			tmp_polygon_point.x = m_area4.pt1._x;	tmp_polygon_point.y = m_area4.pt1._z;
-
-			tmp_polygon_point_ra.x = m_area4.pt2._x;	tmp_polygon_point_ra.y = m_area4.pt2._z;
-			tmp_polygon_point_rb.x = m_area4.pt4._x;	tmp_polygon_point_rb.y = m_area4.pt4._z;
-		}else if(3 == tmp_cout)
-		{
-			tmp_polygon_point.x = m_area4.pt2._x;  tmp_polygon_point.y = m_area4.pt2._z;
-
-			tmp_polygon_point_ra.x = m_area4.pt1._x;	tmp_polygon_point_ra.y = m_area4.pt1._z;
-			tmp_polygon_point_rb.x = m_area4.pt3._x;	tmp_polygon_point_rb.y = m_area4.pt3._z;
-		}else if(2 == tmp_cout)
-		{
-			tmp_polygon_point.x = m_area4.pt3._x;  tmp_polygon_point.y = m_area4.pt3._z;
-
-			tmp_polygon_point_ra.x = m_area4.pt2._x;	tmp_polygon_point_ra.y = m_area4.pt2._z;
-			tmp_polygon_point_rb.x = m_area4.pt4._x;	tmp_polygon_point_rb.y = m_area4.pt4._z;
-		}else if(1 == tmp_cout)
-		{
-			tmp_polygon_point.x = m_area4.pt4._x;  tmp_polygon_point.y = m_area4.pt4._z;
-
-			tmp_polygon_point_ra.x = m_area4.pt1._x;	tmp_polygon_point_ra.y = m_area4.pt1._z;
-			tmp_polygon_point_rb.x = m_area4.pt3._x;	tmp_polygon_point_rb.y = m_area4.pt3._z;
-		}
-
-
-
-		int inTriangleFlag = -1;
-		inTriangleFlag = tmp_PPR.InPolygon(tmp_polygon_tri, tmp_polygon_point);
-
-		// Èç¹û¶à±ßĞÎµÄ¶¥µãÒ²ÔÚÈı½ÇĞÎÖĞ
-		if(inTriangleFlag == 0)
-		{
-
-			intersectFlag11 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_polygon_point, tmp_polygon_point_ra);
-			intersectFlag12 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_polygon_point, tmp_polygon_point_rb);
-
-
-			intersectFlag21 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
-			intersectFlag22 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
-
-			if( (intersectFlag11 || intersectFlag12) && (intersectFlag21 || intersectFlag22) )
-			{
-				if(intersectFlag11)
-					JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_polygon_point, tmp_polygon_point_ra);
-				if(intersectFlag12)
-					JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_polygon_point, tmp_polygon_point_rb);
-
-				if(intersectFlag21)
-					JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
-				if(intersectFlag22)
-					JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
-
-
-	 
-				tmp_triangle1.pt2._x = JD1.x; tmp_triangle1.pt2._y = GetHeight(JD1.x, JD1.y); tmp_triangle1.pt2._z = JD1.y;
-				tmp_triangle1.pt3._x = tmp_polygon_point.x; tmp_triangle1.pt3._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y); tmp_triangle1.pt3._z = tmp_polygon_point.y;
-
-
-				tmp_triangle2.pt2._x = tmp_polygon_point.x; tmp_triangle2.pt2._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y); tmp_triangle2.pt2._z = tmp_polygon_point.y;
-				tmp_triangle2.pt3._x = JD2.x; tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y); tmp_triangle2.pt3._z = JD2.y;
-
-
-				tmp_triangle3.pt3._x = tmp_polygon_point.x; tmp_triangle3.pt3._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y); tmp_triangle3.pt3._z = tmp_polygon_point.y;
-				
-
-
-				//AfxMessageBox("21");
-
-				m_area4.LocalTrianglesVecotr2_1.push_back(tmp_triangle1);
-				m_area4.LocalTrianglesVecotr2_1.push_back(tmp_triangle2);
-				m_area4.LocalTrianglesVecotr2_1.push_back(tmp_triangle3);
-			}
-
-		}
-		tmp_cout--;
-	}
+void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_2_1(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, Triangle& tmp_triangle3, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22) {
+    CPointPolygonRelationship tmp_PPR;
+    // æœ‰2ä¸ªé¡¶ç‚¹åœ¨å¤šè¾¹å½¢å†…çš„ä¸‰è§’å½¢
+    PPR_Polygon tmp_polygon_tri;
+    tmp_polygon_tri.push_back(tmp_point1);
+    tmp_polygon_tri.push_back(tmp_point21);
+    tmp_polygon_tri.push_back(tmp_point22);
+    PPR_Point tmp_polygon_point;    // å¤šè¾¹å½¢é¡¶ç‚¹
+    PPR_Point tmp_polygon_point_ra; // å¤šè¾¹å½¢é¡¶ç‚¹ ç›¸é‚»çš„ ä¸€ä¸ªé¡¶ç‚¹
+    PPR_Point tmp_polygon_point_rb; // å¤šè¾¹å½¢é¡¶ç‚¹ ç›¸é‚»çš„ å¦ä¸€ä¸ªé¡¶ç‚¹
+    PPR_Point JD1, JD2;
+    //CString msg;
+    bool intersectFlag11 = false;
+    bool intersectFlag12 = false;
+    bool intersectFlag21 = false;
+    bool intersectFlag22 = false;
+    short tmp_cout = 4;
+    while (tmp_cout > 0) {
+        if (4 == tmp_cout) {
+            tmp_polygon_point.x = m_area4.pt1._x;
+            tmp_polygon_point.y = m_area4.pt1._z;
+            tmp_polygon_point_ra.x = m_area4.pt2._x;
+            tmp_polygon_point_ra.y = m_area4.pt2._z;
+            tmp_polygon_point_rb.x = m_area4.pt4._x;
+            tmp_polygon_point_rb.y = m_area4.pt4._z;
+        } else if (3 == tmp_cout) {
+            tmp_polygon_point.x = m_area4.pt2._x;
+            tmp_polygon_point.y = m_area4.pt2._z;
+            tmp_polygon_point_ra.x = m_area4.pt1._x;
+            tmp_polygon_point_ra.y = m_area4.pt1._z;
+            tmp_polygon_point_rb.x = m_area4.pt3._x;
+            tmp_polygon_point_rb.y = m_area4.pt3._z;
+        } else if (2 == tmp_cout) {
+            tmp_polygon_point.x = m_area4.pt3._x;
+            tmp_polygon_point.y = m_area4.pt3._z;
+            tmp_polygon_point_ra.x = m_area4.pt2._x;
+            tmp_polygon_point_ra.y = m_area4.pt2._z;
+            tmp_polygon_point_rb.x = m_area4.pt4._x;
+            tmp_polygon_point_rb.y = m_area4.pt4._z;
+        } else if (1 == tmp_cout) {
+            tmp_polygon_point.x = m_area4.pt4._x;
+            tmp_polygon_point.y = m_area4.pt4._z;
+            tmp_polygon_point_ra.x = m_area4.pt1._x;
+            tmp_polygon_point_ra.y = m_area4.pt1._z;
+            tmp_polygon_point_rb.x = m_area4.pt3._x;
+            tmp_polygon_point_rb.y = m_area4.pt3._z;
+        }
+        int inTriangleFlag = -1;
+        inTriangleFlag = tmp_PPR.InPolygon(tmp_polygon_tri, tmp_polygon_point);
+        // å¦‚æœå¤šè¾¹å½¢çš„é¡¶ç‚¹ä¹Ÿåœ¨ä¸‰è§’å½¢ä¸­
+        if (inTriangleFlag == 0) {
+            intersectFlag11 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_polygon_point, tmp_polygon_point_ra);
+            intersectFlag12 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_polygon_point, tmp_polygon_point_rb);
+            intersectFlag21 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
+            intersectFlag22 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
+            if ((intersectFlag11 || intersectFlag12) && (intersectFlag21 || intersectFlag22)) {
+                if (intersectFlag11)
+                    JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_polygon_point, tmp_polygon_point_ra);
+                if (intersectFlag12)
+                    JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_polygon_point, tmp_polygon_point_rb);
+                if (intersectFlag21)
+                    JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
+                if (intersectFlag22)
+                    JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
+                tmp_triangle1.pt2._x = JD1.x;
+                tmp_triangle1.pt2._y = GetHeight(JD1.x, JD1.y);
+                tmp_triangle1.pt2._z = JD1.y;
+                tmp_triangle1.pt3._x = tmp_polygon_point.x;
+                tmp_triangle1.pt3._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
+                tmp_triangle1.pt3._z = tmp_polygon_point.y;
+                tmp_triangle2.pt2._x = tmp_polygon_point.x;
+                tmp_triangle2.pt2._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
+                tmp_triangle2.pt2._z = tmp_polygon_point.y;
+                tmp_triangle2.pt3._x = JD2.x;
+                tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
+                tmp_triangle2.pt3._z = JD2.y;
+                tmp_triangle3.pt3._x = tmp_polygon_point.x;
+                tmp_triangle3.pt3._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
+                tmp_triangle3.pt3._z = tmp_polygon_point.y;
+                //AfxMessageBox("21");
+                m_area4.LocalTrianglesVecotr2_1.push_back(tmp_triangle1);
+                m_area4.LocalTrianglesVecotr2_1.push_back(tmp_triangle2);
+                m_area4.LocalTrianglesVecotr2_1.push_back(tmp_triangle3);
+            }
+        }
+        tmp_cout--;
+    }
 }
 
 
 
-void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_last(Area_4 &m_area4, Triangle &tmp_triangle1, Triangle &tmp_triangle2, Triangle &tmp_triangle3, Triangle &tmp_triangle4, const PPR_Point &tmp_point0, const PPR_Point &tmp_point1, const PPR_Point &tmp_point21, const PPR_Point &tmp_point22)
-{
-	CPointPolygonRelationship tmp_PPR;
-
-
-	PPR_Polygon tmp_polygon_tri;
-	tmp_polygon_tri.push_back(tmp_point0);
-	tmp_polygon_tri.push_back(tmp_point21);
-	tmp_polygon_tri.push_back(tmp_point22);
-
-	PPR_Point tmp_polygon_point;	// ¶à±ßĞÎ¶¥µã
-	PPR_Point tmp_polygon_point_ra; // ¶à±ßĞÎ¶¥µã ÏàÁÚµÄ Ò»¸ö¶¥µã
-	PPR_Point tmp_polygon_point_rb; // ¶à±ßĞÎ¶¥µã ÏàÁÚµÄ ÁíÒ»¸ö¶¥µã
-
-	PPR_Point JD1, JD2 , JD3, JD4;
-
-	//CString msg;
-
-
-	short tmp_cout = 4;
-	while(tmp_cout > 0)
-	{
-		if(4 == tmp_cout)
-		{
-			tmp_polygon_point.x = m_area4.pt1._x;	tmp_polygon_point.y = m_area4.pt1._z;
-
-			tmp_polygon_point_ra.x = m_area4.pt2._x;	tmp_polygon_point_ra.y = m_area4.pt2._z;
-			tmp_polygon_point_rb.x = m_area4.pt4._x;	tmp_polygon_point_rb.y = m_area4.pt4._z;
-		}else if(3 == tmp_cout)
-		{
-			tmp_polygon_point.x = m_area4.pt2._x;  tmp_polygon_point.y = m_area4.pt2._z;
-
-			tmp_polygon_point_ra.x = m_area4.pt1._x;	tmp_polygon_point_ra.y = m_area4.pt1._z;
-			tmp_polygon_point_rb.x = m_area4.pt3._x;	tmp_polygon_point_rb.y = m_area4.pt3._z;
-		}else if(2 == tmp_cout)
-		{
-			tmp_polygon_point.x = m_area4.pt3._x;  tmp_polygon_point.y = m_area4.pt3._z;
-
-			tmp_polygon_point_ra.x = m_area4.pt2._x;	tmp_polygon_point_ra.y = m_area4.pt2._z;
-			tmp_polygon_point_rb.x = m_area4.pt4._x;	tmp_polygon_point_rb.y = m_area4.pt4._z;
-		}else if(1 == tmp_cout)
-		{
-			tmp_polygon_point.x = m_area4.pt4._x;  tmp_polygon_point.y = m_area4.pt4._z;
-
-			tmp_polygon_point_ra.x = m_area4.pt1._x;	tmp_polygon_point_ra.y = m_area4.pt1._z;
-			tmp_polygon_point_rb.x = m_area4.pt3._x;	tmp_polygon_point_rb.y = m_area4.pt3._z;
-		}
-
-
-
-		int inTriangleFlag = -1;
-		inTriangleFlag = tmp_PPR.InPolygon(tmp_polygon_tri, tmp_polygon_point);
-
-
-		bool intersectFlag11 = false;  bool intersectFlag12 = false;
-		bool intersectFlag21 = false;  bool intersectFlag22 = false;
-
-		bool intersectFlag31 = false;  bool intersectFlag32 = false;
-
-		// Èç¹û¶à±ßĞÎµÄ¶¥µãÒ²ÔÚ¶Ô½ÇÈı½ÇĞÎÖĞ
-		if(inTriangleFlag == 0)
-		{
-
-
-			// ÓëÈı½ÇĞÎĞ±±ßÓĞ½»µã
-			intersectFlag31 = tmp_PPR.Meet(tmp_point21,tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
-			intersectFlag32 = tmp_PPR.Meet(tmp_point21,tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
-
-
-
-			intersectFlag11 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_polygon_point, tmp_polygon_point_ra);
-			intersectFlag12 = tmp_PPR.Meet(tmp_point1,tmp_point21, tmp_polygon_point, tmp_polygon_point_rb);
-
-
-			intersectFlag21 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
-			intersectFlag22 = tmp_PPR.Meet(tmp_point1,tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
-
-			if( (intersectFlag31 && intersectFlag32) && (intersectFlag11 || intersectFlag12) && (intersectFlag21 || intersectFlag22) )
-			{
-				if(intersectFlag11)
-					JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_polygon_point, tmp_polygon_point_ra);
-				if(intersectFlag12)
-					JD1 = tmp_PPR.getJD(tmp_point1,tmp_point21, tmp_polygon_point, tmp_polygon_point_rb);
-
-				if(intersectFlag21)
-					JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
-				if(intersectFlag22)
-					JD2 = tmp_PPR.getJD(tmp_point1,tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
-
-
-
-				JD3 = tmp_PPR.getJD(tmp_point21,tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
-				JD4 = tmp_PPR.getJD(tmp_point21,tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
-
-				PPR_Point tmp;
-
-				float len1 = (JD3.x - tmp_point21.x)*(JD3.x - tmp_point21.x) + (JD3.y - tmp_point21.y);
-				float len2 = (JD4.x - tmp_point21.x)*(JD4.x - tmp_point21.x) + (JD4.y - tmp_point21.y);
-
-				if(len1 > len2)
-				{
-					tmp = PPR_Point(JD3.x, JD3.y);
-					JD3 = PPR_Point(JD4.x, JD4.y);
-					JD4 = PPR_Point(tmp.x, tmp.y);
-				}
-
-
-				tmp_triangle4.pt1._x = tmp_polygon_point.x; tmp_triangle4.pt1._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y); tmp_triangle4.pt1._z = tmp_polygon_point.y;
-				tmp_triangle4.pt2._x = JD3.x; tmp_triangle4.pt2._y = GetHeight(JD3.x, JD3.y); tmp_triangle4.pt2._z = JD3.y;
-				tmp_triangle4.pt3._x = JD4.x; tmp_triangle4.pt3._y = GetHeight(JD4.x, JD4.y); tmp_triangle4.pt3._z = JD4.y;
-
-
-
-
-				tmp_triangle1.pt2._x = JD1.x; tmp_triangle1.pt2._y = GetHeight(JD1.x, JD1.y); tmp_triangle1.pt2._z = JD1.y;
-				tmp_triangle1.pt3._x = JD3.x; tmp_triangle1.pt3._y = GetHeight(JD3.x, JD3.y); tmp_triangle1.pt3._z = JD3.y;
-
-
-				tmp_triangle2.pt2._x = JD2.x; tmp_triangle2.pt2._y = GetHeight(JD2.x, JD2.y); tmp_triangle2.pt2._z = JD2.y;
-				tmp_triangle2.pt3._x = JD4.x; tmp_triangle2.pt3._y = GetHeight(JD4.x, JD4.y); tmp_triangle2.pt3._z = JD4.y;
-
-
-				tmp_triangle3.pt2._x = JD3.x; tmp_triangle3.pt2._y = GetHeight(JD3.x, JD3.y); tmp_triangle3.pt2._z = JD3.y;
-				tmp_triangle3.pt3._x = JD4.x; tmp_triangle3.pt3._y = GetHeight(JD4.x, JD4.y); tmp_triangle3.pt3._z = JD4.y;
-
-
-
-				//AfxMessageBox("last2");
-
-				m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle1);
-				m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle2);
-				m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle3);
-				m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle4);
-			}
-
-		}
-		tmp_cout--;
-	}
+void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_last(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, Triangle& tmp_triangle3, Triangle& tmp_triangle4, const PPR_Point& tmp_point0, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22) {
+    CPointPolygonRelationship tmp_PPR;
+    PPR_Polygon tmp_polygon_tri;
+    tmp_polygon_tri.push_back(tmp_point0);
+    tmp_polygon_tri.push_back(tmp_point21);
+    tmp_polygon_tri.push_back(tmp_point22);
+    PPR_Point tmp_polygon_point;    // å¤šè¾¹å½¢é¡¶ç‚¹
+    PPR_Point tmp_polygon_point_ra; // å¤šè¾¹å½¢é¡¶ç‚¹ ç›¸é‚»çš„ ä¸€ä¸ªé¡¶ç‚¹
+    PPR_Point tmp_polygon_point_rb; // å¤šè¾¹å½¢é¡¶ç‚¹ ç›¸é‚»çš„ å¦ä¸€ä¸ªé¡¶ç‚¹
+    PPR_Point JD1, JD2 , JD3, JD4;
+    //CString msg;
+    short tmp_cout = 4;
+    while (tmp_cout > 0) {
+        if (4 == tmp_cout) {
+            tmp_polygon_point.x = m_area4.pt1._x;
+            tmp_polygon_point.y = m_area4.pt1._z;
+            tmp_polygon_point_ra.x = m_area4.pt2._x;
+            tmp_polygon_point_ra.y = m_area4.pt2._z;
+            tmp_polygon_point_rb.x = m_area4.pt4._x;
+            tmp_polygon_point_rb.y = m_area4.pt4._z;
+        } else if (3 == tmp_cout) {
+            tmp_polygon_point.x = m_area4.pt2._x;
+            tmp_polygon_point.y = m_area4.pt2._z;
+            tmp_polygon_point_ra.x = m_area4.pt1._x;
+            tmp_polygon_point_ra.y = m_area4.pt1._z;
+            tmp_polygon_point_rb.x = m_area4.pt3._x;
+            tmp_polygon_point_rb.y = m_area4.pt3._z;
+        } else if (2 == tmp_cout) {
+            tmp_polygon_point.x = m_area4.pt3._x;
+            tmp_polygon_point.y = m_area4.pt3._z;
+            tmp_polygon_point_ra.x = m_area4.pt2._x;
+            tmp_polygon_point_ra.y = m_area4.pt2._z;
+            tmp_polygon_point_rb.x = m_area4.pt4._x;
+            tmp_polygon_point_rb.y = m_area4.pt4._z;
+        } else if (1 == tmp_cout) {
+            tmp_polygon_point.x = m_area4.pt4._x;
+            tmp_polygon_point.y = m_area4.pt4._z;
+            tmp_polygon_point_ra.x = m_area4.pt1._x;
+            tmp_polygon_point_ra.y = m_area4.pt1._z;
+            tmp_polygon_point_rb.x = m_area4.pt3._x;
+            tmp_polygon_point_rb.y = m_area4.pt3._z;
+        }
+        int inTriangleFlag = -1;
+        inTriangleFlag = tmp_PPR.InPolygon(tmp_polygon_tri, tmp_polygon_point);
+        bool intersectFlag11 = false;
+        bool intersectFlag12 = false;
+        bool intersectFlag21 = false;
+        bool intersectFlag22 = false;
+        bool intersectFlag31 = false;
+        bool intersectFlag32 = false;
+        // å¦‚æœå¤šè¾¹å½¢çš„é¡¶ç‚¹ä¹Ÿåœ¨å¯¹è§’ä¸‰è§’å½¢ä¸­
+        if (inTriangleFlag == 0) {
+            // ä¸ä¸‰è§’å½¢æ–œè¾¹æœ‰äº¤ç‚¹
+            intersectFlag31 = tmp_PPR.Meet(tmp_point21, tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
+            intersectFlag32 = tmp_PPR.Meet(tmp_point21, tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
+            intersectFlag11 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_polygon_point, tmp_polygon_point_ra);
+            intersectFlag12 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_polygon_point, tmp_polygon_point_rb);
+            intersectFlag21 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
+            intersectFlag22 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
+            if ((intersectFlag31 && intersectFlag32) && (intersectFlag11 || intersectFlag12) && (intersectFlag21 || intersectFlag22)) {
+                if (intersectFlag11)
+                    JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_polygon_point, tmp_polygon_point_ra);
+                if (intersectFlag12)
+                    JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_polygon_point, tmp_polygon_point_rb);
+                if (intersectFlag21)
+                    JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
+                if (intersectFlag22)
+                    JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
+                JD3 = tmp_PPR.getJD(tmp_point21, tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
+                JD4 = tmp_PPR.getJD(tmp_point21, tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
+                PPR_Point tmp;
+                float len1 = (JD3.x - tmp_point21.x) * (JD3.x - tmp_point21.x) + (JD3.y - tmp_point21.y);
+                float len2 = (JD4.x - tmp_point21.x) * (JD4.x - tmp_point21.x) + (JD4.y - tmp_point21.y);
+                if (len1 > len2) {
+                    tmp = PPR_Point(JD3.x, JD3.y);
+                    JD3 = PPR_Point(JD4.x, JD4.y);
+                    JD4 = PPR_Point(tmp.x, tmp.y);
+                }
+                tmp_triangle4.pt1._x = tmp_polygon_point.x;
+                tmp_triangle4.pt1._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
+                tmp_triangle4.pt1._z = tmp_polygon_point.y;
+                tmp_triangle4.pt2._x = JD3.x;
+                tmp_triangle4.pt2._y = GetHeight(JD3.x, JD3.y);
+                tmp_triangle4.pt2._z = JD3.y;
+                tmp_triangle4.pt3._x = JD4.x;
+                tmp_triangle4.pt3._y = GetHeight(JD4.x, JD4.y);
+                tmp_triangle4.pt3._z = JD4.y;
+                tmp_triangle1.pt2._x = JD1.x;
+                tmp_triangle1.pt2._y = GetHeight(JD1.x, JD1.y);
+                tmp_triangle1.pt2._z = JD1.y;
+                tmp_triangle1.pt3._x = JD3.x;
+                tmp_triangle1.pt3._y = GetHeight(JD3.x, JD3.y);
+                tmp_triangle1.pt3._z = JD3.y;
+                tmp_triangle2.pt2._x = JD2.x;
+                tmp_triangle2.pt2._y = GetHeight(JD2.x, JD2.y);
+                tmp_triangle2.pt2._z = JD2.y;
+                tmp_triangle2.pt3._x = JD4.x;
+                tmp_triangle2.pt3._y = GetHeight(JD4.x, JD4.y);
+                tmp_triangle2.pt3._z = JD4.y;
+                tmp_triangle3.pt2._x = JD3.x;
+                tmp_triangle3.pt2._y = GetHeight(JD3.x, JD3.y);
+                tmp_triangle3.pt2._z = JD3.y;
+                tmp_triangle3.pt3._x = JD4.x;
+                tmp_triangle3.pt3._y = GetHeight(JD4.x, JD4.y);
+                tmp_triangle3.pt3._z = JD4.y;
+                //AfxMessageBox("last2");
+                m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle1);
+                m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle2);
+                m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle3);
+                m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle4);
+            }
+        }
+        tmp_cout--;
+    }
 }
 
 
 
 
 
-// ¸ü»»Ñ¡ÖĞµÄÃæ·ûºÅµÄÎÆÀí
-void CMy3DSymbolLibNewView::UpdateAreaTexture(PPR_Point _mp, CPoint point)
-{
-	unsigned int tmp_size = m_Area4_Array.GetSize();
-
-	for(unsigned int i=0; i<tmp_size; ++i)
-	{
-		Area_4 m_area4;
-		m_area4.pt1 = m_Area4_Array[i]->pt1;
-		m_area4.pt2 = m_Area4_Array[i]->pt2;
-		m_area4.pt3 = m_Area4_Array[i]->pt3;
-		m_area4.pt4 = m_Area4_Array[i]->pt4;
-	
-
-		CPointPolygonRelationship tmp_ppr;
-
-		PPR_Polygon tmp_polygon;
-		PPR_Point tmp_point;
-
-		tmp_point.x = m_area4.pt1._x; tmp_point.y = m_area4.pt1._z;
-		tmp_polygon.push_back(tmp_point);
-
-		tmp_point.x = m_area4.pt2._x; tmp_point.y = m_area4.pt2._z;
-		tmp_polygon.push_back(tmp_point);
-
-		tmp_point.x = m_area4.pt3._x; tmp_point.y = m_area4.pt3._z;
-		tmp_polygon.push_back(tmp_point);
-
-		tmp_point.x = m_area4.pt4._x; tmp_point.y = m_area4.pt4._z;
-		tmp_polygon.push_back(tmp_point);
-
-
-		PPR_Point tmp_dem_point;
-		
-		
-
-		int inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, _mp);
-
-		if(inPolygonFlag == 0) // µãÔÚ¶à±ßĞÎÄÚ
-		{
-
-			// ÓÒ¼ü¿ì½İ²Ëµ¥
-			CMenu menu;
-			menu.LoadMenu(IDR_POPUP_MENU_AREA_TEXTURE_UPDATE);
-			CMenu *pPopUp = menu.GetSubMenu(0);
-			ClientToScreen(&point);
-			pPopUp->TrackPopupMenu(/*TPM_LEFTALIGN | */TPM_RIGHTBUTTON, point.x, point.y, this);
-
-			area_id = i;
-			
-			 
-		}
-		else
-		{
-			//AfxMessageBox("µã²»ÔÚ¶à±ßĞÎÄÚ!"); 
-		}
-
-
-	}
- 
-
-
+// æ›´æ¢é€‰ä¸­çš„é¢ç¬¦å·çš„çº¹ç†
+void CMy3DSymbolLibNewView::UpdateAreaTexture(PPR_Point _mp, CPoint point) {
+    unsigned int tmp_size = m_Area4_Array.GetSize();
+    for (unsigned int i = 0; i < tmp_size; ++i) {
+        Area_4 m_area4;
+        m_area4.pt1 = m_Area4_Array[i]->pt1;
+        m_area4.pt2 = m_Area4_Array[i]->pt2;
+        m_area4.pt3 = m_Area4_Array[i]->pt3;
+        m_area4.pt4 = m_Area4_Array[i]->pt4;
+        CPointPolygonRelationship tmp_ppr;
+        PPR_Polygon tmp_polygon;
+        PPR_Point tmp_point;
+        tmp_point.x = m_area4.pt1._x;
+        tmp_point.y = m_area4.pt1._z;
+        tmp_polygon.push_back(tmp_point);
+        tmp_point.x = m_area4.pt2._x;
+        tmp_point.y = m_area4.pt2._z;
+        tmp_polygon.push_back(tmp_point);
+        tmp_point.x = m_area4.pt3._x;
+        tmp_point.y = m_area4.pt3._z;
+        tmp_polygon.push_back(tmp_point);
+        tmp_point.x = m_area4.pt4._x;
+        tmp_point.y = m_area4.pt4._z;
+        tmp_polygon.push_back(tmp_point);
+        PPR_Point tmp_dem_point;
+        int inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, _mp);
+        if (inPolygonFlag == 0) { // ç‚¹åœ¨å¤šè¾¹å½¢å†…
+            // å³é”®å¿«æ·èœå•
+            CMenu menu;
+            menu.LoadMenu(IDR_POPUP_MENU_AREA_TEXTURE_UPDATE);
+            CMenu* pPopUp = menu.GetSubMenu(0);
+            ClientToScreen(&point);
+            pPopUp->TrackPopupMenu(/*TPM_LEFTALIGN | */TPM_RIGHTBUTTON, point.x, point.y, this);
+            area_id = i;
+        } else {
+            //AfxMessageBox("ç‚¹ä¸åœ¨å¤šè¾¹å½¢å†…!");
+        }
+    }
 }
 
 
@@ -10687,153 +8071,111 @@ void CMy3DSymbolLibNewView::UpdateAreaTexture(PPR_Point _mp, CPoint point)
 
 
 /************************************************************************/
-/* µã·ûºÅÄ£ĞÍ                                                            */
+/* ç‚¹ç¬¦å·æ¨¡å‹                                                            */
 /************************************************************************/
-// ²Ëµ¥ ==¡·Ìí¼Óµã·ûºÅÄ£ĞÍ
-void CMy3DSymbolLibNewView::OnMenuAddPointSymbol()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+// èœå• ==ã€‹æ·»åŠ ç‚¹ç¬¦å·æ¨¡å‹
+void CMy3DSymbolLibNewView::OnMenuAddPointSymbol() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 }
 
-// 3dsMax ±ê¼Ç·ûºÅ
-void CMy3DSymbolLibNewView::OnMenuAddPoint3dsmax()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	int newFlag = 0;
-
-	if(!exist_point_file())
-	{	
-		INT_PTR nRes;
-		nRes = MessageBox("Ã»ÓĞ´ò¿ªµÄµãÎÄ¼ş£¬ĞèÒªĞÂ½¨ÎÄ¼şÂğ£¿", "ÕÒ²»µ½µãÎÄ¼ş", MB_YESNO | MB_ICONQUESTION);
-		if(nRes == IDYES)
-		{
-			newFlag = new_point_file();
-			if(0 == newFlag)
-			{
-				exist_point_flag = TRUE;
-			}
-		}	
-	}
-	else
-	{
-		On3dsModelLoad();
-	}
+// 3dsMax æ ‡è®°ç¬¦å·
+void CMy3DSymbolLibNewView::OnMenuAddPoint3dsmax() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    int newFlag = 0;
+    if (!exist_point_file()) {
+        INT_PTR nRes;
+        nRes = MessageBox("æ²¡æœ‰æ‰“å¼€çš„ç‚¹æ–‡ä»¶ï¼Œéœ€è¦æ–°å»ºæ–‡ä»¶å—ï¼Ÿ", "æ‰¾ä¸åˆ°ç‚¹æ–‡ä»¶", MB_YESNO | MB_ICONQUESTION);
+        if (nRes == IDYES) {
+            newFlag = new_point_file();
+            if (0 == newFlag) {
+                exist_point_flag = TRUE;
+            }
+        }
+    } else {
+        On3dsModelLoad();
+    }
 }
 
-// 2D Í¼Æ¬±ê¼Ç·ûºÅ
-void CMy3DSymbolLibNewView::OnMenuAddPoint2dImg()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	int newFlag = 0;
-
-	if(!exist_point_file())
-	{	
-		INT_PTR nRes;
-		nRes = MessageBox("Ã»ÓĞ´ò¿ªµÄµãÎÄ¼ş£¬ĞèÒªĞÂ½¨ÎÄ¼şÂğ£¿", "ÕÒ²»µ½µãÎÄ¼ş", MB_YESNO | MB_ICONQUESTION);
-		if(nRes == IDYES)
-		{
-			newFlag = new_point_file();
-			if(0 == newFlag)
-			{
-				exist_point_flag = TRUE;
-			}
-		}	
-	}
-	else
-	{
-		OnTreeLoad();
-	}
+// 2D å›¾ç‰‡æ ‡è®°ç¬¦å·
+void CMy3DSymbolLibNewView::OnMenuAddPoint2dImg() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    int newFlag = 0;
+    if (!exist_point_file()) {
+        INT_PTR nRes;
+        nRes = MessageBox("æ²¡æœ‰æ‰“å¼€çš„ç‚¹æ–‡ä»¶ï¼Œéœ€è¦æ–°å»ºæ–‡ä»¶å—ï¼Ÿ", "æ‰¾ä¸åˆ°ç‚¹æ–‡ä»¶", MB_YESNO | MB_ICONQUESTION);
+        if (nRes == IDYES) {
+            newFlag = new_point_file();
+            if (0 == newFlag) {
+                exist_point_flag = TRUE;
+            }
+        }
+    } else {
+        OnTreeLoad();
+    }
 }
 
-// 3D Í¼Æ¬±ê¼Ç·ûºÅ
-void CMy3DSymbolLibNewView::OnMenuAddPoint3dImg()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	int newFlag = 0;
-
-	if(!exist_point_file())
-	{	
-		INT_PTR nRes;
-		nRes = MessageBox("Ã»ÓĞ´ò¿ªµÄµãÎÄ¼ş£¬ĞèÒªĞÂ½¨ÎÄ¼şÂğ£¿", "ÕÒ²»µ½µãÎÄ¼ş", MB_YESNO | MB_ICONQUESTION);
-		if(nRes == IDYES)
-		{
-			newFlag = new_point_file();
-			if(0 == newFlag)
-			{
-				exist_point_flag = TRUE;
-			}
-		}	
-	}
-	else
-	{
-		On3dTreeLoad();
-	}
+// 3D å›¾ç‰‡æ ‡è®°ç¬¦å·
+void CMy3DSymbolLibNewView::OnMenuAddPoint3dImg() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    int newFlag = 0;
+    if (!exist_point_file()) {
+        INT_PTR nRes;
+        nRes = MessageBox("æ²¡æœ‰æ‰“å¼€çš„ç‚¹æ–‡ä»¶ï¼Œéœ€è¦æ–°å»ºæ–‡ä»¶å—ï¼Ÿ", "æ‰¾ä¸åˆ°ç‚¹æ–‡ä»¶", MB_YESNO | MB_ICONQUESTION);
+        if (nRes == IDYES) {
+            newFlag = new_point_file();
+            if (0 == newFlag) {
+                exist_point_flag = TRUE;
+            }
+        }
+    } else {
+        On3dTreeLoad();
+    }
 }
 
 
 
-// ĞÂ½¨¹¤³Ì/´ò¿ª¹¤³Ì ¶Ô»°¿ò, ÏûÏ¢ÏìÓ¦
-LRESULT CMy3DSymbolLibNewView::OnProjectSetted(WPARAM wParam, LPARAM lParam)
-{
-	if(1 == wParam)			//new project
-	{
-		OnSceneNew();
-	}
-	else if(0 == wParam)	//open project
-	{
-		if(g_recentlyOpenedProjectName == "")
-		{
-			AfxMessageBox(_T("ÇëÑ¡ÔñĞèÒª´ò¿ªµÄ¹¤³Ì!"));
-		}
-		else if(g_recentlyOpenedProjectName == _T("¸ü¶à¹¤³Ì..."))
-		{
-			OnSceneLoad();
-		}
-		else
-		{
-			// ¼ÓÔØÑ¡ÖĞµÄ¹¤³ÌÎÄ¼ş
-			CString tmpName = g_recentlyOpenedProjectName.c_str();
-			loadSceneFile(tmpName);
-			m_CurrentProjectName = tmpName;
-		}
-		
-	}
-	return 0;
+// æ–°å»ºå·¥ç¨‹/æ‰“å¼€å·¥ç¨‹ å¯¹è¯æ¡†, æ¶ˆæ¯å“åº”
+LRESULT CMy3DSymbolLibNewView::OnProjectSetted(WPARAM wParam, LPARAM lParam) {
+    if (1 == wParam) {      //new project
+        OnSceneNew();
+    } else if (0 == wParam) { //open project
+        if (g_recentlyOpenedProjectName == "") {
+            AfxMessageBox(_T("è¯·é€‰æ‹©éœ€è¦æ‰“å¼€çš„å·¥ç¨‹!"));
+        } else if (g_recentlyOpenedProjectName == _T("æ›´å¤šå·¥ç¨‹...")) {
+            OnSceneLoad();
+        } else {
+            // åŠ è½½é€‰ä¸­çš„å·¥ç¨‹æ–‡ä»¶
+            CString tmpName = g_recentlyOpenedProjectName.c_str();
+            loadSceneFile(tmpName);
+            m_CurrentProjectName = tmpName;
+        }
+    }
+    return 0;
 }
 
 
 
 
-// Êó±êÒÆµ½Ãæ·ûºÅ¶à±ßĞÎÉÏÓÒ»÷µ¯³ö²Ëµ¥µ¥»÷ÏìÓ¦
-void CMy3DSymbolLibNewView::OnMenuUpdateAreaTexture()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	//AfxMessageBox("µãÔÚ¶à±ßĞÎÄÚ.");
-	CAreaClassification ac_dlg;
-	CString selectItem = "";
-
-
-	if(ac_dlg.DoModal() == IDOK)
-	{ 
-		selectItem = ac_dlg.m_selectItem;
-		CString m_areaTexturePath = ac_dlg.m_Dir + "\\" + selectItem;
-
-		if(area_id >= 0 && area_id < m_Area4_Array.GetSize() )
-		{
-			m_Area4_Array[area_id]->area_texture = m_areaTexturePath;
-			LoadAreaTexture(m_areaTexturePath, m_Area4_Array[area_id]->area_texture_rd);
-		}
-		
-	}
-
-	else
-		return;	
+// é¼ æ ‡ç§»åˆ°é¢ç¬¦å·å¤šè¾¹å½¢ä¸Šå³å‡»å¼¹å‡ºèœå•å•å‡»å“åº”
+void CMy3DSymbolLibNewView::OnMenuUpdateAreaTexture() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    //AfxMessageBox("ç‚¹åœ¨å¤šè¾¹å½¢å†….");
+    CAreaClassification ac_dlg;
+    CString selectItem = "";
+    if (ac_dlg.DoModal() == IDOK) {
+        selectItem = ac_dlg.m_selectItem;
+        CString m_areaTexturePath = ac_dlg.m_Dir + "\\" + selectItem;
+        if (area_id >= 0 && area_id < m_Area4_Array.GetSize()) {
+            m_Area4_Array[area_id]->area_texture = m_areaTexturePath;
+            LoadAreaTexture(m_areaTexturePath, m_Area4_Array[area_id]->area_texture_rd);
+        }
+    } else
+        return;
 }
 
 
-// É¾³ıÖ¸¶¨Ãæ·ûºÅ
-void CMy3DSymbolLibNewView::OnMenuAreaDelete()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	m_Area4_Array[area_id]->deleted = 1;
+// åˆ é™¤æŒ‡å®šé¢ç¬¦å·
+void CMy3DSymbolLibNewView::OnMenuAreaDelete() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    m_Area4_Array[area_id]->deleted = 1;
 }

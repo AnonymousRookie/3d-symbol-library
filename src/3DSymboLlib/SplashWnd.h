@@ -1,25 +1,24 @@
-#pragma once
+﻿#pragma once
 
 
 // CSplashWnd
 
-class CSplashWnd : public CWnd
-{
-	DECLARE_DYNAMIC(CSplashWnd)
+class CSplashWnd : public CWnd {
+    DECLARE_DYNAMIC(CSplashWnd)
 
-public:
-	CSplashWnd();
-	virtual ~CSplashWnd();
+  public:
+    CSplashWnd();
+    virtual ~CSplashWnd();
 
-protected:
-	DECLARE_MESSAGE_MAP() 
+  protected:
+    DECLARE_MESSAGE_MAP()
 
-public:  
-	CBitmap m_bitmap;  
-	//  void Create(void);  
-	void Create(UINT nBitmapID);  
-	afx_msg void OnPaint();  
-	afx_msg void OnTimer(UINT_PTR nIDEvent);  
+  public:
+    CBitmap m_bitmap;
+    //  void Create(void);
+    void Create(UINT nBitmapID);
+    afx_msg void OnPaint();
+    afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 

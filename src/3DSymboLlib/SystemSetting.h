@@ -1,28 +1,27 @@
-#pragma once
+ï»¿#pragma once
 
 /************************************************************************/
-/* ÏµÍ³ÉèÖÃ¶Ô»°¿ò	Àà														*/
+/* ç³»ç»Ÿè®¾ç½®å¯¹è¯æ¡†   ç±»                                                      */
 /************************************************************************/
 
-class CSystemSetting : public CDialog
-{
-	DECLARE_DYNAMIC(CSystemSetting)
+class CSystemSetting : public CDialog {
+    DECLARE_DYNAMIC(CSystemSetting)
 
-public:
-	CSystemSetting(CWnd* pParent = NULL);   // ±ê×¼¹¹Ôìº¯Êı
-	virtual ~CSystemSetting();
+  public:
+    CSystemSetting(CWnd* pParent = NULL);   // æ ‡å‡†æ„é€ å‡½æ•°
+    virtual ~CSystemSetting();
 
-// ¶Ô»°¿òÊı¾İ
-	enum { IDD = IDD_SYSTEMSETTING };
+    // å¯¹è¯æ¡†æ•°æ®
+    enum { IDD = IDD_SYSTEMSETTING };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+  protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
 
-	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedCancel();
-	afx_msg void OnBnClickedButtonChangePath();
-	CString m_SceneDataPATH;
-	virtual BOOL OnInitDialog();
+    DECLARE_MESSAGE_MAP()
+  public:
+    afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedCancel();
+    afx_msg void OnBnClickedButtonChangePath();
+    CString m_SceneDataPATH;
+    virtual BOOL OnInitDialog();
 };

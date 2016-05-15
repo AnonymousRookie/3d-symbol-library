@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "ModelParam.h"
 #include "afxdialogex.h"
@@ -8,134 +8,104 @@
 
 #include "RockClassification.h"
 
-// ModelParam ¶Ô»°¿ò
+// ModelParam å¯¹è¯æ¡†
 
 IMPLEMENT_DYNAMIC(ModelParam, CDialog)
 
 ModelParam::ModelParam(CWnd* pParent /*=NULL*/)
-	: CDialog(ModelParam::IDD, pParent)
-	, posX(0)
-	, posY(0)
-	, posZ(0)
-	, rotX(0)
-	, rotY(0)
-	, rotZ(0)
-	, scale(1)
-	, displayPath(_T(""))
-	, m_TextureName(_T(""))
-{
-	modelPath = "";
-	modelChanged = false;
-	
-	CString _3DSFolder = "\\3DModel";
-	modelFolder = g_sceneDataPath.c_str() + _3DSFolder;
-
-	isModelTextureUpdated = FALSE;
-
+    : CDialog(ModelParam::IDD, pParent)
+    , posX(0)
+    , posY(0)
+    , posZ(0)
+    , rotX(0)
+    , rotY(0)
+    , rotZ(0)
+    , scale(1)
+    , displayPath(_T(""))
+    , m_TextureName(_T("")) {
+    modelPath = "";
+    modelChanged = false;
+    CString _3DSFolder = "\\3DModel";
+    modelFolder = g_sceneDataPath.c_str() + _3DSFolder;
+    isModelTextureUpdated = FALSE;
 }
 
-ModelParam::~ModelParam()
-{
-	// Empty
+ModelParam::~ModelParam() {
+    // Empty
 }
 
-void ModelParam::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT1, posX);
-	DDX_Text(pDX, IDC_EDIT3, posY);
-	DDX_Text(pDX, IDC_EDIT4, posZ);
-	DDX_Text(pDX, IDC_EDIT5, rotX);
-	DDV_MinMaxInt(pDX, rotX, -360, 360);
-	DDX_Text(pDX, IDC_EDIT6, rotY);
-	DDV_MinMaxInt(pDX, rotY, -360, 360);
-	DDX_Text(pDX, IDC_EDIT7, rotZ);
-	DDV_MinMaxInt(pDX, rotZ, -360, 360);
-	DDX_Text(pDX, IDC_EDIT8, scale);
-	DDV_MinMaxInt(pDX, scale, 0.0, INT_MAX);
-	DDX_Text(pDX, IDC_EDIT9, displayPath);
-	DDX_Text(pDX, IDC_EDIT_MODEL_TEXTURE, m_TextureName);
+void ModelParam::DoDataExchange(CDataExchange* pDX) {
+    CDialog::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_EDIT1, posX);
+    DDX_Text(pDX, IDC_EDIT3, posY);
+    DDX_Text(pDX, IDC_EDIT4, posZ);
+    DDX_Text(pDX, IDC_EDIT5, rotX);
+    DDV_MinMaxInt(pDX, rotX, -360, 360);
+    DDX_Text(pDX, IDC_EDIT6, rotY);
+    DDV_MinMaxInt(pDX, rotY, -360, 360);
+    DDX_Text(pDX, IDC_EDIT7, rotZ);
+    DDV_MinMaxInt(pDX, rotZ, -360, 360);
+    DDX_Text(pDX, IDC_EDIT8, scale);
+    DDV_MinMaxInt(pDX, scale, 0.0, INT_MAX);
+    DDX_Text(pDX, IDC_EDIT9, displayPath);
+    DDX_Text(pDX, IDC_EDIT_MODEL_TEXTURE, m_TextureName);
 }
 
 
 BEGIN_MESSAGE_MAP(ModelParam, CDialog)
-	ON_BN_CLICKED(IDC_BUTTON_CHANGE_MODEL_PATH, &ModelParam::OnBnClickedButtonChangeModelPath)
-	ON_BN_CLICKED(IDC_BUTTON_CHANGE_MODEL_TEXTURE, &ModelParam::OnBnClickedButtonChangeModelTexture)
+    ON_BN_CLICKED(IDC_BUTTON_CHANGE_MODEL_PATH, &ModelParam::OnBnClickedButtonChangeModelPath)
+    ON_BN_CLICKED(IDC_BUTTON_CHANGE_MODEL_TEXTURE, &ModelParam::OnBnClickedButtonChangeModelTexture)
 END_MESSAGE_MAP()
 
 
-// ModelParam ÏûÏ¢´¦Àí³ÌĞò
-BOOL ModelParam::OnInitDialog()
-{
-	CDialog::OnInitDialog();
-
-	if (!m_strTitle.IsEmpty())
-		SetWindowText(m_strTitle);
-
-	return TRUE;
-} 
-
-
-/************************************************************************/
-/* Function: ĞŞ¸ÄÄ£ĞÍÂ·¾¶(¸ü»»ĞÂµÄÄ£ĞÍ)									*/
-/************************************************************************/
-void ModelParam::OnBnClickedButtonChangeModelPath()
-{
-	CDialogModelList dlg1;
-	dlg1.m_Dir = modelFolder;
-
-	
-	dlg1.m_format = ".bmp";
-	dlg1.m_type = "3DS";
-
-	CString m_3DModelPath;
-	if(dlg1.DoModal() == IDOK)
-	{
-		CString selectItem = dlg1.m_selectItem;
-		displayPath = selectItem + ".3DS";
-		modelPath = modelFolder + displayPath;
-
-		m_TexturePathAndName = modelFolder + selectItem + ".bmp";
-
-		m_TextureName = selectItem + ".bmp";
-
-		modelChanged = true;
-		scale = 1;   // ±ä»»³ÉĞÂµÄÄ£ĞÍ£¬Ä£ĞÍµÄËõ·Å±ÈÀıÒªÎª1
-	}
-
-	
-	else
-		return;	
-
-	this->UpdateData(FALSE);
+// ModelParam æ¶ˆæ¯å¤„ç†ç¨‹åº
+BOOL ModelParam::OnInitDialog() {
+    CDialog::OnInitDialog();
+    if (!m_strTitle.IsEmpty())
+        SetWindowText(m_strTitle);
+    return TRUE;
 }
 
 
 /************************************************************************/
-/* Function: ¸ü»»ÑÒÊ¯Ä£ĞÍÎÆÀí												*/
+/* Function: ä¿®æ”¹æ¨¡å‹è·¯å¾„(æ›´æ¢æ–°çš„æ¨¡å‹)                                 */
 /************************************************************************/
-void ModelParam::OnBnClickedButtonChangeModelTexture()
-{
-	CRockClassification dlg;
+void ModelParam::OnBnClickedButtonChangeModelPath() {
+    CDialogModelList dlg1;
+    dlg1.m_Dir = modelFolder;
+    dlg1.m_format = ".bmp";
+    dlg1.m_type = "3DS";
+    CString m_3DModelPath;
+    if (dlg1.DoModal() == IDOK) {
+        CString selectItem = dlg1.m_selectItem;
+        displayPath = selectItem + ".3DS";
+        modelPath = modelFolder + displayPath;
+        m_TexturePathAndName = modelFolder + selectItem + ".bmp";
+        m_TextureName = selectItem + ".bmp";
+        modelChanged = true;
+        scale = 1;   // å˜æ¢æˆæ–°çš„æ¨¡å‹ï¼Œæ¨¡å‹çš„ç¼©æ”¾æ¯”ä¾‹è¦ä¸º1
+    } else
+        return;
+    this->UpdateData(FALSE);
+}
 
-	// Ñ¡ÖĞµÄÎÆÀí	 
-	CString selectItem;
-	if(dlg.DoModal() == IDOK)
-	{ 
-		selectItem = dlg.m_selectItem;
-		CString m_StoneTexturePath = dlg.m_Dir + "\\" + selectItem;
 
-		isModelTextureUpdated = TRUE;
-		m_TexturePathAndName = m_StoneTexturePath;
-		
-		scale = 1;
-	}
-
-	else
-		return;	
-
-	// ÔÚEdit¿Ø¼şÖĞÏÔÊ¾ÎÆÀíÍ¼Æ¬Ãû
-	m_TextureName = selectItem;
-	UpdateData(FALSE);
-
+/************************************************************************/
+/* Function: æ›´æ¢å²©çŸ³æ¨¡å‹çº¹ç†                                               */
+/************************************************************************/
+void ModelParam::OnBnClickedButtonChangeModelTexture() {
+    CRockClassification dlg;
+    // é€‰ä¸­çš„çº¹ç†
+    CString selectItem;
+    if (dlg.DoModal() == IDOK) {
+        selectItem = dlg.m_selectItem;
+        CString m_StoneTexturePath = dlg.m_Dir + "\\" + selectItem;
+        isModelTextureUpdated = TRUE;
+        m_TexturePathAndName = m_StoneTexturePath;
+        scale = 1;
+    } else
+        return;
+    // åœ¨Editæ§ä»¶ä¸­æ˜¾ç¤ºçº¹ç†å›¾ç‰‡å
+    m_TextureName = selectItem;
+    UpdateData(FALSE);
 }

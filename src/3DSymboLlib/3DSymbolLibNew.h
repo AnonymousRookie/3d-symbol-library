@@ -1,51 +1,50 @@
-
-// 3DSymbolLibNew.h : 3DSymbolLibNew Ó¦ÓÃ³ÌĞòµÄÖ÷Í·ÎÄ¼ş
+ï»¿
+// 3DSymbolLibNew.h : 3DSymbolLibNew åº”ç”¨ç¨‹åºçš„ä¸»å¤´æ–‡ä»¶
 //
 #pragma once
 
 #ifndef __AFXWIN_H__
-	#error "ÔÚ°üº¬´ËÎÄ¼şÖ®Ç°°üº¬¡°stdafx.h¡±ÒÔÉú³É PCH ÎÄ¼ş"
+#error "åœ¨åŒ…å«æ­¤æ–‡ä»¶ä¹‹å‰åŒ…å«â€œstdafx.hâ€ä»¥ç”Ÿæˆ PCH æ–‡ä»¶"
 #endif
 
-#include "resource.h"       // Ö÷·ûºÅ
+#include "resource.h"       // ä¸»ç¬¦å·
 //#include "GdiPlus.h"
 #include "stdafx.h"
 #include "GlobalVariable.h"
 
 #include "ProjectFileSetting.h"
 
-// ¶ÁĞ´ÅäÖÃÎÄ¼şBuffer´óĞ¡
+// è¯»å†™é…ç½®æ–‡ä»¶Bufferå¤§å°
 #define MAX_SIZE 256
 
 
 // CMy3DSymbolLibNewApp:
-// ÓĞ¹Ø´ËÀàµÄÊµÏÖ£¬Çë²ÎÔÄ 3DSymbolLibNew.cpp
+// æœ‰å…³æ­¤ç±»çš„å®ç°ï¼Œè¯·å‚é˜… 3DSymbolLibNew.cpp
 //
 
-class CMy3DSymbolLibNewApp : public CWinAppEx
-{
-public:
-	CMy3DSymbolLibNewApp();
+class CMy3DSymbolLibNewApp : public CWinAppEx {
+  public:
+    CMy3DSymbolLibNewApp();
 
 
-// ÖØĞ´
-public:
-	virtual BOOL InitInstance();
-	virtual int ExitInstance();
+    // é‡å†™
+  public:
+    virtual BOOL InitInstance();
+    virtual int ExitInstance();
 
-// ÊµÏÖ
-	UINT  m_nAppLook;
-	BOOL  m_bHiColorIcons;
+    // å®ç°
+    UINT  m_nAppLook;
+    BOOL  m_bHiColorIcons;
 
-	virtual void PreLoadState();
-	virtual void LoadCustomState();
-	virtual void SaveCustomState();
+    virtual void PreLoadState();
+    virtual void LoadCustomState();
+    virtual void SaveCustomState();
 
-	afx_msg void OnAppAbout();
-	DECLARE_MESSAGE_MAP()
+    afx_msg void OnAppAbout();
+    DECLARE_MESSAGE_MAP()
 
-	GdiplusStartupInput   m_gdiplusStartupInput;   //Ö»ĞèÒªÔÚ³ÌĞòÔËĞĞ×î¿ªÊ¼³õÊ¼»¯Ò»´Î
-	ULONG_PTR             m_gdiplusToken;          //Ö»ĞèÒªÔÚ³ÌĞòÔËĞĞ×î¿ªÊ¼³õÊ¼»¯Ò»´Î
+    GdiplusStartupInput   m_gdiplusStartupInput;   //åªéœ€è¦åœ¨ç¨‹åºè¿è¡Œæœ€å¼€å§‹åˆå§‹åŒ–ä¸€æ¬¡
+    ULONG_PTR             m_gdiplusToken;          //åªéœ€è¦åœ¨ç¨‹åºè¿è¡Œæœ€å¼€å§‹åˆå§‹åŒ–ä¸€æ¬¡
 };
 
 extern CMy3DSymbolLibNewApp theApp;

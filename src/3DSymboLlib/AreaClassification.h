@@ -1,45 +1,44 @@
-#pragma once
+ï»¿#pragma once
 #include "afxwin.h"
 #include "afxcmn.h"
 
 
-// CAreaClassification ¶Ô»°¿ò
+// CAreaClassification å¯¹è¯æ¡†
 
-class CAreaClassification : public CDialog
-{
-	DECLARE_DYNAMIC(CAreaClassification)
+class CAreaClassification : public CDialog {
+    DECLARE_DYNAMIC(CAreaClassification)
 
-public:
-	CAreaClassification(CWnd* pParent = NULL);   // ±ê×¼¹¹Ôìº¯Êı
-	virtual ~CAreaClassification();
+  public:
+    CAreaClassification(CWnd* pParent = NULL);   // æ ‡å‡†æ„é€ å‡½æ•°
+    virtual ~CAreaClassification();
 
-// ¶Ô»°¿òÊı¾İ
-	enum { IDD = IDD_AREACLASSIFICATION };
+    // å¯¹è¯æ¡†æ•°æ®
+    enum { IDD = IDD_AREACLASSIFICATION };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+  protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
 
-	DECLARE_MESSAGE_MAP()
-
-
-public:
-	HTREEITEM hRoot;	//¸ù½Úµã¾ä±ú
-	HTREEITEM hCataItem;
-	HTREEITEM hArtItem;
-
-	CString m_selectItem;
-	CString m_Dir;
-	// ½«Ñ¡ÖĞµÄbmpÎÆÀíÓ°ÏñÔÚ¿Ø¼şÉÏ»æÖÆ
-	void drawBitmapFromFile(CString bitmapFilePath,CDC*pDC,CRect rect);
+    DECLARE_MESSAGE_MAP()
 
 
-public:
-	CStatic m_Image;
-	CTreeCtrl m_Area_Texture_List;
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedCancel();
-	afx_msg void OnSelchangedTreeAreaList(NMHDR *pNMHDR, LRESULT *pResult);
-	virtual BOOL OnInitDialog();
-//	afx_msg void OnMenuUpdateAreaTexture();
-//	afx_msg void OnMenuAreaDelete();
+  public:
+    HTREEITEM hRoot;    //æ ¹èŠ‚ç‚¹å¥æŸ„
+    HTREEITEM hCataItem;
+    HTREEITEM hArtItem;
+
+    CString m_selectItem;
+    CString m_Dir;
+    // å°†é€‰ä¸­çš„bmpçº¹ç†å½±åƒåœ¨æ§ä»¶ä¸Šç»˜åˆ¶
+    void drawBitmapFromFile(CString bitmapFilePath, CDC* pDC, CRect rect);
+
+
+  public:
+    CStatic m_Image;
+    CTreeCtrl m_Area_Texture_List;
+    afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedCancel();
+    afx_msg void OnSelchangedTreeAreaList(NMHDR* pNMHDR, LRESULT* pResult);
+    virtual BOOL OnInitDialog();
+    //  afx_msg void OnMenuUpdateAreaTexture();
+    //  afx_msg void OnMenuAreaDelete();
 };

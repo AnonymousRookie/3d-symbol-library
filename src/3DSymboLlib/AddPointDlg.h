@@ -1,21 +1,20 @@
-#pragma once
+ï»¿#pragma once
 
 
-// CAddPointDlg ¶Ô»°¿ò
+// CAddPointDlg å¯¹è¯æ¡†
 
-class CAddPointDlg : public CDialog
-{
-	DECLARE_DYNAMIC(CAddPointDlg)
+class CAddPointDlg : public CDialog {
+    DECLARE_DYNAMIC(CAddPointDlg)
 
-public:
-	CAddPointDlg(CWnd* pParent = NULL);   // ±ê×¼¹¹Ôìº¯Êı
-	virtual ~CAddPointDlg();
+  public:
+    CAddPointDlg(CWnd* pParent = NULL);   // æ ‡å‡†æ„é€ å‡½æ•°
+    virtual ~CAddPointDlg();
 
-// ¶Ô»°¿òÊı¾İ
-	enum { IDD = IDD_ADDPOINTDLG };
+    // å¯¹è¯æ¡†æ•°æ®
+    enum { IDD = IDD_ADDPOINTDLG };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+  protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };

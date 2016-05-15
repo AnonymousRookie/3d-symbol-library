@@ -1,11 +1,11 @@
-//ÅĞ¶ÏµãÓë¶à±ßĞÎµÄ¹ØÏµ
-//µãÔÚ¶à±ßĞÎÄÚ¡¢ÉÏ¡¢Íâ
+ï»¿//åˆ¤æ–­ç‚¹ä¸å¤šè¾¹å½¢çš„å…³ç³»
+//ç‚¹åœ¨å¤šè¾¹å½¢å†…ã€ä¸Šã€å¤–
 
 
-/* ÉäÏß·¨ÅĞ¶ÏµãqÓë¶à±ßĞÎpolygonµÄÎ»ÖÃ¹ØÏµ£¬ÒªÇópolygonÎª¼òµ¥¶à±ßĞÎ£¬¶¥µãÄæÊ±ÕëÅÅÁĞ
- Èç¹ûµãÔÚ¶à±ßĞÎÄÚ£º		·µ»Ø0
- Èç¹ûµãÔÚ¶à±ßĞÎ±ßÉÏ£º		·µ»Ø1
- Èç¹ûµãÔÚ¶à±ßĞÎÍâ£º		·µ»Ø2
+/* å°„çº¿æ³•åˆ¤æ–­ç‚¹qä¸å¤šè¾¹å½¢polygonçš„ä½ç½®å…³ç³»ï¼Œè¦æ±‚polygonä¸ºç®€å•å¤šè¾¹å½¢ï¼Œé¡¶ç‚¹é€†æ—¶é’ˆæ’åˆ—
+ å¦‚æœç‚¹åœ¨å¤šè¾¹å½¢å†…ï¼š     è¿”å›0
+ å¦‚æœç‚¹åœ¨å¤šè¾¹å½¢è¾¹ä¸Šï¼š       è¿”å›1
+ å¦‚æœç‚¹åœ¨å¤šè¾¹å½¢å¤–ï¼š     è¿”å›2
 */
 
 
@@ -22,12 +22,12 @@ const double ESP = 1e-5;
 const int MAX_N = 1000;
 
 struct PPR_Point {
-	PPR_Point(){}  
-	PPR_Point(double x,double y):x(x),y(y){}  
-	double x, y;
+    PPR_Point() {}
+    PPR_Point(double x, double y): x(x), y(y) {}
+    double x, y;
 };
 struct LineSegment {
-	PPR_Point pt1, pt2;
+    PPR_Point pt1, pt2;
 };
 
 
@@ -36,64 +36,57 @@ struct LineSegment {
 
 typedef vector<PPR_Point> PPR_Polygon;
 
-class CPointPolygonRelationship
-{
-public:
-	CPointPolygonRelationship(void);
-	~CPointPolygonRelationship(void);
+class CPointPolygonRelationship {
+  public:
+    CPointPolygonRelationship(void);
+    ~CPointPolygonRelationship(void);
 
-	
-	// ÅĞ¶ÏµãÓë¶à±ßĞÎµÄ¹ØÏµ ========================================================
 
-	// ¼ÆËã²æ³Ë |P0P1| ¡Á |P0P2|
-	double Multiply(PPR_Point p1, PPR_Point p2, PPR_Point p0);
-	// ÅĞ¶ÏÏß¶ÎÊÇ·ñ°üº¬µãpoint
-	bool IsOnline(PPR_Point point, LineSegment line);
-	// ÅĞ¶ÏÏß¶ÎÏà½»
-	bool Intersect(LineSegment L1, LineSegment L2);
-	// ÅĞ¶ÏµãÔÚ¶à±ßĞÎÄÚ
-	int InPolygon(const PPR_Polygon& polygon, PPR_Point point);
+    // åˆ¤æ–­ç‚¹ä¸å¤šè¾¹å½¢çš„å…³ç³» ========================================================
 
+    // è®¡ç®—å‰ä¹˜ |P0P1| Ã— |P0P2|
+    double Multiply(PPR_Point p1, PPR_Point p2, PPR_Point p0);
+    // åˆ¤æ–­çº¿æ®µæ˜¯å¦åŒ…å«ç‚¹point
+    bool IsOnline(PPR_Point point, LineSegment line);
+    // åˆ¤æ–­çº¿æ®µç›¸äº¤
+    bool Intersect(LineSegment L1, LineSegment L2);
+    // åˆ¤æ–­ç‚¹åœ¨å¤šè¾¹å½¢å†…
+    int InPolygon(const PPR_Polygon& polygon, PPR_Point point);
 
 
 
 
 
 
-	// Çó2Ïß¶ÎµÄ½»µã ========================================================
-	int sgn(double x)  
-	{  
-		return x<-ESP ? -1 : (x>ESP);  
-	}  
 
-	double Cross(const PPR_Point& p1,const PPR_Point& p2,const PPR_Point& p3,const PPR_Point& p4)  
-	{  
-		return (p2.x-p1.x)*(p4.y-p3.y) - (p2.y-p1.y)*(p4.x-p3.x);  
-	}  
+    // æ±‚2çº¿æ®µçš„äº¤ç‚¹ ========================================================
+    int sgn(double x) {
+        return x < -ESP ? -1 : (x > ESP);
+    }
 
-	double Area(const PPR_Point& p1,const PPR_Point& p2,const PPR_Point& p3)  
-	{  
-		return Cross(p1,p2,p1,p3);  
-	}  
+    double Cross(const PPR_Point& p1, const PPR_Point& p2, const PPR_Point& p3, const PPR_Point& p4) {
+        return (p2.x - p1.x) * (p4.y - p3.y) - (p2.y - p1.y) * (p4.x - p3.x);
+    }
 
-	double fArea(const PPR_Point& p1,const PPR_Point& p2,const PPR_Point& p3)  
-	{  
-		return fabs(Area(p1,p2,p3));  
-	}  
+    double Area(const PPR_Point& p1, const PPR_Point& p2, const PPR_Point& p3) {
+        return Cross(p1, p2, p1, p3);
+    }
 
-	bool Meet(const PPR_Point& p1,const PPR_Point& p2,const PPR_Point& p3,const PPR_Point& p4)  
-	{  
-		return max(min(p1.x,p2.x),min(p3.x,p4.x)) <= min(max(p1.x,p2.x),max(p3.x,p4.x))  
-			&& max(min(p1.y,p2.y),min(p3.y,p4.y)) <= min(max(p1.y,p2.y),max(p3.y,p4.y))  
-			&& sgn(Cross(p3,p2,p3,p4) * Cross(p3,p4,p3,p1)) >= 0  
-			&& sgn(Cross(p1,p4,p1,p2) * Cross(p1,p2,p1,p3)) >= 0;  
-	}  
-	PPR_Point getJD(const PPR_Point& p1,const PPR_Point& p2,const PPR_Point& p3,const PPR_Point& p4)
-	{
-		double s1 = fArea(p1,p2,p3) , s2 = fArea(p1,p2,p4);  
-		return PPR_Point((p4.x*s1+p3.x*s2)/(s1+s2),(p4.y*s1+p3.y*s2)/(s1+s2));
-	}
+    double fArea(const PPR_Point& p1, const PPR_Point& p2, const PPR_Point& p3) {
+        return fabs(Area(p1, p2, p3));
+    }
 
- 
+    bool Meet(const PPR_Point& p1, const PPR_Point& p2, const PPR_Point& p3, const PPR_Point& p4) {
+        return max(min(p1.x, p2.x), min(p3.x, p4.x)) <= min(max(p1.x, p2.x), max(p3.x, p4.x))
+               && max(min(p1.y, p2.y), min(p3.y, p4.y)) <= min(max(p1.y, p2.y), max(p3.y, p4.y))
+               && sgn(Cross(p3, p2, p3, p4) * Cross(p3, p4, p3, p1)) >= 0
+               && sgn(Cross(p1, p4, p1, p2) * Cross(p1, p2, p1, p3)) >= 0;
+    }
+    PPR_Point getJD(const PPR_Point& p1, const PPR_Point& p2, const PPR_Point& p3, const PPR_Point& p4) {
+        double s1 = fArea(p1, p2, p3) , s2 = fArea(p1, p2, p4);
+        return PPR_Point((p4.x * s1 + p3.x * s2) / (s1 + s2), (p4.y * s1 + p3.y * s2) / (s1 + s2));
+    }
+
+
 };
 

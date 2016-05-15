@@ -1,75 +1,67 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 #include "PointPolygonRelationship.h"
 
 
-CPointPolygonRelationship::CPointPolygonRelationship(void)
-{
+CPointPolygonRelationship::CPointPolygonRelationship(void) {
 }
 
 
-CPointPolygonRelationship::~CPointPolygonRelationship(void)
-{
+CPointPolygonRelationship::~CPointPolygonRelationship(void) {
 }
 
 
 
-// º∆À„≤Ê≥À |P0P1| °¡ |P0P2|
-double CPointPolygonRelationship::Multiply(PPR_Point p1, PPR_Point p2, PPR_Point p0)
-{
-	return ( (p1.x - p0.x) * (p2.y - p0.y) - (p2.x - p0.x) * (p1.y - p0.y) );
+// ËÆ°ÁÆóÂèâ‰πò |P0P1| √ó |P0P2|
+double CPointPolygonRelationship::Multiply(PPR_Point p1, PPR_Point p2, PPR_Point p0) {
+    return ((p1.x - p0.x) * (p2.y - p0.y) - (p2.x - p0.x) * (p1.y - p0.y));
 }
-// ≈–∂œœﬂ∂Œ «∑Ò∞¸∫¨µ„point
-bool CPointPolygonRelationship::IsOnline(PPR_Point point, LineSegment line)
-{
-	return( ( fabs(Multiply(line.pt1, line.pt2, point)) < ESP ) &&
-		( ( point.x - line.pt1.x ) * ( point.x - line.pt2.x ) <= 0 ) &&
-		( ( point.y - line.pt1.y ) * ( point.y - line.pt2.y ) <= 0 ) );
+// Âà§Êñ≠Á∫øÊÆµÊòØÂê¶ÂåÖÂê´ÁÇπpoint
+bool CPointPolygonRelationship::IsOnline(PPR_Point point, LineSegment line) {
+    return ((fabs(Multiply(line.pt1, line.pt2, point)) < ESP) &&
+            ((point.x - line.pt1.x) * (point.x - line.pt2.x) <= 0) &&
+            ((point.y - line.pt1.y) * (point.y - line.pt2.y) <= 0));
 }
-// ≈–∂œœﬂ∂Œœ‡Ωª
-bool CPointPolygonRelationship::Intersect(LineSegment L1, LineSegment L2)
-{
-	return( (max(L1.pt1.x, L1.pt2.x) >= min(L2.pt1.x, L2.pt2.x)) &&
-		(max(L2.pt1.x, L2.pt2.x) >= min(L1.pt1.x, L1.pt2.x)) &&
-		(max(L1.pt1.y, L1.pt2.y) >= min(L2.pt1.y, L2.pt2.y)) &&
-		(max(L2.pt1.y, L2.pt2.y) >= min(L1.pt1.y, L1.pt2.y)) &&
-		(Multiply(L2.pt1, L1.pt2, L1.pt1) * Multiply(L1.pt2, L2.pt2, L1.pt1) >= 0) &&
-		(Multiply(L1.pt1, L2.pt2, L2.pt1) * Multiply(L2.pt2, L1.pt2, L2.pt1) >= 0)
-		);
+// Âà§Êñ≠Á∫øÊÆµÁõ∏‰∫§
+bool CPointPolygonRelationship::Intersect(LineSegment L1, LineSegment L2) {
+    return ((max(L1.pt1.x, L1.pt2.x) >= min(L2.pt1.x, L2.pt2.x)) &&
+            (max(L2.pt1.x, L2.pt2.x) >= min(L1.pt1.x, L1.pt2.x)) &&
+            (max(L1.pt1.y, L1.pt2.y) >= min(L2.pt1.y, L2.pt2.y)) &&
+            (max(L2.pt1.y, L2.pt2.y) >= min(L1.pt1.y, L1.pt2.y)) &&
+            (Multiply(L2.pt1, L1.pt2, L1.pt1) * Multiply(L1.pt2, L2.pt2, L1.pt1) >= 0) &&
+            (Multiply(L1.pt1, L2.pt2, L2.pt1) * Multiply(L2.pt2, L1.pt2, L2.pt1) >= 0)
+           );
 }
-// ≈–∂œµ„‘⁄∂‡±ﬂ–Œƒ⁄
-int CPointPolygonRelationship::InPolygon(const PPR_Polygon& polygon, PPR_Point point)
-{
-	int n = polygon.size();
-	int count = 0;
-	LineSegment line;
-	line.pt1 = point;
-	line.pt2.y = point.y;
-	line.pt2.x = - INFINITY;
-
-	for( int i = 0; i < n; i++ ) {
-		// µ√µΩ∂‡±ﬂ–Œµƒ“ªÃı±ﬂ
-		LineSegment side;
-		side.pt1 = polygon[i];
-		side.pt2 = polygon[(i + 1) % n];
-
-		if( IsOnline(point, side) ) {
-			return 1 ;
-		}
-
-		// »Áπ˚side∆Ω––x÷·‘Ú≤ª◊˜øº¬«
-		if( fabs(side.pt1.y - side.pt2.y) < ESP ) {
-			continue;
-		}
-
-		if( IsOnline(side.pt1, line) ) {
-			if( side.pt1.y > side.pt2.y ) count++;
-		} else if( IsOnline(side.pt2, line) ) {
-			if( side.pt2.y > side.pt1.y ) count++;
-		} else if( Intersect(line, side) ) {
-			count++;
-		}
-	}
-
-	if ( count % 2 == 1 ) {return 0;}
-	else { return 2;}
+// Âà§Êñ≠ÁÇπÂú®Â§öËæπÂΩ¢ÂÜÖ
+int CPointPolygonRelationship::InPolygon(const PPR_Polygon& polygon, PPR_Point point) {
+    int n = polygon.size();
+    int count = 0;
+    LineSegment line;
+    line.pt1 = point;
+    line.pt2.y = point.y;
+    line.pt2.x = - INFINITY;
+    for (int i = 0; i < n; i++) {
+        // ÂæóÂà∞Â§öËæπÂΩ¢ÁöÑ‰∏ÄÊù°Ëæπ
+        LineSegment side;
+        side.pt1 = polygon[i];
+        side.pt2 = polygon[(i + 1) % n];
+        if (IsOnline(point, side)) {
+            return 1 ;
+        }
+        // Â¶ÇÊûúsideÂπ≥Ë°åxËΩ¥Âàô‰∏ç‰ΩúËÄÉËôë
+        if (fabs(side.pt1.y - side.pt2.y) < ESP) {
+            continue;
+        }
+        if (IsOnline(side.pt1, line)) {
+            if (side.pt1.y > side.pt2.y) count++;
+        } else if (IsOnline(side.pt2, line)) {
+            if (side.pt2.y > side.pt1.y) count++;
+        } else if (Intersect(line, side)) {
+            count++;
+        }
+    }
+    if (count % 2 == 1) {
+        return 0;
+    } else {
+        return 2;
+    }
 }

@@ -1,42 +1,42 @@
-#pragma once
+ï»¿#pragma once
 #include "afxcmn.h"
 #include "afxwin.h"
 
 
-// ModelListConfigureDialog ¶Ô»°¿ò
+// ModelListConfigureDialog å¯¹è¯æ¡†
 
-class ModelListConfigureDialog : public CDialog
-{
-	DECLARE_DYNAMIC(ModelListConfigureDialog)
+class ModelListConfigureDialog : public CDialog {
+    DECLARE_DYNAMIC(ModelListConfigureDialog)
 
-public:
-	ModelListConfigureDialog(CWnd* pParent = NULL);   // ±ê×¼¹¹Ôìº¯Êı
-	virtual ~ModelListConfigureDialog();
+  public:
+    ModelListConfigureDialog(CWnd* pParent = NULL);   // æ ‡å‡†æ„é€ å‡½æ•°
+    virtual ~ModelListConfigureDialog();
 
-// ¶Ô»°¿òÊı¾İ
-	enum { IDD = IDD_MODELLISTCONFIGUREDIALOG };
+    // å¯¹è¯æ¡†æ•°æ®
+    enum { IDD = IDD_MODELLISTCONFIGUREDIALOG };
 
-public:
-	HTREEITEM hRoot;	//¸ù½Úµã¾ä±ú
-	HTREEITEM hCataItem;
-	HTREEITEM hArtItem;
+  public:
+    HTREEITEM hRoot;    //æ ¹èŠ‚ç‚¹å¥æŸ„
+    HTREEITEM hCataItem;
+    HTREEITEM hArtItem;
 
-	// ½«Ñ¡ÖĞµÄÎÆÀíÓ°ÏñÔÚ¿Ø¼şÉÏ»æÖÆ
-	void drawBitmapFromFile(CString bitmapFilePath,CDC*pDC,CRect rect);
-	
+    // å°†é€‰ä¸­çš„çº¹ç†å½±åƒåœ¨æ§ä»¶ä¸Šç»˜åˆ¶
+    void drawBitmapFromFile(CString bitmapFilePath, CDC* pDC, CRect rect);
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
 
-	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedCancel();
-	CTreeCtrl m_configureModeListTree;
-	virtual BOOL OnInitDialog();
-	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
-	afx_msg void OnEditDeleteSymbol();
-	afx_msg void OnTvnSelchangedTreeCongigureModellist(NMHDR *pNMHDR, LRESULT *pResult);
-	CStatic m_image;
-	afx_msg void OnEditAddSymbol();
+  protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
+
+    DECLARE_MESSAGE_MAP()
+
+  public:
+    afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedCancel();
+    CTreeCtrl m_configureModeListTree;
+    virtual BOOL OnInitDialog();
+    afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
+    afx_msg void OnEditDeleteSymbol();
+    afx_msg void OnTvnSelchangedTreeCongigureModellist(NMHDR* pNMHDR, LRESULT* pResult);
+    CStatic m_image;
+    afx_msg void OnEditAddSymbol();
 };

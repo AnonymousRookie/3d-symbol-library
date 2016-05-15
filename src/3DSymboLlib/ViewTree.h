@@ -1,23 +1,22 @@
-
+Ôªø
 #pragma once
 
 /////////////////////////////////////////////////////////////////////////////
-// CViewTree ¥∞ø⁄
+// CViewTree Á™óÂè£
 
-class CViewTree : public CTreeCtrl
-{
-// ππ‘Ï
-public:
-	CViewTree();
+class CViewTree : public CTreeCtrl {
+    // ÊûÑÈÄ†
+  public:
+    CViewTree();
 
-// ÷ÿ–¥
-protected:
-	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+    // ÈáçÂÜô
+  protected:
+    virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
-//  µœ÷
-public:
-	virtual ~CViewTree();
+    // ÂÆûÁé∞
+  public:
+    virtual ~CViewTree();
 
-protected:
-	DECLARE_MESSAGE_MAP()
+  protected:
+    DECLARE_MESSAGE_MAP()
 };

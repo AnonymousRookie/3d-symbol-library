@@ -1,27 +1,26 @@
-#pragma once
+ï»¿#pragma once
 
 
-// CCameraParamSet ¶Ô»°¿ò
+// CCameraParamSet å¯¹è¯æ¡†
 
-class CCameraParamSet : public CDialog
-{
-	DECLARE_DYNAMIC(CCameraParamSet)
+class CCameraParamSet : public CDialog {
+    DECLARE_DYNAMIC(CCameraParamSet)
 
-public:
-	CCameraParamSet(CWnd* pParent = NULL);   // ±ê×¼¹¹Ôìº¯Êı
-	virtual ~CCameraParamSet();
+  public:
+    CCameraParamSet(CWnd* pParent = NULL);   // æ ‡å‡†æ„é€ å‡½æ•°
+    virtual ~CCameraParamSet();
 
-// ¶Ô»°¿òÊı¾İ
-	enum { IDD = IDD_DIALOG_CAMERA_PARAM_SET };
+    // å¯¹è¯æ¡†æ•°æ®
+    enum { IDD = IDD_DIALOG_CAMERA_PARAM_SET };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+  protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
 
-	DECLARE_MESSAGE_MAP()
-public:
-	float m_DerAngleY, m_OriginDerAngleY;
-	float m_DerAngleZ, m_OriginDerAngleZ;
+    DECLARE_MESSAGE_MAP()
+  public:
+    float m_DerAngleY, m_OriginDerAngleY;
+    float m_DerAngleZ, m_OriginDerAngleZ;
 
-	afx_msg void OnBnClickedButtonRecoverY();
-	afx_msg void OnBnClickedButtonRecoverZ();
+    afx_msg void OnBnClickedButtonRecoverY();
+    afx_msg void OnBnClickedButtonRecoverZ();
 };

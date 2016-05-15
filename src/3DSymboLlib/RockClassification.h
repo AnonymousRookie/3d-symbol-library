@@ -1,46 +1,45 @@
-/************************************************************************/
-/*      ÑÒÊ¯·ÖÀà¶Ô»°¿òÀà													*/
+ï»¿/************************************************************************/
+/*      å²©çŸ³åˆ†ç±»å¯¹è¯æ¡†ç±»                                                    */
 /************************************************************************/
 #pragma once
 #include "afxcmn.h"
 #include "afxwin.h"
 
-// CRockClassification ¶Ô»°¿ò
+// CRockClassification å¯¹è¯æ¡†
 
-class CRockClassification : public CDialog
-{
-	DECLARE_DYNAMIC(CRockClassification)
+class CRockClassification : public CDialog {
+    DECLARE_DYNAMIC(CRockClassification)
 
-public:
-	CRockClassification(CWnd* pParent = NULL);   // ±ê×¼¹¹Ôìº¯Êı
-	virtual ~CRockClassification();
+  public:
+    CRockClassification(CWnd* pParent = NULL);   // æ ‡å‡†æ„é€ å‡½æ•°
+    virtual ~CRockClassification();
 
-// ¶Ô»°¿òÊı¾İ
-	enum { IDD = IDD_ROCKCLASSIFICATION };
+    // å¯¹è¯æ¡†æ•°æ®
+    enum { IDD = IDD_ROCKCLASSIFICATION };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+  protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
 
-	DECLARE_MESSAGE_MAP()
-public:
- 
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedCancel();
-	afx_msg void OnSelchangedTreeRockList(NMHDR *pNMHDR, LRESULT *pResult);
+    DECLARE_MESSAGE_MAP()
 
-public:
-	HTREEITEM hRoot;	//¸ù½Úµã¾ä±ú
-	HTREEITEM hCataItem;
-	HTREEITEM hArtItem;
+  public:
+    afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedCancel();
+    afx_msg void OnSelchangedTreeRockList(NMHDR* pNMHDR, LRESULT* pResult);
 
-	CString m_selectItem;
-	CString m_Dir;
+  public:
+    HTREEITEM hRoot;    //æ ¹èŠ‚ç‚¹å¥æŸ„
+    HTREEITEM hCataItem;
+    HTREEITEM hArtItem;
 
-	// ½«Ñ¡ÖĞµÄbmpÎÆÀíÓ°ÏñÔÚ¿Ø¼şÉÏ»æÖÆ
-	void drawBitmapFromFile(CString bitmapFilePath,CDC*pDC,CRect rect);
+    CString m_selectItem;
+    CString m_Dir;
+
+    // å°†é€‰ä¸­çš„bmpçº¹ç†å½±åƒåœ¨æ§ä»¶ä¸Šç»˜åˆ¶
+    void drawBitmapFromFile(CString bitmapFilePath, CDC* pDC, CRect rect);
 
 
-	CTreeCtrl m_Rock_Tree_List;
-	CStatic m_image;
-	virtual BOOL OnInitDialog();
+    CTreeCtrl m_Rock_Tree_List;
+    CStatic m_image;
+    virtual BOOL OnInitDialog();
 };

@@ -1,237 +1,184 @@
-// DialogModelList.cpp : ÊµÏÖÎÄ¼ş
+ï»¿// DialogModelList.cpp : å®ç°æ–‡ä»¶
 //
 
 #include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "DialogModelList.h"
 #include "afxdialogex.h"
- 
+
 
 #include <io.h>
 #include <vector>
 
-// CDialogModelList ¶Ô»°¿ò
+// CDialogModelList å¯¹è¯æ¡†
 
 IMPLEMENT_DYNAMIC(CDialogModelList, CDialog)
 
-	CDialogModelList::CDialogModelList(CWnd* pParent /*=NULL*/)
-	: CDialog(CDialogModelList::IDD, pParent)
-{
-	// Empty
+CDialogModelList::CDialogModelList(CWnd* pParent /*=NULL*/)
+    : CDialog(CDialogModelList::IDD, pParent) {
+    // Empty
 }
 
-CDialogModelList::~CDialogModelList()
-{
-	// Empty
+CDialogModelList::~CDialogModelList() {
+    // Empty
 }
 
-void CDialogModelList::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_LIST_MODEL, m_listCtlModel);
+void CDialogModelList::DoDataExchange(CDataExchange* pDX) {
+    CDialog::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_LIST_MODEL, m_listCtlModel);
 }
 
 
 BEGIN_MESSAGE_MAP(CDialogModelList, CDialog)
-	ON_WM_CREATE()
-	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_MODEL, &CDialogModelList::OnLvnItemchangedListModel)
+    ON_WM_CREATE()
+    ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_MODEL, &CDialogModelList::OnLvnItemchangedListModel)
 END_MESSAGE_MAP()
 
 
-// CDialogModelList ÏûÏ¢´¦Àí³ÌĞò
+// CDialogModelList æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 
-BOOL CDialogModelList::OnInitDialog()
-{
-	CDialog::OnInitDialog();
-	
-	// Í¨¹ıÅäÖÃÎÄ¼ş¼ÓÔØ·ûºÅ
-	string fileDirAndName;
-	if(m_type == "3DS")
-	{
-		string _3dsFile;
-		list<string>::iterator iter = g_modelList[0].begin();
-		while(iter != g_modelList[0].end())
-		{
-			string tmp = "\\";
-			fileDirAndName = LPCTSTR(m_Dir) + tmp + (*iter) + LPCTSTR(m_format);
-			_3dsFile = LPCTSTR(m_Dir) + tmp + (*iter) + LPCTSTR(".3DS");
-			// È·±£Ä£ĞÍÎÄ¼ş(.3DS) ºÍ ÎÆÀíÎÄ¼ş(.bmp)¶¼´æÔÚ
-			if(PathFileExists(fileDirAndName.c_str()) && PathFileExists(_3dsFile.c_str()))
-			{
-				m_fileNameArray.Add((*iter).c_str() + m_format);
-			}
-			++iter;
-		}
-	}
-	else if(m_type == "City")
-	{
-		list<string>::iterator iter = g_modelList[1].begin();
-		while(iter != g_modelList[1].end())
-		{
-			string tmp = "\\";
-			fileDirAndName = LPCTSTR(m_Dir) + tmp + (*iter) + LPCTSTR(m_format);
-			if(PathFileExists(fileDirAndName.c_str()))
-			{
-				m_fileNameArray.Add((*iter).c_str() + m_format);
-			}
-			++iter;
-		}
-	}
-	else if(m_type == "Tree")
-	{
-		list<string>::iterator iter = g_modelList[2].begin();
-		while(iter != g_modelList[2].end())
-		{
-			string tmp = "\\";
-			fileDirAndName = LPCTSTR(m_Dir) + tmp + (*iter) + LPCTSTR(m_format);
-			if(PathFileExists(fileDirAndName.c_str()))
-			{
-				m_fileNameArray.Add((*iter).c_str() + m_format);
-			}
-			++iter;
-		}
-	}
-	else if(m_type == "3DTree")
-	{
-		list<string>::iterator iter = g_modelList[3].begin();
-		while(iter != g_modelList[3].end())
-		{
-			string tmp = "\\";
-			fileDirAndName = LPCTSTR(m_Dir) + tmp + (*iter) + LPCTSTR(m_format);
-			if(PathFileExists(fileDirAndName.c_str()))
-			{
-				m_fileNameArray.Add((*iter).c_str() + m_format);
-			}
-			++iter;
-		}
-	}
-	else if(m_type == "Weather")
-	{
-		list<string>::iterator iter = g_modelList[4].begin();
-		while(iter != g_modelList[4].end())
-		{
-			string tmp = "\\";
-			fileDirAndName = LPCTSTR(m_Dir) + tmp + (*iter) + LPCTSTR(m_format);
-			if(PathFileExists(fileDirAndName.c_str()))
-			{
-				m_fileNameArray.Add((*iter).c_str() + m_format);
-			}
-			++iter;
-		}
-	}
-	// Ê¯Í·ÎÆÀí
-	else if(m_type == "StoneTexture")
-	{
-		// »ñÈ¡ÎÄ¼ş¼ĞÏÂËùÓĞÖ¸¶¨ÀàĞÍÎÄ¼ş
-		_finddata_t fileDir;
-		char* dir= new char[m_Dir.GetLength()+ strlen("\\*")+m_format.GetLength()];//"d:\\temp\\*.*";
-		sprintf(dir, m_Dir+"\\*"+m_format); 
-		long lfDir;
-		int fileNum = 0;
-		//vector<CString> fileName;	
-
-		//ËÑË÷ÓëÖ¸¶¨µÄÎÄ¼şÃû³ÆÆ¥ÅäµÄµÚÒ»¸öÊµÀı£¬Èô³É¹¦Ôò·µ»ØµÚÒ»¸öÊµÀıµÄ¾ä±ú£¬·ñÔò·µ»Ø-1L
-		if((lfDir = _findfirst(dir,&fileDir))==-1l)
-			printf("No file is found\n");
-		else{
-			printf("file list:\n");
-			do{
-				printf("%s\n",fileDir.name);// XXX.format
-				m_fileNameArray.Add(fileDir.name);
-				++fileNum;
-
-			}while( _findnext( lfDir, &fileDir ) == 0 );
-		}
-		_findclose(lfDir);
-		
-	}
-	
-	// Ìî³äClistCtrl ºÍCimageList
-	m_listCtlModel.SetExtendedStyle(LVS_ALIGNTOP|LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES); 
-	//m_listCtlModel.SetIconSpacing(CSize(80, 80));     //set pictures spacing 
-
-	m_imgListModel.Create(50,50, ILC_COLOR32 |ILC_MASK , m_fileNameArray.GetSize(), m_fileNameArray.GetSize());    
-	m_listCtlModel.SetImageList(&m_imgListModel, LVSIL_NORMAL);
-
-	DrawThumbnails();
-	
-    return TRUE;  // return TRUE  unless you set the focus to a control 
-	// Òì³£: OCX ÊôĞÔÒ³Ó¦·µ»Ø FALSE
+BOOL CDialogModelList::OnInitDialog() {
+    CDialog::OnInitDialog();
+    // é€šè¿‡é…ç½®æ–‡ä»¶åŠ è½½ç¬¦å·
+    string fileDirAndName;
+    if (m_type == "3DS") {
+        string _3dsFile;
+        list<string>::iterator iter = g_modelList[0].begin();
+        while (iter != g_modelList[0].end()) {
+            string tmp = "\\";
+            fileDirAndName = LPCTSTR(m_Dir) + tmp + (*iter) + LPCTSTR(m_format);
+            _3dsFile = LPCTSTR(m_Dir) + tmp + (*iter) + LPCTSTR(".3DS");
+            // ç¡®ä¿æ¨¡å‹æ–‡ä»¶(.3DS) å’Œ çº¹ç†æ–‡ä»¶(.bmp)éƒ½å­˜åœ¨
+            if (PathFileExists(fileDirAndName.c_str()) && PathFileExists(_3dsFile.c_str())) {
+                m_fileNameArray.Add((*iter).c_str() + m_format);
+            }
+            ++iter;
+        }
+    } else if (m_type == "City") {
+        list<string>::iterator iter = g_modelList[1].begin();
+        while (iter != g_modelList[1].end()) {
+            string tmp = "\\";
+            fileDirAndName = LPCTSTR(m_Dir) + tmp + (*iter) + LPCTSTR(m_format);
+            if (PathFileExists(fileDirAndName.c_str())) {
+                m_fileNameArray.Add((*iter).c_str() + m_format);
+            }
+            ++iter;
+        }
+    } else if (m_type == "Tree") {
+        list<string>::iterator iter = g_modelList[2].begin();
+        while (iter != g_modelList[2].end()) {
+            string tmp = "\\";
+            fileDirAndName = LPCTSTR(m_Dir) + tmp + (*iter) + LPCTSTR(m_format);
+            if (PathFileExists(fileDirAndName.c_str())) {
+                m_fileNameArray.Add((*iter).c_str() + m_format);
+            }
+            ++iter;
+        }
+    } else if (m_type == "3DTree") {
+        list<string>::iterator iter = g_modelList[3].begin();
+        while (iter != g_modelList[3].end()) {
+            string tmp = "\\";
+            fileDirAndName = LPCTSTR(m_Dir) + tmp + (*iter) + LPCTSTR(m_format);
+            if (PathFileExists(fileDirAndName.c_str())) {
+                m_fileNameArray.Add((*iter).c_str() + m_format);
+            }
+            ++iter;
+        }
+    } else if (m_type == "Weather") {
+        list<string>::iterator iter = g_modelList[4].begin();
+        while (iter != g_modelList[4].end()) {
+            string tmp = "\\";
+            fileDirAndName = LPCTSTR(m_Dir) + tmp + (*iter) + LPCTSTR(m_format);
+            if (PathFileExists(fileDirAndName.c_str())) {
+                m_fileNameArray.Add((*iter).c_str() + m_format);
+            }
+            ++iter;
+        }
+    }
+    // çŸ³å¤´çº¹ç†
+    else if (m_type == "StoneTexture") {
+        // è·å–æ–‡ä»¶å¤¹ä¸‹æ‰€æœ‰æŒ‡å®šç±»å‹æ–‡ä»¶
+        _finddata_t fileDir;
+        char* dir = new char[m_Dir.GetLength() + strlen("\\*") + m_format.GetLength()]; //"d:\\temp\\*.*";
+        sprintf(dir, m_Dir + "\\*" + m_format);
+        long lfDir;
+        int fileNum = 0;
+        //vector<CString> fileName;
+        //æœç´¢ä¸æŒ‡å®šçš„æ–‡ä»¶åç§°åŒ¹é…çš„ç¬¬ä¸€ä¸ªå®ä¾‹ï¼Œè‹¥æˆåŠŸåˆ™è¿”å›ç¬¬ä¸€ä¸ªå®ä¾‹çš„å¥æŸ„ï¼Œå¦åˆ™è¿”å›-1L
+        if ((lfDir = _findfirst(dir, &fileDir)) == -1l)
+            printf("No file is found\n");
+        else {
+            printf("file list:\n");
+            do {
+                printf("%s\n", fileDir.name); // XXX.format
+                m_fileNameArray.Add(fileDir.name);
+                ++fileNum;
+            } while (_findnext(lfDir, &fileDir) == 0);
+        }
+        _findclose(lfDir);
+    }
+    // å¡«å……ClistCtrl å’ŒCimageList
+    m_listCtlModel.SetExtendedStyle(LVS_ALIGNTOP | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+    //m_listCtlModel.SetIconSpacing(CSize(80, 80));     //set pictures spacing
+    m_imgListModel.Create(50, 50, ILC_COLOR32 | ILC_MASK , m_fileNameArray.GetSize(), m_fileNameArray.GetSize());
+    m_listCtlModel.SetImageList(&m_imgListModel, LVSIL_NORMAL);
+    DrawThumbnails();
+    return TRUE;  // return TRUE  unless you set the focus to a control
+    // å¼‚å¸¸: OCX å±æ€§é¡µåº”è¿”å› FALSE
 }
 
 
-void  CDialogModelList::DrawThumbnails()
-{
-	CBitmap*    pImage = NULL;
-	HBITMAP		hBmp = NULL;
-	CString		strPath;
-	int			i;
-		
-	// no images
-	if (m_fileNameArray.IsEmpty())
-		return;
-
-	// set the length of the space between thumbnails
-	// you can also calculate and set it based on the length of your list control
-	int nGap = 6;
-
-	// hold the window update to avoid flicking
-	m_listCtlModel.SetRedraw(FALSE);
-
-	// reset our image list
-	for (i = 0; i<m_imgListModel.GetImageCount(); i++)
-		m_imgListModel.Remove(i);	
-
-	// remove all items from list view
-	if (m_listCtlModel.GetItemCount() != 0)
-		m_listCtlModel.DeleteAllItems();
-
-	// set the size of the image list
-	m_imgListModel.SetImageCount(m_fileNameArray.GetSize());
-	i = 0;
-
-	// draw the thumbnails 
-	for(int i = 0; i < m_fileNameArray.GetSize(); i++)
-	{		
-		// load the bitmap 
-		strPath.Format(TEXT("%s\\%s"), m_Dir, m_fileNameArray.GetAt(i)); 
-
-		USES_CONVERSION;
-		Bitmap img( A2W(strPath) ); 
-
-		Bitmap* pThumbnail = static_cast<Bitmap*>(img.GetThumbnailImage(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, NULL, NULL));
-
-		int H = img.GetHeight();
-
-		// attach the thumbnail bitmap handle to an CBitmap object
-		pThumbnail->GetHBITMAP(Color(255,255,255), &hBmp);
-		pImage = new CBitmap();		 
-		pImage->Attach(hBmp);
-
-		// add bitmap to our image list
-		m_imgListModel.Replace(i, pImage, NULL);
-
-		// put item to display
-		// set the image file name as item text
-		CString disName = m_fileNameArray.GetAt(i).Left(m_fileNameArray.GetAt(i).Find("."));
-		m_listCtlModel.InsertItem(i, disName, i);
-
-		 
-		delete pImage;
-		delete pThumbnail;
-	}
-
-	// let's show the new thumbnails
-	m_listCtlModel.SetRedraw(); 
+void  CDialogModelList::DrawThumbnails() {
+    CBitmap*    pImage = NULL;
+    HBITMAP     hBmp = NULL;
+    CString     strPath;
+    int         i;
+    // no images
+    if (m_fileNameArray.IsEmpty())
+        return;
+    // set the length of the space between thumbnails
+    // you can also calculate and set it based on the length of your list control
+    int nGap = 6;
+    // hold the window update to avoid flicking
+    m_listCtlModel.SetRedraw(FALSE);
+    // reset our image list
+    for (i = 0; i < m_imgListModel.GetImageCount(); i++)
+        m_imgListModel.Remove(i);
+    // remove all items from list view
+    if (m_listCtlModel.GetItemCount() != 0)
+        m_listCtlModel.DeleteAllItems();
+    // set the size of the image list
+    m_imgListModel.SetImageCount(m_fileNameArray.GetSize());
+    i = 0;
+    // draw the thumbnails
+    for (int i = 0; i < m_fileNameArray.GetSize(); i++) {
+        // load the bitmap
+        strPath.Format(TEXT("%s\\%s"), m_Dir, m_fileNameArray.GetAt(i));
+        USES_CONVERSION;
+        Bitmap img(A2W(strPath));
+        Bitmap* pThumbnail = static_cast<Bitmap*>(img.GetThumbnailImage(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, NULL, NULL));
+        int H = img.GetHeight();
+        // attach the thumbnail bitmap handle to an CBitmap object
+        pThumbnail->GetHBITMAP(Color(255, 255, 255), &hBmp);
+        pImage = new CBitmap();
+        pImage->Attach(hBmp);
+        // add bitmap to our image list
+        m_imgListModel.Replace(i, pImage, NULL);
+        // put item to display
+        // set the image file name as item text
+        CString disName = m_fileNameArray.GetAt(i).Left(m_fileNameArray.GetAt(i).Find("."));
+        m_listCtlModel.InsertItem(i, disName, i);
+        delete pImage;
+        delete pThumbnail;
+    }
+    // let's show the new thumbnails
+    m_listCtlModel.SetRedraw();
 }
 
-// ÏàÓ¦ClistCtrl ÏûÏ¢
-void CDialogModelList::OnLvnItemchangedListModel(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR); 
-
-	m_selectItem = m_listCtlModel.GetItemText(pNMLV->iItem, pNMLV->iSubItem); 
-	 
-	*pResult = 0;
+// ç›¸åº”ClistCtrl æ¶ˆæ¯
+void CDialogModelList::OnLvnItemchangedListModel(NMHDR* pNMHDR, LRESULT* pResult) {
+    LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+    m_selectItem = m_listCtlModel.GetItemText(pNMLV->iItem, pNMLV->iSubItem);
+    *pResult = 0;
 }

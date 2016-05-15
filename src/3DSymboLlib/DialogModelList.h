@@ -1,40 +1,39 @@
-#pragma once
+ï»¿#pragma once
 #include "afxcmn.h"
 
 #define  THUMBNAIL_WIDTH 50
 #define  THUMBNAIL_HEIGHT 50
 
-// CDialogModelList ¶Ô»°¿ò
+// CDialogModelList å¯¹è¯æ¡†
 
-class CDialogModelList : public CDialog
-{
-	DECLARE_DYNAMIC(CDialogModelList)
+class CDialogModelList : public CDialog {
+    DECLARE_DYNAMIC(CDialogModelList)
 
-public:
-	CDialogModelList(CWnd* pParent = NULL);   // ±ê×¼¹¹Ôìº¯Êı
-	virtual ~CDialogModelList();
+  public:
+    CDialogModelList(CWnd* pParent = NULL);   // æ ‡å‡†æ„é€ å‡½æ•°
+    virtual ~CDialogModelList();
 
-// ¶Ô»°¿òÊı¾İ
-	enum { IDD = IDD_DIALOG_LIST };
+    // å¯¹è¯æ¡†æ•°æ®
+    enum { IDD = IDD_DIALOG_LIST };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+  protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
 
-	DECLARE_MESSAGE_MAP()
-public:
-	CListCtrl m_listCtlModel;
-	CImageList m_imgListModel;
-	//vector<CString> m_fileNameList;
-	CArray<CString, CString> m_fileNameArray;
-	CString m_Dir;
-	// [ADD]
-	CString m_format;//Í¼Æ¬¸ñÊ½
-	CString m_type;	// ·ûºÅÀà±ğ
-	
-	CString m_selectItem;
-	
-	virtual BOOL OnInitDialog();
+    DECLARE_MESSAGE_MAP()
+  public:
+    CListCtrl m_listCtlModel;
+    CImageList m_imgListModel;
+    //vector<CString> m_fileNameList;
+    CArray<CString, CString> m_fileNameArray;
+    CString m_Dir;
+    // [ADD]
+    CString m_format;//å›¾ç‰‡æ ¼å¼
+    CString m_type; // ç¬¦å·ç±»åˆ«
 
-	void  DrawThumbnails();
-	afx_msg void OnLvnItemchangedListModel(NMHDR *pNMHDR, LRESULT *pResult);
+    CString m_selectItem;
+
+    virtual BOOL OnInitDialog();
+
+    void  DrawThumbnails();
+    afx_msg void OnLvnItemchangedListModel(NMHDR* pNMHDR, LRESULT* pResult);
 };

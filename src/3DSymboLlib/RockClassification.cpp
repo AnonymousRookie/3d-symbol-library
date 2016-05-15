@@ -1,5 +1,5 @@
-/************************************************************************/
-/*      —“ Ø∑÷¿‡∂‘ª∞øÚ¿‡													*/
+Ôªø/************************************************************************/
+/*      Â≤©Áü≥ÂàÜÁ±ªÂØπËØùÊ°ÜÁ±ª                                                    */
 /************************************************************************/
 #include "stdafx.h"
 #include "3DSymbolLibNew.h"
@@ -7,164 +7,137 @@
 #include "afxdialogex.h"
 
 #include <io.h>
-// CRockClassification ∂‘ª∞øÚ
+// CRockClassification ÂØπËØùÊ°Ü
 
 IMPLEMENT_DYNAMIC(CRockClassification, CDialog)
 
 CRockClassification::CRockClassification(CWnd* pParent /*=NULL*/)
-	: CDialog(CRockClassification::IDD, pParent)
-{
-
+    : CDialog(CRockClassification::IDD, pParent) {
 }
 
-CRockClassification::~CRockClassification()
-{
+CRockClassification::~CRockClassification() {
 }
 
-void CRockClassification::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_TREE_ROCK_LIST, m_Rock_Tree_List);
-	DDX_Control(pDX, IDC_STATIC_IMAGE, m_image);
+void CRockClassification::DoDataExchange(CDataExchange* pDX) {
+    CDialog::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_TREE_ROCK_LIST, m_Rock_Tree_List);
+    DDX_Control(pDX, IDC_STATIC_IMAGE, m_image);
 }
 
 
 BEGIN_MESSAGE_MAP(CRockClassification, CDialog)
-	 
-	ON_BN_CLICKED(IDOK, &CRockClassification::OnBnClickedOk)
-	ON_BN_CLICKED(IDCANCEL, &CRockClassification::OnBnClickedCancel)
-	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_ROCK_LIST, &CRockClassification::OnSelchangedTreeRockList)
+
+    ON_BN_CLICKED(IDOK, &CRockClassification::OnBnClickedOk)
+    ON_BN_CLICKED(IDCANCEL, &CRockClassification::OnBnClickedCancel)
+    ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_ROCK_LIST, &CRockClassification::OnSelchangedTreeRockList)
 END_MESSAGE_MAP()
 
 
-// CRockClassification œ˚œ¢¥¶¿Ì≥Ã–Ú
+// CRockClassification Ê∂àÊÅØÂ§ÑÁêÜÁ®ãÂ∫è
 
 
-BOOL CRockClassification::OnInitDialog()
-{
-	CDialog::OnInitDialog();
-	CString tmp = "\\";
-	CString topItem = "—“ Ø∑÷¿‡";
-	CString RockType[3] = {"—“Ω¨—“","≥¡ª˝—“","±‰÷ —“"};
-
-	hRoot = m_Rock_Tree_List.InsertItem(topItem,0,0);
-
-	for(int i=0;i<3;++i)
-	{
-		hCataItem = m_Rock_Tree_List.InsertItem(RockType[i],1,1,hRoot,TVI_LAST);
-		m_Dir = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i];
-		if(1)
-		{
-			// ªÒ»°Œƒº˛º–œ¬À˘”–÷∏∂®¿‡–ÕŒƒº˛
-			_finddata_t fileDir;
-			char* dir= new char[m_Dir.GetLength()+ strlen("\\*.BMP")];
-			sprintf(dir, m_Dir+"\\*.BMP"); 
-			long lfDir;
-			int fileNum = 0;
-			//À—À˜”Î÷∏∂®µƒŒƒº˛√˚≥∆∆•≈‰µƒµ⁄“ª∏ˆ µ¿˝£¨»Ù≥…π¶‘Ú∑µªÿµ⁄“ª∏ˆ µ¿˝µƒæ‰±˙£¨∑Ò‘Ú∑µªÿ-1L
-			if((lfDir = _findfirst(dir,&fileDir))==-1l)
-				printf("No file is found\n");
-			else{
-				printf("file list:\n");
-				do{
-					printf("%s\n",fileDir.name);// XXX.format
-					hArtItem = m_Rock_Tree_List.InsertItem(fileDir.name,2,2,hCataItem,TVI_LAST);
-					++fileNum;
-				}while( _findnext( lfDir, &fileDir ) == 0 );
-			}
-			_findclose(lfDir);
-		}
-
-	}
-	
-	return TRUE;
-}
- 
-
-
-void CRockClassification::OnBnClickedOk()
-{
-	// TODO: ‘⁄¥ÀÃÌº”øÿº˛Õ®÷™¥¶¿Ì≥Ã–Ú¥˙¬Î
-	CDialog::OnOK();
-
-	CString tmp = "\\";
-	CString topItem = "—“ Ø∑÷¿‡";
-	HTREEITEM selectItem = m_Rock_Tree_List.GetSelectedItem();
-	CString selectItemText = m_Rock_Tree_List.GetItemText(selectItem);
-	HTREEITEM parentItem = m_Rock_Tree_List.GetParentItem(selectItem);
-	CString parentItemText = m_Rock_Tree_List.GetItemText(parentItem);
-
-	m_selectItem = selectItemText;
-	m_Dir = g_sceneDataPath.c_str() + tmp + topItem + tmp + parentItemText;
+BOOL CRockClassification::OnInitDialog() {
+    CDialog::OnInitDialog();
+    CString tmp = "\\";
+    CString topItem = "Â≤©Áü≥ÂàÜÁ±ª";
+    CString RockType[3] = {"Â≤©ÊµÜÂ≤©", "Ê≤âÁßØÂ≤©", "ÂèòË¥®Â≤©"};
+    hRoot = m_Rock_Tree_List.InsertItem(topItem, 0, 0);
+    for (int i = 0; i < 3; ++i) {
+        hCataItem = m_Rock_Tree_List.InsertItem(RockType[i], 1, 1, hRoot, TVI_LAST);
+        m_Dir = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i];
+        if (1) {
+            // Ëé∑ÂèñÊñá‰ª∂Â§π‰∏ãÊâÄÊúâÊåáÂÆöÁ±ªÂûãÊñá‰ª∂
+            _finddata_t fileDir;
+            char* dir = new char[m_Dir.GetLength() + strlen("\\*.BMP")];
+            sprintf(dir, m_Dir + "\\*.BMP");
+            long lfDir;
+            int fileNum = 0;
+            //ÊêúÁ¥¢‰∏éÊåáÂÆöÁöÑÊñá‰ª∂ÂêçÁß∞ÂåπÈÖçÁöÑÁ¨¨‰∏Ä‰∏™ÂÆû‰æãÔºåËã•ÊàêÂäüÂàôËøîÂõûÁ¨¨‰∏Ä‰∏™ÂÆû‰æãÁöÑÂè•ÊüÑÔºåÂê¶ÂàôËøîÂõû-1L
+            if ((lfDir = _findfirst(dir, &fileDir)) == -1l)
+                printf("No file is found\n");
+            else {
+                printf("file list:\n");
+                do {
+                    printf("%s\n", fileDir.name); // XXX.format
+                    hArtItem = m_Rock_Tree_List.InsertItem(fileDir.name, 2, 2, hCataItem, TVI_LAST);
+                    ++fileNum;
+                } while (_findnext(lfDir, &fileDir) == 0);
+            }
+            _findclose(lfDir);
+        }
+    }
+    return TRUE;
 }
 
 
-void CRockClassification::OnBnClickedCancel()
-{
-	// TODO: ‘⁄¥ÀÃÌº”øÿº˛Õ®÷™¥¶¿Ì≥Ã–Ú¥˙¬Î
-	CDialog::OnCancel();
+
+void CRockClassification::OnBnClickedOk() {
+    // TODO: Âú®Ê≠§Ê∑ªÂä†Êéß‰ª∂ÈÄöÁü•Â§ÑÁêÜÁ®ãÂ∫è‰ª£Á†Å
+    CDialog::OnOK();
+    CString tmp = "\\";
+    CString topItem = "Â≤©Áü≥ÂàÜÁ±ª";
+    HTREEITEM selectItem = m_Rock_Tree_List.GetSelectedItem();
+    CString selectItemText = m_Rock_Tree_List.GetItemText(selectItem);
+    HTREEITEM parentItem = m_Rock_Tree_List.GetParentItem(selectItem);
+    CString parentItemText = m_Rock_Tree_List.GetItemText(parentItem);
+    m_selectItem = selectItemText;
+    m_Dir = g_sceneDataPath.c_str() + tmp + topItem + tmp + parentItemText;
 }
 
 
-void CRockClassification::OnSelchangedTreeRockList(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-	// TODO: ‘⁄¥ÀÃÌº”øÿº˛Õ®÷™¥¶¿Ì≥Ã–Ú¥˙¬Î
-	*pResult = 0;
-
-	HTREEITEM selectItem = m_Rock_Tree_List.GetSelectedItem();
-	CString selectItemText = m_Rock_Tree_List.GetItemText(selectItem);
-
-	HTREEITEM parentItem = m_Rock_Tree_List.GetParentItem(selectItem);
-	CString parentItemText = m_Rock_Tree_List.GetItemText(parentItem);
-
-
-	CString topItem = "—“ Ø∑÷¿‡";
-	CString RockType[3] = {"—“Ω¨—“","≥¡ª˝—“","±‰÷ —“"};
-	CString imgPathAndName;
-	CString tmp = "\\";
-	for(int i=0;i<3;++i)
-	{
-		if(parentItemText == RockType[i])
-		{
-			imgPathAndName = g_sceneDataPath.c_str() + tmp + topItem+ tmp + RockType[i] + tmp + selectItemText;
-			//MessageBox(imgPathAndName,"");
-			// BMP
-			if(1)
-			{
-				CRect rect;
-				CDC *pdc = GetDC();
-				GetDlgItem(IDC_STATIC_IMAGE)->GetWindowRect(rect);
-				this->ScreenToClient(rect);
-				drawBitmapFromFile(imgPathAndName,pdc,rect);
-			}	
-		}
-	}
+void CRockClassification::OnBnClickedCancel() {
+    // TODO: Âú®Ê≠§Ê∑ªÂä†Êéß‰ª∂ÈÄöÁü•Â§ÑÁêÜÁ®ãÂ∫è‰ª£Á†Å
+    CDialog::OnCancel();
 }
 
 
-// Ω´—°÷–µƒbmpŒ∆¿Ì”∞œÒ‘⁄øÿº˛…œªÊ÷∆
-void CRockClassification::drawBitmapFromFile(CString bitmapFilePath,CDC*pDC,CRect rect)
-{
-	HANDLE   filehandle=::LoadImage(NULL,bitmapFilePath,IMAGE_BITMAP,0,0,LR_LOADFROMFILE);  //º”‘ÿ”∞œÒŒƒº˛ 
-	if(filehandle!=NULL)   //»Áπ˚º”‘ÿ≥…π¶
-	{   
-		CBitmap   bmp;   
-		if(bmp.Attach(filehandle))   
-		{   
-			BITMAP   bmpInfo;   
-			bmp.GetBitmap(&bmpInfo);   //ªÒ»°◊ ‘¥ŒªÕº–≈œ¢
-			CDC   dcMemory;   
-			dcMemory.CreateCompatibleDC(pDC);   //¥¥Ω®“ª∏ˆ”ÎÃÿ∂®…Ë±∏≥°æ∞“ª÷¬µƒƒ⁄¥Ê…Ë±∏≥°æ∞
-			dcMemory.SelectObject(&bmp);   //—°‘Òbmp∂‘œÛµΩ÷∏∂®µƒ…Ë±∏…œœ¬Œƒª∑æ≥÷–,∏√–¬∂‘œÛÃÊªªœ»«∞µƒœ‡Õ¨¿‡–Õµƒ∂‘œÛ
-			//…Ë÷√÷∏∂®…Ë±∏ª∑æ≥÷–µƒŒªÕº¿≠…Ïƒ£ Ω. HALFTONE£∫Ω´‘¥æÿ–Œ«¯÷–µƒœÒÀÿ”≥…‰µΩƒø±Íæÿ–Œ«¯µƒœÒÀÿøÈ÷–£¨
-			//∏≤∏«ƒø±ÍœÒÀÿøÈµƒ“ª∞„—’…´”Î‘¥œÒÀÿµƒ—’…´Ω”Ω¸°£
-			
-			//StretchBlt():‘¥æÿ–Œ÷–∏¥÷∆“ª∏ˆŒªÕºµΩƒø±Íæÿ–Œ,±ÿ“™ ±∞¥ƒø«∞ƒø±Í…Ë±∏…Ë÷√µƒƒ£ ΩΩ¯––ÕºœÒµƒ¿≠…ÏªÚ—πÀı°£
-			pDC->StretchBlt(rect.left,rect.top,rect.Width(),rect.Height(),&dcMemory,0,0,bmpInfo.bmWidth,bmpInfo.bmHeight,SRCCOPY);   
-			bmp.Detach();   //œ˙ªŸbmp∂‘œÛ
-		}   
-	}   
+void CRockClassification::OnSelchangedTreeRockList(NMHDR* pNMHDR, LRESULT* pResult) {
+    LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+    // TODO: Âú®Ê≠§Ê∑ªÂä†Êéß‰ª∂ÈÄöÁü•Â§ÑÁêÜÁ®ãÂ∫è‰ª£Á†Å
+    *pResult = 0;
+    HTREEITEM selectItem = m_Rock_Tree_List.GetSelectedItem();
+    CString selectItemText = m_Rock_Tree_List.GetItemText(selectItem);
+    HTREEITEM parentItem = m_Rock_Tree_List.GetParentItem(selectItem);
+    CString parentItemText = m_Rock_Tree_List.GetItemText(parentItem);
+    CString topItem = "Â≤©Áü≥ÂàÜÁ±ª";
+    CString RockType[3] = {"Â≤©ÊµÜÂ≤©", "Ê≤âÁßØÂ≤©", "ÂèòË¥®Â≤©"};
+    CString imgPathAndName;
+    CString tmp = "\\";
+    for (int i = 0; i < 3; ++i) {
+        if (parentItemText == RockType[i]) {
+            imgPathAndName = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i] + tmp + selectItemText;
+            //MessageBox(imgPathAndName,"");
+            // BMP
+            if (1) {
+                CRect rect;
+                CDC* pdc = GetDC();
+                GetDlgItem(IDC_STATIC_IMAGE)->GetWindowRect(rect);
+                this->ScreenToClient(rect);
+                drawBitmapFromFile(imgPathAndName, pdc, rect);
+            }
+        }
+    }
+}
+
+
+// Â∞ÜÈÄâ‰∏≠ÁöÑbmpÁ∫πÁêÜÂΩ±ÂÉèÂú®Êéß‰ª∂‰∏äÁªòÂà∂
+void CRockClassification::drawBitmapFromFile(CString bitmapFilePath, CDC* pDC, CRect rect) {
+    HANDLE   filehandle =::LoadImage(NULL, bitmapFilePath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE); //Âä†ËΩΩÂΩ±ÂÉèÊñá‰ª∂
+    if (filehandle != NULL) { //Â¶ÇÊûúÂä†ËΩΩÊàêÂäü
+        CBitmap   bmp;
+        if (bmp.Attach(filehandle)) {
+            BITMAP   bmpInfo;
+            bmp.GetBitmap(&bmpInfo);   //Ëé∑ÂèñËµÑÊ∫ê‰ΩçÂõæ‰ø°ÊÅØ
+            CDC   dcMemory;
+            dcMemory.CreateCompatibleDC(pDC);   //ÂàõÂª∫‰∏Ä‰∏™‰∏éÁâπÂÆöËÆæÂ§áÂú∫ÊôØ‰∏ÄËá¥ÁöÑÂÜÖÂ≠òËÆæÂ§áÂú∫ÊôØ
+            dcMemory.SelectObject(&bmp);   //ÈÄâÊã©bmpÂØπË±°Âà∞ÊåáÂÆöÁöÑËÆæÂ§á‰∏ä‰∏ãÊñáÁéØÂ¢É‰∏≠,ËØ•Êñ∞ÂØπË±°ÊõøÊç¢ÂÖàÂâçÁöÑÁõ∏ÂêåÁ±ªÂûãÁöÑÂØπË±°
+            //ËÆæÁΩÆÊåáÂÆöËÆæÂ§áÁéØÂ¢É‰∏≠ÁöÑ‰ΩçÂõæÊãâ‰º∏Ê®°Âºè. HALFTONEÔºöÂ∞ÜÊ∫êÁü©ÂΩ¢Âå∫‰∏≠ÁöÑÂÉèÁ¥†Êò†Â∞ÑÂà∞ÁõÆÊ†áÁü©ÂΩ¢Âå∫ÁöÑÂÉèÁ¥†Âùó‰∏≠Ôºå
+            //Ë¶ÜÁõñÁõÆÊ†áÂÉèÁ¥†ÂùóÁöÑ‰∏ÄËà¨È¢úËâ≤‰∏éÊ∫êÂÉèÁ¥†ÁöÑÈ¢úËâ≤Êé•Ëøë„ÄÇ
+            //StretchBlt():Ê∫êÁü©ÂΩ¢‰∏≠Â§çÂà∂‰∏Ä‰∏™‰ΩçÂõæÂà∞ÁõÆÊ†áÁü©ÂΩ¢,ÂøÖË¶ÅÊó∂ÊåâÁõÆÂâçÁõÆÊ†áËÆæÂ§áËÆæÁΩÆÁöÑÊ®°ÂºèËøõË°åÂõæÂÉèÁöÑÊãâ‰º∏ÊàñÂéãÁº©„ÄÇ
+            pDC->StretchBlt(rect.left, rect.top, rect.Width(), rect.Height(), &dcMemory, 0, 0, bmpInfo.bmWidth, bmpInfo.bmHeight, SRCCOPY);
+            bmp.Detach();   //ÈîÄÊØÅbmpÂØπË±°
+        }
+    }
 }
 
 

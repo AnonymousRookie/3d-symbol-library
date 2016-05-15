@@ -1,4 +1,4 @@
-// CameraParamSet.cpp : ÊµÏÖÎÄ¼ş
+ï»¿// CameraParamSet.cpp : å®ç°æ–‡ä»¶
 //
 
 #include "stdafx.h"
@@ -7,48 +7,42 @@
 #include "afxdialogex.h"
 
 
-// CCameraParamSet ¶Ô»°¿ò
+// CCameraParamSet å¯¹è¯æ¡†
 
 IMPLEMENT_DYNAMIC(CCameraParamSet, CDialog)
 
 CCameraParamSet::CCameraParamSet(CWnd* pParent /*=NULL*/)
-	: CDialog(CCameraParamSet::IDD, pParent)
-	, m_DerAngleY(0)
-	, m_DerAngleZ(0)
-{
-
+    : CDialog(CCameraParamSet::IDD, pParent)
+    , m_DerAngleY(0)
+    , m_DerAngleZ(0) {
 }
 
-CCameraParamSet::~CCameraParamSet()
-{
+CCameraParamSet::~CCameraParamSet() {
 }
 
-void CCameraParamSet::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_MOUSE_Y_SENSI, m_DerAngleY);
-	DDX_Text(pDX, IDC_EDIT_MOUSE_Z_SENSI, m_DerAngleZ);
+void CCameraParamSet::DoDataExchange(CDataExchange* pDX) {
+    CDialog::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_EDIT_MOUSE_Y_SENSI, m_DerAngleY);
+    DDX_Text(pDX, IDC_EDIT_MOUSE_Z_SENSI, m_DerAngleZ);
 }
 
 
 BEGIN_MESSAGE_MAP(CCameraParamSet, CDialog)
-	ON_BN_CLICKED(IDC_BUTTON_RECOVER_Y, &CCameraParamSet::OnBnClickedButtonRecoverY)
-	ON_BN_CLICKED(IDC_BUTTON_RECOVER_Z, &CCameraParamSet::OnBnClickedButtonRecoverZ)
+    ON_BN_CLICKED(IDC_BUTTON_RECOVER_Y, &CCameraParamSet::OnBnClickedButtonRecoverY)
+    ON_BN_CLICKED(IDC_BUTTON_RECOVER_Z, &CCameraParamSet::OnBnClickedButtonRecoverZ)
 END_MESSAGE_MAP()
 
 
-// CCameraParamSet ÏûÏ¢´¦Àí³ÌĞò
+// CCameraParamSet æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 
-void CCameraParamSet::OnBnClickedButtonRecoverY()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	SetDlgItemInt(IDC_EDIT_MOUSE_Y_SENSI, m_OriginDerAngleY);
+void CCameraParamSet::OnBnClickedButtonRecoverY() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    SetDlgItemInt(IDC_EDIT_MOUSE_Y_SENSI, m_OriginDerAngleY);
 }
 
 
-void CCameraParamSet::OnBnClickedButtonRecoverZ()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	SetDlgItemInt(IDC_EDIT_MOUSE_Z_SENSI, m_OriginDerAngleZ);
+void CCameraParamSet::OnBnClickedButtonRecoverZ() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    SetDlgItemInt(IDC_EDIT_MOUSE_Z_SENSI, m_OriginDerAngleZ);
 }

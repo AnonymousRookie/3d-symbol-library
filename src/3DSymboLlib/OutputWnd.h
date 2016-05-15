@@ -1,59 +1,57 @@
-
+Ôªø
 #pragma once
 
 /////////////////////////////////////////////////////////////////////////////
-// COutputList ¥∞ø⁄
+// COutputList Á™óÂè£
 
-class COutputList : public CListBox
-{
-// ππ‘Ï
-public:
-	COutputList();
+class COutputList : public CListBox {
+    // ÊûÑÈÄ†
+  public:
+    COutputList();
 
-//  µœ÷
-public:
-	virtual ~COutputList();
+    // ÂÆûÁé∞
+  public:
+    virtual ~COutputList();
 
-protected:
-	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	afx_msg void OnEditCopy();
-	afx_msg void OnEditClear();
-	afx_msg void OnViewOutput();
+  protected:
+    afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+    afx_msg void OnEditCopy();
+    afx_msg void OnEditClear();
+    afx_msg void OnViewOutput();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 
-class COutputWnd : public CDockablePane
-{
-// ππ‘Ï
-public:
-	COutputWnd();
+class COutputWnd : public CDockablePane {
+    // ÊûÑÈÄ†
+  public:
+    COutputWnd();
 
-	void UpdateFonts();
+    void UpdateFonts();
 
-// Ãÿ–‘
-protected:
-	CMFCTabCtrl	m_wndTabs;
+    // ÁâπÊÄß
+  protected:
+    CMFCTabCtrl m_wndTabs;
 
-	COutputList m_wndOutputBuild;
-	COutputList m_wndOutputDebug;
-	COutputList m_wndOutputFind;
+    COutputList m_wndOutputBuild;
+    COutputList m_wndOutputDebug;
+    COutputList m_wndOutputFind;
 
-protected:
-	void FillBuildWindow();
-	void FillDebugWindow();
-	void FillFindWindow();
+  protected:
+    void FillBuildWindow();
+    void FillDebugWindow();
+    void FillFindWindow();
 
-	void AdjustHorzScroll(CListBox& wndListBox);
+    void AdjustHorzScroll(CListBox& wndListBox);
 
-//  µœ÷
-public:
-	virtual ~COutputWnd();
+    // ÂÆûÁé∞
+  public:
+    virtual ~COutputWnd();
 
-protected:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
+  protected:
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnSize(UINT nType, int cx, int cy);
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 

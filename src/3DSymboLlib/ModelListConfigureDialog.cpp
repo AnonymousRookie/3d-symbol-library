@@ -1,4 +1,4 @@
-// ModelListConfigureDialog.cpp : ÊµÏÖÎÄ¼ş
+ï»¿// ModelListConfigureDialog.cpp : å®ç°æ–‡ä»¶
 
 #include "stdafx.h"
 #include "3DSymbolLibNew.h"
@@ -6,505 +6,382 @@
 #include "afxdialogex.h"
 #include "GlobalVariable.h"
 
-// ModelListConfigureDialog ¶Ô»°¿ò
+// ModelListConfigureDialog å¯¹è¯æ¡†
 
-// ·Âº¯Êı,ÓÃÓÚ±È½Ï×Ö·û´®´óĞ¡,¶ÔList½øĞĞÅÅĞò
-class MyCompare
-{
-public:
-	bool operator()(const string str1,const string str2)
-	{
-		return (str1 < str2);
-	}
+// ä»¿å‡½æ•°,ç”¨äºæ¯”è¾ƒå­—ç¬¦ä¸²å¤§å°,å¯¹Listè¿›è¡Œæ’åº
+class MyCompare {
+  public:
+    bool operator()(const string str1, const string str2) {
+        return (str1 < str2);
+    }
 };
 
 IMPLEMENT_DYNAMIC(ModelListConfigureDialog, CDialog)
 
 ModelListConfigureDialog::ModelListConfigureDialog(CWnd* pParent /*=NULL*/)
-	: CDialog(ModelListConfigureDialog::IDD, pParent)
-{
-	// Empty
+    : CDialog(ModelListConfigureDialog::IDD, pParent) {
+    // Empty
 }
 
-ModelListConfigureDialog::~ModelListConfigureDialog()
-{
-	// Empty
+ModelListConfigureDialog::~ModelListConfigureDialog() {
+    // Empty
 }
 
-void ModelListConfigureDialog::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_TREE_CONGIGURE_MODELLIST, m_configureModeListTree);
-	DDX_Control(pDX, IDC_STATIC_IMAGE, m_image);
+void ModelListConfigureDialog::DoDataExchange(CDataExchange* pDX) {
+    CDialog::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_TREE_CONGIGURE_MODELLIST, m_configureModeListTree);
+    DDX_Control(pDX, IDC_STATIC_IMAGE, m_image);
 }
 
 
 BEGIN_MESSAGE_MAP(ModelListConfigureDialog, CDialog)
-	ON_BN_CLICKED(IDOK, &ModelListConfigureDialog::OnBnClickedOk)
-	ON_BN_CLICKED(IDCANCEL, &ModelListConfigureDialog::OnBnClickedCancel)
-	ON_WM_CONTEXTMENU()
-	ON_COMMAND(ID_EDIT_DELETE_SYMBOL, &ModelListConfigureDialog::OnEditDeleteSymbol)
-	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_CONGIGURE_MODELLIST, &ModelListConfigureDialog::OnTvnSelchangedTreeCongigureModellist)
-	ON_COMMAND(ID_EDIT_ADD_SYMBOL, &ModelListConfigureDialog::OnEditAddSymbol)
+    ON_BN_CLICKED(IDOK, &ModelListConfigureDialog::OnBnClickedOk)
+    ON_BN_CLICKED(IDCANCEL, &ModelListConfigureDialog::OnBnClickedCancel)
+    ON_WM_CONTEXTMENU()
+    ON_COMMAND(ID_EDIT_DELETE_SYMBOL, &ModelListConfigureDialog::OnEditDeleteSymbol)
+    ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_CONGIGURE_MODELLIST, &ModelListConfigureDialog::OnTvnSelchangedTreeCongigureModellist)
+    ON_COMMAND(ID_EDIT_ADD_SYMBOL, &ModelListConfigureDialog::OnEditAddSymbol)
 END_MESSAGE_MAP()
 
 
-// ModelListConfigureDialog ÏûÏ¢´¦Àí³ÌĞò
+// ModelListConfigureDialog æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 
-void ModelListConfigureDialog::OnBnClickedOk()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	for(int i=0;i<g_modelKindNumber;++i)
-	{
-		// Update only changed
-		if(g_modelTree[i].isChanged)
-		{
-			CoInitialize(NULL); // ³õÊ¼»¯COM¡£
-			CComPtr<IXMLDOMDocument> spXMLDOM;
-			// ´´½¨½âÎöÆ÷ÊµÀı¡£
-			HRESULT hr = spXMLDOM.CoCreateInstance (_uuidof(DOMDocument));
-			VARIANT_BOOL bSuccess = false;
-			// ×°ÔØXMLÎÄµµ¡£
-			hr = spXMLDOM->load(CComVariant(g_point_symbolConfigureFile.c_str()),&bSuccess);
-		
-			int strLen = g_modelTree[i]._noteDirectory.length();
-			// "/root/XXX/*" ==> "/root/XXX"
-			string subStr = g_modelTree[i]._noteDirectory.substr(0,strLen-2);
-
-			CComBSTR bstrSS(subStr.c_str());
-			CComPtr<IXMLDOMNode> spDevice;
-			hr = spXMLDOM->selectSingleNode(bstrSS,&spDevice); //ËÑË÷bstrSS¡£
-	
-			CComPtr<IXMLDOMElement> spRootEle;
-			spXMLDOM->get_documentElement(&spRootEle); //¸ù½Úµã
-			CComPtr<IXMLDOMNodeList> spNodeList;
-			
-			spRootEle->selectNodes(_bstr_t(g_modelTree[i]._noteDirectory.c_str()),&spNodeList);
-
-			long nLen;//×Ó½ÚµãÊı
-			spNodeList->get_length(&nLen); //×Ó½ÚµãÊı
-			for (long j = 0; j != nLen; ++j) //±éÀú×Ó½Úµã
-			{
-				CComPtr<IXMLDOMNode> spNode;
-				spNodeList->get_item(j, &spNode);
-				// É¾³ıËùÓĞ×Ó½Úµã(item)
-				spDevice->removeChild(spNode,NULL);
-			}
-		
-			// ´ÓListÖĞÌí¼Ó½áµã
-			list<string>::iterator iter;
-			for(iter=g_modelList[i].begin();iter!=g_modelList[i].end();++iter)
-			{
-				CComPtr<IXMLDOMNode> spModelNode;
-				// ´´½¨"Model"½Úµã¡£
-				hr = spXMLDOM->createNode(CComVariant(NODE_ELEMENT),CComBSTR("item"),NULL,& spModelNode);
-				CComPtr<IXMLDOMNode> spInsertedNode;
-				hr = spDevice->appendChild (spModelNode,&spInsertedNode);
-				CString strID=(*iter).c_str();
-				// ÉèÖÃ"Model"µÄÎÄ±¾¡£
-				spInsertedNode->put_text(strID.AllocSysString());
-			}
-			
-			//±£´æÎÄµµ¡£
-			spXMLDOM->save(CComVariant(g_point_symbolConfigureFile.c_str()));
-			// ½áÊø¶ÔCOMµÄÊ¹ÓÃ¡£
-			CoUninitialize();
-		}
-	}
-	
-	CDialog::OnOK();
+void ModelListConfigureDialog::OnBnClickedOk() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    for (int i = 0; i < g_modelKindNumber; ++i) {
+        // Update only changed
+        if (g_modelTree[i].isChanged) {
+            CoInitialize(NULL); // åˆå§‹åŒ–COMã€‚
+            CComPtr<IXMLDOMDocument> spXMLDOM;
+            // åˆ›å»ºè§£æå™¨å®ä¾‹ã€‚
+            HRESULT hr = spXMLDOM.CoCreateInstance(_uuidof(DOMDocument));
+            VARIANT_BOOL bSuccess = false;
+            // è£…è½½XMLæ–‡æ¡£ã€‚
+            hr = spXMLDOM->load(CComVariant(g_point_symbolConfigureFile.c_str()), &bSuccess);
+            int strLen = g_modelTree[i]._noteDirectory.length();
+            // "/root/XXX/*" ==> "/root/XXX"
+            string subStr = g_modelTree[i]._noteDirectory.substr(0, strLen - 2);
+            CComBSTR bstrSS(subStr.c_str());
+            CComPtr<IXMLDOMNode> spDevice;
+            hr = spXMLDOM->selectSingleNode(bstrSS, &spDevice); //æœç´¢bstrSSã€‚
+            CComPtr<IXMLDOMElement> spRootEle;
+            spXMLDOM->get_documentElement(&spRootEle); //æ ¹èŠ‚ç‚¹
+            CComPtr<IXMLDOMNodeList> spNodeList;
+            spRootEle->selectNodes(_bstr_t(g_modelTree[i]._noteDirectory.c_str()), &spNodeList);
+            long nLen;//å­èŠ‚ç‚¹æ•°
+            spNodeList->get_length(&nLen); //å­èŠ‚ç‚¹æ•°
+            for (long j = 0; j != nLen; ++j) { //éå†å­èŠ‚ç‚¹
+                CComPtr<IXMLDOMNode> spNode;
+                spNodeList->get_item(j, &spNode);
+                // åˆ é™¤æ‰€æœ‰å­èŠ‚ç‚¹(item)
+                spDevice->removeChild(spNode, NULL);
+            }
+            // ä»Listä¸­æ·»åŠ ç»“ç‚¹
+            list<string>::iterator iter;
+            for (iter = g_modelList[i].begin(); iter != g_modelList[i].end(); ++iter) {
+                CComPtr<IXMLDOMNode> spModelNode;
+                // åˆ›å»º"Model"èŠ‚ç‚¹ã€‚
+                hr = spXMLDOM->createNode(CComVariant(NODE_ELEMENT), CComBSTR("item"), NULL, & spModelNode);
+                CComPtr<IXMLDOMNode> spInsertedNode;
+                hr = spDevice->appendChild(spModelNode, &spInsertedNode);
+                CString strID = (*iter).c_str();
+                // è®¾ç½®"Model"çš„æ–‡æœ¬ã€‚
+                spInsertedNode->put_text(strID.AllocSysString());
+            }
+            //ä¿å­˜æ–‡æ¡£ã€‚
+            spXMLDOM->save(CComVariant(g_point_symbolConfigureFile.c_str()));
+            // ç»“æŸå¯¹COMçš„ä½¿ç”¨ã€‚
+            CoUninitialize();
+        }
+    }
+    CDialog::OnOK();
 }
 
 
 /************************************************************************/
-/* Function: È¡ÏûµÄÊ±ºò½«ListÖĞ±»É¾³ıµÄÔªËØÖØĞÂ²åÈë							*/
+/* Function: å–æ¶ˆçš„æ—¶å€™å°†Listä¸­è¢«åˆ é™¤çš„å…ƒç´ é‡æ–°æ’å…¥                         */
 /************************************************************************/
-void ModelListConfigureDialog::OnBnClickedCancel()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	
-	for(int i=0;i<g_modelKindNumber;++i)
-	{
-		//add
-		list<string>::iterator iter_del;
-		for(iter_del=g_delList[i].begin();iter_del!=g_delList[i].end();++iter_del)
-		{
-			g_modelList[i].push_back(*iter_del);
-		}
-		g_delList[i].clear();
-
-		//delete
-		list<string>::iterator iter_add = g_delList[i].begin();
-		while(iter_add != g_delList[i].end())
-		{
-			iter_add = g_delList[i].erase(iter_add);
-		}
-		g_addList[i].clear();
-
-	}
-	
-
-	CDialog::OnCancel();
+void ModelListConfigureDialog::OnBnClickedCancel() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    for (int i = 0; i < g_modelKindNumber; ++i) {
+        //add
+        list<string>::iterator iter_del;
+        for (iter_del = g_delList[i].begin(); iter_del != g_delList[i].end(); ++iter_del) {
+            g_modelList[i].push_back(*iter_del);
+        }
+        g_delList[i].clear();
+        //delete
+        list<string>::iterator iter_add = g_delList[i].begin();
+        while (iter_add != g_delList[i].end()) {
+            iter_add = g_delList[i].erase(iter_add);
+        }
+        g_addList[i].clear();
+    }
+    CDialog::OnCancel();
 }
 
 
-BOOL ModelListConfigureDialog::OnInitDialog()
-{
-	CDialog::OnInitDialog();
-
-	//============================================
-	// ´ÓlistÖĞ¶ÁÈ¡ĞÅÏ¢ÏÔÊ¾ÔÚtreeÖĞ
-	//============================================
-	for(int i=0;i<g_modelKindNumber;++i)
-	{
-		g_modelTree[i].isChanged = 0;
-		// ÅÅĞò
-		g_modelList[i].sort(MyCompare());
-	}
-
-
-	hRoot = m_configureModeListTree.InsertItem("·ûºÅÁĞ±íÅäÖÃ",0,0);
- 
-	
-	LPCTSTR item[5];	// {"3DS Model","City Symbol","Tree Model","3D Tree Model","Weather Symbol"};
-	
-	for(int i=0;i<g_modelKindNumber;++i)
-	{
-		item[i] = g_modelTree[i]._item.c_str();
-	}
-
-	for(int i=0;i<g_modelKindNumber;++i)
-	{
-		hCataItem = m_configureModeListTree.InsertItem(item[i],1,1,hRoot,TVI_LAST);
-		list<string>::iterator iter;
-		for(iter=g_modelList[i].begin();iter!=g_modelList[i].end();++iter)
-		{
-			hArtItem = m_configureModeListTree.InsertItem((*iter).c_str(),2,2,hCataItem,TVI_LAST);
-		}
-	}
-	return TRUE;
+BOOL ModelListConfigureDialog::OnInitDialog() {
+    CDialog::OnInitDialog();
+    //============================================
+    // ä»listä¸­è¯»å–ä¿¡æ¯æ˜¾ç¤ºåœ¨treeä¸­
+    //============================================
+    for (int i = 0; i < g_modelKindNumber; ++i) {
+        g_modelTree[i].isChanged = 0;
+        // æ’åº
+        g_modelList[i].sort(MyCompare());
+    }
+    hRoot = m_configureModeListTree.InsertItem("ç¬¦å·åˆ—è¡¨é…ç½®", 0, 0);
+    LPCTSTR item[5];    // {"3DS Model","City Symbol","Tree Model","3D Tree Model","Weather Symbol"};
+    for (int i = 0; i < g_modelKindNumber; ++i) {
+        item[i] = g_modelTree[i]._item.c_str();
+    }
+    for (int i = 0; i < g_modelKindNumber; ++i) {
+        hCataItem = m_configureModeListTree.InsertItem(item[i], 1, 1, hRoot, TVI_LAST);
+        list<string>::iterator iter;
+        for (iter = g_modelList[i].begin(); iter != g_modelList[i].end(); ++iter) {
+            hArtItem = m_configureModeListTree.InsertItem((*iter).c_str(), 2, 2, hCataItem, TVI_LAST);
+        }
+    }
+    return TRUE;
 }
 
 
 /************************************************************************/
-/* Function: µ¯³ö²Ëµ¥													*/
+/* Function: å¼¹å‡ºèœå•                                                   */
 /************************************************************************/
-void ModelListConfigureDialog::OnContextMenu(CWnd* pWnd, CPoint point)
-{
-	// TODO: ÔÚ´Ë´¦Ìí¼ÓÏûÏ¢´¦Àí³ÌĞò´úÂë
-	if (point != CPoint(-1, -1))
-	{
-		CPoint ptTree = point;
-		m_configureModeListTree.ScreenToClient(&ptTree);
-		UINT flags = 0;
-		HTREEITEM hTreeItem = m_configureModeListTree.HitTest(ptTree, &flags);
-		if (hTreeItem != NULL)
-		{
-			m_configureModeListTree.SelectItem(hTreeItem);
-			CMenu menu;
-			menu.LoadMenu(IDR_MENU_POPUP_CONFIGURE_EDIT);
-			CMenu * pMenu = menu.GetSubMenu(0);
-			m_configureModeListTree.SetFocus();	
-
-			//========================================================
-			HTREEITEM selectedItem = m_configureModeListTree.GetSelectedItem();
-			HTREEITEM selectedParentItem = m_configureModeListTree.GetParentItem(selectedItem);
-			HTREEITEM rootItem = m_configureModeListTree.GetRootItem();
-			if(rootItem == selectedParentItem)
-			{
-				//MessageBox("¶ş¼¶½Úµã","",MB_OK);
-				pMenu->EnableMenuItem(ID_EDIT_DELETE_SYMBOL, MF_DISABLED|MF_GRAYED);
-			}
-			if(rootItem == m_configureModeListTree.GetParentItem(selectedParentItem))
-			{
-				pMenu->EnableMenuItem(ID_EDIT_ADD_SYMBOL, MF_DISABLED|MF_GRAYED);
-				//MessageBox("3¼¶½Úµã","",MB_OK);
-			}
-			if(rootItem == selectedItem)
-			{
-				//MessageBox("¸ù½Úµã","",MB_OK);
-				pMenu->EnableMenuItem(ID_EDIT_ADD_SYMBOL, MF_DISABLED|MF_GRAYED);
-				pMenu->EnableMenuItem(ID_EDIT_DELETE_SYMBOL, MF_DISABLED|MF_GRAYED);
-			}
-			//========================================================
-
-			pMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
-	
-		}
-	}
+void ModelListConfigureDialog::OnContextMenu(CWnd* pWnd, CPoint point) {
+    // TODO: åœ¨æ­¤å¤„æ·»åŠ æ¶ˆæ¯å¤„ç†ç¨‹åºä»£ç 
+    if (point != CPoint(-1, -1)) {
+        CPoint ptTree = point;
+        m_configureModeListTree.ScreenToClient(&ptTree);
+        UINT flags = 0;
+        HTREEITEM hTreeItem = m_configureModeListTree.HitTest(ptTree, &flags);
+        if (hTreeItem != NULL) {
+            m_configureModeListTree.SelectItem(hTreeItem);
+            CMenu menu;
+            menu.LoadMenu(IDR_MENU_POPUP_CONFIGURE_EDIT);
+            CMenu* pMenu = menu.GetSubMenu(0);
+            m_configureModeListTree.SetFocus();
+            //========================================================
+            HTREEITEM selectedItem = m_configureModeListTree.GetSelectedItem();
+            HTREEITEM selectedParentItem = m_configureModeListTree.GetParentItem(selectedItem);
+            HTREEITEM rootItem = m_configureModeListTree.GetRootItem();
+            if (rootItem == selectedParentItem) {
+                //MessageBox("äºŒçº§èŠ‚ç‚¹","",MB_OK);
+                pMenu->EnableMenuItem(ID_EDIT_DELETE_SYMBOL, MF_DISABLED | MF_GRAYED);
+            }
+            if (rootItem == m_configureModeListTree.GetParentItem(selectedParentItem)) {
+                pMenu->EnableMenuItem(ID_EDIT_ADD_SYMBOL, MF_DISABLED | MF_GRAYED);
+                //MessageBox("3çº§èŠ‚ç‚¹","",MB_OK);
+            }
+            if (rootItem == selectedItem) {
+                //MessageBox("æ ¹èŠ‚ç‚¹","",MB_OK);
+                pMenu->EnableMenuItem(ID_EDIT_ADD_SYMBOL, MF_DISABLED | MF_GRAYED);
+                pMenu->EnableMenuItem(ID_EDIT_DELETE_SYMBOL, MF_DISABLED | MF_GRAYED);
+            }
+            //========================================================
+            pMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
+        }
+    }
 }
 
 
 /************************************************************************/
-/* Function: tree control ÉÏÓÒ»÷²Ëµ¥£¬delete								*/
+/* Function: tree control ä¸Šå³å‡»èœå•ï¼Œdelete                                */
 /************************************************************************/
-void ModelListConfigureDialog::OnEditDeleteSymbol()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-	HTREEITEM selectItem = m_configureModeListTree.GetSelectedItem();
-	
-	CString selectItemText = m_configureModeListTree.GetItemText(selectItem);
-
-	HTREEITEM parentItem = m_configureModeListTree.GetParentItem(selectItem);
-
-	CString parentItemText = m_configureModeListTree.GetItemText(parentItem);
-
-	// delete from tree control
-	m_configureModeListTree.DeleteItem(selectItem);
-
-	for(int i=0;i<g_modelKindNumber;++i)
-	{
-		if(parentItemText == g_modelTree[i]._item.c_str())
-		{
-			list<string>::iterator iter = g_modelList[i].begin();
-			while(iter != g_modelList[i].end())
-			{
-				if((*iter).c_str() == selectItemText)
-				{
-					// delete from model list
-					iter = g_modelList[i].erase(iter);
-
-					list<string>::iterator tmpIter;
-					for(tmpIter=g_addList[i].begin();tmpIter!=g_addList[i].end();)
-					{
-						if((*tmpIter).c_str() == selectItemText)
-						{
-							tmpIter = g_addList[i].erase(tmpIter);
-						}
-						else
-							++tmpIter;
-					}
-					if(tmpIter==g_addList[i].end())
-					{
-						g_delList[i].push_back(LPCSTR(selectItemText));
-					}
-
-					
-					g_modelTree[i].isChanged = 1;
-				}
-				else
-				{
-					++iter;
-				}
-			}
-			
-		}
-	}
+void ModelListConfigureDialog::OnEditDeleteSymbol() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    HTREEITEM selectItem = m_configureModeListTree.GetSelectedItem();
+    CString selectItemText = m_configureModeListTree.GetItemText(selectItem);
+    HTREEITEM parentItem = m_configureModeListTree.GetParentItem(selectItem);
+    CString parentItemText = m_configureModeListTree.GetItemText(parentItem);
+    // delete from tree control
+    m_configureModeListTree.DeleteItem(selectItem);
+    for (int i = 0; i < g_modelKindNumber; ++i) {
+        if (parentItemText == g_modelTree[i]._item.c_str()) {
+            list<string>::iterator iter = g_modelList[i].begin();
+            while (iter != g_modelList[i].end()) {
+                if ((*iter).c_str() == selectItemText) {
+                    // delete from model list
+                    iter = g_modelList[i].erase(iter);
+                    list<string>::iterator tmpIter;
+                    for (tmpIter = g_addList[i].begin(); tmpIter != g_addList[i].end();) {
+                        if ((*tmpIter).c_str() == selectItemText) {
+                            tmpIter = g_addList[i].erase(tmpIter);
+                        } else
+                            ++tmpIter;
+                    }
+                    if (tmpIter == g_addList[i].end()) {
+                        g_delList[i].push_back(LPCSTR(selectItemText));
+                    }
+                    g_modelTree[i].isChanged = 1;
+                } else {
+                    ++iter;
+                }
+            }
+        }
+    }
 }
 
 
 /************************************************************************/
-/* Function: tree control ÉÏÓÒ»÷²Ëµ¥£¬add									*/
+/* Function: tree control ä¸Šå³å‡»èœå•ï¼Œadd                                   */
 /************************************************************************/
-void ModelListConfigureDialog::OnEditAddSymbol()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
-
-	HTREEITEM selectItem = m_configureModeListTree.GetSelectedItem();
-	
-	CString selectItemText = m_configureModeListTree.GetItemText(selectItem);
-
-	// ÎÄ¼ş¶Ô»°¿ò±êÌâ,¸ñÊ½¹ıÂËÆ÷,Ä¬ÈÏÂ·¾¶
-	CString l_title,l_filter,l_initialDir;
-	CString l_tmp = "\\";
-	int l_symbolType = -1;
-	if(selectItemText == g_modelTree[0]._item.c_str())
-	{
-		l_symbolType = 0;
-		l_title = "Ìí¼Ó3DSÄ£ĞÍ";
-		l_filter = "3DSÄ£ĞÍ(*.BMP)|*.BMP|";
-		l_initialDir = g_sceneDataPath.c_str() + l_tmp + g_symbolFolder._3DSFolder.c_str();
-	}
-	if(selectItemText == g_modelTree[1]._item.c_str())
-	{
-		l_symbolType = 1;
-		l_title = "Ìí¼Ó³ÇÊĞ·ûºÅ";
-		l_filter = "³ÇÊĞ·ûºÅ(*.png)|*.png|";
-		l_initialDir = g_sceneDataPath.c_str() + l_tmp + g_symbolFolder._CityFolder.c_str();
-	}
-	if(selectItemText == g_modelTree[2]._item.c_str())
-	{
-		l_symbolType = 2;
-		l_title = "Ìí¼Ó¾°¹ÛÊ÷";
-		l_filter = "¾°¹ÛÊ÷(*.BMP)|*.BMP|";
-		l_initialDir = g_sceneDataPath.c_str() + l_tmp + g_symbolFolder._TreeFolder.c_str();
-	}
-	if(selectItemText == g_modelTree[3]._item.c_str())
-	{
-		l_symbolType = 3;
-		l_title = "Ìí¼Ó3D¾°¹ÛÊ÷";
-		l_filter = "3D¾°¹ÛÊ÷(*.BMP)|*.BMP|";
-		l_initialDir = g_sceneDataPath.c_str() + l_tmp + g_symbolFolder._3DTreeFolder.c_str();
-	}
-	if(selectItemText == g_modelTree[4]._item.c_str())
-	{
-		l_symbolType = 4;
-		l_title = "Ìí¼ÓÌìÆø·ûºÅ";
-		l_filter = "ÌìÆø·ûºÅ(*.BMP)|*.BMP|";
-		l_initialDir = g_sceneDataPath.c_str() + l_tmp + g_symbolFolder._WeatherFolder.c_str();
-	}
-	
-	CString file;
-	CFileDialog FileDialog(TRUE,NULL,NULL,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,l_filter,NULL);
-	
-	// Ä¬ÈÏ´ò¿ªÅäÖÃÖĞµÄÎÄ¼şÂ·¾¶
-	FileDialog.m_ofn.lpstrInitialDir = l_initialDir;
-
-	FileDialog.m_ofn.lpstrTitle = l_title;	
-
-	if((FileDialog.DoModal()==IDOK) && (l_symbolType!=-1))
-	{
-		file = FileDialog.GetFileName();
-		
-		int index = file.Find('.');
-		
-		CString ret = file.Left(index);
-
-		list<string>::iterator iter = g_modelList[l_symbolType].begin();
-		while(iter != g_modelList[l_symbolType].end())
-		{
-			if((*iter).c_str() == ret)
-			{
-				MessageBox("Çë²»ÒªÖØ¸´Ìí¼ÓÏàÍ¬µÄ·ûºÅ!","Warning",MB_OK);
-				return;
-			}
-			else
-			{
-				++iter;
-			}
-		}
-		if(iter == g_modelList[l_symbolType].end())
-		{
-			g_modelList[l_symbolType].push_back(LPCSTR(ret));
-
-			list<string>::iterator tmpIter;
-			for(tmpIter=g_delList[l_symbolType].begin();tmpIter!=g_delList[l_symbolType].end();)
-			{
-				if((*tmpIter).c_str() == ret)
-				{
-					tmpIter = g_delList[l_symbolType].erase(tmpIter);
-				}
-				else
-					++tmpIter;
-			}
-			if(tmpIter==g_delList[l_symbolType].end())
-			{
-				g_addList[l_symbolType].push_back(LPCSTR(ret));
-			}
-			
-			m_configureModeListTree.InsertItem(ret,2,2,selectItem,TVI_LAST);
-			g_modelTree[l_symbolType].isChanged = 1;
-		}
-	}
+void ModelListConfigureDialog::OnEditAddSymbol() {
+    // TODO: åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+    HTREEITEM selectItem = m_configureModeListTree.GetSelectedItem();
+    CString selectItemText = m_configureModeListTree.GetItemText(selectItem);
+    // æ–‡ä»¶å¯¹è¯æ¡†æ ‡é¢˜,æ ¼å¼è¿‡æ»¤å™¨,é»˜è®¤è·¯å¾„
+    CString l_title, l_filter, l_initialDir;
+    CString l_tmp = "\\";
+    int l_symbolType = -1;
+    if (selectItemText == g_modelTree[0]._item.c_str()) {
+        l_symbolType = 0;
+        l_title = "æ·»åŠ 3DSæ¨¡å‹";
+        l_filter = "3DSæ¨¡å‹(*.BMP)|*.BMP|";
+        l_initialDir = g_sceneDataPath.c_str() + l_tmp + g_symbolFolder._3DSFolder.c_str();
+    }
+    if (selectItemText == g_modelTree[1]._item.c_str()) {
+        l_symbolType = 1;
+        l_title = "æ·»åŠ åŸå¸‚ç¬¦å·";
+        l_filter = "åŸå¸‚ç¬¦å·(*.png)|*.png|";
+        l_initialDir = g_sceneDataPath.c_str() + l_tmp + g_symbolFolder._CityFolder.c_str();
+    }
+    if (selectItemText == g_modelTree[2]._item.c_str()) {
+        l_symbolType = 2;
+        l_title = "æ·»åŠ æ™¯è§‚æ ‘";
+        l_filter = "æ™¯è§‚æ ‘(*.BMP)|*.BMP|";
+        l_initialDir = g_sceneDataPath.c_str() + l_tmp + g_symbolFolder._TreeFolder.c_str();
+    }
+    if (selectItemText == g_modelTree[3]._item.c_str()) {
+        l_symbolType = 3;
+        l_title = "æ·»åŠ 3Dæ™¯è§‚æ ‘";
+        l_filter = "3Dæ™¯è§‚æ ‘(*.BMP)|*.BMP|";
+        l_initialDir = g_sceneDataPath.c_str() + l_tmp + g_symbolFolder._3DTreeFolder.c_str();
+    }
+    if (selectItemText == g_modelTree[4]._item.c_str()) {
+        l_symbolType = 4;
+        l_title = "æ·»åŠ å¤©æ°”ç¬¦å·";
+        l_filter = "å¤©æ°”ç¬¦å·(*.BMP)|*.BMP|";
+        l_initialDir = g_sceneDataPath.c_str() + l_tmp + g_symbolFolder._WeatherFolder.c_str();
+    }
+    CString file;
+    CFileDialog FileDialog(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, l_filter, NULL);
+    // é»˜è®¤æ‰“å¼€é…ç½®ä¸­çš„æ–‡ä»¶è·¯å¾„
+    FileDialog.m_ofn.lpstrInitialDir = l_initialDir;
+    FileDialog.m_ofn.lpstrTitle = l_title;
+    if ((FileDialog.DoModal() == IDOK) && (l_symbolType != -1)) {
+        file = FileDialog.GetFileName();
+        int index = file.Find('.');
+        CString ret = file.Left(index);
+        list<string>::iterator iter = g_modelList[l_symbolType].begin();
+        while (iter != g_modelList[l_symbolType].end()) {
+            if ((*iter).c_str() == ret) {
+                MessageBox("è¯·ä¸è¦é‡å¤æ·»åŠ ç›¸åŒçš„ç¬¦å·!", "Warning", MB_OK);
+                return;
+            } else {
+                ++iter;
+            }
+        }
+        if (iter == g_modelList[l_symbolType].end()) {
+            g_modelList[l_symbolType].push_back(LPCSTR(ret));
+            list<string>::iterator tmpIter;
+            for (tmpIter = g_delList[l_symbolType].begin(); tmpIter != g_delList[l_symbolType].end();) {
+                if ((*tmpIter).c_str() == ret) {
+                    tmpIter = g_delList[l_symbolType].erase(tmpIter);
+                } else
+                    ++tmpIter;
+            }
+            if (tmpIter == g_delList[l_symbolType].end()) {
+                g_addList[l_symbolType].push_back(LPCSTR(ret));
+            }
+            m_configureModeListTree.InsertItem(ret, 2, 2, selectItem, TVI_LAST);
+            g_modelTree[l_symbolType].isChanged = 1;
+        }
+    }
 }
 
 
 /************************************************************************/
-/* Function: ÏìÓ¦Ñ¡ÖĞ¸Ä±äÊÂ¼ş,ÏÔÊ¾ÏàÓ¦µÄÍ¼Æ¬								*/
+/* Function: å“åº”é€‰ä¸­æ”¹å˜äº‹ä»¶,æ˜¾ç¤ºç›¸åº”çš„å›¾ç‰‡                                */
 /************************************************************************/
-void ModelListConfigureDialog::OnTvnSelchangedTreeCongigureModellist(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-	*pResult = 0;
- 
-
-	HTREEITEM selectItem = m_configureModeListTree.GetSelectedItem();
-	CString selectItemText = m_configureModeListTree.GetItemText(selectItem);
-
-	HTREEITEM parentItem = m_configureModeListTree.GetParentItem(selectItem);
-	CString parentItemText = m_configureModeListTree.GetItemText(parentItem);
-
-	CString imgPathAndName;
-	CString tmp = "\\";
-	for(int i=0;i<g_modelKindNumber;++i)
-	{
-		if(parentItemText == g_modelTree[i]._item.c_str())
-		{
-			if(0 == i)
-			{
-				imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._3DSFolder.c_str() + tmp + selectItemText + ".bmp";
-				//MessageBox(imgPathAndName,"");
-			}
-			// PNG
-			else if(1 == i)
-			{
-				imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._CityFolder.c_str() + tmp + selectItemText + ".png";
-				//MessageBox(imgPathAndName,"");
-
-				GetDlgItem(IDC_STATIC_IMAGE)->GetParent()->RedrawWindow();
-
-				CWnd* pWnd;
-				pWnd=GetDlgItem(IDC_STATIC_IMAGE);//ÕâÀïÊÇ»ñµÃ¿Ø¼ş¾ä±ú
-				CDC* pDC=pWnd->GetDC();
-				HDC hDC = pDC->m_hDC;
- 
-				CRect rect_frame;
-				pWnd->GetClientRect(&rect_frame);
-
-				CImage image;
-				image.Load(imgPathAndName);
- 
-				::SetStretchBltMode(hDC,HALFTONE);
-				::SetBrushOrgEx(hDC,0,0,NULL);
- 
-				image.Draw(hDC,rect_frame);
-				ReleaseDC(pDC);//ÊÍ·Åpicture¿Ø¼şµÄDC
-			}
-			else if(2 == i)
-			{
-				imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._TreeFolder.c_str() + tmp + selectItemText + ".bmp";
-				//MessageBox(imgPathAndName,"");
-			}
-			else if(3 == i)
-			{
-				imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._3DTreeFolder.c_str() + tmp + selectItemText + ".bmp";
-				//MessageBox(imgPathAndName,"");
-			}
-			else if(4 == i)
-			{
-				imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._WeatherFolder.c_str() + tmp + selectItemText + ".bmp";
-				//MessageBox(imgPathAndName,"");
-			}
-			// BMP
-			if(i != 1)
-			{
-				CRect rect;
-				CDC *pdc = GetDC();
-				GetDlgItem(IDC_STATIC_IMAGE)->GetWindowRect(rect);
-				this->ScreenToClient(rect);
-				drawBitmapFromFile(imgPathAndName,pdc,rect);
-			}	
-		}
-	}
-   
+void ModelListConfigureDialog::OnTvnSelchangedTreeCongigureModellist(NMHDR* pNMHDR, LRESULT* pResult) {
+    LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+    *pResult = 0;
+    HTREEITEM selectItem = m_configureModeListTree.GetSelectedItem();
+    CString selectItemText = m_configureModeListTree.GetItemText(selectItem);
+    HTREEITEM parentItem = m_configureModeListTree.GetParentItem(selectItem);
+    CString parentItemText = m_configureModeListTree.GetItemText(parentItem);
+    CString imgPathAndName;
+    CString tmp = "\\";
+    for (int i = 0; i < g_modelKindNumber; ++i) {
+        if (parentItemText == g_modelTree[i]._item.c_str()) {
+            if (0 == i) {
+                imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._3DSFolder.c_str() + tmp + selectItemText + ".bmp";
+                //MessageBox(imgPathAndName,"");
+            }
+            // PNG
+            else if (1 == i) {
+                imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._CityFolder.c_str() + tmp + selectItemText + ".png";
+                //MessageBox(imgPathAndName,"");
+                GetDlgItem(IDC_STATIC_IMAGE)->GetParent()->RedrawWindow();
+                CWnd* pWnd;
+                pWnd = GetDlgItem(IDC_STATIC_IMAGE); //è¿™é‡Œæ˜¯è·å¾—æ§ä»¶å¥æŸ„
+                CDC* pDC = pWnd->GetDC();
+                HDC hDC = pDC->m_hDC;
+                CRect rect_frame;
+                pWnd->GetClientRect(&rect_frame);
+                CImage image;
+                image.Load(imgPathAndName);
+                ::SetStretchBltMode(hDC, HALFTONE);
+                ::SetBrushOrgEx(hDC, 0, 0, NULL);
+                image.Draw(hDC, rect_frame);
+                ReleaseDC(pDC);//é‡Šæ”¾pictureæ§ä»¶çš„DC
+            } else if (2 == i) {
+                imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._TreeFolder.c_str() + tmp + selectItemText + ".bmp";
+                //MessageBox(imgPathAndName,"");
+            } else if (3 == i) {
+                imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._3DTreeFolder.c_str() + tmp + selectItemText + ".bmp";
+                //MessageBox(imgPathAndName,"");
+            } else if (4 == i) {
+                imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._WeatherFolder.c_str() + tmp + selectItemText + ".bmp";
+                //MessageBox(imgPathAndName,"");
+            }
+            // BMP
+            if (i != 1) {
+                CRect rect;
+                CDC* pdc = GetDC();
+                GetDlgItem(IDC_STATIC_IMAGE)->GetWindowRect(rect);
+                this->ScreenToClient(rect);
+                drawBitmapFromFile(imgPathAndName, pdc, rect);
+            }
+        }
+    }
 }
 
 
 /************************************************************************/
-/* Function: ½«Ñ¡ÖĞµÄbmpÎÆÀíÓ°ÏñÔÚ¿Ø¼şÉÏ»æÖÆ								*/
+/* Function: å°†é€‰ä¸­çš„bmpçº¹ç†å½±åƒåœ¨æ§ä»¶ä¸Šç»˜åˆ¶                                */
 /************************************************************************/
-void ModelListConfigureDialog::drawBitmapFromFile(CString bitmapFilePath,CDC*pDC,CRect rect)
-{
-	HANDLE   filehandle=::LoadImage(NULL,bitmapFilePath,IMAGE_BITMAP,0,0,LR_LOADFROMFILE);  //¼ÓÔØÓ°ÏñÎÄ¼ş 
-	if(filehandle!=NULL)   //Èç¹û¼ÓÔØ³É¹¦
-	{   
-		CBitmap   bmp;   
-		if(bmp.Attach(filehandle))   
-		{   
-			BITMAP   bmpInfo;   
-			bmp.GetBitmap(&bmpInfo);   //»ñÈ¡×ÊÔ´Î»Í¼ĞÅÏ¢
-			CDC   dcMemory;   
-			dcMemory.CreateCompatibleDC(pDC);   //´´½¨Ò»¸öÓëÌØ¶¨Éè±¸³¡¾°Ò»ÖÂµÄÄÚ´æÉè±¸³¡¾°
-			dcMemory.SelectObject(&bmp);   //Ñ¡Ôñbmp¶ÔÏóµ½Ö¸¶¨µÄÉè±¸ÉÏÏÂÎÄ»·¾³ÖĞ,¸ÃĞÂ¶ÔÏóÌæ»»ÏÈÇ°µÄÏàÍ¬ÀàĞÍµÄ¶ÔÏó
-			//ÉèÖÃÖ¸¶¨Éè±¸»·¾³ÖĞµÄÎ»Í¼À­ÉìÄ£Ê½. HALFTONE£º½«Ô´¾ØĞÎÇøÖĞµÄÏñËØÓ³Éäµ½Ä¿±ê¾ØĞÎÇøµÄÏñËØ¿éÖĞ£¬
-			//¸²¸ÇÄ¿±êÏñËØ¿éµÄÒ»°ãÑÕÉ«ÓëÔ´ÏñËØµÄÑÕÉ«½Ó½ü¡£
-			
-			//StretchBlt():Ô´¾ØĞÎÖĞ¸´ÖÆÒ»¸öÎ»Í¼µ½Ä¿±ê¾ØĞÎ,±ØÒªÊ±°´Ä¿Ç°Ä¿±êÉè±¸ÉèÖÃµÄÄ£Ê½½øĞĞÍ¼ÏñµÄÀ­Éì»òÑ¹Ëõ¡£
-			pDC->StretchBlt(rect.left,rect.top,rect.Width(),rect.Height(),&dcMemory,0,0,bmpInfo.bmWidth,bmpInfo.bmHeight,SRCCOPY);   
-			bmp.Detach();   //Ïú»Ùbmp¶ÔÏó
-		}   
-	}   
+void ModelListConfigureDialog::drawBitmapFromFile(CString bitmapFilePath, CDC* pDC, CRect rect) {
+    HANDLE   filehandle =::LoadImage(NULL, bitmapFilePath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE); //åŠ è½½å½±åƒæ–‡ä»¶
+    if (filehandle != NULL) { //å¦‚æœåŠ è½½æˆåŠŸ
+        CBitmap   bmp;
+        if (bmp.Attach(filehandle)) {
+            BITMAP   bmpInfo;
+            bmp.GetBitmap(&bmpInfo);   //è·å–èµ„æºä½å›¾ä¿¡æ¯
+            CDC   dcMemory;
+            dcMemory.CreateCompatibleDC(pDC);   //åˆ›å»ºä¸€ä¸ªä¸ç‰¹å®šè®¾å¤‡åœºæ™¯ä¸€è‡´çš„å†…å­˜è®¾å¤‡åœºæ™¯
+            dcMemory.SelectObject(&bmp);   //é€‰æ‹©bmpå¯¹è±¡åˆ°æŒ‡å®šçš„è®¾å¤‡ä¸Šä¸‹æ–‡ç¯å¢ƒä¸­,è¯¥æ–°å¯¹è±¡æ›¿æ¢å…ˆå‰çš„ç›¸åŒç±»å‹çš„å¯¹è±¡
+            //è®¾ç½®æŒ‡å®šè®¾å¤‡ç¯å¢ƒä¸­çš„ä½å›¾æ‹‰ä¼¸æ¨¡å¼. HALFTONEï¼šå°†æºçŸ©å½¢åŒºä¸­çš„åƒç´ æ˜ å°„åˆ°ç›®æ ‡çŸ©å½¢åŒºçš„åƒç´ å—ä¸­ï¼Œ
+            //è¦†ç›–ç›®æ ‡åƒç´ å—çš„ä¸€èˆ¬é¢œè‰²ä¸æºåƒç´ çš„é¢œè‰²æ¥è¿‘ã€‚
+            //StretchBlt():æºçŸ©å½¢ä¸­å¤åˆ¶ä¸€ä¸ªä½å›¾åˆ°ç›®æ ‡çŸ©å½¢,å¿…è¦æ—¶æŒ‰ç›®å‰ç›®æ ‡è®¾å¤‡è®¾ç½®çš„æ¨¡å¼è¿›è¡Œå›¾åƒçš„æ‹‰ä¼¸æˆ–å‹ç¼©ã€‚
+            pDC->StretchBlt(rect.left, rect.top, rect.Width(), rect.Height(), &dcMemory, 0, 0, bmpInfo.bmWidth, bmpInfo.bmHeight, SRCCOPY);
+            bmp.Detach();   //é”€æ¯bmpå¯¹è±¡
+        }
+    }
 }
 
 

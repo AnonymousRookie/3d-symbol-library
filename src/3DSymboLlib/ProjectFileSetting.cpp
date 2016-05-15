@@ -1,173 +1,137 @@
-// ProjectFileSetting.cpp : ÊµÏÖÎÄ¼ş
+ï»¿// ProjectFileSetting.cpp : å®ç°æ–‡ä»¶
 //
 
 #include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "ProjectFileSetting.h"
 #include "afxdialogex.h"
- 
+
 #include "MainFrm.h"
 #include "GlobalVariable.h"
-// CProjectFileSetting ¶Ô»°¿ò
+// CProjectFileSetting å¯¹è¯æ¡†
 
 IMPLEMENT_DYNAMIC(CProjectFileSetting, CDialog)
 
 CProjectFileSetting::CProjectFileSetting(CWnd* pParent /*=NULL*/)
-	: CDialog(CProjectFileSetting::IDD, pParent)
-{
-	new_project_flag = 1;
+    : CDialog(CProjectFileSetting::IDD, pParent) {
+    new_project_flag = 1;
 }
 
-CProjectFileSetting::~CProjectFileSetting()
-{
+CProjectFileSetting::~CProjectFileSetting() {
 }
 
-void CProjectFileSetting::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_LIST_RECENTLY_OPENED_PROJECT, m_recentlyOpenedProjectList);
+void CProjectFileSetting::DoDataExchange(CDataExchange* pDX) {
+    CDialog::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_LIST_RECENTLY_OPENED_PROJECT, m_recentlyOpenedProjectList);
 }
 
 
 BEGIN_MESSAGE_MAP(CProjectFileSetting, CDialog)
-	ON_BN_CLICKED(IDOK, &CProjectFileSetting::OnBnClickedOk)
-	ON_BN_CLICKED(IDCANCEL, &CProjectFileSetting::OnBnClickedCancel)
-	ON_BN_CLICKED(IDC_RADIO_NEW_PROJECT, &CProjectFileSetting::OnBnClickedRadioNewProject)
-	ON_BN_CLICKED(IDC_RADIO_OPEN_PROJECT, &CProjectFileSetting::OnBnClickedRadioOpenProject)
+    ON_BN_CLICKED(IDOK, &CProjectFileSetting::OnBnClickedOk)
+    ON_BN_CLICKED(IDCANCEL, &CProjectFileSetting::OnBnClickedCancel)
+    ON_BN_CLICKED(IDC_RADIO_NEW_PROJECT, &CProjectFileSetting::OnBnClickedRadioNewProject)
+    ON_BN_CLICKED(IDC_RADIO_OPEN_PROJECT, &CProjectFileSetting::OnBnClickedRadioOpenProject)
 
 
-	ON_LBN_SELCHANGE(IDC_LIST_RECENTLY_OPENED_PROJECT, &CProjectFileSetting::OnSelchangeListRecentlyOpenedProject)
+    ON_LBN_SELCHANGE(IDC_LIST_RECENTLY_OPENED_PROJECT, &CProjectFileSetting::OnSelchangeListRecentlyOpenedProject)
 END_MESSAGE_MAP()
 
 
-// CProjectFileSetting ÏûÏ¢´¦Àí³ÌĞò
+// CProjectFileSetting æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 
 
 
 
-void CProjectFileSetting::OnBnClickedOk()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	CDialog::OnOK();
-
-	CMainFrame* pMF=(CMainFrame*)AfxGetApp()->m_pMainWnd;  //ÏÈÍ¨¹ı»ñÈ¡µ±Ç°¿ò¼ÜÖ¸Õë
-	CView * active = pMF->GetActiveView();//²ÅÄÜ»ñÈ¡µ±Ç°ÊÓÀàÖ¸Õë
-	if(active != NULL)  //»ñÈ¡ÁËµ±Ç°ÊÓÀàÖ¸Õë²ÅÄÜ·¢ËÍÏûÏ¢
-	active->PostMessage(WM_PROJECT_SET_OK,new_project_flag,0);   //Ê¹ÓÃPostMessage·¢ËÍÏûÏ¢
+void CProjectFileSetting::OnBnClickedOk() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    CDialog::OnOK();
+    CMainFrame* pMF = (CMainFrame*)AfxGetApp()->m_pMainWnd; //å…ˆé€šè¿‡è·å–å½“å‰æ¡†æ¶æŒ‡é’ˆ
+    CView* active = pMF->GetActiveView(); //æ‰èƒ½è·å–å½“å‰è§†ç±»æŒ‡é’ˆ
+    if (active != NULL) //è·å–äº†å½“å‰è§†ç±»æŒ‡é’ˆæ‰èƒ½å‘é€æ¶ˆæ¯
+        active->PostMessage(WM_PROJECT_SET_OK, new_project_flag, 0); //ä½¿ç”¨PostMessageå‘é€æ¶ˆæ¯
 }
 
 
-void CProjectFileSetting::OnBnClickedCancel()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	CDialog::OnCancel();
+void CProjectFileSetting::OnBnClickedCancel() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    CDialog::OnCancel();
 }
 
 
-// µ¥Ñ¡°´Å¥ ĞÂ½¨¹¤³Ì µã»÷ÏûÏ¢µÄÏûÏ¢´¦Àíº¯Êı
-void CProjectFileSetting::OnBnClickedRadioNewProject()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	m_recentlyOpenedProjectList.EnableWindow(FALSE);
-	new_project_flag = 1;
+// å•é€‰æŒ‰é’® æ–°å»ºå·¥ç¨‹ ç‚¹å‡»æ¶ˆæ¯çš„æ¶ˆæ¯å¤„ç†å‡½æ•°
+void CProjectFileSetting::OnBnClickedRadioNewProject() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    m_recentlyOpenedProjectList.EnableWindow(FALSE);
+    new_project_flag = 1;
 }
 
-// µ¥Ñ¡°´Å¥ ´ò¿ª¹¤³Ì µã»÷ÏûÏ¢µÄÏûÏ¢´¦Àíº¯Êı
-void CProjectFileSetting::OnBnClickedRadioOpenProject()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	m_recentlyOpenedProjectList.EnableWindow(TRUE);
-	new_project_flag = 0;
+// å•é€‰æŒ‰é’® æ‰“å¼€å·¥ç¨‹ ç‚¹å‡»æ¶ˆæ¯çš„æ¶ˆæ¯å¤„ç†å‡½æ•°
+void CProjectFileSetting::OnBnClickedRadioOpenProject() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    m_recentlyOpenedProjectList.EnableWindow(TRUE);
+    new_project_flag = 0;
 }
 
 
 
 
-BOOL CProjectFileSetting::OnInitDialog()
-{
-	CDialog::OnInitDialog();
-
-	// Ä¬ÈÏĞÂ½¨¹¤³Ì
-	CheckDlgButton(IDC_RADIO_NEW_PROJECT, 1);
-	CheckDlgButton(IDC_RADIO_OPEN_PROJECT, 0);
-
-	m_recentlyOpenedProjectList.EnableWindow(FALSE);
-	
-	//list box
-
-	for(int i=0;i<g_strRecentOpenedFileArray.GetSize();++i)
-	{
-		int pos_begin = 0;
-		int pos_end = 0;
-
-		int tmp_len = g_strRecentOpenedFileArray.GetAt(i).GetLength();
-		int pos = 0;
-		int count = 0;
-		while(pos != -1)
-		{
-			pos = g_strRecentOpenedFileArray.GetAt(i).Find('\\',pos+1);
-			if(pos != -1)
-			{
-				count++;
-				if(count == 2)
-				{
-					pos_begin = pos;
-				}
-				pos_end = pos;
-			}
-		}
-		// Â·¾¶Ä¿Â¼³¬¹ı3²ã£¬ÖĞ¼äÒÔ"..."Á¬½Ó
-		if(count > 2)
-		{
-			CString str_left = g_strRecentOpenedFileArray.GetAt(i).Left(pos_begin+1);
-			CString str_right = g_strRecentOpenedFileArray.GetAt(i).Right(tmp_len-pos_end);
-
-			CString tmpStr = str_left + "..." + str_right;
-
-			if(tmpStr.Right(4) == _T(".prj"))
-				m_recentlyOpenedProjectList.AddString(tmpStr);
-		}
-		else
-		{
-			if(g_strRecentOpenedFileArray.GetAt(i).Right(4) == _T(".prj"))
-				m_recentlyOpenedProjectList.AddString(g_strRecentOpenedFileArray.GetAt(i));
-		}
-	}
-	
-	
-	g_recentlyOpenedProjectName = _T("¸ü¶à¹¤³Ì...");
-	m_recentlyOpenedProjectList.AddString(_T("¸ü¶à¹¤³Ì..."));
-	
-	
-
-	// Ä¬ÈÏÑ¡ÖĞ×îºóÒ»Ïî "¸ü¶à¹¤³Ì..."
-	int listCount = m_recentlyOpenedProjectList.GetCount();
-	m_recentlyOpenedProjectList.SetCurSel(listCount-1);
-
-	return TRUE;  // return TRUE unless you set the focus to a control
-
+BOOL CProjectFileSetting::OnInitDialog() {
+    CDialog::OnInitDialog();
+    // é»˜è®¤æ–°å»ºå·¥ç¨‹
+    CheckDlgButton(IDC_RADIO_NEW_PROJECT, 1);
+    CheckDlgButton(IDC_RADIO_OPEN_PROJECT, 0);
+    m_recentlyOpenedProjectList.EnableWindow(FALSE);
+    //list box
+    for (int i = 0; i < g_strRecentOpenedFileArray.GetSize(); ++i) {
+        int pos_begin = 0;
+        int pos_end = 0;
+        int tmp_len = g_strRecentOpenedFileArray.GetAt(i).GetLength();
+        int pos = 0;
+        int count = 0;
+        while (pos != -1) {
+            pos = g_strRecentOpenedFileArray.GetAt(i).Find('\\', pos + 1);
+            if (pos != -1) {
+                count++;
+                if (count == 2) {
+                    pos_begin = pos;
+                }
+                pos_end = pos;
+            }
+        }
+        // è·¯å¾„ç›®å½•è¶…è¿‡3å±‚ï¼Œä¸­é—´ä»¥"..."è¿æ¥
+        if (count > 2) {
+            CString str_left = g_strRecentOpenedFileArray.GetAt(i).Left(pos_begin + 1);
+            CString str_right = g_strRecentOpenedFileArray.GetAt(i).Right(tmp_len - pos_end);
+            CString tmpStr = str_left + "..." + str_right;
+            if (tmpStr.Right(4) == _T(".prj"))
+                m_recentlyOpenedProjectList.AddString(tmpStr);
+        } else {
+            if (g_strRecentOpenedFileArray.GetAt(i).Right(4) == _T(".prj"))
+                m_recentlyOpenedProjectList.AddString(g_strRecentOpenedFileArray.GetAt(i));
+        }
+    }
+    g_recentlyOpenedProjectName = _T("æ›´å¤šå·¥ç¨‹...");
+    m_recentlyOpenedProjectList.AddString(_T("æ›´å¤šå·¥ç¨‹..."));
+    // é»˜è®¤é€‰ä¸­æœ€åä¸€é¡¹ "æ›´å¤šå·¥ç¨‹..."
+    int listCount = m_recentlyOpenedProjectList.GetCount();
+    m_recentlyOpenedProjectList.SetCurSel(listCount - 1);
+    return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 
-// Ñ¡ÖĞÏî¸Ä±äÊ±, ÏìÓ¦ÏûÏ¢
-void CProjectFileSetting::OnSelchangeListRecentlyOpenedProject()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	CString strText = "";
-	int nCurSel = -1;
-	nCurSel = m_recentlyOpenedProjectList.GetCurSel();		//»ñÈ¡µ±Ç°Ñ¡ÖĞÁĞ±íÏî
-
-
-	int listCount = m_recentlyOpenedProjectList.GetCount();
-	if(nCurSel != listCount-1)
-	{
-		g_recentlyOpenedProjectName = g_strRecentOpenedFileArray.GetAt(nCurSel);
-	}
-	else
-	{
-		nCurSel = m_recentlyOpenedProjectList.GetCurSel();		//»ñÈ¡µ±Ç°Ñ¡ÖĞÁĞ±íÏî
-		m_recentlyOpenedProjectList.GetText(nCurSel, strText);	//»ñÈ¡Ñ¡ÖĞÁĞ±íÏîµÄ×Ö·û´®
-		g_recentlyOpenedProjectName = strText;	// Ñ¡ÖĞµÄ×î½ü´ò¿ªµÄ¹¤³ÌÎÄ¼şÃû
-	}
+// é€‰ä¸­é¡¹æ”¹å˜æ—¶, å“åº”æ¶ˆæ¯
+void CProjectFileSetting::OnSelchangeListRecentlyOpenedProject() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    CString strText = "";
+    int nCurSel = -1;
+    nCurSel = m_recentlyOpenedProjectList.GetCurSel();      //è·å–å½“å‰é€‰ä¸­åˆ—è¡¨é¡¹
+    int listCount = m_recentlyOpenedProjectList.GetCount();
+    if (nCurSel != listCount - 1) {
+        g_recentlyOpenedProjectName = g_strRecentOpenedFileArray.GetAt(nCurSel);
+    } else {
+        nCurSel = m_recentlyOpenedProjectList.GetCurSel();      //è·å–å½“å‰é€‰ä¸­åˆ—è¡¨é¡¹
+        m_recentlyOpenedProjectList.GetText(nCurSel, strText);  //è·å–é€‰ä¸­åˆ—è¡¨é¡¹çš„å­—ç¬¦ä¸²
+        g_recentlyOpenedProjectName = strText;  // é€‰ä¸­çš„æœ€è¿‘æ‰“å¼€çš„å·¥ç¨‹æ–‡ä»¶å
+    }
 }

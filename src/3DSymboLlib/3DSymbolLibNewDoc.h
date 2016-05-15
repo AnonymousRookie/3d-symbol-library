@@ -1,48 +1,47 @@
-
-// 3DSymbolLibNewDoc.h : CMy3DSymbolLibNewDoc ÀàµÄ½Ó¿Ú
+ï»¿
+// 3DSymbolLibNewDoc.h : CMy3DSymbolLibNewDoc ç±»çš„æ¥å£
 //
 
 
 #pragma once
 
 
-class CMy3DSymbolLibNewDoc : public CDocument
-{
-protected: // ½ö´ÓĞòÁĞ»¯´´½¨
-	CMy3DSymbolLibNewDoc();
-	DECLARE_DYNCREATE(CMy3DSymbolLibNewDoc)
+class CMy3DSymbolLibNewDoc : public CDocument {
+  protected: // ä»…ä»åºåˆ—åŒ–åˆ›å»º
+    CMy3DSymbolLibNewDoc();
+    DECLARE_DYNCREATE(CMy3DSymbolLibNewDoc)
 
-// ÌØĞÔ
-public:
+    // ç‰¹æ€§
+  public:
 
-// ²Ù×÷
-public:
+    // æ“ä½œ
+  public:
 
-// ÖØĞ´
-public:
-	virtual BOOL OnNewDocument();
-	virtual void Serialize(CArchive& ar);
+    // é‡å†™
+  public:
+    virtual BOOL OnNewDocument();
+    virtual void Serialize(CArchive& ar);
 #ifdef SHARED_HANDLERS
-	virtual void InitializeSearchContent();
-	virtual void OnDrawThumbnail(CDC& dc, LPRECT lprcBounds);
+    virtual void InitializeSearchContent();
+    virtual void OnDrawThumbnail(CDC& dc, LPRECT lprcBounds);
 #endif // SHARED_HANDLERS
 
-// ÊµÏÖ
-public:
-	virtual ~CMy3DSymbolLibNewDoc();
+    // å®ç°
+  public:
+    virtual ~CMy3DSymbolLibNewDoc();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+    virtual void AssertValid() const;
+    virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
+  protected:
 
-// Éú³ÉµÄÏûÏ¢Ó³Éäº¯Êı
-protected:
-	DECLARE_MESSAGE_MAP()
+    // ç”Ÿæˆçš„æ¶ˆæ¯æ˜ å°„å‡½æ•°
+  protected:
+    DECLARE_MESSAGE_MAP()
 
 #ifdef SHARED_HANDLERS
-	// ÓÃÓÚÎªËÑË÷´¦Àí³ÌĞòÉèÖÃËÑË÷ÄÚÈİµÄ Helper º¯Êı
-	void SetSearchContent(const CString& value);
+    // ç”¨äºä¸ºæœç´¢å¤„ç†ç¨‹åºè®¾ç½®æœç´¢å†…å®¹çš„ Helper å‡½æ•°
+    void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
 };

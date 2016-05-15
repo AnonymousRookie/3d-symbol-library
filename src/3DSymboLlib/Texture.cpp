@@ -1,438 +1,327 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include  "texture.h"
 
-//´ÓBMPÎÄ¼þ´´½¨ÎÆÀí,²¢·µ»ØÎÆÀíIDºÅ
-int CTexture::LoadGLTextures(char *Filename)									
-{
-	AUX_RGBImageRec *pImage = NULL;
-	FILE *pFile = NULL; // ÎÄ¼þ¾ä±ú
+//ä»ŽBMPæ–‡ä»¶åˆ›å»ºçº¹ç†,å¹¶è¿”å›žçº¹ç†IDå·
+int CTexture::LoadGLTextures(char* Filename) {
+    AUX_RGBImageRec* pImage = NULL;
+    FILE* pFile = NULL; // æ–‡ä»¶å¥æŸ„
+    if (!Filename) { // ç¡®ä¿æ–‡ä»¶åå·²æä¾›ã€‚
+        return false; // å¦‚æžœæ²¡æä¾›ï¼Œè¿”å›ž false
+    }
+    if ((pFile = fopen(Filename, "rb")) == NULL) { //å°è¯•æ‰“å¼€æ–‡ä»¶
+        MessageBox(NULL, "ä¸èƒ½å¤Ÿæ‰“å¼€BMPçº¹ç†æ–‡ä»¶!", "æ‰“å¼€BMPçº¹ç†æ–‡ä»¶å¤±è´¥", MB_OK);
+        MessageBox(NULL, Filename, "Error", MB_OK);
+        return NULL;//æ‰“å¼€æ–‡ä»¶å¤±è´¥,è¿”å›ž false
+    }
+    pImage = auxDIBImageLoad(Filename); //è¯»å–å›¾è±¡æ•°æ®å¹¶å°†å…¶è¿”å›ž(ä½¿ç”¨glauxè¾…åŠ©åº“å‡½æ•°auxDIBImageLoadæ¥è½½å…¥ä½å›¾)
+    if (pImage == NULL) //å¦‚æžœè¯»å–å¤±è´¥,è¿”å›ž
+        return false;
+    glGenTextures(1, &m_nTxt); // åˆ›å»ºçº¹ç†,å‘Šè¯‰OpenGLæˆ‘ä»¬æƒ³ç”Ÿæˆä¸€ä¸ªçº¹ç†åå­—(å¦‚æžœæ‚¨æƒ³è½½å…¥å¤šä¸ªçº¹ç†ï¼ŒåŠ å¤§æ•°å­—)ã€‚
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glBindTexture(GL_TEXTURE_2D, m_nTxt);// ä½¿ç”¨æ¥è‡ªä½å›¾æ•°æ®ç”Ÿæˆ çš„å…¸åž‹çº¹ç†
+    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, pImage->sizeX,
+                      pImage->sizeY, GL_RGB, GL_UNSIGNED_BYTE, pImage->data);
+    //pImage->data:å‘Šè¯‰OpenGLçº¹ç†æ•°æ®çš„æ¥æºã€‚è¿™é‡ŒæŒ‡å‘å­˜æ”¾åœ¨pImage->dataä¸­çš„æ•°æ®ã€‚
+    //gluBuild2DMipmaps()ä»£æ›¿glTexImage2D(),è¿™æ ·å¯ä»¥è½½å…¥ä»»æ„å¤§å°çš„å›¾ç‰‡
+    /*
+    gluBuild2DMipmaps()ä¸ŽglTexImage2D()çš„ä½¿ç”¨æ–¹æ³•åŠåŒºåˆ«2008å¹´08æœˆ02æ—¥ æ˜ŸæœŸå…­ ä¸‹åˆ 10:53glTexImage2D()çš„ç”¨æ³•ä¸¾ä¾‹
 
-	if (!Filename) // È·±£ÎÄ¼þÃûÒÑÌá¹©¡£
-	{
-		return false; // Èç¹ûÃ»Ìá¹©£¬·µ»Ø false
-	}
-	
-	if((pFile = fopen(Filename, "rb")) == NULL) //³¢ÊÔ´ò¿ªÎÄ¼þ
-	{
-		
-		MessageBox(NULL, "²»ÄÜ¹»´ò¿ªBMPÎÆÀíÎÄ¼þ!", "´ò¿ªBMPÎÆÀíÎÄ¼þÊ§°Ü", MB_OK);
-		MessageBox(NULL, Filename, "Error", MB_OK);
-		return NULL;//´ò¿ªÎÄ¼þÊ§°Ü,·µ»Ø false
-	}
-	
+      glTexImage2D(GL_TEXTURE_2D, //æ­¤çº¹ç†æ˜¯ä¸€ä¸ª2Dçº¹ç†
+      0,                                         //ä»£è¡¨å›¾åƒçš„è¯¦ç»†ç¨‹åº¦, é»˜è®¤ä¸º0å³å¯
+      3,                                         //é¢œè‰²æˆåˆ†R(çº¢è‰²åˆ†é‡)ã€G(ç»¿è‰²åˆ†é‡)ã€B(è“è‰²åˆ†é‡)ä¸‰éƒ¨åˆ†ï¼Œè‹¥ä¸º4åˆ™æ˜¯R(çº¢è‰²åˆ†é‡)ã€G(ç»¿è‰²åˆ†é‡)ã€B(è“è‰²åˆ†é‡)ã€Alpha
+      TextureImage[0]->sizeX,          //çº¹ç†çš„å®½åº¦
+      TextureImage[0]->sizeY,          //çº¹ç†çš„é«˜åº¦
+      0,                                         //è¾¹æ¡†çš„å€¼
+      GL_RGB,                               //å‘Šè¯‰OpenGLå›¾åƒæ•°æ®ç”±çº¢ã€ç»¿ã€è“ä¸‰è‰²æ•°æ®ç»„æˆ
+      GL_UNSIGNED_BYTE,                //ç»„æˆå›¾åƒçš„æ•°æ®æ˜¯æ— ç¬¦å·å­—èŠ‚ç±»åž‹
+      TextureImage[0]->data);          //å‘Šè¯‰OpenGLçº¹ç†æ•°æ®çš„æ¥æº,æ­¤ä¾‹ä¸­æŒ‡å‘å­˜æ”¾åœ¨TextureImage[0]è®°å½•ä¸­çš„æ•°æ®
 
-	pImage = auxDIBImageLoad(Filename);	//¶ÁÈ¡Í¼ÏóÊý¾Ý²¢½«Æä·µ»Ø(Ê¹ÓÃglaux¸¨Öú¿âº¯ÊýauxDIBImageLoadÀ´ÔØÈëÎ»Í¼)			
-	if(pImage == NULL)	//Èç¹û¶ÁÈ¡Ê§°Ü,·µ»Ø							
-		return false;
-	
-	glGenTextures(1, &m_nTxt); // ´´½¨ÎÆÀí,¸æËßOpenGLÎÒÃÇÏëÉú³ÉÒ»¸öÎÆÀíÃû×Ö(Èç¹ûÄúÏëÔØÈë¶à¸öÎÆÀí£¬¼Ó´óÊý×Ö)¡£
-	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
-	glBindTexture(GL_TEXTURE_2D, m_nTxt);// Ê¹ÓÃÀ´×ÔÎ»Í¼Êý¾ÝÉú³É µÄµäÐÍÎÆÀí
-	gluBuild2DMipmaps(GL_TEXTURE_2D, 3, pImage->sizeX, 
-					  pImage->sizeY, GL_RGB, GL_UNSIGNED_BYTE, pImage->data);
-	//pImage->data:¸æËßOpenGLÎÆÀíÊý¾ÝµÄÀ´Ô´¡£ÕâÀïÖ¸Ïò´æ·ÅÔÚpImage->dataÖÐµÄÊý¾Ý¡£
-	//gluBuild2DMipmaps()´úÌæglTexImage2D(),ÕâÑù¿ÉÒÔÔØÈëÈÎÒâ´óÐ¡µÄÍ¼Æ¬
-	/*
-	gluBuild2DMipmaps()ÓëglTexImage2D()µÄÊ¹ÓÃ·½·¨¼°Çø±ð2008Äê08ÔÂ02ÈÕ ÐÇÆÚÁù ÏÂÎç 10:53glTexImage2D()µÄÓÃ·¨¾ÙÀý
-	
-	  glTexImage2D(GL_TEXTURE_2D, //´ËÎÆÀíÊÇÒ»¸ö2DÎÆÀí
-	  0,                                         //´ú±íÍ¼ÏñµÄÏêÏ¸³Ì¶È, Ä¬ÈÏÎª0¼´¿É 
-	  3,                                         //ÑÕÉ«³É·ÖR(ºìÉ«·ÖÁ¿)¡¢G(ÂÌÉ«·ÖÁ¿)¡¢B(À¶É«·ÖÁ¿)Èý²¿·Ö£¬ÈôÎª4ÔòÊÇR(ºìÉ«·ÖÁ¿)¡¢G(ÂÌÉ«·ÖÁ¿)¡¢B(À¶É«·ÖÁ¿)¡¢Alpha
-	  TextureImage[0]->sizeX,          //ÎÆÀíµÄ¿í¶È
-	  TextureImage[0]->sizeY,          //ÎÆÀíµÄ¸ß¶È
-	  0,                                         //±ß¿òµÄÖµ
-	  GL_RGB,                               //¸æËßOpenGLÍ¼ÏñÊý¾ÝÓÉºì¡¢ÂÌ¡¢À¶ÈýÉ«Êý¾Ý×é³É
-	  GL_UNSIGNED_BYTE,                //×é³ÉÍ¼ÏñµÄÊý¾ÝÊÇÎÞ·ûºÅ×Ö½ÚÀàÐÍ
-	  TextureImage[0]->data);          //¸æËßOpenGLÎÆÀíÊý¾ÝµÄÀ´Ô´,´ËÀýÖÐÖ¸Ïò´æ·ÅÔÚTextureImage[0]¼ÇÂ¼ÖÐµÄÊý¾Ý
-	  
-		
-		  gluBuild2DMipmaps()µÄÓÃ·¨¾ÙÀý
-		  
-			gluBuild2DMipmaps(GL_TEXTURE_2D,//´ËÎÆÀíÊÇÒ»¸ö2DÎÆÀí
-			3,                                             //ÑÕÉ«³É·ÖR(ºìÉ«·ÖÁ¿)¡¢G(ÂÌÉ«·ÖÁ¿)¡¢B(À¶É«·ÖÁ¿)Èý²¿·Ö£¬ÈôÎª4ÔòÊÇR(ºìÉ«·ÖÁ¿)¡¢G(ÂÌÉ«·ÖÁ¿)¡¢B(À¶É«·ÖÁ¿)¡¢Alpha
-			TextureImage[0]->sizeX,               //ÎÆÀíµÄ¿í¶È
-			TextureImage[0]->sizeY,               //ÎÆÀíµÄ¸ß¶È
-			GL_RGB,                                      //¸æËßOpenGLÍ¼ÏñÊý¾ÝÓÉºì¡¢ÂÌ¡¢À¶ÈýÉ«Êý¾Ý×é³É
-			GL_UNSIGNED_BYTE,                     //×é³ÉÍ¼ÏñµÄÊý¾ÝÊÇÎÞ·ûºÅ×Ö½ÚÀàÐÍ
-			TextureImage[0]->data);             //¸æËßOpenGLÎÆÀíÊý¾ÝµÄÀ´Ô´,´ËÀýÖÐÖ¸Ïò´æ·ÅÔÚTextureImage[0]¼ÇÂ¼ÖÐµÄÊý¾Ý
-			
-			  
-				Ê¹ÓÃ×¢ÒâÊÂÏî
-				
-				  Ê¹ÓÃglTexImage2D()Ê±Ëù²ÉÓÃµÄÎ»Í¼ÎÄ¼þ·Ö±æÂÊ±ØÐëÎª£º64¡Á64¡¢128¡Á128¡¢256¡Á256ÈýÖÖ¸ñÊ½£¬Èç¹ûÆäËû´óÐ¡Ôò»á³öÏÖ»æÖÆ²»Õý³£¡£
-					
-	*/
-	// ÉèÖÃÎÆÀíÄ£Ê½
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);// Ë«Ïß¹ýÂË
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);// Ë«Ïß¹ýÂË
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);//±ßÔµ½ØÈ¡,×ÜÊÇºöÂÔ±ß½ç
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);//±ßÔµ½ØÈ¡,×ÜÊÇºöÂÔ±ß½ç
-	glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_DECAL);	
-	if (pImage)		// ÎÆÀíÊÇ·ñ´æÔÚ							
-	{
-		if (pImage->data)	 // ÎÆÀíÍ¼ÏñÊÇ·ñ´æÔÚ						
-		{
-			free(pImage->data);	 // ÊÍ·ÅÎÆÀíÍ¼ÏñÕ¼ÓÃµÄÄÚ´æ					
-		}
 
-		free(pImage);	// ÊÍ·ÅÍ¼Ïñ½á¹¹							
-	}
-	fclose(pFile);// ¹Ø±ÕÎÄ¼þ
-	return m_nTxt;//·µ»ØÎÆÀíIDºÅ
+          gluBuild2DMipmaps()çš„ç”¨æ³•ä¸¾ä¾‹
 
+            gluBuild2DMipmaps(GL_TEXTURE_2D,//æ­¤çº¹ç†æ˜¯ä¸€ä¸ª2Dçº¹ç†
+            3,                                             //é¢œè‰²æˆåˆ†R(çº¢è‰²åˆ†é‡)ã€G(ç»¿è‰²åˆ†é‡)ã€B(è“è‰²åˆ†é‡)ä¸‰éƒ¨åˆ†ï¼Œè‹¥ä¸º4åˆ™æ˜¯R(çº¢è‰²åˆ†é‡)ã€G(ç»¿è‰²åˆ†é‡)ã€B(è“è‰²åˆ†é‡)ã€Alpha
+            TextureImage[0]->sizeX,               //çº¹ç†çš„å®½åº¦
+            TextureImage[0]->sizeY,               //çº¹ç†çš„é«˜åº¦
+            GL_RGB,                                      //å‘Šè¯‰OpenGLå›¾åƒæ•°æ®ç”±çº¢ã€ç»¿ã€è“ä¸‰è‰²æ•°æ®ç»„æˆ
+            GL_UNSIGNED_BYTE,                     //ç»„æˆå›¾åƒçš„æ•°æ®æ˜¯æ— ç¬¦å·å­—èŠ‚ç±»åž‹
+            TextureImage[0]->data);             //å‘Šè¯‰OpenGLçº¹ç†æ•°æ®çš„æ¥æº,æ­¤ä¾‹ä¸­æŒ‡å‘å­˜æ”¾åœ¨TextureImage[0]è®°å½•ä¸­çš„æ•°æ®
+
+
+                ä½¿ç”¨æ³¨æ„äº‹é¡¹
+
+                  ä½¿ç”¨glTexImage2D()æ—¶æ‰€é‡‡ç”¨çš„ä½å›¾æ–‡ä»¶åˆ†è¾¨çŽ‡å¿…é¡»ä¸ºï¼š64Ã—64ã€128Ã—128ã€256Ã—256ä¸‰ç§æ ¼å¼ï¼Œå¦‚æžœå…¶ä»–å¤§å°åˆ™ä¼šå‡ºçŽ°ç»˜åˆ¶ä¸æ­£å¸¸ã€‚
+
+    */
+    // è®¾ç½®çº¹ç†æ¨¡å¼
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);// åŒçº¿è¿‡æ»¤
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);// åŒçº¿è¿‡æ»¤
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); //è¾¹ç¼˜æˆªå–,æ€»æ˜¯å¿½ç•¥è¾¹ç•Œ
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); //è¾¹ç¼˜æˆªå–,æ€»æ˜¯å¿½ç•¥è¾¹ç•Œ
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    if (pImage) {   // çº¹ç†æ˜¯å¦å­˜åœ¨
+        if (pImage->data) {  // çº¹ç†å›¾åƒæ˜¯å¦å­˜åœ¨
+            free(pImage->data);  // é‡Šæ”¾çº¹ç†å›¾åƒå ç”¨çš„å†…å­˜
+        }
+        free(pImage);   // é‡Šæ”¾å›¾åƒç»“æž„
+    }
+    fclose(pFile);// å…³é—­æ–‡ä»¶
+    return m_nTxt;//è¿”å›žçº¹ç†IDå·
 }
-bool CTexture::MakeTextureBind(char* TextureFileName,bool bLinear,bool bMip)
-{
-	bool status=true;			
-	AUX_RGBImageRec *Image=NULL;	
-
-     
-	if (Image=auxDIBImageLoad(TextureFileName))
-	{					
-		glGenTextures(1, &m_nTxt);		
-   		glBindTexture(GL_TEXTURE_2D, m_nTxt);
-        if(bLinear)
-		{
-			if(bMip)
-			{
- 
- 
- 	    	    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-	    	    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
-	    	    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, Image->sizeX, Image->sizeY, GL_RGB, GL_UNSIGNED_BYTE, Image->data);
-			}
-			else
-			{
-                glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
-                glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
-                glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-	    		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    	        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, Image->sizeX, Image->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, Image->data);				
-			}
-		}
-		else
-		{
-			if(bMip)
-			{
- 	    	    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-	    	    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST_MIPMAP_NEAREST);
-	    	    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, Image->sizeX, Image->sizeY, GL_RGB, GL_UNSIGNED_BYTE, Image->data);
-			}
-			else
-			{
-                glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-	    		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-    	        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, Image->sizeX, Image->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, Image->data);				
-			}
-		}
-	}
-	else status=false;
-	if (Image) {											
-		if (Image->data) delete Image->data;				
-		delete Image;
-	}
-	return status;				
+bool CTexture::MakeTextureBind(char* TextureFileName, bool bLinear, bool bMip) {
+    bool status = true;
+    AUX_RGBImageRec* Image = NULL;
+    if (Image = auxDIBImageLoad(TextureFileName)) {
+        glGenTextures(1, &m_nTxt);
+        glBindTexture(GL_TEXTURE_2D, m_nTxt);
+        if (bLinear) {
+            if (bMip) {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+                gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, Image->sizeX, Image->sizeY, GL_RGB, GL_UNSIGNED_BYTE, Image->data);
+            } else {
+                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, Image->sizeX, Image->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, Image->data);
+            }
+        } else {
+            if (bMip) {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+                gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, Image->sizeX, Image->sizeY, GL_RGB, GL_UNSIGNED_BYTE, Image->data);
+            } else {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, Image->sizeX, Image->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, Image->data);
+            }
+        }
+    } else status = false;
+    if (Image) {
+        if (Image->data) delete Image->data;
+        delete Image;
+    }
+    return status;
 }
 
 
 
 bool CTexture::MakeSkinTextureBind(char* TextureFileName,
-							   bool bLinear,bool bMip)
-{
-	bool state=true;			
-	unsigned char *Image=new unsigned char [256*256*3];	
-	FILE* file;
-    if((file= fopen(TextureFileName, "rb"))==NULL)
-	{
-	    state=false;
-		return state;
-	}
-	char id[10],version;
-	fread(id,     sizeof(char),10,  file);
-	fread(&version,sizeof(char),1,  file);
-	if ( strncmp( id, "Hunter3D00", 10 ) != 0 )
-	{
-		    fclose(file);
-		    return false; 
-	}
-	if ( version !=1 )
-	{
-	    fclose(file);
-	    return false; 
-	}	
-
-	fread(Image,sizeof(unsigned char),256*256*3,file);
-
+                                   bool bLinear, bool bMip) {
+    bool state = true;
+    unsigned char* Image = new unsigned char [256 * 256 * 3];
+    FILE* file;
+    if ((file = fopen(TextureFileName, "rb")) == NULL) {
+        state = false;
+        return state;
+    }
+    char id[10], version;
+    fread(id,     sizeof(char), 10,  file);
+    fread(&version, sizeof(char), 1,  file);
+    if (strncmp(id, "Hunter3D00", 10) != 0) {
+        fclose(file);
+        return false;
+    }
+    if (version != 1) {
+        fclose(file);
+        return false;
+    }
+    fread(Image, sizeof(unsigned char), 256 * 256 * 3, file);
     fclose(file);
-    file=NULL;
-				
-	glGenTextures(1, &m_nTxt);		
-	glBindTexture(GL_TEXTURE_2D, m_nTxt);
-
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
-    if(bLinear)
-	{
-		if(bMip)
-			{
- 	    	    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-	    	    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
-	    	    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, 256, 256, GL_RGB, GL_UNSIGNED_BYTE, Image);
-			}
-			else
-			{
-                glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-	    		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    	        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8,256,256, 0, GL_RGB, GL_UNSIGNED_BYTE, Image);				
-			}
-	}
-	else
-	{
-			if(bMip)
-			{
- 	    	    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-	    	    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST_MIPMAP_NEAREST);
-	    	    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, 256, 256, GL_RGB, GL_UNSIGNED_BYTE, Image);
-			}
-			else
-			{
-                glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-	    		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-    	        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, 256,256, 0, GL_RGB, GL_UNSIGNED_BYTE, Image);				
-			}
-	}
-
-    delete [] Image;				
-	return state;				
+    file = NULL;
+    glGenTextures(1, &m_nTxt);
+    glBindTexture(GL_TEXTURE_2D, m_nTxt);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    if (bLinear) {
+        if (bMip) {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+            gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, 256, 256, GL_RGB, GL_UNSIGNED_BYTE, Image);
+        } else {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, Image);
+        }
+    } else {
+        if (bMip) {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+            gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB8, 256, 256, GL_RGB, GL_UNSIGNED_BYTE, Image);
+        } else {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, Image);
+        }
+    }
+    delete [] Image;
+    return state;
 }
- 
-bool CTexture::MakeAlphaTextureBind(char* TextureFileName)
-{
-	bool status=true;												
-	AUX_RGBImageRec *Image=NULL;									
-	unsigned char *alpha=NULL;
 
-	
-	if (Image=auxDIBImageLoad(TextureFileName)) 
-	{							
-		alpha=new unsigned char[4*Image->sizeX*Image->sizeY];		
-		for (int a=0; a<Image->sizeX*Image->sizeY; a++)
-		{
-			alpha[4*a]=Image->data[a*3];					
-			alpha[4*a+1]=Image->data[a*3+1];				
-			alpha[4*a+2]=Image->data[a*3+2];				
-            
-            alpha[4*a+3]=(alpha[4*a+0]<alpha[4*a+1])?alpha[4*a+0]:alpha[4*a+1];
-            if(alpha[4*a+2]<alpha[4*a+3])alpha[4*a+3]=alpha[4*a+2];
-
-
-		}
-
-		
-		glGenTextures(1, &m_nTxt);							
-
-		
-		glBindTexture(GL_TEXTURE_2D, m_nTxt);
-   	    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-	    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
-	    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA8, Image->sizeX, Image->sizeY, GL_RGBA, GL_UNSIGNED_BYTE, alpha);
-		delete [] alpha;
-	}
-	else status=false;
-	if (Image) {											
-		if (Image->data) delete Image->data;				
-		delete Image;
-		Image=NULL;
-	}	
-	
+bool CTexture::MakeAlphaTextureBind(char* TextureFileName) {
+    bool status = true;
+    AUX_RGBImageRec* Image = NULL;
+    unsigned char* alpha = NULL;
+    if (Image = auxDIBImageLoad(TextureFileName)) {
+        alpha = new unsigned char[4 * Image->sizeX * Image->sizeY];
+        for (int a = 0; a < Image->sizeX * Image->sizeY; a++) {
+            alpha[4 * a] = Image->data[a * 3];
+            alpha[4 * a + 1] = Image->data[a * 3 + 1];
+            alpha[4 * a + 2] = Image->data[a * 3 + 2];
+            alpha[4 * a + 3] = (alpha[4 * a + 0] < alpha[4 * a + 1]) ? alpha[4 * a + 0] : alpha[4 * a + 1];
+            if (alpha[4 * a + 2] < alpha[4 * a + 3])alpha[4 * a + 3] = alpha[4 * a + 2];
+        }
+        glGenTextures(1, &m_nTxt);
+        glBindTexture(GL_TEXTURE_2D, m_nTxt);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA8, Image->sizeX, Image->sizeY, GL_RGBA, GL_UNSIGNED_BYTE, alpha);
+        delete [] alpha;
+    } else status = false;
+    if (Image) {
+        if (Image->data) delete Image->data;
+        delete Image;
+        Image = NULL;
+    }
     return status;
 }
-bool CTexture::MakeAlphaTextureBind(char* TextureFileName,char *AlphaFileName)
-{
-	bool status=true;												
-	AUX_RGBImageRec *Image=NULL;									
-	unsigned char *alpha=NULL;
-
-	
-	if (Image=auxDIBImageLoad(TextureFileName)) 
-	{							
-		alpha=new unsigned char[4*Image->sizeX*Image->sizeY];		
-		for (int a=0; a<Image->sizeX*Image->sizeY; a++)
-		{
-			alpha[4*a]=Image->data[a*3];					
-			alpha[4*a+1]=Image->data[a*3+1];				
-			alpha[4*a+2]=Image->data[a*3+2];				
-		}
-		
-        if(AlphaFileName==NULL)return false;
-	    FILE* file;
-        if((file= fopen(AlphaFileName, "rb"))==NULL)
-	      	return false;
-		fseek(file,54,SEEK_SET);
-		unsigned char temp[3];
-		for (int a=0; a<Image->sizeX*Image->sizeY; a++)
-		{
-			fread(temp,sizeof(unsigned char),3,file);
-            alpha[4*a+3]=(temp[0]>temp[1])?temp[0]:temp[1];
-            if(temp[2]>alpha[4*a+3])alpha[4*a+3]=temp[2];
- 
-			if(alpha[4*a+3]>50)alpha[4*a+3]=255;
-		}
-		fclose(file);
-		
-		glGenTextures(1, &m_nTxt);							
-		
-		glBindTexture(GL_TEXTURE_2D, m_nTxt);
-   	    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-	    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
-	    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA8, Image->sizeX, Image->sizeY, GL_RGBA, GL_UNSIGNED_BYTE, alpha);
-		delete [] alpha;
-	}
-	else status=false;
-	if (Image) {											
-		if (Image->data) delete Image->data;				
-		delete Image;
-		Image=NULL;
-	}	
-	
+bool CTexture::MakeAlphaTextureBind(char* TextureFileName, char* AlphaFileName) {
+    bool status = true;
+    AUX_RGBImageRec* Image = NULL;
+    unsigned char* alpha = NULL;
+    if (Image = auxDIBImageLoad(TextureFileName)) {
+        alpha = new unsigned char[4 * Image->sizeX * Image->sizeY];
+        for (int a = 0; a < Image->sizeX * Image->sizeY; a++) {
+            alpha[4 * a] = Image->data[a * 3];
+            alpha[4 * a + 1] = Image->data[a * 3 + 1];
+            alpha[4 * a + 2] = Image->data[a * 3 + 2];
+        }
+        if (AlphaFileName == NULL)return false;
+        FILE* file;
+        if ((file = fopen(AlphaFileName, "rb")) == NULL)
+            return false;
+        fseek(file, 54, SEEK_SET);
+        unsigned char temp[3];
+        for (int a = 0; a < Image->sizeX * Image->sizeY; a++) {
+            fread(temp, sizeof(unsigned char), 3, file);
+            alpha[4 * a + 3] = (temp[0] > temp[1]) ? temp[0] : temp[1];
+            if (temp[2] > alpha[4 * a + 3])alpha[4 * a + 3] = temp[2];
+            if (alpha[4 * a + 3] > 50)alpha[4 * a + 3] = 255;
+        }
+        fclose(file);
+        glGenTextures(1, &m_nTxt);
+        glBindTexture(GL_TEXTURE_2D, m_nTxt);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA8, Image->sizeX, Image->sizeY, GL_RGBA, GL_UNSIGNED_BYTE, alpha);
+        delete [] alpha;
+    } else status = false;
+    if (Image) {
+        if (Image->data) delete Image->data;
+        delete Image;
+        Image = NULL;
+    }
     return status;
 }
 
 
 
 
-bool  CTexture::MakeScreenTextureBind()
-{
- 
-	if(glIsTexture(m_nTxt)==GL_TRUE)
-	{
- 
- 
-	}
-	else
-	{
-		GLint Viewport[4];
+bool  CTexture::MakeScreenTextureBind() {
+    if (glIsTexture(m_nTxt) == GL_TRUE) {
+    } else {
+        GLint Viewport[4];
         glGetIntegerv(GL_VIEWPORT, Viewport);
-		int newWidth=128;
-
-        unsigned char *pData=new unsigned char[newWidth*newWidth*3+6]; 
-		
-		int sx,sy;  
+        int newWidth = 128;
+        unsigned char* pData = new unsigned char[newWidth * newWidth * 3 + 6];
+        int sx, sy;
         unsigned char temp[6];
-		for(int y=0;y<newWidth;y++)
-			for(int x=0;x<newWidth;x++)
-			{
-			    sx=int(float(x*Viewport[2])/newWidth);
-			    sy=int(float(y*Viewport[3])/newWidth);
-
-	        	glReadPixels(sx,sy,1,1,
-			                 GL_RGB,GL_UNSIGNED_BYTE,temp);
-
-                pData[y*newWidth*3+x*3+0]=unsigned char(temp[0]*0.8f);
-                pData[y*newWidth*3+x*3+1]=unsigned char(temp[1]*0.8f);
-                pData[y*newWidth*3+x*3+2]=unsigned char(temp[2]*0.8f);
-			}
-
-        
-		glGenTextures(1, &m_nTxt);		
-   		glBindTexture(GL_TEXTURE_2D, m_nTxt);
-
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-	 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, newWidth,newWidth, 0, GL_RGB, GL_UNSIGNED_BYTE,pData);				
-
-		delete [] pData;
-	}
+        for (int y = 0; y < newWidth; y++)
+            for (int x = 0; x < newWidth; x++) {
+                sx = int(float(x * Viewport[2]) / newWidth);
+                sy = int(float(y * Viewport[3]) / newWidth);
+                glReadPixels(sx, sy, 1, 1,
+                             GL_RGB, GL_UNSIGNED_BYTE, temp);
+                pData[y * newWidth * 3 + x * 3 + 0] = unsigned char(temp[0] * 0.8f);
+                pData[y * newWidth * 3 + x * 3 + 1] = unsigned char(temp[1] * 0.8f);
+                pData[y * newWidth * 3 + x * 3 + 2] = unsigned char(temp[2] * 0.8f);
+            }
+        glGenTextures(1, &m_nTxt);
+        glBindTexture(GL_TEXTURE_2D, m_nTxt);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, newWidth, newWidth, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
+        delete [] pData;
+    }
     return true;
 }
 
-typedef struct													
-{
-	GLubyte	*imageData;											
-	GLuint	bpp;												
-	GLuint	width;												
-	GLuint	height;												
-	GLuint	texID;												
-} TextureImage;	
-bool CTexture::LoadTGA(char *filename)				
-{    
-	TextureImage Texture;
-	TextureImage *texture = &Texture;
-	GLubyte		TGAheader[12]={0,0,2,0,0,0,0,0,0,0,0,0};		
-	GLubyte		TGAcompare[12];									
-	GLubyte		header[6];										
-	GLuint		bytesPerPixel;									
-	GLuint		imageSize;										
-	GLuint		temp;											
-	GLuint		type=GL_RGBA;									
-
-	FILE *file = fopen(filename, "rb");							
-
-	if(	file==NULL ||											
-		fread(TGAcompare,1,sizeof(TGAcompare),file)!=sizeof(TGAcompare) ||	
-		memcmp(TGAheader,TGAcompare,sizeof(TGAheader))!=0				||	
-		fread(header,1,sizeof(header),file)!=sizeof(header))				
-	{
-		if (file == NULL)										
-			return FALSE;										
-		else													
-		{
-			fclose(file);										
-			return FALSE;										
-		}
-	}
-
-	texture->width  = header[1] * 256 + header[0];				
-	texture->height = header[3] * 256 + header[2];				
-    
- 	if(	texture->width	<=0	||									
-		texture->height	<=0	||									
-		(header[4]!=24 && header[4]!=32))						
-	{
-		fclose(file);											
-		return FALSE;											
-	}
-
-	texture->bpp	= header[4];								
-	bytesPerPixel	= texture->bpp/8;							
-	imageSize		= texture->width*texture->height*bytesPerPixel;	
-
-	texture->imageData=(GLubyte *)malloc(imageSize);			
-
-	if(	texture->imageData==NULL ||								
-		fread(texture->imageData, 1, imageSize, file)!=imageSize)	
-	{
-		if(texture->imageData!=NULL)							
-			free(texture->imageData);							
-
-		fclose(file);											
-		return FALSE;											
-	}
-
-	for(GLuint i=0; i<int(imageSize); i+=bytesPerPixel)			
-	{															
-		temp=texture->imageData[i];								
-		texture->imageData[i] = texture->imageData[i + 2];		
-		texture->imageData[i + 2] = temp;						
-	}
-
-	fclose (file);												
-
-	
-	glGenTextures(1, &texture[0].texID);						
-
-	glBindTexture(GL_TEXTURE_2D, texture[0].texID);				
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);	
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	
-	
-	if (texture[0].bpp==24)										
-	{
-		type=GL_RGB;											
-	}
-	m_nTxt = texture[0].texID;
-	glTexImage2D(GL_TEXTURE_2D, 0, type, texture[0].width, texture[0].height, 0, type, GL_UNSIGNED_BYTE, texture[0].imageData);
-	free(texture[0].imageData);
-	return true;												
+typedef struct {
+    GLubyte* imageData;
+    GLuint  bpp;
+    GLuint  width;
+    GLuint  height;
+    GLuint  texID;
+} TextureImage;
+bool CTexture::LoadTGA(char* filename) {
+    TextureImage Texture;
+    TextureImage* texture = &Texture;
+    GLubyte     TGAheader[12] = {0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    GLubyte     TGAcompare[12];
+    GLubyte     header[6];
+    GLuint      bytesPerPixel;
+    GLuint      imageSize;
+    GLuint      temp;
+    GLuint      type = GL_RGBA;
+    FILE* file = fopen(filename, "rb");
+    if (file == NULL ||
+            fread(TGAcompare, 1, sizeof(TGAcompare), file) != sizeof(TGAcompare) ||
+            memcmp(TGAheader, TGAcompare, sizeof(TGAheader)) != 0               ||
+            fread(header, 1, sizeof(header), file) != sizeof(header)) {
+        if (file == NULL)
+            return FALSE;
+        else {
+            fclose(file);
+            return FALSE;
+        }
+    }
+    texture->width  = header[1] * 256 + header[0];
+    texture->height = header[3] * 256 + header[2];
+    if (texture->width   <= 0 ||
+            texture->height <= 0 ||
+            (header[4] != 24 && header[4] != 32)) {
+        fclose(file);
+        return FALSE;
+    }
+    texture->bpp    = header[4];
+    bytesPerPixel   = texture->bpp / 8;
+    imageSize       = texture->width * texture->height * bytesPerPixel;
+    texture->imageData = (GLubyte*)malloc(imageSize);
+    if (texture->imageData == NULL ||
+            fread(texture->imageData, 1, imageSize, file) != imageSize) {
+        if (texture->imageData != NULL)
+            free(texture->imageData);
+        fclose(file);
+        return FALSE;
+    }
+    for (GLuint i = 0; i < int(imageSize); i += bytesPerPixel) {
+        temp = texture->imageData[i];
+        texture->imageData[i] = texture->imageData[i + 2];
+        texture->imageData[i + 2] = temp;
+    }
+    fclose(file);
+    glGenTextures(1, &texture[0].texID);
+    glBindTexture(GL_TEXTURE_2D, texture[0].texID);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    if (texture[0].bpp == 24) {
+        type = GL_RGB;
+    }
+    m_nTxt = texture[0].texID;
+    glTexImage2D(GL_TEXTURE_2D, 0, type, texture[0].width, texture[0].height, 0, type, GL_UNSIGNED_BYTE, texture[0].imageData);
+    free(texture[0].imageData);
+    return true;
 }
 
 

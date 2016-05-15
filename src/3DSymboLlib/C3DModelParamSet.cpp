@@ -1,4 +1,4 @@
-// C3DModelParamSet.cpp : ÊµÏÖÎÄ¼ş
+ï»¿// C3DModelParamSet.cpp : å®ç°æ–‡ä»¶
 
 
 #include "stdafx.h"
@@ -7,179 +7,150 @@
 #include "afxdialogex.h"
 
 
-// C3DModelParamSet ¶Ô»°¿ò
+// C3DModelParamSet å¯¹è¯æ¡†
 
 IMPLEMENT_DYNAMIC(C3DModelParamSet, CDialog)
 
-	C3DModelParamSet::C3DModelParamSet(CWnd* pParent /*=NULL*/)
-	: CDialog(C3DModelParamSet::IDD, pParent)
-	, xPos(389)
-	, zPos(-389)
-	, hPos(0)
-	, radiu(0)
-	, angle(0)
-	, scale(1)
-	, iRotateX(0)
-	, iRotateY(0)
-	, iRotateZ(0)
-	, iDisplayType(0)
-{
-	//Ä£Ì¬¶Ô»°¿òµÄ¹¹Ôìº¯Êı£¬m_pViewÎª¿Õ
-	m_pView = NULL;
-	
+C3DModelParamSet::C3DModelParamSet(CWnd* pParent /*=NULL*/)
+    : CDialog(C3DModelParamSet::IDD, pParent)
+    , xPos(389)
+    , zPos(-389)
+    , hPos(0)
+    , radiu(0)
+    , angle(0)
+    , scale(1)
+    , iRotateX(0)
+    , iRotateY(0)
+    , iRotateZ(0)
+    , iDisplayType(0) {
+    //æ¨¡æ€å¯¹è¯æ¡†çš„æ„é€ å‡½æ•°ï¼Œm_pViewä¸ºç©º
+    m_pView = NULL;
 }
 
-C3DModelParamSet::C3DModelParamSet(CView *pView)// ·ÇÄ£Ì¬¶Ô»°¿ò¹¹Ôìº¯Êı
-	: xPos(389)
-	, zPos(-389)
-	, hPos(0)
-	, radiu(0)
-	, angle(0)
-	, scale(1)
-	, iRotateX(0)
-	, iRotateY(0)
-	, iRotateZ(0)
-	, iDisplayType(0)
-{
-	//·ÇÄ£Ì¬¶Ô»°¿òµÄ¹¹Ôìº¯Êı£¬m_pView²»Îª¿Õ
-	m_pView = pView;
-	isSetXYByMouse = 0;
+C3DModelParamSet::C3DModelParamSet(CView* pView)// éæ¨¡æ€å¯¹è¯æ¡†æ„é€ å‡½æ•°
+    : xPos(389)
+    , zPos(-389)
+    , hPos(0)
+    , radiu(0)
+    , angle(0)
+    , scale(1)
+    , iRotateX(0)
+    , iRotateY(0)
+    , iRotateZ(0)
+    , iDisplayType(0) {
+    //éæ¨¡æ€å¯¹è¯æ¡†çš„æ„é€ å‡½æ•°ï¼Œm_pViewä¸ä¸ºç©º
+    m_pView = pView;
+    isSetXYByMouse = 0;
 }
 
-C3DModelParamSet::~C3DModelParamSet()
-{
-	// Empty
+C3DModelParamSet::~C3DModelParamSet() {
+    // Empty
 }
 
-BOOL C3DModelParamSet::Create()
-{
-	return CDialog::Create(C3DModelParamSet::IDD);
+BOOL C3DModelParamSet::Create() {
+    return CDialog::Create(C3DModelParamSet::IDD);
 }
 
-void C3DModelParamSet::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_MODEL_X, xPos);
-	DDX_Text(pDX, IDC_EDIT_MODEL_Z, zPos);
-	DDX_Text(pDX, IDC_EDIT_MODEL_H, hPos);
-	DDX_Text(pDX, IDC_EDIT_MODEL_RADIU, radiu);
-	DDX_Text(pDX, IDC_EDIT_MODEL_ANGLE, angle);
-	DDX_Text(pDX, IDC_EDIT_SCASLE, scale); 
-	DDX_Text(pDX, IDC_EDIT_MODEL_ROTATE_X, iRotateX);
-	DDV_MinMaxInt(pDX, iRotateX, 0, 360);
-	DDX_Text(pDX, IDC_EDIT_MODEL_ROTATE_Y, iRotateY);
-	DDV_MinMaxInt(pDX, iRotateY, 0, 360);
-	DDX_Text(pDX, IDC_EDIT_MODEL_ROTATE_Z, iRotateZ);
-	DDV_MinMaxInt(pDX, iRotateZ, 0, 360);
-	DDX_Radio(pDX, IDC_RADIO_REPEAT, iDisplayType);
-	DDX_Control(pDX, IDC_CHECK_SET_XY_BY_MOUSE, m_SetPosCheckBox);
+void C3DModelParamSet::DoDataExchange(CDataExchange* pDX) {
+    CDialog::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_EDIT_MODEL_X, xPos);
+    DDX_Text(pDX, IDC_EDIT_MODEL_Z, zPos);
+    DDX_Text(pDX, IDC_EDIT_MODEL_H, hPos);
+    DDX_Text(pDX, IDC_EDIT_MODEL_RADIU, radiu);
+    DDX_Text(pDX, IDC_EDIT_MODEL_ANGLE, angle);
+    DDX_Text(pDX, IDC_EDIT_SCASLE, scale);
+    DDX_Text(pDX, IDC_EDIT_MODEL_ROTATE_X, iRotateX);
+    DDV_MinMaxInt(pDX, iRotateX, 0, 360);
+    DDX_Text(pDX, IDC_EDIT_MODEL_ROTATE_Y, iRotateY);
+    DDV_MinMaxInt(pDX, iRotateY, 0, 360);
+    DDX_Text(pDX, IDC_EDIT_MODEL_ROTATE_Z, iRotateZ);
+    DDV_MinMaxInt(pDX, iRotateZ, 0, 360);
+    DDX_Radio(pDX, IDC_RADIO_REPEAT, iDisplayType);
+    DDX_Control(pDX, IDC_CHECK_SET_XY_BY_MOUSE, m_SetPosCheckBox);
 }
 
 
 BEGIN_MESSAGE_MAP(C3DModelParamSet, CDialog)
-	ON_BN_CLICKED(IDC_RADIO_REPEAT, &C3DModelParamSet::OnBnClickedRadioRepeat)
-	ON_BN_CLICKED(IDC_RADIO_STRETCH, &C3DModelParamSet::OnBnClickedRadioStretch)
-	ON_BN_CLICKED(IDC_CHECK_SET_XY_BY_MOUSE, &C3DModelParamSet::OnClickedCheckSetXyByMouse)
-	ON_MESSAGE(WM_UPDATE_EDIT_XY,&C3DModelParamSet::OnUpdateEditXY)
+    ON_BN_CLICKED(IDC_RADIO_REPEAT, &C3DModelParamSet::OnBnClickedRadioRepeat)
+    ON_BN_CLICKED(IDC_RADIO_STRETCH, &C3DModelParamSet::OnBnClickedRadioStretch)
+    ON_BN_CLICKED(IDC_CHECK_SET_XY_BY_MOUSE, &C3DModelParamSet::OnClickedCheckSetXyByMouse)
+    ON_MESSAGE(WM_UPDATE_EDIT_XY, &C3DModelParamSet::OnUpdateEditXY)
 END_MESSAGE_MAP()
 
 
-// C3DModelParamSet ÏûÏ¢´¦Àí³ÌĞò
+// C3DModelParamSet æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 
-BOOL C3DModelParamSet::OnInitDialog()
-{
-	CDialog::OnInitDialog();
-
-	if (!m_strTitle.IsEmpty())
-		SetWindowText(m_strTitle);
-
-	m_SetPosCheckBox.SetCheck(0);
-
-
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// Òì³£: OCX ÊôĞÔÒ³Ó¦·µ»Ø FALSE
-} 
-
-
-void C3DModelParamSet::OnBnClickedRadioRepeat()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	iDisplayType = 0; // ÎÆÀíÖØ¸´Ó³Éä repeat
-	
+BOOL C3DModelParamSet::OnInitDialog() {
+    CDialog::OnInitDialog();
+    if (!m_strTitle.IsEmpty())
+        SetWindowText(m_strTitle);
+    m_SetPosCheckBox.SetCheck(0);
+    return TRUE;  // return TRUE unless you set the focus to a control
+    // å¼‚å¸¸: OCX å±æ€§é¡µåº”è¿”å› FALSE
 }
 
 
-void C3DModelParamSet::OnBnClickedRadioStretch()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	iDisplayType = 1; // ÎÆÀíÀ­ÉìÓ³Éä
+void C3DModelParamSet::OnBnClickedRadioRepeat() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    iDisplayType = 0; // çº¹ç†é‡å¤æ˜ å°„ repeat
 }
 
 
-void C3DModelParamSet::OnOK()
-{
-	
-	// TODO: ÔÚ´ËÌí¼Ó×¨ÓÃ´úÂëºÍ/»òµ÷ÓÃ»ùÀà
-	if(m_pView != NULL)
-	{
-		//·ÇÄ£Ê½¶Ô»°¿ò²»µ÷ÓÃ»ùÀàCDialogµÄOnOKº¯Êı
-		UpdateData(TRUE);
-		m_pView->PostMessage(WM_GOODBYE, IDOK);
-	}
-	else
-	{
-		//AfxMessageBox("Ä£Ê½o   ...  k");
-		//Ä£Ì¬¶Ô»°¿òÖ±½Óµ÷ÓÃ»ùÀàµÄOnOKº¯Êı
-		CDialog::OnOK();
-	}
+void C3DModelParamSet::OnBnClickedRadioStretch() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    iDisplayType = 1; // çº¹ç†æ‹‰ä¼¸æ˜ å°„
 }
 
 
-void C3DModelParamSet::OnCancel()
-{
-	// TODO: ÔÚ´ËÌí¼Ó×¨ÓÃ´úÂëºÍ/»òµ÷ÓÃ»ùÀà
-	if(m_pView != NULL)
-	{
-		//·ÇÄ£Ê½¶Ô»°¿ò²»µ÷ÓÃ»ùÀàCDialogµÄOnCancelº¯Êı
-		//·¢ËÍÓÃ»§¶¨ÒåµÄÏûÏ¢WM_GOODBYE
-		m_pView->PostMessage(WM_GOODBYE, IDCANCEL);
-	}
-	else
-	{
-		//Ä£Ì¬¶Ô»°¿òÖ±½Óµ÷ÓÃ»ùÀàµÄOnCancelº¯Êı
-		CDialog::OnCancel();
-	}
+void C3DModelParamSet::OnOK() {
+    // TODO: åœ¨æ­¤æ·»åŠ ä¸“ç”¨ä»£ç å’Œ/æˆ–è°ƒç”¨åŸºç±»
+    if (m_pView != NULL) {
+        //éæ¨¡å¼å¯¹è¯æ¡†ä¸è°ƒç”¨åŸºç±»CDialogçš„OnOKå‡½æ•°
+        UpdateData(TRUE);
+        m_pView->PostMessage(WM_GOODBYE, IDOK);
+    } else {
+        //AfxMessageBox("æ¨¡å¼o   ...  k");
+        //æ¨¡æ€å¯¹è¯æ¡†ç›´æ¥è°ƒç”¨åŸºç±»çš„OnOKå‡½æ•°
+        CDialog::OnOK();
+    }
+}
+
+
+void C3DModelParamSet::OnCancel() {
+    // TODO: åœ¨æ­¤æ·»åŠ ä¸“ç”¨ä»£ç å’Œ/æˆ–è°ƒç”¨åŸºç±»
+    if (m_pView != NULL) {
+        //éæ¨¡å¼å¯¹è¯æ¡†ä¸è°ƒç”¨åŸºç±»CDialogçš„OnCancelå‡½æ•°
+        //å‘é€ç”¨æˆ·å®šä¹‰çš„æ¶ˆæ¯WM_GOODBYE
+        m_pView->PostMessage(WM_GOODBYE, IDCANCEL);
+    } else {
+        //æ¨¡æ€å¯¹è¯æ¡†ç›´æ¥è°ƒç”¨åŸºç±»çš„OnCancelå‡½æ•°
+        CDialog::OnCancel();
+    }
 }
 
 
 /************************************************************************/
-/* Function: Í¨¹ıÊó±êµã»÷ÆÁÄ»»ñÈ¡×ø±êÀ´ÉèÖÃÄ£ĞÍ°Ú·ÅÎ»ÖÃ						*/
+/* Function: é€šè¿‡é¼ æ ‡ç‚¹å‡»å±å¹•è·å–åæ ‡æ¥è®¾ç½®æ¨¡å‹æ‘†æ”¾ä½ç½®                     */
 /************************************************************************/
-void C3DModelParamSet::OnClickedCheckSetXyByMouse()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	if(m_SetPosCheckBox.GetCheck() == 0)
-	{
-		isSetXYByMouse = 0;
-		//AfxMessageBox("n");
-		m_pView->PostMessage(WM_GOODBYE, SET_XY_BY_MOUSE_FALSE);
-	}
-	else if(m_SetPosCheckBox.GetCheck() == 1)
-	{
-		isSetXYByMouse = true;
-		//AfxMessageBox("y");
-		m_pView->PostMessage(WM_GOODBYE, SET_XY_BY_MOUSE_TRUE);
-	}
-	
+void C3DModelParamSet::OnClickedCheckSetXyByMouse() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    if (m_SetPosCheckBox.GetCheck() == 0) {
+        isSetXYByMouse = 0;
+        //AfxMessageBox("n");
+        m_pView->PostMessage(WM_GOODBYE, SET_XY_BY_MOUSE_FALSE);
+    } else if (m_SetPosCheckBox.GetCheck() == 1) {
+        isSetXYByMouse = true;
+        //AfxMessageBox("y");
+        m_pView->PostMessage(WM_GOODBYE, SET_XY_BY_MOUSE_TRUE);
+    }
 }
 
 
 /************************************************************************/
-/* Function: ×Ô¶¨ÒåÏûÏ¢ÏìÓ¦, ·ÇÄ£Ê½¶Ô»°¿ò, ¸ù¾İÊó±êÑ¡È¡µÄ×ø±ê¸üĞÂ¶Ô»°¿ò		*/
+/* Function: è‡ªå®šä¹‰æ¶ˆæ¯å“åº”, éæ¨¡å¼å¯¹è¯æ¡†, æ ¹æ®é¼ æ ‡é€‰å–çš„åæ ‡æ›´æ–°å¯¹è¯æ¡†     */
 /************************************************************************/
-LRESULT C3DModelParamSet::OnUpdateEditXY(WPARAM wParam, LPARAM lParam)
-{
-	UpdateData(FALSE); // ¸üĞÂ¶Ô»°¿ò
-	return 0;
+LRESULT C3DModelParamSet::OnUpdateEditXY(WPARAM wParam, LPARAM lParam) {
+    UpdateData(FALSE); // æ›´æ–°å¯¹è¯æ¡†
+    return 0;
 }

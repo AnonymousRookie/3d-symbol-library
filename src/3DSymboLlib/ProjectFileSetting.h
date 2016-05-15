@@ -1,39 +1,38 @@
-#pragma once
+Ôªø#pragma once
 #include "afxwin.h"
 
 
 
 
 
-// CProjectFileSetting ∂‘ª∞øÚ
+// CProjectFileSetting ÂØπËØùÊ°Ü
 
-class CProjectFileSetting : public CDialog
-{
-	DECLARE_DYNAMIC(CProjectFileSetting)
+class CProjectFileSetting : public CDialog {
+    DECLARE_DYNAMIC(CProjectFileSetting)
 
-public:
-	CProjectFileSetting(CWnd* pParent = NULL);   // ±Í◊ºππ‘Ï∫Ø ˝
-	virtual ~CProjectFileSetting();
+  public:
+    CProjectFileSetting(CWnd* pParent = NULL);   // Ê†áÂáÜÊûÑÈÄ†ÂáΩÊï∞
+    virtual ~CProjectFileSetting();
 
-// ∂‘ª∞øÚ ˝æ› 
-	enum { IDD = IDD_PROJECTFILESETTING };
+    // ÂØπËØùÊ°ÜÊï∞ÊçÆ
+    enum { IDD = IDD_PROJECTFILESETTING };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV ÷ß≥÷
+  protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV ÊîØÊåÅ
 
-	DECLARE_MESSAGE_MAP()
-public:
+    DECLARE_MESSAGE_MAP()
 
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedCancel();
-	afx_msg void OnBnClickedRadioNewProject();
+  public:
+    afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedCancel();
+    afx_msg void OnBnClickedRadioNewProject();
 
-	afx_msg void OnBnClickedRadioOpenProject();
-	CListBox m_recentlyOpenedProjectList;
+    afx_msg void OnBnClickedRadioOpenProject();
+    CListBox m_recentlyOpenedProjectList;
 
-	unsigned int new_project_flag;
-	 
+    unsigned int new_project_flag;
 
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSelchangeListRecentlyOpenedProject();
+
+    virtual BOOL OnInitDialog();
+    afx_msg void OnSelchangeListRecentlyOpenedProject();
 };

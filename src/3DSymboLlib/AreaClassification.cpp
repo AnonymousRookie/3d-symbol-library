@@ -1,4 +1,4 @@
-// AreaClassification.cpp :  µœ÷Œƒº˛
+Ôªø// AreaClassification.cpp : ÂÆûÁé∞Êñá‰ª∂
 //
 
 #include "stdafx.h"
@@ -7,183 +7,154 @@
 #include "afxdialogex.h"
 
 
- 
+
 
 #include <io.h>
 
 
-// CAreaClassification ∂‘ª∞øÚ
+// CAreaClassification ÂØπËØùÊ°Ü
 
 IMPLEMENT_DYNAMIC(CAreaClassification, CDialog)
 
 CAreaClassification::CAreaClassification(CWnd* pParent /*=NULL*/)
-	: CDialog(CAreaClassification::IDD, pParent)
-{
-
+    : CDialog(CAreaClassification::IDD, pParent) {
 }
 
-CAreaClassification::~CAreaClassification()
-{
+CAreaClassification::~CAreaClassification() {
 }
 
-void CAreaClassification::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_STATIC_IMAGE, m_Image);
-	DDX_Control(pDX, IDC_TREE_AREA_LIST, m_Area_Texture_List);
+void CAreaClassification::DoDataExchange(CDataExchange* pDX) {
+    CDialog::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_STATIC_IMAGE, m_Image);
+    DDX_Control(pDX, IDC_TREE_AREA_LIST, m_Area_Texture_List);
 }
 
 
 BEGIN_MESSAGE_MAP(CAreaClassification, CDialog)
-	ON_BN_CLICKED(IDOK, &CAreaClassification::OnBnClickedOk)
-	ON_BN_CLICKED(IDCANCEL, &CAreaClassification::OnBnClickedCancel)
-	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_AREA_LIST, &CAreaClassification::OnSelchangedTreeAreaList)
-//	ON_COMMAND(ID_MENU_UPDATE_AREA_TEXTURE, &CAreaClassification::OnMenuUpdateAreaTexture)
-//ON_COMMAND(ID_MENU_AREA_DELETE, &CAreaClassification::OnMenuAreaDelete)
+    ON_BN_CLICKED(IDOK, &CAreaClassification::OnBnClickedOk)
+    ON_BN_CLICKED(IDCANCEL, &CAreaClassification::OnBnClickedCancel)
+    ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_AREA_LIST, &CAreaClassification::OnSelchangedTreeAreaList)
+    //  ON_COMMAND(ID_MENU_UPDATE_AREA_TEXTURE, &CAreaClassification::OnMenuUpdateAreaTexture)
+    //ON_COMMAND(ID_MENU_AREA_DELETE, &CAreaClassification::OnMenuAreaDelete)
 END_MESSAGE_MAP()
 
 
-// CAreaClassification œ˚œ¢¥¶¿Ì≥Ã–Ú
+// CAreaClassification Ê∂àÊÅØÂ§ÑÁêÜÁ®ãÂ∫è
 
 
-void CAreaClassification::OnBnClickedOk()
-{
-	// TODO: ‘⁄¥ÀÃÌº”øÿº˛Õ®÷™¥¶¿Ì≥Ã–Ú¥˙¬Î
-	CDialog::OnOK();
-
-	CString tmp = "\\";
-	CString topItem = "AreaTexture";
-	HTREEITEM selectItem = m_Area_Texture_List.GetSelectedItem();
-	CString selectItemText = m_Area_Texture_List.GetItemText(selectItem);
-	HTREEITEM parentItem = m_Area_Texture_List.GetParentItem(selectItem);
-	CString parentItemText = m_Area_Texture_List.GetItemText(parentItem);
-
-	m_selectItem = selectItemText;
-	m_Dir = g_sceneDataPath.c_str() + tmp + topItem + tmp + parentItemText;
+void CAreaClassification::OnBnClickedOk() {
+    // TODO: Âú®Ê≠§Ê∑ªÂä†Êéß‰ª∂ÈÄöÁü•Â§ÑÁêÜÁ®ãÂ∫è‰ª£Á†Å
+    CDialog::OnOK();
+    CString tmp = "\\";
+    CString topItem = "AreaTexture";
+    HTREEITEM selectItem = m_Area_Texture_List.GetSelectedItem();
+    CString selectItemText = m_Area_Texture_List.GetItemText(selectItem);
+    HTREEITEM parentItem = m_Area_Texture_List.GetParentItem(selectItem);
+    CString parentItemText = m_Area_Texture_List.GetItemText(parentItem);
+    m_selectItem = selectItemText;
+    m_Dir = g_sceneDataPath.c_str() + tmp + topItem + tmp + parentItemText;
 }
 
 
-void CAreaClassification::OnBnClickedCancel()
-{
-	// TODO: ‘⁄¥ÀÃÌº”øÿº˛Õ®÷™¥¶¿Ì≥Ã–Ú¥˙¬Î
-	CDialog::OnCancel();
+void CAreaClassification::OnBnClickedCancel() {
+    // TODO: Âú®Ê≠§Ê∑ªÂä†Êéß‰ª∂ÈÄöÁü•Â§ÑÁêÜÁ®ãÂ∫è‰ª£Á†Å
+    CDialog::OnCancel();
 }
 
 
- 
-
-void CAreaClassification::OnSelchangedTreeAreaList(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-	// TODO: ‘⁄¥ÀÃÌº”øÿº˛Õ®÷™¥¶¿Ì≥Ã–Ú¥˙¬Î
-	*pResult = 0;
-
-	HTREEITEM selectItem = m_Area_Texture_List.GetSelectedItem();
-	CString selectItemText = m_Area_Texture_List.GetItemText(selectItem);
-
-	HTREEITEM parentItem = m_Area_Texture_List.GetParentItem(selectItem);
-	CString parentItemText = m_Area_Texture_List.GetItemText(parentItem);
 
 
-	CString topItem = "AreaTexture";
-	CString RockType[1] = {"grassland"};
-	CString imgPathAndName;
-	CString tmp = "\\";
-	for(int i=0;i<1;++i)
-	{
-		if(parentItemText == RockType[i])
-		{
-			imgPathAndName = g_sceneDataPath.c_str() + tmp + topItem+ tmp + RockType[i] + tmp + selectItemText;
-			//MessageBox(imgPathAndName,"");
-			// BMP
-			if(1)
-			{
-				CRect rect;
-				CDC *pdc = GetDC();
-				GetDlgItem(IDC_STATIC_IMAGE)->GetWindowRect(rect);
-				this->ScreenToClient(rect);
-				drawBitmapFromFile(imgPathAndName,pdc,rect);
-			}	
-		}
-	}
+void CAreaClassification::OnSelchangedTreeAreaList(NMHDR* pNMHDR, LRESULT* pResult) {
+    LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+    // TODO: Âú®Ê≠§Ê∑ªÂä†Êéß‰ª∂ÈÄöÁü•Â§ÑÁêÜÁ®ãÂ∫è‰ª£Á†Å
+    *pResult = 0;
+    HTREEITEM selectItem = m_Area_Texture_List.GetSelectedItem();
+    CString selectItemText = m_Area_Texture_List.GetItemText(selectItem);
+    HTREEITEM parentItem = m_Area_Texture_List.GetParentItem(selectItem);
+    CString parentItemText = m_Area_Texture_List.GetItemText(parentItem);
+    CString topItem = "AreaTexture";
+    CString RockType[1] = {"grassland"};
+    CString imgPathAndName;
+    CString tmp = "\\";
+    for (int i = 0; i < 1; ++i) {
+        if (parentItemText == RockType[i]) {
+            imgPathAndName = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i] + tmp + selectItemText;
+            //MessageBox(imgPathAndName,"");
+            // BMP
+            if (1) {
+                CRect rect;
+                CDC* pdc = GetDC();
+                GetDlgItem(IDC_STATIC_IMAGE)->GetWindowRect(rect);
+                this->ScreenToClient(rect);
+                drawBitmapFromFile(imgPathAndName, pdc, rect);
+            }
+        }
+    }
 }
 
 
-// Ω´—°÷–µƒbmpŒ∆¿Ì”∞œÒ‘⁄øÿº˛…œªÊ÷∆
-void CAreaClassification::drawBitmapFromFile(CString bitmapFilePath,CDC*pDC,CRect rect)
-{
-	HANDLE   filehandle=::LoadImage(NULL,bitmapFilePath,IMAGE_BITMAP,0,0,LR_LOADFROMFILE);  //º”‘ÿ”∞œÒŒƒº˛ 
-	if(filehandle!=NULL)   //»Áπ˚º”‘ÿ≥…π¶
-	{   
-		CBitmap   bmp;   
-		if(bmp.Attach(filehandle))   
-		{   
-			BITMAP   bmpInfo;   
-			bmp.GetBitmap(&bmpInfo);   //ªÒ»°◊ ‘¥ŒªÕº–≈œ¢
-			CDC   dcMemory;   
-			dcMemory.CreateCompatibleDC(pDC);   //¥¥Ω®“ª∏ˆ”ÎÃÿ∂®…Ë±∏≥°æ∞“ª÷¬µƒƒ⁄¥Ê…Ë±∏≥°æ∞
-			dcMemory.SelectObject(&bmp);   //—°‘Òbmp∂‘œÛµΩ÷∏∂®µƒ…Ë±∏…œœ¬Œƒª∑æ≥÷–,∏√–¬∂‘œÛÃÊªªœ»«∞µƒœ‡Õ¨¿‡–Õµƒ∂‘œÛ
-			//…Ë÷√÷∏∂®…Ë±∏ª∑æ≥÷–µƒŒªÕº¿≠…Ïƒ£ Ω. HALFTONE£∫Ω´‘¥æÿ–Œ«¯÷–µƒœÒÀÿ”≥…‰µΩƒø±Íæÿ–Œ«¯µƒœÒÀÿøÈ÷–£¨
-			//∏≤∏«ƒø±ÍœÒÀÿøÈµƒ“ª∞„—’…´”Î‘¥œÒÀÿµƒ—’…´Ω”Ω¸°£
-
-			//StretchBlt():‘¥æÿ–Œ÷–∏¥÷∆“ª∏ˆŒªÕºµΩƒø±Íæÿ–Œ,±ÿ“™ ±∞¥ƒø«∞ƒø±Í…Ë±∏…Ë÷√µƒƒ£ ΩΩ¯––ÕºœÒµƒ¿≠…ÏªÚ—πÀı°£
-			pDC->StretchBlt(rect.left,rect.top,rect.Width(),rect.Height(),&dcMemory,0,0,bmpInfo.bmWidth,bmpInfo.bmHeight,SRCCOPY);   
-			bmp.Detach();   //œ˙ªŸbmp∂‘œÛ
-		}   
-	}   
+// Â∞ÜÈÄâ‰∏≠ÁöÑbmpÁ∫πÁêÜÂΩ±ÂÉèÂú®Êéß‰ª∂‰∏äÁªòÂà∂
+void CAreaClassification::drawBitmapFromFile(CString bitmapFilePath, CDC* pDC, CRect rect) {
+    HANDLE   filehandle =::LoadImage(NULL, bitmapFilePath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE); //Âä†ËΩΩÂΩ±ÂÉèÊñá‰ª∂
+    if (filehandle != NULL) { //Â¶ÇÊûúÂä†ËΩΩÊàêÂäü
+        CBitmap   bmp;
+        if (bmp.Attach(filehandle)) {
+            BITMAP   bmpInfo;
+            bmp.GetBitmap(&bmpInfo);   //Ëé∑ÂèñËµÑÊ∫ê‰ΩçÂõæ‰ø°ÊÅØ
+            CDC   dcMemory;
+            dcMemory.CreateCompatibleDC(pDC);   //ÂàõÂª∫‰∏Ä‰∏™‰∏éÁâπÂÆöËÆæÂ§áÂú∫ÊôØ‰∏ÄËá¥ÁöÑÂÜÖÂ≠òËÆæÂ§áÂú∫ÊôØ
+            dcMemory.SelectObject(&bmp);   //ÈÄâÊã©bmpÂØπË±°Âà∞ÊåáÂÆöÁöÑËÆæÂ§á‰∏ä‰∏ãÊñáÁéØÂ¢É‰∏≠,ËØ•Êñ∞ÂØπË±°ÊõøÊç¢ÂÖàÂâçÁöÑÁõ∏ÂêåÁ±ªÂûãÁöÑÂØπË±°
+            //ËÆæÁΩÆÊåáÂÆöËÆæÂ§áÁéØÂ¢É‰∏≠ÁöÑ‰ΩçÂõæÊãâ‰º∏Ê®°Âºè. HALFTONEÔºöÂ∞ÜÊ∫êÁü©ÂΩ¢Âå∫‰∏≠ÁöÑÂÉèÁ¥†Êò†Â∞ÑÂà∞ÁõÆÊ†áÁü©ÂΩ¢Âå∫ÁöÑÂÉèÁ¥†Âùó‰∏≠Ôºå
+            //Ë¶ÜÁõñÁõÆÊ†áÂÉèÁ¥†ÂùóÁöÑ‰∏ÄËà¨È¢úËâ≤‰∏éÊ∫êÂÉèÁ¥†ÁöÑÈ¢úËâ≤Êé•Ëøë„ÄÇ
+            //StretchBlt():Ê∫êÁü©ÂΩ¢‰∏≠Â§çÂà∂‰∏Ä‰∏™‰ΩçÂõæÂà∞ÁõÆÊ†áÁü©ÂΩ¢,ÂøÖË¶ÅÊó∂ÊåâÁõÆÂâçÁõÆÊ†áËÆæÂ§áËÆæÁΩÆÁöÑÊ®°ÂºèËøõË°åÂõæÂÉèÁöÑÊãâ‰º∏ÊàñÂéãÁº©„ÄÇ
+            pDC->StretchBlt(rect.left, rect.top, rect.Width(), rect.Height(), &dcMemory, 0, 0, bmpInfo.bmWidth, bmpInfo.bmHeight, SRCCOPY);
+            bmp.Detach();   //ÈîÄÊØÅbmpÂØπË±°
+        }
+    }
 }
 
-BOOL CAreaClassification::OnInitDialog()
-{
-	CDialog::OnInitDialog();
-	CString tmp = "\\";
-	CString topItem = "AreaTexture";
-	CString RockType[1] = {"grassland"};
-
-	hRoot = m_Area_Texture_List.InsertItem(topItem,0,0);
-
-	for(int i=0;i<1;++i)
-	{
-		hCataItem = m_Area_Texture_List.InsertItem(RockType[i],1,1,hRoot,TVI_LAST);
-		m_Dir = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i];
-		if(1)
-		{
-			// ªÒ»°Œƒº˛º–œ¬À˘”–÷∏∂®¿‡–ÕŒƒº˛
-			_finddata_t fileDir;
-			char* dir= new char[m_Dir.GetLength()+ strlen("\\*.BMP")];
-			sprintf(dir, m_Dir+"\\*.BMP"); 
-			long lfDir;
-			int fileNum = 0;
-			//À—À˜”Î÷∏∂®µƒŒƒº˛√˚≥∆∆•≈‰µƒµ⁄“ª∏ˆ µ¿˝£¨»Ù≥…π¶‘Ú∑µªÿµ⁄“ª∏ˆ µ¿˝µƒæ‰±˙£¨∑Ò‘Ú∑µªÿ-1L
-			if((lfDir = _findfirst(dir,&fileDir))==-1l)
-				printf("No file is found\n");
-			else{
-				printf("file list:\n");
-				do{
-					printf("%s\n",fileDir.name);// XXX.format
-					hArtItem = m_Area_Texture_List.InsertItem(fileDir.name,2,2,hCataItem,TVI_LAST);
-					++fileNum;
-				}while( _findnext( lfDir, &fileDir ) == 0 );
-			}
-			_findclose(lfDir);
-		}
-
-	}
-
-	return TRUE;
-
- 
+BOOL CAreaClassification::OnInitDialog() {
+    CDialog::OnInitDialog();
+    CString tmp = "\\";
+    CString topItem = "AreaTexture";
+    CString RockType[1] = {"grassland"};
+    hRoot = m_Area_Texture_List.InsertItem(topItem, 0, 0);
+    for (int i = 0; i < 1; ++i) {
+        hCataItem = m_Area_Texture_List.InsertItem(RockType[i], 1, 1, hRoot, TVI_LAST);
+        m_Dir = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i];
+        if (1) {
+            // Ëé∑ÂèñÊñá‰ª∂Â§π‰∏ãÊâÄÊúâÊåáÂÆöÁ±ªÂûãÊñá‰ª∂
+            _finddata_t fileDir;
+            char* dir = new char[m_Dir.GetLength() + strlen("\\*.BMP")];
+            sprintf(dir, m_Dir + "\\*.BMP");
+            long lfDir;
+            int fileNum = 0;
+            //ÊêúÁ¥¢‰∏éÊåáÂÆöÁöÑÊñá‰ª∂ÂêçÁß∞ÂåπÈÖçÁöÑÁ¨¨‰∏Ä‰∏™ÂÆû‰æãÔºåËã•ÊàêÂäüÂàôËøîÂõûÁ¨¨‰∏Ä‰∏™ÂÆû‰æãÁöÑÂè•ÊüÑÔºåÂê¶ÂàôËøîÂõû-1L
+            if ((lfDir = _findfirst(dir, &fileDir)) == -1l)
+                printf("No file is found\n");
+            else {
+                printf("file list:\n");
+                do {
+                    printf("%s\n", fileDir.name); // XXX.format
+                    hArtItem = m_Area_Texture_List.InsertItem(fileDir.name, 2, 2, hCataItem, TVI_LAST);
+                    ++fileNum;
+                } while (_findnext(lfDir, &fileDir) == 0);
+            }
+            _findclose(lfDir);
+        }
+    }
+    return TRUE;
 }
 
 
 //void CAreaClassification::OnMenuUpdateAreaTexture()
 //{
-//	// TODO: ‘⁄¥ÀÃÌº”√¸¡Ó¥¶¿Ì≥Ã–Ú¥˙¬Î
+//  // TODO: Âú®Ê≠§Ê∑ªÂä†ÂëΩ‰ª§Â§ÑÁêÜÁ®ãÂ∫è‰ª£Á†Å
 //
 //}
 
 
 //void CAreaClassification::OnMenuAreaDelete()
 //{
-//	// TODO: ‘⁄¥ÀÃÌº”√¸¡Ó¥¶¿Ì≥Ã–Ú¥˙¬Î
+//  // TODO: Âú®Ê≠§Ê∑ªÂä†ÂëΩ‰ª§Â§ÑÁêÜÁ®ãÂ∫è‰ª£Á†Å
 //}

@@ -1,4 +1,4 @@
-// AddPointDlg.cpp : ÊµÏÖÎÄ¼ş
+ï»¿// AddPointDlg.cpp : å®ç°æ–‡ä»¶
 //
 
 #include "stdafx.h"
@@ -7,23 +7,19 @@
 #include "afxdialogex.h"
 
 
-// CAddPointDlg ¶Ô»°¿ò
+// CAddPointDlg å¯¹è¯æ¡†
 
 IMPLEMENT_DYNAMIC(CAddPointDlg, CDialog)
 
 CAddPointDlg::CAddPointDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CAddPointDlg::IDD, pParent)
-{
-
+    : CDialog(CAddPointDlg::IDD, pParent) {
 }
 
-CAddPointDlg::~CAddPointDlg()
-{
+CAddPointDlg::~CAddPointDlg() {
 }
 
-void CAddPointDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
+void CAddPointDlg::DoDataExchange(CDataExchange* pDX) {
+    CDialog::DoDataExchange(pDX);
 }
 
 
@@ -31,4 +27,4 @@ BEGIN_MESSAGE_MAP(CAddPointDlg, CDialog)
 END_MESSAGE_MAP()
 
 
-// CAddPointDlg ÏûÏ¢´¦Àí³ÌĞò
+// CAddPointDlg æ¶ˆæ¯å¤„ç†ç¨‹åº

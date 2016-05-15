@@ -1,722 +1,638 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "Load3DS.h"
-					
-	
-UINT g_Texture[MODEL_NUM_MAX][MAX_TEXTURES] = {0};	
-t3DModel g_3DModel[MODEL_NUM_MAX];	
 
-// 3D Ä£ĞÍÍâÃæ³¤¿í¸ß
+
+UINT g_Texture[MODEL_NUM_MAX][MAX_TEXTURES] = {0};
+t3DModel g_3DModel[MODEL_NUM_MAX];
+
+// 3D æ¨¡å‹å¤–é¢é•¿å®½é«˜
 t3DBox t3dBox;
 
-								
-int   g_ViewMode	  = GL_TRIANGLES;
-bool  g_bLighting     = true;		
 
-CLoad3DS::CLoad3DS()//  ¹¹Ôìº¯ÊıµÄ¹¦ÄÜÊÇ³õÊ¼»¯tChunkÊı¾İ
-{	
-	m_CurrentChunk = new tChunk;	// ³õÊ¼»¯²¢Îªµ±Ç°µÄ¿é·ÖÅä¿Õ¼ä
-	m_TempChunk = new tChunk;		// ³õÊ¼»¯Ò»¸öÁÙÊ±¿é²¢·ÖÅä¿Õ¼ä
+int   g_ViewMode      = GL_TRIANGLES;
+bool  g_bLighting     = true;
 
+CLoad3DS::CLoad3DS() { //  æ„é€ å‡½æ•°çš„åŠŸèƒ½æ˜¯åˆå§‹åŒ–tChunkæ•°æ®
+    m_CurrentChunk = new tChunk;    // åˆå§‹åŒ–å¹¶ä¸ºå½“å‰çš„å—åˆ†é…ç©ºé—´
+    m_TempChunk = new tChunk;       // åˆå§‹åŒ–ä¸€ä¸ªä¸´æ—¶å—å¹¶åˆ†é…ç©ºé—´
 }
 
-CLoad3DS::~CLoad3DS()
-{	
-	CleanUp();// ÊÍ·ÅÄÚ´æ¿Õ¼ä
-	for(int j = 0; j <10;j++)
-	for(int i = 0; i < g_3DModel[j].numOfObjects; i++)
-	{	delete [] g_3DModel[j].pObject[i].pFaces;// É¾³ıËùÓĞµÄ±äÁ¿
-		delete [] g_3DModel[j].pObject[i].pNormals;
-		delete [] g_3DModel[j].pObject[i].pVerts;
-		delete [] g_3DModel[j].pObject[i].pTexVerts;
-	}
+CLoad3DS::~CLoad3DS() {
+    CleanUp();// é‡Šæ”¾å†…å­˜ç©ºé—´
+    for (int j = 0; j < 10; j++)
+        for (int i = 0; i < g_3DModel[j].numOfObjects; i++) {
+            delete [] g_3DModel[j].pObject[i].pFaces;// åˆ é™¤æ‰€æœ‰çš„å˜é‡
+            delete [] g_3DModel[j].pObject[i].pNormals;
+            delete [] g_3DModel[j].pObject[i].pVerts;
+            delete [] g_3DModel[j].pObject[i].pTexVerts;
+        }
 }
 
 
 
 /************************************************************************/
-/* Function: µ÷Èë3DSÄ£ĞÍ; _3DSFilename ÎÄ¼şÃû .../xxx.3DS; j Ä£ĞÍĞòÁĞºÅ   */
+/* Function: è°ƒå…¥3DSæ¨¡å‹; _3DSFilename æ–‡ä»¶å .../xxx.3DS; j æ¨¡å‹åºåˆ—å·   */
 /************************************************************************/
-void CLoad3DS::Init(char *_3DSFilename,int j, char *_3DSTexture)//
-{	
-	
-	Import3DS(&g_3DModel[j], _3DSFilename);				
-	
-
-	// ·½·¨¶ş
-	CString path1 = _3DSFilename;
-	int index = path1.ReverseFind('\\');
-	CString dir = path1.Left(index);
-
-
-	for(int i =0; i<g_3DModel[j].numOfMaterials;i++)
-	{
-		if(strlen(g_3DModel[j].pMaterials[i].strFile)>0)// ÅĞ¶ÏÊÇ·ñÊÇÒ»¸öÎÄ¼şÃû
-		{
-			CString texName;
-			texName.Format("%s", g_3DModel[j].pMaterials[i].strFile);
-			
-			
-			CString finalTexPath = _3DSTexture;
-
-			char* cc = new char[finalTexPath.GetLength()];
-			sprintf(cc,"%s",finalTexPath);
-
-			CreateTexture(g_Texture[j],  cc, i);		// Ê¹ÓÃÎÆÀíÎÄ¼şÃû³ÆÀ´×°ÈëÎ»Í¼
-		}
-		g_3DModel[j].pMaterials[i].texureId = i;		// ÉèÖÃ²ÄÖÊµÄÎÆÀíID
-	}
-
-	// »ñÈ¡Ä£ĞÍºĞ×Ó´óĞ¡
-	int minx,maxx,miny,maxy,minz,maxz;
-	minx = 99999;
-	miny = 99999;
-	minz = 99999;
-	maxx = -99999;
-	maxy = -99999;
-	maxz = -99999;
-  
-	for(int i = 0; i <  g_3DModel[j].numOfObjects; i++)
-	{
-		if(g_3DModel[j].pObject.size() <= 0) break;// Èç¹û¶ÔÏóµÄ´óĞ¡Ğ¡ÓÚ0£¬ÔòÍË³ö
-		t3DObject *pObject = &g_3DModel[j].pObject[i];// »ñµÃµ±Ç°ÏÔÊ¾µÄ¶ÔÏó
-	 
-		
-		for(int j = 0; j < pObject->numOfFaces; j++)		// ±éÀúËùÓĞµÄÃæ
-		{
-			for(int tex = 0; tex < 3; tex++)					// ±éÀúÈı½ÇĞÎµÄËùÓĞµã
-			{
-				int index = pObject->pFaces[j].vertIndex[tex];	// »ñµÃÃæ¶ÔÃ¿¸öµãµÄË÷Òı
-				
-				
-				if(minx > pObject->pVerts[index].x)  minx = pObject->pVerts[index].x;
-				if(maxx < pObject->pVerts[index].x)	 maxx = pObject->pVerts[index].x;
-				if(miny > pObject->pVerts[index].y)  miny = pObject->pVerts[index].y;
-				if(maxy < pObject->pVerts[index].y)	 maxy = pObject->pVerts[index].y;
-				if(minz > pObject->pVerts[index].z)  minz = pObject->pVerts[index].z;
-				if(maxz < pObject->pVerts[index].z)	 maxz = pObject->pVerts[index].z;
-			}
-		}
-	}
-	 				 
-	t3DBox t3dBox;
-	t3dBox.w = maxz - minz;
-	t3dBox.h = maxy - miny;
-	t3dBox.l = maxx - minx; 
-
-	g_3DModel[j].t3DModelBox = t3dBox;
+void CLoad3DS::Init(char* _3DSFilename, int j, char* _3DSTexture) { //
+    Import3DS(&g_3DModel[j], _3DSFilename);
+    // æ–¹æ³•äºŒ
+    CString path1 = _3DSFilename;
+    int index = path1.ReverseFind('\\');
+    CString dir = path1.Left(index);
+    for (int i = 0; i < g_3DModel[j].numOfMaterials; i++) {
+        if (strlen(g_3DModel[j].pMaterials[i].strFile) > 0) { // åˆ¤æ–­æ˜¯å¦æ˜¯ä¸€ä¸ªæ–‡ä»¶å
+            CString texName;
+            texName.Format("%s", g_3DModel[j].pMaterials[i].strFile);
+            CString finalTexPath = _3DSTexture;
+            char* cc = new char[finalTexPath.GetLength()];
+            sprintf(cc, "%s", finalTexPath);
+            CreateTexture(g_Texture[j],  cc, i);        // ä½¿ç”¨çº¹ç†æ–‡ä»¶åç§°æ¥è£…å…¥ä½å›¾
+        }
+        g_3DModel[j].pMaterials[i].texureId = i;        // è®¾ç½®æè´¨çš„çº¹ç†ID
+    }
+    // è·å–æ¨¡å‹ç›’å­å¤§å°
+    int minx, maxx, miny, maxy, minz, maxz;
+    minx = 99999;
+    miny = 99999;
+    minz = 99999;
+    maxx = -99999;
+    maxy = -99999;
+    maxz = -99999;
+    for (int i = 0; i <  g_3DModel[j].numOfObjects; i++) {
+        if (g_3DModel[j].pObject.size() <= 0) break; // å¦‚æœå¯¹è±¡çš„å¤§å°å°äº0ï¼Œåˆ™é€€å‡º
+        t3DObject* pObject = &g_3DModel[j].pObject[i];// è·å¾—å½“å‰æ˜¾ç¤ºçš„å¯¹è±¡
+        for (int j = 0; j < pObject->numOfFaces; j++) {     // éå†æ‰€æœ‰çš„é¢
+            for (int tex = 0; tex < 3; tex++) {                 // éå†ä¸‰è§’å½¢çš„æ‰€æœ‰ç‚¹
+                int index = pObject->pFaces[j].vertIndex[tex];  // è·å¾—é¢å¯¹æ¯ä¸ªç‚¹çš„ç´¢å¼•
+                if (minx > pObject->pVerts[index].x)  minx = pObject->pVerts[index].x;
+                if (maxx < pObject->pVerts[index].x)  maxx = pObject->pVerts[index].x;
+                if (miny > pObject->pVerts[index].y)  miny = pObject->pVerts[index].y;
+                if (maxy < pObject->pVerts[index].y)  maxy = pObject->pVerts[index].y;
+                if (minz > pObject->pVerts[index].z)  minz = pObject->pVerts[index].z;
+                if (maxz < pObject->pVerts[index].z)  maxz = pObject->pVerts[index].z;
+            }
+        }
+    }
+    t3DBox t3dBox;
+    t3dBox.w = maxz - minz;
+    t3dBox.h = maxy - miny;
+    t3dBox.l = maxx - minx;
+    g_3DModel[j].t3DModelBox = t3dBox;
 }
 
 
 /************************************************************************/
-/* Function: ´ÓÎÄ¼şÖĞ´´½¨ÎÆÀí										       */
+/* Function: ä»æ–‡ä»¶ä¸­åˆ›å»ºçº¹ç†                                              */
 /************************************************************************/
-void CLoad3DS::CreateTexture(UINT textureArray[], LPSTR strFileName, int textureID)
-{	
-	AUX_RGBImageRec *pBitmap = NULL;
-	if(!strFileName) return;					// Èç¹ûÎŞ´ËÎÄ¼ş£¬ÔòÖ±½Ó·µ»Ø
-	pBitmap = auxDIBImageLoad(strFileName);		// ×°ÈëÎ»Í¼£¬²¢±£´æÊı¾İ
-	//if(pBitmap == NULL)exit(0);				// Èç¹û×°ÈëÎ»Í¼Ê§°Ü£¬ÔòÍË³ö
-	if(pBitmap != NULL)
-	{
-		// Éú³ÉÎÆÀí
-		glGenTextures(1, &textureArray[textureID]);
-		// ÉèÖÃÏñËØ¶ÔÆë¸ñÊ½
-		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
-		glBindTexture(GL_TEXTURE_2D, textureArray[textureID]);
-		gluBuild2DMipmaps(GL_TEXTURE_2D, 3, pBitmap->sizeX, pBitmap->sizeY, GL_RGB, GL_UNSIGNED_BYTE, pBitmap->data);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR_MIPMAP_LINEAR);
-		if (pBitmap)										// ÊÍ·ÅÎ»Í¼Õ¼ÓÃµÄ×ÊÔ´
-		{	
-			if (pBitmap->data)	free(pBitmap->data);							
-			free(pBitmap);					
-		}
-	}
-}
-
- 
-/************************************************************************/
-/* Function: ÏÔÊ¾3DSÄ£ĞÍ; j0 Ä£ĞÍĞòÁĞºÅ; tx,ty,tz Ä£ĞÍÎ»ÖÃ; size´óĞ¡±ÈÂÊ   */
-/************************************************************************/
-void CLoad3DS::Show3ds(int j0,float tx,float ty,float tz,float size) //ÏÔÊ¾3dsÄ£ĞÍ
-{
-	glPushAttrib(GL_CURRENT_BIT);//±£´æÏÖÓĞÑÕÉ«ÊôÊµĞÔ
-	glPushMatrix();
-	glDisable(GL_TEXTURE_2D);
-	::glTranslatef( tx, ty, tz);
-	::glScaled(size,size,size);
-	glRotatef(90, 0, 1.0f, 0);
-	
-
-	// ±éÀúÄ£ĞÍÖĞËùÓĞµÄ¶ÔÏó
-	for(int i = 0; i < g_3DModel[j0].numOfObjects; i++)
-	{
-		if(g_3DModel[j0].pObject.size() <= 0) break;// Èç¹û¶ÔÏóµÄ´óĞ¡Ğ¡ÓÚ0£¬ÔòÍË³ö
-		t3DObject *pObject = &g_3DModel[j0].pObject[i];// »ñµÃµ±Ç°ÏÔÊ¾µÄ¶ÔÏó
-		if(pObject->bHasTexture)// ÅĞ¶Ï¸Ã¶ÔÏóÊÇ·ñÓĞÎÆÀíÓ³Éä
-		{	
-			glEnable(GL_TEXTURE_2D);// ´ò¿ªÎÆÀíÓ³Éä
-			glBindTexture(GL_TEXTURE_2D, g_Texture[j0][pObject->materialID]);
-		 } 
-		else	
-			glDisable(GL_TEXTURE_2D);// ¹Ø±ÕÎÆÀíÓ³Éä
-		
-		//ÕâÀïÔ­À´ÓĞ´í£¬²»ĞĞÕıÈ·µ÷ÓÃÄ£ĞÍµÄÌùÍ¼£¬g_TextureÓ¦¸ÃÎª2Î¬Êı×é
-		glColor3ub(255, 255, 255);
-		
-		glBegin(g_ViewMode);//¿ªÊ¼ÒÔg_ViewModeÄ£Ê½»æÖÆ	
-		for(int j = 0; j < pObject->numOfFaces; j++)		// ±éÀúËùÓĞµÄÃæ
-		{
-			for(int tex = 0; tex < 3; tex++)					// ±éÀúÈı½ÇĞÎµÄËùÓĞµã
-			{
-				int index = pObject->pFaces[j].vertIndex[tex];	// »ñµÃÃæ¶ÔÃ¿¸öµãµÄË÷Òı
-				glNormal3f(pObject->pNormals[index].x,pObject->pNormals[index].y, pObject->pNormals[index].z);		// ¸ø³ö·¨ÏòÁ¿
-				if(pObject->bHasTexture)						// Èç¹û¶ÔÏó¾ßÓĞÎÆÀí
-				{	
-					if(pObject->pTexVerts)						// È·¶¨ÊÇ·ñÓĞUVWÎÆÀí×ø±ê
-						glTexCoord2f(pObject->pTexVerts[index].x,pObject->pTexVerts[index].y);
-				}
-				else
-				{	
-					if(g_3DModel[j0].pMaterials.size() && pObject->materialID>= 0) 
-					{	
-						BYTE *pColor = g_3DModel[j0].pMaterials[pObject->materialID].color;
-						glColor3ub(pColor[0],pColor[1],pColor[2]);
-					}
-				}
-				
-				glVertex3f(pObject->pVerts[index].x,pObject->pVerts[index].y,pObject->pVerts[index].z);
-			}
-		}
-		glEnd();// »æÖÆ½áÊø
-	}
-	glEnable(GL_TEXTURE_2D);
-	glPopMatrix();
-	glPopAttrib();//»Ö¸´Ç°Ò»ÊôĞÔ
-	
-	
+void CLoad3DS::CreateTexture(UINT textureArray[], LPSTR strFileName, int textureID) {
+    AUX_RGBImageRec* pBitmap = NULL;
+    if (!strFileName) return;                   // å¦‚æœæ— æ­¤æ–‡ä»¶ï¼Œåˆ™ç›´æ¥è¿”å›
+    pBitmap = auxDIBImageLoad(strFileName);     // è£…å…¥ä½å›¾ï¼Œå¹¶ä¿å­˜æ•°æ®
+    //if(pBitmap == NULL)exit(0);               // å¦‚æœè£…å…¥ä½å›¾å¤±è´¥ï¼Œåˆ™é€€å‡º
+    if (pBitmap != NULL) {
+        // ç”Ÿæˆçº¹ç†
+        glGenTextures(1, &textureArray[textureID]);
+        // è®¾ç½®åƒç´ å¯¹é½æ ¼å¼
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glBindTexture(GL_TEXTURE_2D, textureArray[textureID]);
+        gluBuild2DMipmaps(GL_TEXTURE_2D, 3, pBitmap->sizeX, pBitmap->sizeY, GL_RGB, GL_UNSIGNED_BYTE, pBitmap->data);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        if (pBitmap) {                                      // é‡Šæ”¾ä½å›¾å ç”¨çš„èµ„æº
+            if (pBitmap->data)  free(pBitmap->data);
+            free(pBitmap);
+        }
+    }
 }
 
 
 /************************************************************************/
-/* Function:  ´ò¿ªÒ»¸ö3dsÎÄ¼ş£¬¶Á³öÆäÖĞµÄÄÚÈİ£¬²¢ÊÍ·ÅÄÚ´æ					*/
+/* Function: æ˜¾ç¤º3DSæ¨¡å‹; j0 æ¨¡å‹åºåˆ—å·; tx,ty,tz æ¨¡å‹ä½ç½®; sizeå¤§å°æ¯”ç‡   */
 /************************************************************************/
-bool CLoad3DS::Import3DS(t3DModel *pModel, char *strFileName)
-{	
-	// ½øĞĞĞŞ¸ÄÄ£ĞÍÂ·¾¶Ê±ÅĞ¶ÏÊ¹ÓÃ
-	if(pModel->t3DModelBox.h != 0)
-	{
-		//pModel = {0};					// ÓÃÀ´Ìí¼Óµ½¶ÔÏóÁ´±í;
-		t3DModel Model = {0};
-		// pModel = &Model;				// ½«pModel±äÁ¿Ö¸ÏòModel±äÁ¿µÄµØÖ·£¬ÓÉ´ËµÃµ½*pModelÒÔºó¶¼ÊÇ´ú±í×ÅModelµÄÖµ£¬²»ÄÜ½«´«½øÀ´µÄ²ÎÊıg_Model[i]½øĞĞ¸Ä±ä
-		*pModel = Model;				// ½«pModelÖ¸ÏòµÄµØÖ·µÄ±äÁ¿Öµ¸Ä±ä³ÉModel±äÁ¿µÄÖµ
-	}
-	//pModel->pMaterials->
-	char strMessage[255] = {0};
-	// ´ò¿ªÒ»¸ö3dsÎÄ¼ş
-	m_FilePointer = fopen(strFileName, "rb");
-	// È·±£Ëù»ñµÃµÄÎÄ¼şÖ¸ÕëºÏ·¨
-	if(!m_FilePointer) 
-	{	
-		sprintf(strMessage, "Unable to find the file: %s!", strFileName);
-		MessageBox(NULL, strMessage, "Error", MB_OK);
-		return false;
-	}
-	// µ±ÎÄ¼ş´ò¿ªÖ®ºó£¬Ê×ÏÈÓ¦¸Ã½«ÎÄ¼ş×î¿ªÊ¼µÄÊı¾İ¿é¶Á³öÒÔÅĞ¶ÏÊÇ·ñÊÇÒ»¸ö3dsÎÄ¼ş
-	// Èç¹ûÊÇ3dsÎÄ¼şµÄ»°£¬µÚÒ»¸ö¿éIDÓ¦¸ÃÊÇPRIMARY
-	// ½«ÎÄ¼şµÄµÚÒ»¿é¶Á³ö²¢ÅĞ¶ÏÊÇ·ñÊÇ3dsÎÄ¼ş
-	ReadChunk(m_CurrentChunk);
-	// È·±£ÊÇ3dsÎÄ¼ş
-	if (m_CurrentChunk->ID != PRIMARY)
-	{	
-		sprintf(strMessage, "Unable to load PRIMARY chuck from file: %s!", strFileName);
-		MessageBox(NULL, strMessage, "Error", MB_OK);
-		return false;
-	}
-	// ÏÖÔÚ¿ªÊ¼¶ÁÈëÊı¾İ£¬ReadNextChunk()ÊÇÒ»¸öµİ¹éº¯Êı
-	// Í¨¹ıµ÷ÓÃÏÂÃæµÄµİ¹éº¯Êı£¬½«¶ÔÏó¶Á³ö
-	ReadNextChunk(pModel, m_CurrentChunk);
-	// ÔÚ¶ÁÍêÕû¸ö3dsÎÄ¼şÖ®ºó£¬¼ÆËã¶¥µãµÄ·¨Ïß
-	ComputeNormals(pModel);
-	// ÊÍ·ÅÄÚ´æ¿Õ¼ä
-//	CleanUp();
-	return true;
+void CLoad3DS::Show3ds(int j0, float tx, float ty, float tz, float size) { //æ˜¾ç¤º3dsæ¨¡å‹
+    glPushAttrib(GL_CURRENT_BIT);//ä¿å­˜ç°æœ‰é¢œè‰²å±å®æ€§
+    glPushMatrix();
+    glDisable(GL_TEXTURE_2D);
+    ::glTranslatef(tx, ty, tz);
+    ::glScaled(size, size, size);
+    glRotatef(90, 0, 1.0f, 0);
+    // éå†æ¨¡å‹ä¸­æ‰€æœ‰çš„å¯¹è±¡
+    for (int i = 0; i < g_3DModel[j0].numOfObjects; i++) {
+        if (g_3DModel[j0].pObject.size() <= 0) break; // å¦‚æœå¯¹è±¡çš„å¤§å°å°äº0ï¼Œåˆ™é€€å‡º
+        t3DObject* pObject = &g_3DModel[j0].pObject[i];// è·å¾—å½“å‰æ˜¾ç¤ºçš„å¯¹è±¡
+        if (pObject->bHasTexture) { // åˆ¤æ–­è¯¥å¯¹è±¡æ˜¯å¦æœ‰çº¹ç†æ˜ å°„
+            glEnable(GL_TEXTURE_2D);// æ‰“å¼€çº¹ç†æ˜ å°„
+            glBindTexture(GL_TEXTURE_2D, g_Texture[j0][pObject->materialID]);
+        } else
+            glDisable(GL_TEXTURE_2D);// å…³é—­çº¹ç†æ˜ å°„
+        //è¿™é‡ŒåŸæ¥æœ‰é”™ï¼Œä¸è¡Œæ­£ç¡®è°ƒç”¨æ¨¡å‹çš„è´´å›¾ï¼Œg_Textureåº”è¯¥ä¸º2ç»´æ•°ç»„
+        glColor3ub(255, 255, 255);
+        glBegin(g_ViewMode);//å¼€å§‹ä»¥g_ViewModeæ¨¡å¼ç»˜åˆ¶
+        for (int j = 0; j < pObject->numOfFaces; j++) {     // éå†æ‰€æœ‰çš„é¢
+            for (int tex = 0; tex < 3; tex++) {                 // éå†ä¸‰è§’å½¢çš„æ‰€æœ‰ç‚¹
+                int index = pObject->pFaces[j].vertIndex[tex];  // è·å¾—é¢å¯¹æ¯ä¸ªç‚¹çš„ç´¢å¼•
+                glNormal3f(pObject->pNormals[index].x, pObject->pNormals[index].y, pObject->pNormals[index].z);     // ç»™å‡ºæ³•å‘é‡
+                if (pObject->bHasTexture) {                     // å¦‚æœå¯¹è±¡å…·æœ‰çº¹ç†
+                    if (pObject->pTexVerts)                     // ç¡®å®šæ˜¯å¦æœ‰UVWçº¹ç†åæ ‡
+                        glTexCoord2f(pObject->pTexVerts[index].x, pObject->pTexVerts[index].y);
+                } else {
+                    if (g_3DModel[j0].pMaterials.size() && pObject->materialID >= 0) {
+                        BYTE* pColor = g_3DModel[j0].pMaterials[pObject->materialID].color;
+                        glColor3ub(pColor[0], pColor[1], pColor[2]);
+                    }
+                }
+                glVertex3f(pObject->pVerts[index].x, pObject->pVerts[index].y, pObject->pVerts[index].z);
+            }
+        }
+        glEnd();// ç»˜åˆ¶ç»“æŸ
+    }
+    glEnable(GL_TEXTURE_2D);
+    glPopMatrix();
+    glPopAttrib();//æ¢å¤å‰ä¸€å±æ€§
 }
 
 
 /************************************************************************/
-/* Function: ÊÍ·ÅËùÓĞµÄÄÚ´æ¿Õ¼ä£¬²¢¹Ø±ÕÎÄ¼ş								*/
+/* Function:  æ‰“å¼€ä¸€ä¸ª3dsæ–‡ä»¶ï¼Œè¯»å‡ºå…¶ä¸­çš„å†…å®¹ï¼Œå¹¶é‡Šæ”¾å†…å­˜                   */
 /************************************************************************/
-void CLoad3DS::CleanUp()
-{
-	// ±éÀú³¡¾°ÖĞËùÓĞµÄ¶ÔÏó
-	fclose(m_FilePointer);						// ¹Ø±Õµ±Ç°µÄÎÄ¼şÖ¸Õë
-	delete m_CurrentChunk;						// ÊÍ·Åµ±Ç°¿é
-	delete m_TempChunk;							// ÊÍ·ÅÁÙÊ±¿é
+bool CLoad3DS::Import3DS(t3DModel* pModel, char* strFileName) {
+    // è¿›è¡Œä¿®æ”¹æ¨¡å‹è·¯å¾„æ—¶åˆ¤æ–­ä½¿ç”¨
+    if (pModel->t3DModelBox.h != 0) {
+        //pModel = {0};                 // ç”¨æ¥æ·»åŠ åˆ°å¯¹è±¡é“¾è¡¨;
+        t3DModel Model = {0};
+        // pModel = &Model;             // å°†pModelå˜é‡æŒ‡å‘Modelå˜é‡çš„åœ°å€ï¼Œç”±æ­¤å¾—åˆ°*pModelä»¥åéƒ½æ˜¯ä»£è¡¨ç€Modelçš„å€¼ï¼Œä¸èƒ½å°†ä¼ è¿›æ¥çš„å‚æ•°g_Model[i]è¿›è¡Œæ”¹å˜
+        *pModel = Model;                // å°†pModelæŒ‡å‘çš„åœ°å€çš„å˜é‡å€¼æ”¹å˜æˆModelå˜é‡çš„å€¼
+    }
+    //pModel->pMaterials->
+    char strMessage[255] = {0};
+    // æ‰“å¼€ä¸€ä¸ª3dsæ–‡ä»¶
+    m_FilePointer = fopen(strFileName, "rb");
+    // ç¡®ä¿æ‰€è·å¾—çš„æ–‡ä»¶æŒ‡é’ˆåˆæ³•
+    if (!m_FilePointer) {
+        sprintf(strMessage, "Unable to find the file: %s!", strFileName);
+        MessageBox(NULL, strMessage, "Error", MB_OK);
+        return false;
+    }
+    // å½“æ–‡ä»¶æ‰“å¼€ä¹‹åï¼Œé¦–å…ˆåº”è¯¥å°†æ–‡ä»¶æœ€å¼€å§‹çš„æ•°æ®å—è¯»å‡ºä»¥åˆ¤æ–­æ˜¯å¦æ˜¯ä¸€ä¸ª3dsæ–‡ä»¶
+    // å¦‚æœæ˜¯3dsæ–‡ä»¶çš„è¯ï¼Œç¬¬ä¸€ä¸ªå—IDåº”è¯¥æ˜¯PRIMARY
+    // å°†æ–‡ä»¶çš„ç¬¬ä¸€å—è¯»å‡ºå¹¶åˆ¤æ–­æ˜¯å¦æ˜¯3dsæ–‡ä»¶
+    ReadChunk(m_CurrentChunk);
+    // ç¡®ä¿æ˜¯3dsæ–‡ä»¶
+    if (m_CurrentChunk->ID != PRIMARY) {
+        sprintf(strMessage, "Unable to load PRIMARY chuck from file: %s!", strFileName);
+        MessageBox(NULL, strMessage, "Error", MB_OK);
+        return false;
+    }
+    // ç°åœ¨å¼€å§‹è¯»å…¥æ•°æ®ï¼ŒReadNextChunk()æ˜¯ä¸€ä¸ªé€’å½’å‡½æ•°
+    // é€šè¿‡è°ƒç”¨ä¸‹é¢çš„é€’å½’å‡½æ•°ï¼Œå°†å¯¹è±¡è¯»å‡º
+    ReadNextChunk(pModel, m_CurrentChunk);
+    // åœ¨è¯»å®Œæ•´ä¸ª3dsæ–‡ä»¶ä¹‹åï¼Œè®¡ç®—é¡¶ç‚¹çš„æ³•çº¿
+    ComputeNormals(pModel);
+    // é‡Šæ”¾å†…å­˜ç©ºé—´
+    //  CleanUp();
+    return true;
 }
 
 
 /************************************************************************/
-/* Function: ¶Á³ö3dsÎÄ¼şµÄÖ÷Òª²¿·Ö								        */
+/* Function: é‡Šæ”¾æ‰€æœ‰çš„å†…å­˜ç©ºé—´ï¼Œå¹¶å…³é—­æ–‡ä»¶                             */
 /************************************************************************/
-void CLoad3DS::ReadNextChunk(t3DModel *pModel, tChunk *pPreChunk)
-{
-	t3DObject newObject = {0};					// ÓÃÀ´Ìí¼Óµ½¶ÔÏóÁ´±í
-	tMatInfo newTexture = {0};				// ÓÃÀ´Ìí¼Óµ½²ÄÖÊÁ´±í
-	unsigned int version[10] = {0};					// ±£´æÎÄ¼ş°æ±¾
-	int buffer[50000] = {0};					// ÓÃÀ´Ìø¹ı²»ĞèÒªµÄÊı¾İ
-	m_CurrentChunk = new tChunk;				// ÎªĞÂµÄ¿é·ÖÅä¿Õ¼ä		
-	//  ÏÂÃæÃ¿¶ÁÒ»¸öĞÂ¿é£¬¶¼ÒªÅĞ¶ÏÒ»ÏÂ¿éµÄID£¬Èç¹û¸Ã¿éÊÇĞèÒªµÄ¶ÁÈëµÄ£¬Ôò¼ÌĞø½øĞĞ
-	//  Èç¹ûÊÇ²»ĞèÒª¶ÁÈëµÄ¿é£¬ÔòÂÔ¹ı
-	// ¼ÌĞø¶ÁÈë×Ó¿é£¬Ö±µ½´ïµ½Ô¤¶¨µÄ³¤¶È
-	while (pPreChunk->bytesRead < pPreChunk->length)
-	{	// ¶ÁÈëÏÂÒ»¸ö¿é
-		ReadChunk(m_CurrentChunk);
-		// ÅĞ¶Ï¿éµÄIDºÅ
-		switch (m_CurrentChunk->ID)
-		{
-		case VERSION:							// ÎÄ¼ş°æ±¾ºÅ
-			// ÔÚ¸Ã¿éÖĞÓĞÒ»¸öÎŞ·ûºÅ¶ÌÕûĞÍÊı±£´æÁËÎÄ¼şµÄ°æ±¾
-			// ¶ÁÈëÎÄ¼şµÄ°æ±¾ºÅ£¬²¢½«×Ö½ÚÊıÌí¼Óµ½bytesRead±äÁ¿ÖĞ
-			m_CurrentChunk->bytesRead += fread(&version, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
-			// Èç¹ûÎÄ¼ş°æ±¾ºÅ´óÓÚ3£¬¸ø³öÒ»¸ö¾¯¸æĞÅÏ¢
-			if (version[0] > 0x03)
-				MessageBox(NULL, "This 3DS file is over version 3 so it may load incorrectly", "Warning", MB_OK);
-			break;
-		case OBJECTINFO:						// Íø¸ñ°æ±¾ĞÅÏ¢
-			// ¶ÁÈëÏÂÒ»¸ö¿é
-			ReadChunk(m_TempChunk);
-			// »ñµÃÍø¸ñµÄ°æ±¾ºÅ
-			m_TempChunk->bytesRead += fread(&version, 1, m_TempChunk->length - m_TempChunk->bytesRead, m_FilePointer);
-			// Ôö¼Ó¶ÁÈëµÄ×Ö½ÚÊı
-			m_CurrentChunk->bytesRead += m_TempChunk->bytesRead;
-			// ½øÈëÏÂÒ»¸ö¿é
-			ReadNextChunk(pModel, m_CurrentChunk);
-			break;
-		case MATERIAL:							// ²ÄÖÊĞÅÏ¢
-			// ²ÄÖÊµÄÊıÄ¿µİÔö
-			pModel->numOfMaterials++;
-			// ÔÚÎÆÀíÁ´±íÖĞÌí¼ÓÒ»¸ö¿Õ°×ÎÆÀí½á¹¹
-			pModel->pMaterials.push_back(newTexture);
-			// ½øÈë²ÄÖÊ×°Èëº¯Êı
-			ReadNextMatChunk(pModel, m_CurrentChunk);
-			break;
-		case OBJECT:							// ¶ÔÏóµÄÃû³Æ
-			// ¸Ã¿éÊÇ¶ÔÏóĞÅÏ¢¿éµÄÍ·²¿£¬±£´æÁË¶ÔÏóÁËÃû³Æ
-			// ¶ÔÏóÊıµİÔö
-			pModel->numOfObjects++;
-			// Ìí¼ÓÒ»¸öĞÂµÄtObject½Úµãµ½¶ÔÏóÁ´±íÖĞ
-			pModel->pObject.push_back(newObject);
-			// ³õÊ¼»¯¶ÔÏóºÍËüµÄËùÓĞÊı¾İ³ÉÔ±
-			memset(&(pModel->pObject[pModel->numOfObjects - 1]), 0, sizeof(t3DObject));
-			// »ñµÃ²¢±£´æ¶ÔÏóµÄÃû³Æ£¬È»ºóÔö¼Ó¶ÁÈëµÄ×Ö½ÚÊı
-			m_CurrentChunk->bytesRead += GetString(pModel->pObject[pModel->numOfObjects - 1].strName);
-			// ½øÈëÆäÓàµÄ¶ÔÏóĞÅÏ¢µÄ¶ÁÈë
-			ReadNextObjChunk(pModel, &(pModel->pObject[pModel->numOfObjects - 1]), m_CurrentChunk);
-			break;
-		case EDITKEYFRAME:
-			// Ìø¹ı¹Ø¼üÖ¡¿éµÄ¶ÁÈë£¬Ôö¼ÓĞèÒª¶ÁÈëµÄ×Ö½ÚÊı
-			m_CurrentChunk->bytesRead += fread(buffer, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
-			break;
-		default: 
-			//  Ìø¹ıËùÓĞºöÂÔµÄ¿éµÄÄÚÈİµÄ¶ÁÈë£¬Ôö¼ÓĞèÒª¶ÁÈëµÄ×Ö½ÚÊı
-			m_CurrentChunk->bytesRead += fread(buffer, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
-			break;
-		}
-		// Ôö¼Ó´Ó×îºó¿é¶ÁÈëµÄ×Ö½ÚÊı
-		pPreChunk->bytesRead += m_CurrentChunk->bytesRead;
-	}
-	// ÊÍ·Åµ±Ç°¿éµÄÄÚ´æ¿Õ¼ä
-	delete m_CurrentChunk;
-	m_CurrentChunk = pPreChunk;
+void CLoad3DS::CleanUp() {
+    // éå†åœºæ™¯ä¸­æ‰€æœ‰çš„å¯¹è±¡
+    fclose(m_FilePointer);                      // å…³é—­å½“å‰çš„æ–‡ä»¶æŒ‡é’ˆ
+    delete m_CurrentChunk;                      // é‡Šæ”¾å½“å‰å—
+    delete m_TempChunk;                         // é‡Šæ”¾ä¸´æ—¶å—
 }
 
 
 /************************************************************************/
-/* Function: ´¦ÀíËùÓĞµÄÎÄ¼şÖĞ¶ÔÏóµÄĞÅÏ¢		                            */
+/* Function: è¯»å‡º3dsæ–‡ä»¶çš„ä¸»è¦éƒ¨åˆ†                                      */
 /************************************************************************/
-void CLoad3DS::ReadNextObjChunk(t3DModel *pModel, t3DObject *pObject, tChunk *pPreChunk)
-{	int buffer[50000] = {0};					// ÓÃÓÚ¶ÁÈë²»ĞèÒªµÄÊı¾İ
-	// ¶ÔĞÂµÄ¿é·ÖÅä´æ´¢¿Õ¼ä
-	m_CurrentChunk = new tChunk;
-	// ¼ÌĞø¶ÁÈë¿éµÄÄÚÈİÖ±ÖÁ±¾×Ó¿é½áÊø
-	while (pPreChunk->bytesRead < pPreChunk->length)
-	{	// ¶ÁÈëÏÂÒ»¸ö¿é
-		ReadChunk(m_CurrentChunk);
-		// Çø±ğ¶ÁÈëÊÇÄÄÖÖ¿é
-		switch (m_CurrentChunk->ID)
-		{
-		case OBJ_MESH:					// Õı¶ÁÈëµÄÊÇÒ»¸öĞÂ¿é
-			// Ê¹ÓÃµİ¹éº¯Êıµ÷ÓÃ£¬´¦Àí¸ÃĞÂ¿é
-			ReadNextObjChunk(pModel, pObject, m_CurrentChunk);
-			break;
-		case OBJ_VERTICES:				// ¶ÁÈëÊÇ¶ÔÏó¶¥µã
-			ReadVertices(pObject, m_CurrentChunk);
-			break;
-		case OBJ_FACES:					// ¶ÁÈëµÄÊÇ¶ÔÏóµÄÃæ
-			ReadVertexIndices(pObject, m_CurrentChunk);
-			break;
-		case OBJ_MATERIAL:				// ¶ÁÈëµÄÊÇ¶ÔÏóµÄ²ÄÖÊÃû³Æ
-			// ¸Ã¿é±£´æÁË¶ÔÏó²ÄÖÊµÄÃû³Æ£¬¿ÉÄÜÊÇÒ»¸öÑÕÉ«£¬Ò²¿ÉÄÜÊÇÒ»¸öÎÆÀíÓ³Éä¡£Í¬Ê±ÔÚ¸Ã¿éÖĞÒ²±£´æÁË
-			// ÎÆÀí¶ÔÏóËù¸³ÓèµÄÃæ
-			// ÏÂÃæ¶ÁÈë¶ÔÏóµÄ²ÄÖÊÃû³Æ
-			ReadObjMat(pModel, pObject, m_CurrentChunk);			
-			break;
-		case OBJ_UV:						// ¶ÁÈë¶ÔÏóµÄUVÎÆÀí×ø±ê
-			// ¶ÁÈë¶ÔÏóµÄUVÎÆÀí×ø±ê
-			ReadUVCoordinates(pObject, m_CurrentChunk);
-			break;
-		default:  
-			// ÂÔ¹ı²»ĞèÒª¶ÁÈëµÄ¿é
-			m_CurrentChunk->bytesRead += fread(buffer, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
-			break;
-		}
-		// Ìí¼Ó´Ó×îºó¿éÖĞ¶ÁÈëµÄ×Ö½ÚÊıµ½Ç°ÃæµÄ¶ÁÈëµÄ×Ö½ÚÖĞ
-		pPreChunk->bytesRead += m_CurrentChunk->bytesRead;
-	}
-	// ÊÍ·Åµ±Ç°¿éµÄÄÚ´æ¿Õ¼ä£¬²¢°Ñµ±Ç°¿éÉèÖÃÎªÇ°Ãæ¿é
-	delete m_CurrentChunk;
-	m_CurrentChunk = pPreChunk;
+void CLoad3DS::ReadNextChunk(t3DModel* pModel, tChunk* pPreChunk) {
+    t3DObject newObject = {0};                  // ç”¨æ¥æ·»åŠ åˆ°å¯¹è±¡é“¾è¡¨
+    tMatInfo newTexture = {0};              // ç”¨æ¥æ·»åŠ åˆ°æè´¨é“¾è¡¨
+    unsigned int version[10] = {0};                 // ä¿å­˜æ–‡ä»¶ç‰ˆæœ¬
+    int buffer[50000] = {0};                    // ç”¨æ¥è·³è¿‡ä¸éœ€è¦çš„æ•°æ®
+    m_CurrentChunk = new tChunk;                // ä¸ºæ–°çš„å—åˆ†é…ç©ºé—´
+    //  ä¸‹é¢æ¯è¯»ä¸€ä¸ªæ–°å—ï¼Œéƒ½è¦åˆ¤æ–­ä¸€ä¸‹å—çš„IDï¼Œå¦‚æœè¯¥å—æ˜¯éœ€è¦çš„è¯»å…¥çš„ï¼Œåˆ™ç»§ç»­è¿›è¡Œ
+    //  å¦‚æœæ˜¯ä¸éœ€è¦è¯»å…¥çš„å—ï¼Œåˆ™ç•¥è¿‡
+    // ç»§ç»­è¯»å…¥å­å—ï¼Œç›´åˆ°è¾¾åˆ°é¢„å®šçš„é•¿åº¦
+    while (pPreChunk->bytesRead < pPreChunk->length) {
+        // è¯»å…¥ä¸‹ä¸€ä¸ªå—
+        ReadChunk(m_CurrentChunk);
+        // åˆ¤æ–­å—çš„IDå·
+        switch (m_CurrentChunk->ID) {
+            case VERSION:                           // æ–‡ä»¶ç‰ˆæœ¬å·
+                // åœ¨è¯¥å—ä¸­æœ‰ä¸€ä¸ªæ— ç¬¦å·çŸ­æ•´å‹æ•°ä¿å­˜äº†æ–‡ä»¶çš„ç‰ˆæœ¬
+                // è¯»å…¥æ–‡ä»¶çš„ç‰ˆæœ¬å·ï¼Œå¹¶å°†å­—èŠ‚æ•°æ·»åŠ åˆ°bytesReadå˜é‡ä¸­
+                m_CurrentChunk->bytesRead += fread(&version, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
+                // å¦‚æœæ–‡ä»¶ç‰ˆæœ¬å·å¤§äº3ï¼Œç»™å‡ºä¸€ä¸ªè­¦å‘Šä¿¡æ¯
+                if (version[0] > 0x03)
+                    MessageBox(NULL, "This 3DS file is over version 3 so it may load incorrectly", "Warning", MB_OK);
+                break;
+            case OBJECTINFO:                        // ç½‘æ ¼ç‰ˆæœ¬ä¿¡æ¯
+                // è¯»å…¥ä¸‹ä¸€ä¸ªå—
+                ReadChunk(m_TempChunk);
+                // è·å¾—ç½‘æ ¼çš„ç‰ˆæœ¬å·
+                m_TempChunk->bytesRead += fread(&version, 1, m_TempChunk->length - m_TempChunk->bytesRead, m_FilePointer);
+                // å¢åŠ è¯»å…¥çš„å­—èŠ‚æ•°
+                m_CurrentChunk->bytesRead += m_TempChunk->bytesRead;
+                // è¿›å…¥ä¸‹ä¸€ä¸ªå—
+                ReadNextChunk(pModel, m_CurrentChunk);
+                break;
+            case MATERIAL:                          // æè´¨ä¿¡æ¯
+                // æè´¨çš„æ•°ç›®é€’å¢
+                pModel->numOfMaterials++;
+                // åœ¨çº¹ç†é“¾è¡¨ä¸­æ·»åŠ ä¸€ä¸ªç©ºç™½çº¹ç†ç»“æ„
+                pModel->pMaterials.push_back(newTexture);
+                // è¿›å…¥æè´¨è£…å…¥å‡½æ•°
+                ReadNextMatChunk(pModel, m_CurrentChunk);
+                break;
+            case OBJECT:                            // å¯¹è±¡çš„åç§°
+                // è¯¥å—æ˜¯å¯¹è±¡ä¿¡æ¯å—çš„å¤´éƒ¨ï¼Œä¿å­˜äº†å¯¹è±¡äº†åç§°
+                // å¯¹è±¡æ•°é€’å¢
+                pModel->numOfObjects++;
+                // æ·»åŠ ä¸€ä¸ªæ–°çš„tObjectèŠ‚ç‚¹åˆ°å¯¹è±¡é“¾è¡¨ä¸­
+                pModel->pObject.push_back(newObject);
+                // åˆå§‹åŒ–å¯¹è±¡å’Œå®ƒçš„æ‰€æœ‰æ•°æ®æˆå‘˜
+                memset(&(pModel->pObject[pModel->numOfObjects - 1]), 0, sizeof(t3DObject));
+                // è·å¾—å¹¶ä¿å­˜å¯¹è±¡çš„åç§°ï¼Œç„¶åå¢åŠ è¯»å…¥çš„å­—èŠ‚æ•°
+                m_CurrentChunk->bytesRead += GetString(pModel->pObject[pModel->numOfObjects - 1].strName);
+                // è¿›å…¥å…¶ä½™çš„å¯¹è±¡ä¿¡æ¯çš„è¯»å…¥
+                ReadNextObjChunk(pModel, &(pModel->pObject[pModel->numOfObjects - 1]), m_CurrentChunk);
+                break;
+            case EDITKEYFRAME:
+                // è·³è¿‡å…³é”®å¸§å—çš„è¯»å…¥ï¼Œå¢åŠ éœ€è¦è¯»å…¥çš„å­—èŠ‚æ•°
+                m_CurrentChunk->bytesRead += fread(buffer, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
+                break;
+            default:
+                //  è·³è¿‡æ‰€æœ‰å¿½ç•¥çš„å—çš„å†…å®¹çš„è¯»å…¥ï¼Œå¢åŠ éœ€è¦è¯»å…¥çš„å­—èŠ‚æ•°
+                m_CurrentChunk->bytesRead += fread(buffer, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
+                break;
+        }
+        // å¢åŠ ä»æœ€åå—è¯»å…¥çš„å­—èŠ‚æ•°
+        pPreChunk->bytesRead += m_CurrentChunk->bytesRead;
+    }
+    // é‡Šæ”¾å½“å‰å—çš„å†…å­˜ç©ºé—´
+    delete m_CurrentChunk;
+    m_CurrentChunk = pPreChunk;
 }
 
 
 /************************************************************************/
-/* Function: ´¦ÀíËùÓĞµÄ²ÄÖÊĞÅÏ¢											*/
+/* Function: å¤„ç†æ‰€æœ‰çš„æ–‡ä»¶ä¸­å¯¹è±¡çš„ä¿¡æ¯                                 */
 /************************************************************************/
-void CLoad3DS::ReadNextMatChunk(t3DModel *pModel, tChunk *pPreChunk)
-{
-	int buffer[50000] = {0};					// ÓÃÓÚ¶ÁÈë²»ĞèÒªµÄÊı¾İ
-	// ¸øµ±Ç°¿é·ÖÅä´æ´¢¿Õ¼ä
-	m_CurrentChunk = new tChunk;
-	// ¼ÌĞø¶ÁÈëÕâĞ©¿é£¬ÖªµÀ¸Ã×Ó¿é½áÊø
-	while (pPreChunk->bytesRead < pPreChunk->length)
-	{	// ¶ÁÈëÏÂÒ»¿é
-		ReadChunk(m_CurrentChunk);
-		// ÅĞ¶Ï¶ÁÈëµÄÊÇÊ²Ã´¿é
-		switch (m_CurrentChunk->ID)
-		{
-		case MATNAME:							// ²ÄÖÊµÄÃû³Æ
-			// ¶ÁÈë²ÄÖÊµÄÃû³Æ
-			m_CurrentChunk->bytesRead += fread(pModel->pMaterials[pModel->numOfMaterials - 1].strName, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
-			break;
-		case MATDIFFUSE:						// ¶ÔÏóµÄR G BÑÕÉ«
-			ReadColor(&(pModel->pMaterials[pModel->numOfMaterials - 1]), m_CurrentChunk);
-			break;
-		case MATMAP:							// ÎÆÀíĞÅÏ¢µÄÍ·²¿
-			// ½øÈëÏÂÒ»¸ö²ÄÖÊ¿éĞÅÏ¢
-			ReadNextMatChunk(pModel, m_CurrentChunk);
-			break;
-		case MATMAPFILE:						// ²ÄÖÊÎÄ¼şµÄÃû³Æ
-			// ¶ÁÈë²ÄÖÊµÄÎÄ¼şÃû³Æ
-			m_CurrentChunk->bytesRead += fread(pModel->pMaterials[pModel->numOfMaterials - 1].strFile, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
-			break;
-		default:  
-			// ÂÓ¹ı²»ĞèÒª¶ÁÈëµÄ¿é
-			m_CurrentChunk->bytesRead += fread(buffer, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
-			break;
-		}
-		// Ìí¼Ó´Ó×îºó¿éÖĞ¶ÁÈëµÄ×Ö½ÚÊı
-		pPreChunk->bytesRead += m_CurrentChunk->bytesRead;
-	}
-	// É¾³ıµ±Ç°¿é£¬²¢½«µ±Ç°¿éÉèÖÃÎªÇ°ÃæµÄ¿é
-	delete m_CurrentChunk;
-	m_CurrentChunk = pPreChunk;
+void CLoad3DS::ReadNextObjChunk(t3DModel* pModel, t3DObject* pObject, tChunk* pPreChunk) {
+    int buffer[50000] = {0};                    // ç”¨äºè¯»å…¥ä¸éœ€è¦çš„æ•°æ®
+    // å¯¹æ–°çš„å—åˆ†é…å­˜å‚¨ç©ºé—´
+    m_CurrentChunk = new tChunk;
+    // ç»§ç»­è¯»å…¥å—çš„å†…å®¹ç›´è‡³æœ¬å­å—ç»“æŸ
+    while (pPreChunk->bytesRead < pPreChunk->length) {
+        // è¯»å…¥ä¸‹ä¸€ä¸ªå—
+        ReadChunk(m_CurrentChunk);
+        // åŒºåˆ«è¯»å…¥æ˜¯å“ªç§å—
+        switch (m_CurrentChunk->ID) {
+            case OBJ_MESH:                  // æ­£è¯»å…¥çš„æ˜¯ä¸€ä¸ªæ–°å—
+                // ä½¿ç”¨é€’å½’å‡½æ•°è°ƒç”¨ï¼Œå¤„ç†è¯¥æ–°å—
+                ReadNextObjChunk(pModel, pObject, m_CurrentChunk);
+                break;
+            case OBJ_VERTICES:              // è¯»å…¥æ˜¯å¯¹è±¡é¡¶ç‚¹
+                ReadVertices(pObject, m_CurrentChunk);
+                break;
+            case OBJ_FACES:                 // è¯»å…¥çš„æ˜¯å¯¹è±¡çš„é¢
+                ReadVertexIndices(pObject, m_CurrentChunk);
+                break;
+            case OBJ_MATERIAL:              // è¯»å…¥çš„æ˜¯å¯¹è±¡çš„æè´¨åç§°
+                // è¯¥å—ä¿å­˜äº†å¯¹è±¡æè´¨çš„åç§°ï¼Œå¯èƒ½æ˜¯ä¸€ä¸ªé¢œè‰²ï¼Œä¹Ÿå¯èƒ½æ˜¯ä¸€ä¸ªçº¹ç†æ˜ å°„ã€‚åŒæ—¶åœ¨è¯¥å—ä¸­ä¹Ÿä¿å­˜äº†
+                // çº¹ç†å¯¹è±¡æ‰€èµ‹äºˆçš„é¢
+                // ä¸‹é¢è¯»å…¥å¯¹è±¡çš„æè´¨åç§°
+                ReadObjMat(pModel, pObject, m_CurrentChunk);
+                break;
+            case OBJ_UV:                        // è¯»å…¥å¯¹è±¡çš„UVçº¹ç†åæ ‡
+                // è¯»å…¥å¯¹è±¡çš„UVçº¹ç†åæ ‡
+                ReadUVCoordinates(pObject, m_CurrentChunk);
+                break;
+            default:
+                // ç•¥è¿‡ä¸éœ€è¦è¯»å…¥çš„å—
+                m_CurrentChunk->bytesRead += fread(buffer, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
+                break;
+        }
+        // æ·»åŠ ä»æœ€åå—ä¸­è¯»å…¥çš„å­—èŠ‚æ•°åˆ°å‰é¢çš„è¯»å…¥çš„å­—èŠ‚ä¸­
+        pPreChunk->bytesRead += m_CurrentChunk->bytesRead;
+    }
+    // é‡Šæ”¾å½“å‰å—çš„å†…å­˜ç©ºé—´ï¼Œå¹¶æŠŠå½“å‰å—è®¾ç½®ä¸ºå‰é¢å—
+    delete m_CurrentChunk;
+    m_CurrentChunk = pPreChunk;
 }
 
 
 /************************************************************************/
-/* Function: ¶ÁÈë¿éµÄIDºÅºÍËüµÄ×Ö½Ú³¤¶È									*/
+/* Function: å¤„ç†æ‰€æœ‰çš„æè´¨ä¿¡æ¯                                         */
 /************************************************************************/
-void CLoad3DS::ReadChunk(tChunk *pChunk)
-{	
-	// ¶ÁÈë¿éµÄIDºÅ£¬Õ¼ÓÃÁË2¸ö×Ö½Ú¡£¿éµÄIDºÅÏóOBJECT»òMATERIALÒ»Ñù£¬ËµÃ÷ÁËÔÚ¿éÖĞËù°üº¬µÄÄÚÈİ
-	pChunk->bytesRead = fread(&pChunk->ID, 1, 2, m_FilePointer);
-	// È»ºó¶ÁÈë¿éÕ¼ÓÃµÄ³¤¶È£¬°üº¬ÁËËÄ¸ö×Ö½Ú
-	pChunk->bytesRead += fread(&pChunk->length, 1, 4, m_FilePointer);
+void CLoad3DS::ReadNextMatChunk(t3DModel* pModel, tChunk* pPreChunk) {
+    int buffer[50000] = {0};                    // ç”¨äºè¯»å…¥ä¸éœ€è¦çš„æ•°æ®
+    // ç»™å½“å‰å—åˆ†é…å­˜å‚¨ç©ºé—´
+    m_CurrentChunk = new tChunk;
+    // ç»§ç»­è¯»å…¥è¿™äº›å—ï¼ŒçŸ¥é“è¯¥å­å—ç»“æŸ
+    while (pPreChunk->bytesRead < pPreChunk->length) {
+        // è¯»å…¥ä¸‹ä¸€å—
+        ReadChunk(m_CurrentChunk);
+        // åˆ¤æ–­è¯»å…¥çš„æ˜¯ä»€ä¹ˆå—
+        switch (m_CurrentChunk->ID) {
+            case MATNAME:                           // æè´¨çš„åç§°
+                // è¯»å…¥æè´¨çš„åç§°
+                m_CurrentChunk->bytesRead += fread(pModel->pMaterials[pModel->numOfMaterials - 1].strName, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
+                break;
+            case MATDIFFUSE:                        // å¯¹è±¡çš„R G Bé¢œè‰²
+                ReadColor(&(pModel->pMaterials[pModel->numOfMaterials - 1]), m_CurrentChunk);
+                break;
+            case MATMAP:                            // çº¹ç†ä¿¡æ¯çš„å¤´éƒ¨
+                // è¿›å…¥ä¸‹ä¸€ä¸ªæè´¨å—ä¿¡æ¯
+                ReadNextMatChunk(pModel, m_CurrentChunk);
+                break;
+            case MATMAPFILE:                        // æè´¨æ–‡ä»¶çš„åç§°
+                // è¯»å…¥æè´¨çš„æ–‡ä»¶åç§°
+                m_CurrentChunk->bytesRead += fread(pModel->pMaterials[pModel->numOfMaterials - 1].strFile, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
+                break;
+            default:
+                // æ è¿‡ä¸éœ€è¦è¯»å…¥çš„å—
+                m_CurrentChunk->bytesRead += fread(buffer, 1, m_CurrentChunk->length - m_CurrentChunk->bytesRead, m_FilePointer);
+                break;
+        }
+        // æ·»åŠ ä»æœ€åå—ä¸­è¯»å…¥çš„å­—èŠ‚æ•°
+        pPreChunk->bytesRead += m_CurrentChunk->bytesRead;
+    }
+    // åˆ é™¤å½“å‰å—ï¼Œå¹¶å°†å½“å‰å—è®¾ç½®ä¸ºå‰é¢çš„å—
+    delete m_CurrentChunk;
+    m_CurrentChunk = pPreChunk;
 }
 
 
 /************************************************************************/
-/* Function: ¶ÁÈëÒ»¸ö×Ö·û´®												*/
+/* Function: è¯»å…¥å—çš„IDå·å’Œå®ƒçš„å­—èŠ‚é•¿åº¦                                 */
 /************************************************************************/
-int CLoad3DS::GetString(char *pBuffer)
-{
-	int index = 0;
-	// ¶ÁÈëÒ»¸ö×Ö½ÚµÄÊı¾İ
-	fread(pBuffer, 1, 1, m_FilePointer);
-	// Ö±µ½½áÊø
-	while (*(pBuffer + index++) != 0) 
-	{
-		// ¶ÁÈëÒ»¸ö×Ö·ûÖ±µ½NULL
-		fread(pBuffer + index, 1, 1, m_FilePointer);
-	}
-	// ·µ»Ø×Ö·û´®µÄ³¤¶È
-	return strlen(pBuffer) + 1;
+void CLoad3DS::ReadChunk(tChunk* pChunk) {
+    // è¯»å…¥å—çš„IDå·ï¼Œå ç”¨äº†2ä¸ªå­—èŠ‚ã€‚å—çš„IDå·è±¡OBJECTæˆ–MATERIALä¸€æ ·ï¼Œè¯´æ˜äº†åœ¨å—ä¸­æ‰€åŒ…å«çš„å†…å®¹
+    pChunk->bytesRead = fread(&pChunk->ID, 1, 2, m_FilePointer);
+    // ç„¶åè¯»å…¥å—å ç”¨çš„é•¿åº¦ï¼ŒåŒ…å«äº†å››ä¸ªå­—èŠ‚
+    pChunk->bytesRead += fread(&pChunk->length, 1, 4, m_FilePointer);
 }
 
 
 /************************************************************************/
-/* Function: ¶ÁÈëRGBÑÕÉ«													*/
+/* Function: è¯»å…¥ä¸€ä¸ªå­—ç¬¦ä¸²                                             */
 /************************************************************************/
-void CLoad3DS::ReadColor(tMatInfo *pMaterial, tChunk *pChunk)
-{	// ¶ÁÈëÑÕÉ«¿éĞÅÏ¢
-	ReadChunk(m_TempChunk);
-	// ¶ÁÈëRGBÑÕÉ«
-	m_TempChunk->bytesRead += fread(pMaterial->color, 1, m_TempChunk->length - m_TempChunk->bytesRead, m_FilePointer);
-	// Ôö¼Ó¶ÁÈëµÄ×Ö½ÚÊı
-	pChunk->bytesRead += m_TempChunk->bytesRead;
+int CLoad3DS::GetString(char* pBuffer) {
+    int index = 0;
+    // è¯»å…¥ä¸€ä¸ªå­—èŠ‚çš„æ•°æ®
+    fread(pBuffer, 1, 1, m_FilePointer);
+    // ç›´åˆ°ç»“æŸ
+    while (*(pBuffer + index++) != 0) {
+        // è¯»å…¥ä¸€ä¸ªå­—ç¬¦ç›´åˆ°NULL
+        fread(pBuffer + index, 1, 1, m_FilePointer);
+    }
+    // è¿”å›å­—ç¬¦ä¸²çš„é•¿åº¦
+    return strlen(pBuffer) + 1;
 }
 
 
 /************************************************************************/
-/* Function: ¶ÁÈë¶¥µãË÷Òı													*/
+/* Function: è¯»å…¥RGBé¢œè‰²                                                    */
 /************************************************************************/
-void CLoad3DS::ReadVertexIndices(t3DObject *pObject, tChunk *pPreChunk)
-{
-	unsigned short index = 0;					// ÓÃÓÚ¶ÁÈëµ±Ç°ÃæµÄË÷Òı
-	// ¶ÁÈë¸Ã¶ÔÏóÖĞÃæµÄÊıÄ¿
-	pPreChunk->bytesRead += fread(&pObject->numOfFaces, 1, 2, m_FilePointer);
-	// ·ÖÅäËùÓĞÃæµÄ´æ´¢¿Õ¼ä£¬²¢³õÊ¼»¯½á¹¹
-	pObject->pFaces = new tFace [pObject->numOfFaces];
-	memset(pObject->pFaces, 0, sizeof(tFace) * pObject->numOfFaces);
-	// ±éÀú¶ÔÏóÖĞËùÓĞµÄÃæ
-	for(int i = 0; i < pObject->numOfFaces; i++)
-	{	
-		for(int j = 0; j < 4; j++)
-		{	
-			// ¶ÁÈëµ±Ç°ÃæµÄµÚÒ»¸öµã 
-			pPreChunk->bytesRead += fread(&index, 1, sizeof(index), m_FilePointer);
-			if(j < 3)
-			{	
-				// ½«Ë÷Òı±£´æÔÚÃæµÄ½á¹¹ÖĞ
-				pObject->pFaces[i].vertIndex[j] = index;
-			}
-		}
-	}
+void CLoad3DS::ReadColor(tMatInfo* pMaterial, tChunk* pChunk) {
+    // è¯»å…¥é¢œè‰²å—ä¿¡æ¯
+    ReadChunk(m_TempChunk);
+    // è¯»å…¥RGBé¢œè‰²
+    m_TempChunk->bytesRead += fread(pMaterial->color, 1, m_TempChunk->length - m_TempChunk->bytesRead, m_FilePointer);
+    // å¢åŠ è¯»å…¥çš„å­—èŠ‚æ•°
+    pChunk->bytesRead += m_TempChunk->bytesRead;
 }
 
 
 /************************************************************************/
-/* Function: ¶ÁÈë¶ÔÏóµÄUV×ø±ê												*/
+/* Function: è¯»å…¥é¡¶ç‚¹ç´¢å¼•                                                   */
 /************************************************************************/
-void CLoad3DS::ReadUVCoordinates(t3DObject *pObject, tChunk *pPreChunk)
-{	
-	// ÎªÁË¶ÁÈë¶ÔÏóµÄUV×ø±ê£¬Ê×ÏÈĞèÒª¶ÁÈëUV×ø±êµÄÊıÁ¿£¬È»ºó²Å¶ÁÈë¾ßÌåµÄÊı¾İ
-	// ¶ÁÈëUV×ø±êµÄÊıÁ¿
-	pPreChunk->bytesRead += fread(&pObject->numTexVertex, 1, 2, m_FilePointer);
-	// ·ÖÅä±£´æUV×ø±êµÄÄÚ´æ¿Õ¼ä
-	pObject->pTexVerts = new CVector2Model [pObject->numTexVertex];
-	// ¶ÁÈëÎÆÀí×ø±ê
-	pPreChunk->bytesRead += fread(pObject->pTexVerts, 1, pPreChunk->length - pPreChunk->bytesRead, m_FilePointer);
+void CLoad3DS::ReadVertexIndices(t3DObject* pObject, tChunk* pPreChunk) {
+    unsigned short index = 0;                   // ç”¨äºè¯»å…¥å½“å‰é¢çš„ç´¢å¼•
+    // è¯»å…¥è¯¥å¯¹è±¡ä¸­é¢çš„æ•°ç›®
+    pPreChunk->bytesRead += fread(&pObject->numOfFaces, 1, 2, m_FilePointer);
+    // åˆ†é…æ‰€æœ‰é¢çš„å­˜å‚¨ç©ºé—´ï¼Œå¹¶åˆå§‹åŒ–ç»“æ„
+    pObject->pFaces = new tFace [pObject->numOfFaces];
+    memset(pObject->pFaces, 0, sizeof(tFace) * pObject->numOfFaces);
+    // éå†å¯¹è±¡ä¸­æ‰€æœ‰çš„é¢
+    for (int i = 0; i < pObject->numOfFaces; i++) {
+        for (int j = 0; j < 4; j++) {
+            // è¯»å…¥å½“å‰é¢çš„ç¬¬ä¸€ä¸ªç‚¹
+            pPreChunk->bytesRead += fread(&index, 1, sizeof(index), m_FilePointer);
+            if (j < 3) {
+                // å°†ç´¢å¼•ä¿å­˜åœ¨é¢çš„ç»“æ„ä¸­
+                pObject->pFaces[i].vertIndex[j] = index;
+            }
+        }
+    }
 }
 
 
 /************************************************************************/
-/* Function: ¶ÁÈë¶ÔÏóµÄ¶¥µã												*/
+/* Function: è¯»å…¥å¯¹è±¡çš„UVåæ ‡                                               */
 /************************************************************************/
-void CLoad3DS::ReadVertices(t3DObject *pObject, tChunk *pPreChunk)
-{	
-	// ÔÚ¶ÁÈëÊµ¼ÊµÄ¶¥µãÖ®Ç°£¬Ê×ÏÈ±ØĞëÈ·¶¨ĞèÒª¶ÁÈë¶àÉÙ¸ö¶¥µã¡£
-	// ¶ÁÈë¶¥µãµÄÊıÄ¿
-	pPreChunk->bytesRead += fread(&(pObject->numOfVerts), 1, 2, m_FilePointer);
-	// ·ÖÅä¶¥µãµÄ´æ´¢¿Õ¼ä£¬È»ºó³õÊ¼»¯½á¹¹Ìå
-	pObject->pVerts = new CVector3Model [pObject->numOfVerts];
-	memset(pObject->pVerts, 0, sizeof(CVector3Model) * pObject->numOfVerts);
-	// ¶ÁÈë¶¥µãĞòÁĞ
-	pPreChunk->bytesRead += fread(pObject->pVerts, 1, pPreChunk->length - pPreChunk->bytesRead, m_FilePointer);
-	// ÏÖÔÚÒÑ¾­¶ÁÈëÁËËùÓĞµÄ¶¥µã¡£
-	// ÒòÎª3D Studio MaxµÄÄ£ĞÍµÄZÖáÊÇÖ¸ÏòÉÏµÄ£¬Òò´ËĞèÒª½«yÖáºÍzÖá·­×ª¹ıÀ´¡£
-	// ¾ßÌåµÄ×ö·¨ÊÇ½«YÖáºÍZÖá½»»»£¬È»ºó½«ZÖá·´Ïò¡£
-	// ±éÀúËùÓĞµÄ¶¥µã
-	for(int i = 0; i < pObject->numOfVerts; i++)
-	{	
-		// ±£´æYÖáµÄÖµ
-		float fTempY = pObject->pVerts[i].y;
-		// ÉèÖÃYÖáµÄÖµµÈÓÚZÖáµÄÖµ
-		pObject->pVerts[i].y = pObject->pVerts[i].z;
-		// ÉèÖÃZÖáµÄÖµµÈÓÚ-YÖáµÄÖµ 
-		pObject->pVerts[i].z = -fTempY;
-	}
+void CLoad3DS::ReadUVCoordinates(t3DObject* pObject, tChunk* pPreChunk) {
+    // ä¸ºäº†è¯»å…¥å¯¹è±¡çš„UVåæ ‡ï¼Œé¦–å…ˆéœ€è¦è¯»å…¥UVåæ ‡çš„æ•°é‡ï¼Œç„¶åæ‰è¯»å…¥å…·ä½“çš„æ•°æ®
+    // è¯»å…¥UVåæ ‡çš„æ•°é‡
+    pPreChunk->bytesRead += fread(&pObject->numTexVertex, 1, 2, m_FilePointer);
+    // åˆ†é…ä¿å­˜UVåæ ‡çš„å†…å­˜ç©ºé—´
+    pObject->pTexVerts = new CVector2Model [pObject->numTexVertex];
+    // è¯»å…¥çº¹ç†åæ ‡
+    pPreChunk->bytesRead += fread(pObject->pTexVerts, 1, pPreChunk->length - pPreChunk->bytesRead, m_FilePointer);
 }
 
 
 /************************************************************************/
-/* Function: ¶ÁÈë¶ÔÏóµÄ²ÄÖÊÃû³Æ											*/
+/* Function: è¯»å…¥å¯¹è±¡çš„é¡¶ç‚¹                                             */
 /************************************************************************/
-void CLoad3DS::ReadObjMat(t3DModel *pModel, t3DObject *pObject, tChunk *pPreChunk)
-{	
-	char strMaterial[255] = {0};			// ÓÃÀ´±£´æ¶ÔÏóµÄ²ÄÖÊÃû³Æ
-	int buffer[50000] = {0};				// ÓÃÀ´¶ÁÈë²»ĞèÒªµÄÊı¾İ
-	// ²ÄÖÊ»òÕßÊÇÑÕÉ«£¬»òÕßÊÇ¶ÔÏóµÄÎÆÀí£¬Ò²¿ÉÄÜ±£´æÁËÏóÃ÷ÁÁ¶È¡¢·¢¹â¶ÈµÈĞÅÏ¢¡£
-	// ÏÂÃæ¶ÁÈë¸³Óèµ±Ç°¶ÔÏóµÄ²ÄÖÊÃû³Æ
-	pPreChunk->bytesRead += GetString(strMaterial);
-	// ±éÀúËùÓĞµÄÎÆÀí
-	for(int i = 0; i < pModel->numOfMaterials; i++)
-	{	
-		//Èç¹û¶ÁÈëµÄÎÆÀíÓëµ±Ç°µÄÎÆÀíÃû³ÆÆ¥Åä
-		if(strcmp(strMaterial, pModel->pMaterials[i].strName) == 0)
-		{	
-			// ÉèÖÃ²ÄÖÊID
-			pObject->materialID = i;
-			// ÅĞ¶ÏÊÇ·ñÊÇÎÆÀíÓ³Éä£¬Èç¹ûstrFileÊÇÒ»¸ö³¤¶È´óÓÚ1µÄ×Ö·û´®£¬ÔòÊÇÎÆÀí
-			if(strlen(pModel->pMaterials[i].strFile) > 0) 
-			{
-				// ÉèÖÃ¶ÔÏóµÄÎÆÀíÓ³Éä±êÖ¾
-				pObject->bHasTexture = true;
-			}	
-			break;
-		}
-		else
-		{	
-			// Èç¹û¸Ã¶ÔÏóÃ»ÓĞ²ÄÖÊ£¬ÔòÉèÖÃIDÎª-1
-			pObject->materialID = -1;
-		}
-	}
-	pPreChunk->bytesRead += fread(buffer, 1, pPreChunk->length - pPreChunk->bytesRead, m_FilePointer);
-}			
+void CLoad3DS::ReadVertices(t3DObject* pObject, tChunk* pPreChunk) {
+    // åœ¨è¯»å…¥å®é™…çš„é¡¶ç‚¹ä¹‹å‰ï¼Œé¦–å…ˆå¿…é¡»ç¡®å®šéœ€è¦è¯»å…¥å¤šå°‘ä¸ªé¡¶ç‚¹ã€‚
+    // è¯»å…¥é¡¶ç‚¹çš„æ•°ç›®
+    pPreChunk->bytesRead += fread(&(pObject->numOfVerts), 1, 2, m_FilePointer);
+    // åˆ†é…é¡¶ç‚¹çš„å­˜å‚¨ç©ºé—´ï¼Œç„¶ååˆå§‹åŒ–ç»“æ„ä½“
+    pObject->pVerts = new CVector3Model [pObject->numOfVerts];
+    memset(pObject->pVerts, 0, sizeof(CVector3Model) * pObject->numOfVerts);
+    // è¯»å…¥é¡¶ç‚¹åºåˆ—
+    pPreChunk->bytesRead += fread(pObject->pVerts, 1, pPreChunk->length - pPreChunk->bytesRead, m_FilePointer);
+    // ç°åœ¨å·²ç»è¯»å…¥äº†æ‰€æœ‰çš„é¡¶ç‚¹ã€‚
+    // å› ä¸º3D Studio Maxçš„æ¨¡å‹çš„Zè½´æ˜¯æŒ‡å‘ä¸Šçš„ï¼Œå› æ­¤éœ€è¦å°†yè½´å’Œzè½´ç¿»è½¬è¿‡æ¥ã€‚
+    // å…·ä½“çš„åšæ³•æ˜¯å°†Yè½´å’ŒZè½´äº¤æ¢ï¼Œç„¶åå°†Zè½´åå‘ã€‚
+    // éå†æ‰€æœ‰çš„é¡¶ç‚¹
+    for (int i = 0; i < pObject->numOfVerts; i++) {
+        // ä¿å­˜Yè½´çš„å€¼
+        float fTempY = pObject->pVerts[i].y;
+        // è®¾ç½®Yè½´çš„å€¼ç­‰äºZè½´çš„å€¼
+        pObject->pVerts[i].y = pObject->pVerts[i].z;
+        // è®¾ç½®Zè½´çš„å€¼ç­‰äº-Yè½´çš„å€¼
+        pObject->pVerts[i].z = -fTempY;
+    }
+}
 
-//  ÏÂÃæµÄÕâĞ©º¯ÊıÖ÷ÒªÓÃÀ´¼ÆËã¶¥µãµÄ·¨ÏòÁ¿£¬¶¥µãµÄ·¨ÏòÁ¿Ö÷ÒªÓÃÀ´¼ÆËã¹âÕÕ
 
-//	ÏÂÃæµÄºê¶¨Òå¼ÆËãÒ»¸öÊ¸Á¿µÄ³¤¶È
+/************************************************************************/
+/* Function: è¯»å…¥å¯¹è±¡çš„æè´¨åç§°                                         */
+/************************************************************************/
+void CLoad3DS::ReadObjMat(t3DModel* pModel, t3DObject* pObject, tChunk* pPreChunk) {
+    char strMaterial[255] = {0};            // ç”¨æ¥ä¿å­˜å¯¹è±¡çš„æè´¨åç§°
+    int buffer[50000] = {0};                // ç”¨æ¥è¯»å…¥ä¸éœ€è¦çš„æ•°æ®
+    // æè´¨æˆ–è€…æ˜¯é¢œè‰²ï¼Œæˆ–è€…æ˜¯å¯¹è±¡çš„çº¹ç†ï¼Œä¹Ÿå¯èƒ½ä¿å­˜äº†è±¡æ˜äº®åº¦ã€å‘å…‰åº¦ç­‰ä¿¡æ¯ã€‚
+    // ä¸‹é¢è¯»å…¥èµ‹äºˆå½“å‰å¯¹è±¡çš„æè´¨åç§°
+    pPreChunk->bytesRead += GetString(strMaterial);
+    // éå†æ‰€æœ‰çš„çº¹ç†
+    for (int i = 0; i < pModel->numOfMaterials; i++) {
+        //å¦‚æœè¯»å…¥çš„çº¹ç†ä¸å½“å‰çš„çº¹ç†åç§°åŒ¹é…
+        if (strcmp(strMaterial, pModel->pMaterials[i].strName) == 0) {
+            // è®¾ç½®æè´¨ID
+            pObject->materialID = i;
+            // åˆ¤æ–­æ˜¯å¦æ˜¯çº¹ç†æ˜ å°„ï¼Œå¦‚æœstrFileæ˜¯ä¸€ä¸ªé•¿åº¦å¤§äº1çš„å­—ç¬¦ä¸²ï¼Œåˆ™æ˜¯çº¹ç†
+            if (strlen(pModel->pMaterials[i].strFile) > 0) {
+                // è®¾ç½®å¯¹è±¡çš„çº¹ç†æ˜ å°„æ ‡å¿—
+                pObject->bHasTexture = true;
+            }
+            break;
+        } else {
+            // å¦‚æœè¯¥å¯¹è±¡æ²¡æœ‰æè´¨ï¼Œåˆ™è®¾ç½®IDä¸º-1
+            pObject->materialID = -1;
+        }
+    }
+    pPreChunk->bytesRead += fread(buffer, 1, pPreChunk->length - pPreChunk->bytesRead, m_FilePointer);
+}
+
+//  ä¸‹é¢çš„è¿™äº›å‡½æ•°ä¸»è¦ç”¨æ¥è®¡ç®—é¡¶ç‚¹çš„æ³•å‘é‡ï¼Œé¡¶ç‚¹çš„æ³•å‘é‡ä¸»è¦ç”¨æ¥è®¡ç®—å…‰ç…§
+
+//  ä¸‹é¢çš„å®å®šä¹‰è®¡ç®—ä¸€ä¸ªçŸ¢é‡çš„é•¿åº¦
 #define Mag(Normal) (sqrt(Normal.x*Normal.x + Normal.y*Normal.y + Normal.z*Normal.z))
 
 
 /************************************************************************/
-/* Function: ÇóÁ½µã¾ö¶¨µÄÊ¸Á¿												*/
+/* Function: æ±‚ä¸¤ç‚¹å†³å®šçš„çŸ¢é‡                                               */
 /************************************************************************/
-CVector3Model Vector(CVector3Model vPoint1, CVector3Model vPoint2)
-{
-	CVector3Model vVector;							
-	vVector.x = vPoint1.x - vPoint2.x;			
-	vVector.y = vPoint1.y - vPoint2.y;			
-	vVector.z = vPoint1.z - vPoint2.z;			
-	return vVector;								
+CVector3Model Vector(CVector3Model vPoint1, CVector3Model vPoint2) {
+    CVector3Model vVector;
+    vVector.x = vPoint1.x - vPoint2.x;
+    vVector.y = vPoint1.y - vPoint2.y;
+    vVector.z = vPoint1.z - vPoint2.z;
+    return vVector;
 }
 
 
 /************************************************************************/
-/* Function: Á½¸öÊ¸Á¿Ïà¼Ó													*/
+/* Function: ä¸¤ä¸ªçŸ¢é‡ç›¸åŠ                                                    */
 /************************************************************************/
-CVector3Model AddVector(CVector3Model vVector1, CVector3Model vVector2)
-{
-	CVector3Model vResult;							
-	vResult.x = vVector2.x + vVector1.x;		
-	vResult.y = vVector2.y + vVector1.y;		
-	vResult.z = vVector2.z + vVector1.z;		
-	return vResult;								
+CVector3Model AddVector(CVector3Model vVector1, CVector3Model vVector2) {
+    CVector3Model vResult;
+    vResult.x = vVector2.x + vVector1.x;
+    vResult.y = vVector2.y + vVector1.y;
+    vResult.z = vVector2.z + vVector1.z;
+    return vResult;
 }
 
 
 /************************************************************************/
-/* Function: ´¦ÀíÊ¸Á¿µÄËõ·Å								                */
+/* Function: å¤„ç†çŸ¢é‡çš„ç¼©æ”¾                                             */
 /************************************************************************/
-CVector3Model DivideVectorByScaler(CVector3Model vVector1, float Scaler)
-{
-	CVector3Model vResult;							
-	vResult.x = vVector1.x / Scaler;			
-	vResult.y = vVector1.y / Scaler;			
-	vResult.z = vVector1.z / Scaler;			
-	return vResult;								
+CVector3Model DivideVectorByScaler(CVector3Model vVector1, float Scaler) {
+    CVector3Model vResult;
+    vResult.x = vVector1.x / Scaler;
+    vResult.y = vVector1.y / Scaler;
+    vResult.z = vVector1.z / Scaler;
+    return vResult;
 }
 
 
 /************************************************************************/
-/* Function: ·µ»ØÁ½¸öÊ¸Á¿µÄ²æ»ı							                */
+/* Function: è¿”å›ä¸¤ä¸ªçŸ¢é‡çš„å‰ç§¯                                         */
 /************************************************************************/
-CVector3Model Cross(CVector3Model vVector1, CVector3Model vVector2)
-{
-	CVector3Model vCross;								
-	vCross.x = ((vVector1.y * vVector2.z) - (vVector1.z * vVector2.y));
-	vCross.y = ((vVector1.z * vVector2.x) - (vVector1.x * vVector2.z));
-	vCross.z = ((vVector1.x * vVector2.y) - (vVector1.y * vVector2.x));
-	return vCross;								
+CVector3Model Cross(CVector3Model vVector1, CVector3Model vVector2) {
+    CVector3Model vCross;
+    vCross.x = ((vVector1.y * vVector2.z) - (vVector1.z * vVector2.y));
+    vCross.y = ((vVector1.z * vVector2.x) - (vVector1.x * vVector2.z));
+    vCross.z = ((vVector1.x * vVector2.y) - (vVector1.y * vVector2.x));
+    return vCross;
 }
 
 
 /************************************************************************/
-/* Function: ¹æ·¶»¯Ê¸Á¿													*/
+/* Function: è§„èŒƒåŒ–çŸ¢é‡                                                 */
 /************************************************************************/
-CVector3Model Normalize(CVector3Model vNormal)
-{
-	double Magnitude;							
-	Magnitude = Mag(vNormal);					// »ñµÃÊ¸Á¿µÄ³¤¶È
-	vNormal.x /= (float)Magnitude;				
-	vNormal.y /= (float)Magnitude;				
-	vNormal.z /= (float)Magnitude;				
-	return vNormal;								
+CVector3Model Normalize(CVector3Model vNormal) {
+    double Magnitude;
+    Magnitude = Mag(vNormal);                   // è·å¾—çŸ¢é‡çš„é•¿åº¦
+    vNormal.x /= (float)Magnitude;
+    vNormal.y /= (float)Magnitude;
+    vNormal.z /= (float)Magnitude;
+    return vNormal;
 }
 
 
 /************************************************************************/
-/* Function: ¼ÆËã¶ÔÏóµÄ·¨ÏòÁ¿												*/
+/* Function: è®¡ç®—å¯¹è±¡çš„æ³•å‘é‡                                               */
 /************************************************************************/
-void CLoad3DS::ComputeNormals(t3DModel *pModel)
-{
-	CVector3Model vVector1, vVector2, vNormal, vPoly[3];
-	// Èç¹ûÄ£ĞÍÖĞÃ»ÓĞ¶ÔÏó£¬Ôò·µ»Ø
-	if(pModel->numOfObjects <= 0)
-		return;
-	// ±éÀúÄ£ĞÍÖĞËùÓĞµÄ¶ÔÏó
-	for(int index = 0; index < pModel->numOfObjects; index++)
-	{
-		// »ñµÃµ±Ç°µÄ¶ÔÏó
-		t3DObject *pObject = &(pModel->pObject[index]);
-		// ·ÖÅäĞèÒªµÄ´æ´¢¿Õ¼ä
-		CVector3Model *pNormals		= new CVector3Model [pObject->numOfFaces];
-		CVector3Model *pTempNormals	= new CVector3Model [pObject->numOfFaces];
-		pObject->pNormals		= new CVector3Model [pObject->numOfVerts];
-		// ±éÀú¶ÔÏóµÄËùÓĞÃæ
-		int i;
-		for( i=0; i < pObject->numOfFaces; i++)
-		{
-			vPoly[0] = pObject->pVerts[pObject->pFaces[i].vertIndex[0]];
-			vPoly[1] = pObject->pVerts[pObject->pFaces[i].vertIndex[1]];
-			vPoly[2] = pObject->pVerts[pObject->pFaces[i].vertIndex[2]];
-			// ¼ÆËãÃæµÄ·¨ÏòÁ¿
-			vVector1 = Vector(vPoly[0], vPoly[2]);		// »ñµÃ¶à±ßĞÎµÄÊ¸Á¿
-			vVector2 = Vector(vPoly[2], vPoly[1]);		// »ñµÃ¶à±ßĞÎµÄµÚ¶ş¸öÊ¸Á¿
-			vNormal  = Cross(vVector1, vVector2);		// »ñµÃÁ½¸öÊ¸Á¿µÄ²æ»ı
-			pTempNormals[i] = vNormal;					// ±£´æ·Ç¹æ·¶»¯·¨ÏòÁ¿
-			vNormal  = Normalize(vNormal);				// ¹æ·¶»¯»ñµÃµÄ²æ»ı
-			pNormals[i] = vNormal;						// ½«·¨ÏòÁ¿Ìí¼Óµ½·¨ÏòÁ¿ÁĞ±íÖĞ
-		}
-
-		//  ÏÂÃæÇó¶¥µã·¨ÏòÁ¿
-		CVector3Model vSum = {0.0, 0.0, 0.0};
-		CVector3Model vZero = vSum;
-		int shared=0;
-		// ±éÀúËùÓĞµÄ¶¥µã
-		for (i = 0; i < pObject->numOfVerts; i++)			
-		{
-			for (int j = 0; j < pObject->numOfFaces; j++)	// ±éÀúËùÓĞµÄÈı½ÇĞÎÃæ
-			{												// ÅĞ¶Ï¸ÃµãÊÇ·ñÓëÆäËüµÄÃæ¹²Ïí
-				if (pObject->pFaces[j].vertIndex[0] == i || 
-					pObject->pFaces[j].vertIndex[1] == i || 
-					pObject->pFaces[j].vertIndex[2] == i)
-				{
-					vSum = AddVector(vSum, pTempNormals[j]);
-					shared++;								
-				}
-			}      
-			pObject->pNormals[i] = DivideVectorByScaler(vSum, float(-shared));
-			// ¹æ·¶»¯×îºóµÄ¶¥µã·¨Ïò
-			pObject->pNormals[i] = Normalize(pObject->pNormals[i]);	
-			vSum = vZero;								
-			shared = 0;										
-		}
-		// ÊÍ·Å´æ´¢¿Õ¼ä£¬¿ªÊ¼ÏÂÒ»¸ö¶ÔÏó
-		delete [] pTempNormals;
-		delete [] pNormals;
-	}
+void CLoad3DS::ComputeNormals(t3DModel* pModel) {
+    CVector3Model vVector1, vVector2, vNormal, vPoly[3];
+    // å¦‚æœæ¨¡å‹ä¸­æ²¡æœ‰å¯¹è±¡ï¼Œåˆ™è¿”å›
+    if (pModel->numOfObjects <= 0)
+        return;
+    // éå†æ¨¡å‹ä¸­æ‰€æœ‰çš„å¯¹è±¡
+    for (int index = 0; index < pModel->numOfObjects; index++) {
+        // è·å¾—å½“å‰çš„å¯¹è±¡
+        t3DObject* pObject = &(pModel->pObject[index]);
+        // åˆ†é…éœ€è¦çš„å­˜å‚¨ç©ºé—´
+        CVector3Model* pNormals     = new CVector3Model [pObject->numOfFaces];
+        CVector3Model* pTempNormals = new CVector3Model [pObject->numOfFaces];
+        pObject->pNormals       = new CVector3Model [pObject->numOfVerts];
+        // éå†å¯¹è±¡çš„æ‰€æœ‰é¢
+        int i;
+        for (i = 0; i < pObject->numOfFaces; i++) {
+            vPoly[0] = pObject->pVerts[pObject->pFaces[i].vertIndex[0]];
+            vPoly[1] = pObject->pVerts[pObject->pFaces[i].vertIndex[1]];
+            vPoly[2] = pObject->pVerts[pObject->pFaces[i].vertIndex[2]];
+            // è®¡ç®—é¢çš„æ³•å‘é‡
+            vVector1 = Vector(vPoly[0], vPoly[2]);      // è·å¾—å¤šè¾¹å½¢çš„çŸ¢é‡
+            vVector2 = Vector(vPoly[2], vPoly[1]);      // è·å¾—å¤šè¾¹å½¢çš„ç¬¬äºŒä¸ªçŸ¢é‡
+            vNormal  = Cross(vVector1, vVector2);       // è·å¾—ä¸¤ä¸ªçŸ¢é‡çš„å‰ç§¯
+            pTempNormals[i] = vNormal;                  // ä¿å­˜éè§„èŒƒåŒ–æ³•å‘é‡
+            vNormal  = Normalize(vNormal);              // è§„èŒƒåŒ–è·å¾—çš„å‰ç§¯
+            pNormals[i] = vNormal;                      // å°†æ³•å‘é‡æ·»åŠ åˆ°æ³•å‘é‡åˆ—è¡¨ä¸­
+        }
+        //  ä¸‹é¢æ±‚é¡¶ç‚¹æ³•å‘é‡
+        CVector3Model vSum = {0.0, 0.0, 0.0};
+        CVector3Model vZero = vSum;
+        int shared = 0;
+        // éå†æ‰€æœ‰çš„é¡¶ç‚¹
+        for (i = 0; i < pObject->numOfVerts; i++) {
+            for (int j = 0; j < pObject->numOfFaces; j++) { // éå†æ‰€æœ‰çš„ä¸‰è§’å½¢é¢
+                // åˆ¤æ–­è¯¥ç‚¹æ˜¯å¦ä¸å…¶å®ƒçš„é¢å…±äº«
+                if (pObject->pFaces[j].vertIndex[0] == i ||
+                        pObject->pFaces[j].vertIndex[1] == i ||
+                        pObject->pFaces[j].vertIndex[2] == i) {
+                    vSum = AddVector(vSum, pTempNormals[j]);
+                    shared++;
+                }
+            }
+            pObject->pNormals[i] = DivideVectorByScaler(vSum, float(-shared));
+            // è§„èŒƒåŒ–æœ€åçš„é¡¶ç‚¹æ³•å‘
+            pObject->pNormals[i] = Normalize(pObject->pNormals[i]);
+            vSum = vZero;
+            shared = 0;
+        }
+        // é‡Šæ”¾å­˜å‚¨ç©ºé—´ï¼Œå¼€å§‹ä¸‹ä¸€ä¸ªå¯¹è±¡
+        delete [] pTempNormals;
+        delete [] pNormals;
+    }
 }
 
 
 /*
- *ÖµµÃ×¢ÒâµÄÊÇOpenGLµÄ×ø±êÏµºÍ3DS MaxµÄ×ø±êÏµÊÇ²»Í¬µÄ£¬3D Studio MaxÖĞµÄÄ£ĞÍµÄZÖáÊÇÖ¸ÏòÉÏµÄ£¬
- *¶øOpenGLÖĞÄ£ĞÍµÄZÖáÊÇ´¹Ö±ÆÁÄ»Ö¸ÏòÓÃ»§µÄ£¬Òò´ËĞèÒª½«¶¥µãµÄ×ø±êµÄyºÍz·­×ª¹ıÀ´¡£
- *Ê²Ã´ÊÇ¿é£¿
- *¿éIDÊÇ±êÊ¶¸Ã¿éÖĞÊı¾İÀàĞÍµÄ¶ÀÒ»ÎŞ¶şµÄ´úÂë£¬Í¬Ê±Ò²±êÊ¶ÊÇ·ñ´æÔÚ×Ó¿é¡£ËüÕ¼ÓÃÁËÁ½¸ö×Ö½Ú¡£
- *¿éµÄ³¤¶È±íÊ¾µÄÊÇ½ô¸úÔÚ¸Ã¿éºóĞøµÄÊı¾İµÄ³¤¶È¡£ËüÕ¼ÓÃÁËËÄ¸ö×Ö½Ú¡£
+ *å€¼å¾—æ³¨æ„çš„æ˜¯OpenGLçš„åæ ‡ç³»å’Œ3DS Maxçš„åæ ‡ç³»æ˜¯ä¸åŒçš„ï¼Œ3D Studio Maxä¸­çš„æ¨¡å‹çš„Zè½´æ˜¯æŒ‡å‘ä¸Šçš„ï¼Œ
+ *è€ŒOpenGLä¸­æ¨¡å‹çš„Zè½´æ˜¯å‚ç›´å±å¹•æŒ‡å‘ç”¨æˆ·çš„ï¼Œå› æ­¤éœ€è¦å°†é¡¶ç‚¹çš„åæ ‡çš„yå’Œzç¿»è½¬è¿‡æ¥ã€‚
+ *ä»€ä¹ˆæ˜¯å—ï¼Ÿ
+ *å—IDæ˜¯æ ‡è¯†è¯¥å—ä¸­æ•°æ®ç±»å‹çš„ç‹¬ä¸€æ— äºŒçš„ä»£ç ï¼ŒåŒæ—¶ä¹Ÿæ ‡è¯†æ˜¯å¦å­˜åœ¨å­å—ã€‚å®ƒå ç”¨äº†ä¸¤ä¸ªå­—èŠ‚ã€‚
+ *å—çš„é•¿åº¦è¡¨ç¤ºçš„æ˜¯ç´§è·Ÿåœ¨è¯¥å—åç»­çš„æ•°æ®çš„é•¿åº¦ã€‚å®ƒå ç”¨äº†å››ä¸ªå­—èŠ‚ã€‚
 */
 
- 

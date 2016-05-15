@@ -1,10 +1,10 @@
-
-// 3DSymbolLibNewDoc.cpp : CMy3DSymbolLibNewDoc ÀàµÄÊµÏÖ
+ï»¿
+// 3DSymbolLibNewDoc.cpp : CMy3DSymbolLibNewDoc ç±»çš„å®žçŽ°
 //
 
 #include "stdafx.h"
-// SHARED_HANDLERS ¿ÉÒÔÔÚÊµÏÖÔ¤ÀÀ¡¢ËõÂÔÍ¼ºÍËÑË÷É¸Ñ¡Æ÷¾ä±úµÄ
-// ATL ÏîÄ¿ÖÐ½øÐÐ¶¨Òå£¬²¢ÔÊÐíÓë¸ÃÏîÄ¿¹²ÏíÎÄµµ´úÂë¡£
+// SHARED_HANDLERS å¯ä»¥åœ¨å®žçŽ°é¢„è§ˆã€ç¼©ç•¥å›¾å’Œæœç´¢ç­›é€‰å™¨å¥æŸ„çš„
+// ATL é¡¹ç›®ä¸­è¿›è¡Œå®šä¹‰ï¼Œå¹¶å…è®¸ä¸Žè¯¥é¡¹ç›®å…±äº«æ–‡æ¡£ä»£ç ã€‚
 #ifndef SHARED_HANDLERS
 #include "3DSymbolLibNew.h"
 #endif
@@ -25,113 +25,89 @@ BEGIN_MESSAGE_MAP(CMy3DSymbolLibNewDoc, CDocument)
 END_MESSAGE_MAP()
 
 
-// CMy3DSymbolLibNewDoc ¹¹Ôì/Îö¹¹
+// CMy3DSymbolLibNewDoc æž„é€ /æžæž„
 
-CMy3DSymbolLibNewDoc::CMy3DSymbolLibNewDoc()
-{
-	// TODO: ÔÚ´ËÌí¼ÓÒ»´ÎÐÔ¹¹Ôì´úÂë
-
+CMy3DSymbolLibNewDoc::CMy3DSymbolLibNewDoc() {
+    // TODO: åœ¨æ­¤æ·»åŠ ä¸€æ¬¡æ€§æž„é€ ä»£ç 
 }
 
-CMy3DSymbolLibNewDoc::~CMy3DSymbolLibNewDoc()
-{
+CMy3DSymbolLibNewDoc::~CMy3DSymbolLibNewDoc() {
 }
 
-BOOL CMy3DSymbolLibNewDoc::OnNewDocument()
-{
-	if (!CDocument::OnNewDocument())
-		return FALSE;
-
-	// TODO: ÔÚ´ËÌí¼ÓÖØÐÂ³õÊ¼»¯´úÂë
-	// (SDI ÎÄµµ½«ÖØÓÃ¸ÃÎÄµµ)
-
-	return TRUE;
+BOOL CMy3DSymbolLibNewDoc::OnNewDocument() {
+    if (!CDocument::OnNewDocument())
+        return FALSE;
+    // TODO: åœ¨æ­¤æ·»åŠ é‡æ–°åˆå§‹åŒ–ä»£ç 
+    // (SDI æ–‡æ¡£å°†é‡ç”¨è¯¥æ–‡æ¡£)
+    return TRUE;
 }
 
 
 
 
-// CMy3DSymbolLibNewDoc ÐòÁÐ»¯
+// CMy3DSymbolLibNewDoc åºåˆ—åŒ–
 
-void CMy3DSymbolLibNewDoc::Serialize(CArchive& ar)
-{
-	if (ar.IsStoring())
-	{
-		// TODO: ÔÚ´ËÌí¼Ó´æ´¢´úÂë
-	}
-	else
-	{
-		// TODO: ÔÚ´ËÌí¼Ó¼ÓÔØ´úÂë
-	}
+void CMy3DSymbolLibNewDoc::Serialize(CArchive& ar) {
+    if (ar.IsStoring()) {
+        // TODO: åœ¨æ­¤æ·»åŠ å­˜å‚¨ä»£ç 
+    } else {
+        // TODO: åœ¨æ­¤æ·»åŠ åŠ è½½ä»£ç 
+    }
 }
 
 #ifdef SHARED_HANDLERS
 
-// ËõÂÔÍ¼µÄÖ§³Ö
-void CMy3DSymbolLibNewDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
-{
-	// ÐÞ¸Ä´Ë´úÂëÒÔ»æÖÆÎÄµµÊý¾Ý
-	dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
-
-	CString strText = _T("TODO: implement thumbnail drawing here");
-	LOGFONT lf;
-
-	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
-	pDefaultGUIFont->GetLogFont(&lf);
-	lf.lfHeight = 36;
-
-	CFont fontDraw;
-	fontDraw.CreateFontIndirect(&lf);
-
-	CFont* pOldFont = dc.SelectObject(&fontDraw);
-	dc.DrawText(strText, lprcBounds, DT_CENTER | DT_WORDBREAK);
-	dc.SelectObject(pOldFont);
+// ç¼©ç•¥å›¾çš„æ”¯æŒ
+void CMy3DSymbolLibNewDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds) {
+    // ä¿®æ”¹æ­¤ä»£ç ä»¥ç»˜åˆ¶æ–‡æ¡£æ•°æ®
+    dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
+    CString strText = _T("TODO: implement thumbnail drawing here");
+    LOGFONT lf;
+    CFont* pDefaultGUIFont = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
+    pDefaultGUIFont->GetLogFont(&lf);
+    lf.lfHeight = 36;
+    CFont fontDraw;
+    fontDraw.CreateFontIndirect(&lf);
+    CFont* pOldFont = dc.SelectObject(&fontDraw);
+    dc.DrawText(strText, lprcBounds, DT_CENTER | DT_WORDBREAK);
+    dc.SelectObject(pOldFont);
 }
 
-// ËÑË÷´¦Àí³ÌÐòµÄÖ§³Ö
-void CMy3DSymbolLibNewDoc::InitializeSearchContent()
-{
-	CString strSearchContent;
-	// ´ÓÎÄµµÊý¾ÝÉèÖÃËÑË÷ÄÚÈÝ¡£
-	// ÄÚÈÝ²¿·ÖÓ¦ÓÉ¡°;¡±·Ö¸ô
-
-	// ÀýÈç:  strSearchContent = _T("point;rectangle;circle;ole object;")£»
-	SetSearchContent(strSearchContent);
+// æœç´¢å¤„ç†ç¨‹åºçš„æ”¯æŒ
+void CMy3DSymbolLibNewDoc::InitializeSearchContent() {
+    CString strSearchContent;
+    // ä»Žæ–‡æ¡£æ•°æ®è®¾ç½®æœç´¢å†…å®¹ã€‚
+    // å†…å®¹éƒ¨åˆ†åº”ç”±â€œ;â€åˆ†éš”
+    // ä¾‹å¦‚:  strSearchContent = _T("point;rectangle;circle;ole object;")ï¼›
+    SetSearchContent(strSearchContent);
 }
 
-void CMy3DSymbolLibNewDoc::SetSearchContent(const CString& value)
-{
-	if (value.IsEmpty())
-	{
-		RemoveChunk(PKEY_Search_Contents.fmtid, PKEY_Search_Contents.pid);
-	}
-	else
-	{
-		CMFCFilterChunkValueImpl *pChunk = NULL;
-		ATLTRY(pChunk = new CMFCFilterChunkValueImpl);
-		if (pChunk != NULL)
-		{
-			pChunk->SetTextValue(PKEY_Search_Contents, value, CHUNK_TEXT);
-			SetChunkValue(pChunk);
-		}
-	}
+void CMy3DSymbolLibNewDoc::SetSearchContent(const CString& value) {
+    if (value.IsEmpty()) {
+        RemoveChunk(PKEY_Search_Contents.fmtid, PKEY_Search_Contents.pid);
+    } else {
+        CMFCFilterChunkValueImpl* pChunk = NULL;
+        ATLTRY(pChunk = new CMFCFilterChunkValueImpl);
+        if (pChunk != NULL) {
+            pChunk->SetTextValue(PKEY_Search_Contents, value, CHUNK_TEXT);
+            SetChunkValue(pChunk);
+        }
+    }
 }
 
 #endif // SHARED_HANDLERS
 
-// CMy3DSymbolLibNewDoc Õï¶Ï
+// CMy3DSymbolLibNewDoc è¯Šæ–­
 
 #ifdef _DEBUG
-void CMy3DSymbolLibNewDoc::AssertValid() const
-{
-	CDocument::AssertValid();
+void CMy3DSymbolLibNewDoc::AssertValid() const {
+    CDocument::AssertValid();
 }
 
-void CMy3DSymbolLibNewDoc::Dump(CDumpContext& dc) const
-{
-	CDocument::Dump(dc);
+void CMy3DSymbolLibNewDoc::Dump(CDumpContext& dc) const {
+    CDocument::Dump(dc);
 }
 #endif //_DEBUG
 
 
-// CMy3DSymbolLibNewDoc ÃüÁî
+// CMy3DSymbolLibNewDoc å‘½ä»¤

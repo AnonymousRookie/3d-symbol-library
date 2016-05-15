@@ -1,4 +1,4 @@
-// GLFont.cpp: implementation of the CGLFont class.
+ï»¿// GLFont.cpp: implementation of the CGLFont class.
 //////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
 
@@ -6,7 +6,7 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif
 
@@ -14,136 +14,121 @@ static char THIS_FILE[]=__FILE__;
 //unsigned int Base;
 //////////////////////////////////////////////////////////////////////
 
-CGLFont::CGLFont()
-{
-
+CGLFont::CGLFont() {
 }
 
-CGLFont::~CGLFont()
-{
-
+CGLFont::~CGLFont() {
 }
 
-void CGLFont::Entext( float x,float y, LPCTSTR str, HFONT hFont,
-					  float r, float g, float b)					// Æ½Ãæ×Ö·ûÏÔÊ¾£¬²»Ö§³Öºº×Ö
-{ 	
-	HDC hdc = wglGetCurrentDC();									// »ñÈ¡ÉèÖÃ³¡¾°
-	SelectObject(hdc, hFont);										// ÉèÖÃ×ÖÌå
-	unsigned int Base = glGenLists(96);								// ´´½¨´óĞ¡Îª96ÏÔÊ¾ÁĞ±í£¬´æ·Å×Ö·ûÎ»Í¼
-	wglUseFontBitmaps(hdc, 32, 96,Base);							// ´´½¨Î»Í¼×ÖÌå
-	glDisable(GL_TEXTURE_2D);										// ²»Ê¹ÓÃÌùÍ¼
-	glDisable(GL_LIGHTING);											// ²»Ê¹ÓÃ¹âÕÕ
-	glPushAttrib(GL_LIST_BIT);										// ±£´æÏÔÊ¾ÁĞ±íÎ»ÊôĞÔ
-	glColor3f(r,g,b);												// ÑÕÉ«
-	glRasterPos2f(x/100, y/100);									// Æ½Ãæ¶¨Î»
-		glListBase(Base - 32);										// ´ÓÏÔÊ¾ÁĞ±í¿ªÊ¼
-		glCallLists(strlen(str), GL_UNSIGNED_BYTE, str);			// »æÖÆÏÔÊ¾ÁĞ±í
-	glPopAttrib();													// »Ö¸´ÏÔÊ¾ÁĞ±íÊôĞÔ
-	glEnable(GL_LIGHTING);											// Ê¹ÓÃ¹âÕÕ
-	glEnable(GL_TEXTURE_2D);										// Ê¹ÓÃÎÆÀí
-	glDeleteLists(Base, 96);										// É¾³ıÏÔÊ¾ÁĞ±í
+void CGLFont::Entext(float x, float y, LPCTSTR str, HFONT hFont,
+                     float r, float g, float b) {                  // å¹³é¢å­—ç¬¦æ˜¾ç¤ºï¼Œä¸æ”¯æŒæ±‰å­—
+    HDC hdc = wglGetCurrentDC();                                    // è·å–è®¾ç½®åœºæ™¯
+    SelectObject(hdc, hFont);                                       // è®¾ç½®å­—ä½“
+    unsigned int Base = glGenLists(96);                             // åˆ›å»ºå¤§å°ä¸º96æ˜¾ç¤ºåˆ—è¡¨ï¼Œå­˜æ”¾å­—ç¬¦ä½å›¾
+    wglUseFontBitmaps(hdc, 32, 96, Base);                           // åˆ›å»ºä½å›¾å­—ä½“
+    glDisable(GL_TEXTURE_2D);                                       // ä¸ä½¿ç”¨è´´å›¾
+    glDisable(GL_LIGHTING);                                         // ä¸ä½¿ç”¨å…‰ç…§
+    glPushAttrib(GL_LIST_BIT);                                      // ä¿å­˜æ˜¾ç¤ºåˆ—è¡¨ä½å±æ€§
+    glColor3f(r, g, b);                                             // é¢œè‰²
+    glRasterPos2f(x / 100, y / 100);                                // å¹³é¢å®šä½
+    glListBase(Base - 32);                                      // ä»æ˜¾ç¤ºåˆ—è¡¨å¼€å§‹
+    glCallLists(strlen(str), GL_UNSIGNED_BYTE, str);            // ç»˜åˆ¶æ˜¾ç¤ºåˆ—è¡¨
+    glPopAttrib();                                                  // æ¢å¤æ˜¾ç¤ºåˆ—è¡¨å±æ€§
+    glEnable(GL_LIGHTING);                                          // ä½¿ç”¨å…‰ç…§
+    glEnable(GL_TEXTURE_2D);                                        // ä½¿ç”¨çº¹ç†
+    glDeleteLists(Base, 96);                                        // åˆ é™¤æ˜¾ç¤ºåˆ—è¡¨
 }
 
 //////////////////////////////////////////////////////////////////
-void CGLFont::C3dtext(LPCTSTR str,HFONT hFont,float z)				// 3DÎÄ×ÖÏÔÊ¾¡£ Ö§³Öºº×Ö
-{	
-	glDisable(GL_TEXTURE_2D); 
-	glDisable(GL_LIGHTING);
-	Printfc3d("Á¢Ìåºº×Ö",hFont,z);									// µ÷ÓÃ3DÎÄ×ÖÏÔÊ¾
-	glEnable(GL_LIGHTING);   
-	glEnable(GL_TEXTURE_2D);
+void CGLFont::C3dtext(LPCTSTR str, HFONT hFont, float z) {          // 3Dæ–‡å­—æ˜¾ç¤ºã€‚ æ”¯æŒæ±‰å­—
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_LIGHTING);
+    Printfc3d("ç«‹ä½“æ±‰å­—", hFont, z);                                // è°ƒç”¨3Dæ–‡å­—æ˜¾ç¤º
+    glEnable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
 }
 
-void CGLFont::Printfc3d(CString strText,HFONT hFont,float z)		// Ö÷ÒªÔ­ÀíÊÇ»ñÈ¡ÎÄ×ÖµÄÂÖÀªÏß£¬ÓÃÏßºÍ»¡Ïß½«ÎÄ×Ö×ª»¯³É3D¶ÔÏó
-{	
-	HDC hdc = wglGetCurrentDC();									// Éè±¸³¡¾°
-	HFONT hOldFont=(HFONT)::SelectObject(hdc,hFont);				// ½«×ÖÌåÑ¡Èë³¡¾°£¬·µ»ØÖ®Ç°µÄ×ÖÌå
-	UCHAR * pChar=(UCHAR*)strText.GetBuffer(strText.GetLength());	// ÉèÖÃ×Ö·û´®³¤¶È
-	int   nListNum;													// ¶¨ÒåÁĞ±í±äÁ¿	
-	DWORD dwChar;													// ¶¨Òå×Ö·ûÖ¸Õë
-	GLYPHMETRICSFLOAT pgmf[1];										// ÂÖÀª×ÖÌå×Ö·û¼¯µÄĞÅÏ¢
-	glPushMatrix();													// Ñ¹Èë¶ÑÕ»
-	for(int i = 0; i < strText.GetLength(); i++)					
-	{
-		if(IsDBCSLeadByte((BYTE)pChar[i]))							// ÊÇ·ñË«×Ö½Ú£¨ºº×Ö£©
-		{ 
-			dwChar=(DWORD)((pChar[i]<<8)|pChar[i+1]);				// È¡µ±Ç°×Ö·û£¬Ë«×Ö½Ú×ª»»
-			i++;
-		}
-		else	
-			dwChar = pChar[i];										// È¡µ±Ç°×Ö·û
-		nListNum = glGenLists(1);									// ´´½¨ÁĞ±í
-		wglUseFontOutlines( hdc,									// ÓµÓĞ×ÖÌåµÄHDC
-						  dwChar,									// ×ª»¯ÎªÏÔÊ¾ÁĞ±íµÄµÚÒ»¸ö×Ö·û
-						  1,										// ×ª»¯ÎªÏÔÊ¾ÁĞ±íµÄ×Ö·ûÊı
-						  nListNum,									// ÏÔÊ¾ÁĞ±íµÄ¿ªÊ¼
-						  0.0f, 
-						  z,										// ZÖá¸º·½ÏòµÄºñ¶È
-						  WGL_FONT_POLYGONS,						// »æÖÆ×ÖÌåµÄ·½Ê½
-						  pgmf										// Ö¸Ïò´æ·ÅĞÅÏ¢µÄÊı×é£¬Îªcount¸ö
-						);
-		glCallList(nListNum);										// »æÖÆÏÔÊ¾ÁĞ±í
-		glDeleteLists(nListNum, 1);									// É¾³ıÁĞ±í
-	}	
-	glPopMatrix();													// µ¯³ö¶ÑÕ»
-	strText.ReleaseBuffer();										// Çå³ı×Ö·û´®
-	::SelectObject(hdc,hOldFont);									// »Ö¸´×ÖÌå
+void CGLFont::Printfc3d(CString strText, HFONT hFont, float z) {    // ä¸»è¦åŸç†æ˜¯è·å–æ–‡å­—çš„è½®å»“çº¿ï¼Œç”¨çº¿å’Œå¼§çº¿å°†æ–‡å­—è½¬åŒ–æˆ3Då¯¹è±¡
+    HDC hdc = wglGetCurrentDC();                                    // è®¾å¤‡åœºæ™¯
+    HFONT hOldFont = (HFONT)::SelectObject(hdc, hFont);             // å°†å­—ä½“é€‰å…¥åœºæ™¯ï¼Œè¿”å›ä¹‹å‰çš„å­—ä½“
+    UCHAR* pChar = (UCHAR*)strText.GetBuffer(strText.GetLength());  // è®¾ç½®å­—ç¬¦ä¸²é•¿åº¦
+    int   nListNum;                                                 // å®šä¹‰åˆ—è¡¨å˜é‡
+    DWORD dwChar;                                                   // å®šä¹‰å­—ç¬¦æŒ‡é’ˆ
+    GLYPHMETRICSFLOAT pgmf[1];                                      // è½®å»“å­—ä½“å­—ç¬¦é›†çš„ä¿¡æ¯
+    glPushMatrix();                                                 // å‹å…¥å †æ ˆ
+    for (int i = 0; i < strText.GetLength(); i++) {
+        if (IsDBCSLeadByte((BYTE)pChar[i])) {                       // æ˜¯å¦åŒå­—èŠ‚ï¼ˆæ±‰å­—ï¼‰
+            dwChar = (DWORD)((pChar[i] << 8) | pChar[i + 1]);       // å–å½“å‰å­—ç¬¦ï¼ŒåŒå­—èŠ‚è½¬æ¢
+            i++;
+        } else
+            dwChar = pChar[i];                                      // å–å½“å‰å­—ç¬¦
+        nListNum = glGenLists(1);                                   // åˆ›å»ºåˆ—è¡¨
+        wglUseFontOutlines(hdc,                                  // æ‹¥æœ‰å­—ä½“çš„HDC
+                           dwChar,                                   // è½¬åŒ–ä¸ºæ˜¾ç¤ºåˆ—è¡¨çš„ç¬¬ä¸€ä¸ªå­—ç¬¦
+                           1,                                        // è½¬åŒ–ä¸ºæ˜¾ç¤ºåˆ—è¡¨çš„å­—ç¬¦æ•°
+                           nListNum,                                 // æ˜¾ç¤ºåˆ—è¡¨çš„å¼€å§‹
+                           0.0f,
+                           z,                                        // Zè½´è´Ÿæ–¹å‘çš„åšåº¦
+                           WGL_FONT_POLYGONS,                        // ç»˜åˆ¶å­—ä½“çš„æ–¹å¼
+                           pgmf                                      // æŒ‡å‘å­˜æ”¾ä¿¡æ¯çš„æ•°ç»„ï¼Œä¸ºcountä¸ª
+                          );
+        glCallList(nListNum);                                       // ç»˜åˆ¶æ˜¾ç¤ºåˆ—è¡¨
+        glDeleteLists(nListNum, 1);                                 // åˆ é™¤åˆ—è¡¨
+    }
+    glPopMatrix();                                                  // å¼¹å‡ºå †æ ˆ
+    strText.ReleaseBuffer();                                        // æ¸…é™¤å­—ç¬¦ä¸²
+    ::SelectObject(hdc, hOldFont);                                  // æ¢å¤å­—ä½“
 }
 
 ////////////////////////////////////////////////////////////////////////
-void CGLFont:: Settext (float x,float y,CString str,HFONT Font,float r,float g,float b)  // Æ½Ãæºº×Ö
-{   
-	glLoadIdentity();
-	glPushAttrib(GL_CURRENT_BIT);
-	glDisable(GL_TEXTURE_2D); 
-	glDisable(GL_LIGHTING); 
-	glColor3f(r,g,b);  
-	  glTranslatef(-(420-x)/800,(260-y)/600,-1.0f);					// ¶¨Î»						
-	  Printftext (0,0, str,Font);									// OpenGLÆ½Ãæºº×Ö
-	glEnable(GL_LIGHTING);     
-	glEnable(GL_TEXTURE_2D);
-	glPopAttrib();
+void CGLFont:: Settext(float x, float y, CString str, HFONT Font, float r, float g, float b) { // å¹³é¢æ±‰å­—
+    glLoadIdentity();
+    glPushAttrib(GL_CURRENT_BIT);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_LIGHTING);
+    glColor3f(r, g, b);
+    glTranslatef(-(420 - x) / 800, (260 - y) / 600, -1.0f);       // å®šä½
+    Printftext(0, 0, str, Font);                                  // OpenGLå¹³é¢æ±‰å­—
+    glEnable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
+    glPopAttrib();
 }
 
-// »ù±¾Ô­ÀíÊÇÔÚÏµÍ³ÄÚ²¿½¨Á¢Ò»¸öÈ·¶¨×ÖÌåµÄÉè±¸³¡¾°£¨MDC£©£¬ÓÃGDI·½Ê½½«ÎÄ×ÖÔÚÉè±¸³¡¾°ÖĞĞÎ³Éµ¥É«Î»Í¼
-// ÔÙÓÃOpenGLµÄÆ½ÃæÎ»Í¼ÏÔÊ¾º¯ÊıglBitmap½«ÎÄ×ÖÏÔÊ¾³öÀ´
-void CGLFont:: Printftext (int x, int y, LPCTSTR lpszText,HFONT hFont)	
-{ 
-	CBitmap bitmap;													// Éè±¸Ïà¹ØÎ»Í¼±äÁ¿
-	BITMAP bm;														// Î»Í¼½á¹¹±äÁ¿
-	SIZE size;														// Î»Í¼³ß´ç
-	HDC MDC = ::CreateCompatibleDC(0);								// Ôİ´æÉè±¸³¡¾°
-	SelectObject(MDC,hFont);										// Ñ¡ÔñĞÂ×ÖÌå
-	::GetTextExtentPoint32(MDC,lpszText,strlen(lpszText),&size);	// »ñÈ¡×Ö·ûÎ»Í¼´óĞ¡
-	bitmap.CreateBitmap(size.cx, size.cy, 1, 1, NULL);				// ´´½¨ÓëMDCÏà¹Øµ¥É«Î»Í¼
-	HBITMAP oldBmp=(HBITMAP)SelectObject(MDC,bitmap);				// ×Ö·ûÎ»Í¼ÓëMDC¹ØÁ¬
-	SetBkColor  (MDC, RGB(0,     0,   0));							// µ×É« ºÚÉ«
-	SetTextColor(MDC, RGB(255, 255, 255));							// ×ÖÉ« °×É«
-	TextOut(MDC, 0, 0, lpszText, strlen(lpszText));					// Êä³öÎÄ×Öµ½Ôİ´æMDC
-	bitmap.GetBitmap(&bm);											// »ñµÃÏà¹ØÎ»Í¼Êı¾İ½á¹¹
-	size.cx = (bm.bmWidth + 31) & (~31);							// ±ßÔµ¶ÔÆë
-	int bufsize =size.cy * size.cx;									// Í¼ĞÎÊı¾İ³¤¶È
-	struct
-	{  
-		BITMAPINFOHEADER bih;
-		RGBQUAD col[2];
-	}bic;															// ¶¨Òåµ¥É«Î»Í¼½á¹¹
-
-	BITMAPINFO *binf = (BITMAPINFO *)&bic;							// »ñÈ¡Î»Í¼½á¹¹ĞÅÏ¢
-	binf->bmiHeader.biSize     = sizeof(binf->bmiHeader);			// »ñÈ¡½á¹¹ĞÅÏ¢³¤¶È
-	binf->bmiHeader.biWidth    = bm.bmWidth;
-	binf->bmiHeader.biHeight   = bm.bmHeight;						
-	binf->bmiHeader.biPlanes   = 1;   
-	binf->bmiHeader.biBitCount = 1;									// µ¥É«
-	binf->bmiHeader.biCompression = BI_RGB;							// ÑÕÉ«·½Ê½
-	binf->bmiHeader.biSizeImage   = bufsize;						// Í¼ĞÎÊı¾İ³¤¶È
-	UCHAR* Bits = new UCHAR[bufsize];								// ¶¨ÒåÍ¼ĞÎÊı¾İ¿é±äÁ¿
-	::GetDIBits(MDC,bitmap,0,bm.bmHeight,Bits,binf,DIB_RGB_COLORS); // È¡Éè±¸ÎŞ¹ØÊı¾İµ½Bits
-                                      
-	glPixelStorei(GL_UNPACK_ALIGNMENT ,1);							// ¿ØÖÆÏñËØ´æ´¢
-	glRasterPos2i(x,y);												// Æ½Ãæ¶¨Î»
-	glBitmap(size.cx,size.cy,0,0,0,0,Bits);							// Æ½ÃæÎ»Í¼ÏÔÊ¾
-	delete Bits;													// É¾³ıBits
-	SelectObject(MDC, oldBmp);										// »Ö¸´Î»Í¼ÌØĞÔ
-	::DeleteDC(MDC);												// É¾³ıÉè±¸³¡¾°
+// åŸºæœ¬åŸç†æ˜¯åœ¨ç³»ç»Ÿå†…éƒ¨å»ºç«‹ä¸€ä¸ªç¡®å®šå­—ä½“çš„è®¾å¤‡åœºæ™¯ï¼ˆMDCï¼‰ï¼Œç”¨GDIæ–¹å¼å°†æ–‡å­—åœ¨è®¾å¤‡åœºæ™¯ä¸­å½¢æˆå•è‰²ä½å›¾
+// å†ç”¨OpenGLçš„å¹³é¢ä½å›¾æ˜¾ç¤ºå‡½æ•°glBitmapå°†æ–‡å­—æ˜¾ç¤ºå‡ºæ¥
+void CGLFont:: Printftext(int x, int y, LPCTSTR lpszText, HFONT hFont) {
+    CBitmap bitmap;                                                 // è®¾å¤‡ç›¸å…³ä½å›¾å˜é‡
+    BITMAP bm;                                                      // ä½å›¾ç»“æ„å˜é‡
+    SIZE size;                                                      // ä½å›¾å°ºå¯¸
+    HDC MDC = ::CreateCompatibleDC(0);                              // æš‚å­˜è®¾å¤‡åœºæ™¯
+    SelectObject(MDC, hFont);                                       // é€‰æ‹©æ–°å­—ä½“
+    ::GetTextExtentPoint32(MDC, lpszText, strlen(lpszText), &size); // è·å–å­—ç¬¦ä½å›¾å¤§å°
+    bitmap.CreateBitmap(size.cx, size.cy, 1, 1, NULL);              // åˆ›å»ºä¸MDCç›¸å…³å•è‰²ä½å›¾
+    HBITMAP oldBmp = (HBITMAP)SelectObject(MDC, bitmap);            // å­—ç¬¦ä½å›¾ä¸MDCå…³è¿
+    SetBkColor(MDC, RGB(0,     0,   0));                            // åº•è‰² é»‘è‰²
+    SetTextColor(MDC, RGB(255, 255, 255));                          // å­—è‰² ç™½è‰²
+    TextOut(MDC, 0, 0, lpszText, strlen(lpszText));                 // è¾“å‡ºæ–‡å­—åˆ°æš‚å­˜MDC
+    bitmap.GetBitmap(&bm);                                          // è·å¾—ç›¸å…³ä½å›¾æ•°æ®ç»“æ„
+    size.cx = (bm.bmWidth + 31) & (~31);                            // è¾¹ç¼˜å¯¹é½
+    int bufsize = size.cy * size.cx;                                // å›¾å½¢æ•°æ®é•¿åº¦
+    struct {
+        BITMAPINFOHEADER bih;
+        RGBQUAD col[2];
+    } bic;                                                          // å®šä¹‰å•è‰²ä½å›¾ç»“æ„
+    BITMAPINFO* binf = (BITMAPINFO*)&bic;                           // è·å–ä½å›¾ç»“æ„ä¿¡æ¯
+    binf->bmiHeader.biSize     = sizeof(binf->bmiHeader);           // è·å–ç»“æ„ä¿¡æ¯é•¿åº¦
+    binf->bmiHeader.biWidth    = bm.bmWidth;
+    binf->bmiHeader.biHeight   = bm.bmHeight;
+    binf->bmiHeader.biPlanes   = 1;
+    binf->bmiHeader.biBitCount = 1;                                 // å•è‰²
+    binf->bmiHeader.biCompression = BI_RGB;                         // é¢œè‰²æ–¹å¼
+    binf->bmiHeader.biSizeImage   = bufsize;                        // å›¾å½¢æ•°æ®é•¿åº¦
+    UCHAR* Bits = new UCHAR[bufsize];                               // å®šä¹‰å›¾å½¢æ•°æ®å—å˜é‡
+    ::GetDIBits(MDC, bitmap, 0, bm.bmHeight, Bits, binf, DIB_RGB_COLORS); // å–è®¾å¤‡æ— å…³æ•°æ®åˆ°Bits
+    glPixelStorei(GL_UNPACK_ALIGNMENT , 1);                         // æ§åˆ¶åƒç´ å­˜å‚¨
+    glRasterPos2i(x, y);                                            // å¹³é¢å®šä½
+    glBitmap(size.cx, size.cy, 0, 0, 0, 0, Bits);                   // å¹³é¢ä½å›¾æ˜¾ç¤º
+    delete Bits;                                                    // åˆ é™¤Bits
+    SelectObject(MDC, oldBmp);                                      // æ¢å¤ä½å›¾ç‰¹æ€§
+    ::DeleteDC(MDC);                                                // åˆ é™¤è®¾å¤‡åœºæ™¯
 }

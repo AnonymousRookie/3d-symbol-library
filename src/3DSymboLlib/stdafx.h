@@ -19,7 +19,7 @@
 #ifndef _WIN32_WINDOWS
 #define _WIN32_WINDOWS 0x0510
 #endif
- 
+
 #ifndef _SECURE_ATL
 #define _SECURE_ATL 1
 #endif
@@ -62,30 +62,30 @@ extern CDesingScheme myDesingScheme;
 
 
 #include <gl\glew.h>
-#include <gl\gl.h>		// OpenGL32库的头文件
-#include <gl\glu.h>		// GLu32库的头文件
-#include <gl\glaux.h>	// GLaux库的头文件
+#include <gl\gl.h>      // OpenGL32库的头文件
+#include <gl\glu.h>     // GLu32库的头文件
+#include <gl\glaux.h>   // GLaux库的头文件
 #include <gl\glut.h>
-#include <gl\glext.h>  
+#include <gl\glext.h>
 #include <afxdlgs.h>
 
 
 
 // CProjectFileSetting 自定义消息宏
 
-#define WM_NEW_PROJECT		WM_USER+104		//单选按钮 新建工程 选中
-#define WM_OPEN_PROJECT		WM_USER+105		//单选按钮 打开工程 选中
+#define WM_NEW_PROJECT      WM_USER+104     //单选按钮 新建工程 选中
+#define WM_OPEN_PROJECT     WM_USER+105     //单选按钮 打开工程 选中
 
-#define WM_PROJECT_SET_OK		WM_USER+106		//单选按钮 打开工程 选中
+#define WM_PROJECT_SET_OK       WM_USER+106     //单选按钮 打开工程 选中
 
 
 
 #define MAP_W       32       // size of map along x-axis 32， 32*32地面方阵 
 #define MAP_SCALE   24.0f     // the scale of the terrain map，边长为24
-#define MAP			MAP_W*MAP_SCALE/2
-#define PAI			3.1415926       //定义π常量
-#define HDANGLE		52.706     //定义1弧度等于多少度(1弧度=180/PAI)
-#define PAI_D180	PAI/180   //定义1度等于多少弧度(1度=PAI/180弧度)
+#define MAP         MAP_W*MAP_SCALE/2
+#define PAI         3.1415926       //定义π常量
+#define HDANGLE     52.706     //定义1弧度等于多少度(1弧度=180/PAI)
+#define PAI_D180    PAI/180   //定义1度等于多少弧度(1度=PAI/180弧度)
 #define MODEL_NUM_MAX 30
 
 

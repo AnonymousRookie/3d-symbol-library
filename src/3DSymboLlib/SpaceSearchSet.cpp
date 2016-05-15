@@ -1,4 +1,4 @@
-// SpaceSearchSet.cpp : implementation file
+ï»¿// SpaceSearchSet.cpp : implementation file
 
 
 #include "stdafx.h"
@@ -16,142 +16,117 @@ static char THIS_FILE[] = __FILE__;
 
 
 CSpaceSearchSet::CSpaceSearchSet(CWnd* pParent /*=NULL*/)
-	: CDialog(CSpaceSearchSet::IDD, pParent)
-{
-	//{{AFX_DATA_INIT(CSpaceSearchSet)
-	m_shizxLength = 5;
-	m_shuzxHeight =20;
-	//}}AFX_DATA_INIT
+    : CDialog(CSpaceSearchSet::IDD, pParent) {
+    //{{AFX_DATA_INIT(CSpaceSearchSet)
+    m_shizxLength = 5;
+    m_shuzxHeight = 20;
+    //}}AFX_DATA_INIT
 }
 
 
-void CSpaceSearchSet::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CSpaceSearchSet)
-	DDX_Control(pDX, IDC_COMBOL_WIDTH, m_combolWidth);
-	DDX_Text(pDX, IDC_EDIT_SHIZXLENGTH, m_shizxLength);
-	DDX_Text(pDX, IDC_EDIT_SHUZXHEIGHT, m_shuzxHeight);
-	//}}AFX_DATA_MAP
-	//DDX_Control(pDX, IDC_BUTTON_COLOR, button);
-	DDX_Control(pDX, IDC_BUTTON_COLOR, m_ColorPicker);
+void CSpaceSearchSet::DoDataExchange(CDataExchange* pDX) {
+    CDialog::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CSpaceSearchSet)
+    DDX_Control(pDX, IDC_COMBOL_WIDTH, m_combolWidth);
+    DDX_Text(pDX, IDC_EDIT_SHIZXLENGTH, m_shizxLength);
+    DDX_Text(pDX, IDC_EDIT_SHUZXHEIGHT, m_shuzxHeight);
+    //}}AFX_DATA_MAP
+    //DDX_Control(pDX, IDC_BUTTON_COLOR, button);
+    DDX_Control(pDX, IDC_BUTTON_COLOR, m_ColorPicker);
 }
 
 
 BEGIN_MESSAGE_MAP(CSpaceSearchSet, CDialog)
-	//{{AFX_MSG_MAP(CSpaceSearchSet)
-	ON_BN_CLICKED(IDC_BUTTON_COLOR, OnButtonColor)
-	ON_WM_CTLCOLOR()
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(CSpaceSearchSet)
+    ON_BN_CLICKED(IDC_BUTTON_COLOR, OnButtonColor)
+    ON_WM_CTLCOLOR()
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 
 // CSpaceSearchSet message handlers
 
-// ÑÕÉ«°´Å¥ÏìÓ¦º¯Êı
-void CSpaceSearchSet::OnButtonColor() 
-{
-	COLORREF color = m_ColorPicker.GetColor(); 
-	if (color == -1) 
-	{ 
-		color = m_ColorPicker.GetAutomaticColor(); 
-	} 
-	m_QueryColorR=GetRValue(color);//µÃµ½ËùÑ¡ÔñµÄÑÕÉ«µÄºìÉ«
-	m_QueryColorG=GetGValue(color);//µÃµ½ËùÑ¡ÔñµÄÑÕÉ«µÄÂÌÉ«
-	m_QueryColorB=GetBValue(color);//µÃµ½ËùÑ¡ÔñµÄÑÕÉ«µÄÀ¶É«
-
-	//GetRValue(color), GetGValue(color), GetBValue(color));
-
-	//CColorDialog colorDlg;//¶¨ÒåÑÕÉ«¶Ô»°¿ò±äÁ¿
-	//if(colorDlg.DoModal()==IDOK)//Èç¹ûÑÕÉ«¶Ô»°¿ò´ò¿ª³É¹¦
-	//{
-	//	long m_color=colorDlg.GetColor();//µÃµ½ËùÑ¡ÔñµÄÑÕÉ«
-	//	//pbrush.DeleteObject ();//É¾³ıpbrush»­Ë¢¶ÔÏó
-	//	//pbrush.CreateSolidBrush (m_color);//¸ù¾İËùÑ¡ÔñµÄÑÕÉ«ÖØĞÂ´´½¨»­Ë¢
-	//	//CButton *pbutton=(CButton*)GetDlgItem(IDC_BUTTON_COLOR);
-	//	//CRect rect;
-	//	//pbutton->GetClientRect(rect);
-	//	//pbutton->InvalidateRect(rect,TRUE);//Ë¢ĞÂÑÕÉ«°´Å¥Ïì,
-
-	//	m_QueryColorR=GetRValue(m_color);//µÃµ½ËùÑ¡ÔñµÄÑÕÉ«µÄºìÉ«
-	//	m_QueryColorG=GetGValue(m_color);//µÃµ½ËùÑ¡ÔñµÄÑÕÉ«µÄÂÌÉ«
-	//	m_QueryColorB=GetBValue(m_color);//µÃµ½ËùÑ¡ÔñµÄÑÕÉ«µÄÀ¶É«
-	//}		
-
-
-	// ¸ü¸Ä¸ßÁÁÑÕÉ« 
-	//SetColorBtn.SetTextHotColor(RGB(63, 72, 204)); 
+// é¢œè‰²æŒ‰é’®å“åº”å‡½æ•°
+void CSpaceSearchSet::OnButtonColor() {
+    COLORREF color = m_ColorPicker.GetColor();
+    if (color == -1) {
+        color = m_ColorPicker.GetAutomaticColor();
+    }
+    m_QueryColorR = GetRValue(color); //å¾—åˆ°æ‰€é€‰æ‹©çš„é¢œè‰²çš„çº¢è‰²
+    m_QueryColorG = GetGValue(color); //å¾—åˆ°æ‰€é€‰æ‹©çš„é¢œè‰²çš„ç»¿è‰²
+    m_QueryColorB = GetBValue(color); //å¾—åˆ°æ‰€é€‰æ‹©çš„é¢œè‰²çš„è“è‰²
+    //GetRValue(color), GetGValue(color), GetBValue(color));
+    //CColorDialog colorDlg;//å®šä¹‰é¢œè‰²å¯¹è¯æ¡†å˜é‡
+    //if(colorDlg.DoModal()==IDOK)//å¦‚æœé¢œè‰²å¯¹è¯æ¡†æ‰“å¼€æˆåŠŸ
+    //{
+    //  long m_color=colorDlg.GetColor();//å¾—åˆ°æ‰€é€‰æ‹©çš„é¢œè‰²
+    //  //pbrush.DeleteObject ();//åˆ é™¤pbrushç”»åˆ·å¯¹è±¡
+    //  //pbrush.CreateSolidBrush (m_color);//æ ¹æ®æ‰€é€‰æ‹©çš„é¢œè‰²é‡æ–°åˆ›å»ºç”»åˆ·
+    //  //CButton *pbutton=(CButton*)GetDlgItem(IDC_BUTTON_COLOR);
+    //  //CRect rect;
+    //  //pbutton->GetClientRect(rect);
+    //  //pbutton->InvalidateRect(rect,TRUE);//åˆ·æ–°é¢œè‰²æŒ‰é’®å“,
+    //  m_QueryColorR=GetRValue(m_color);//å¾—åˆ°æ‰€é€‰æ‹©çš„é¢œè‰²çš„çº¢è‰²
+    //  m_QueryColorG=GetGValue(m_color);//å¾—åˆ°æ‰€é€‰æ‹©çš„é¢œè‰²çš„ç»¿è‰²
+    //  m_QueryColorB=GetBValue(m_color);//å¾—åˆ°æ‰€é€‰æ‹©çš„é¢œè‰²çš„è“è‰²
+    //}
+    // æ›´æ”¹é«˜äº®é¢œè‰²
+    //SetColorBtn.SetTextHotColor(RGB(63, 72, 204));
 }
 
-////¸ù¾İÑÕÉ«°´Å¥Ñ¡ÔñµÄÑÕÉ«Ìî³äÆä±³¾°
-//HBRUSH CSpaceSearchSet::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+////æ ¹æ®é¢œè‰²æŒ‰é’®é€‰æ‹©çš„é¢œè‰²å¡«å……å…¶èƒŒæ™¯
+//HBRUSH CSpaceSearchSet::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 //{
-//	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+//  HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 //
-//	if(pWnd->GetDlgCtrlID()== IDC_BUTTON_COLOR)//Èç¹û¿Ø¼şID=IDC_BUTTON_COLOR,ÓÃpbrush»­Ë¢Ìî°´Å¥±³¾°
-//		return pbrush;
-//	else //·ñÔò,·µ»ØÄ¬ÈÏ»­Ë¢
-//		return hbr;
+//  if(pWnd->GetDlgCtrlID()== IDC_BUTTON_COLOR)//å¦‚æœæ§ä»¶ID=IDC_BUTTON_COLOR,ç”¨pbrushç”»åˆ·å¡«æŒ‰é’®èƒŒæ™¯
+//      return pbrush;
+//  else //å¦åˆ™,è¿”å›é»˜è®¤ç”»åˆ·
+//      return hbr;
 //
 //}
 
-//ĞÅÏ¢³õÊ¼»¯
-BOOL CSpaceSearchSet::OnInitDialog() 
-{
-	CDialog::OnInitDialog();
-
-	//	myedit[0].SubclassDlgItem(IDC_EDIT_SHIZXLENGTH,this);
-	//	myedit[1].SubclassDlgItem(IDC_EDIT_SHUZXHEIGHT,this);
-
-	m_combolWidth.ResetContent();//´æ´¢±êÖ¾Ïß¿í¶ÈµÄÏÂÀ­¿òÇå¿Õ
-	for(int i=1;i<=20;i++)//Ïß¿í×î´ó¿í¶ÈÎª20
-	{
-		CString tt;
-		tt.Format("%d",i);
-		m_combolWidth.AddString(tt);
-	}
-
-	//ÉèÖÃÏÂÀ­¿òµÄµ±Ç°Ñ¡ÔñÏî
-	if(m_QueryLineWidth>0)
-		m_combolWidth.SetCurSel(m_QueryLineWidth-1);
-	else
-		m_combolWidth.SetCurSel(0);	
-
-	m_ColorPicker.EnableAutomaticButton(_T("Ä¬ÈÏÖµ"), RGB(m_QueryColorR, m_QueryColorG, m_QueryColorB)); 
-	m_ColorPicker.EnableOtherButton(_T("ÆäÓàÑÕÉ«")); 
-	m_ColorPicker.SetColor((COLORREF)-1); 
-	//m_ColorPicker.SetColumnsNumber(10);   
-
-	this->UpdateData(FALSE);//Êı¾İ±äÁ¿¸üĞÂ
-
-	//¸ù¾İ±êÖ¾ÏßÑÕÉ«´´½¨»­Ë¢
-	//pbrush.CreateSolidBrush(RGB(m_QueryColorR,m_QueryColorG,m_QueryColorB));
-
-
-
-	return TRUE;  
+//ä¿¡æ¯åˆå§‹åŒ–
+BOOL CSpaceSearchSet::OnInitDialog() {
+    CDialog::OnInitDialog();
+    //  myedit[0].SubclassDlgItem(IDC_EDIT_SHIZXLENGTH,this);
+    //  myedit[1].SubclassDlgItem(IDC_EDIT_SHUZXHEIGHT,this);
+    m_combolWidth.ResetContent();//å­˜å‚¨æ ‡å¿—çº¿å®½åº¦çš„ä¸‹æ‹‰æ¡†æ¸…ç©º
+    for (int i = 1; i <= 20; i++) { //çº¿å®½æœ€å¤§å®½åº¦ä¸º20
+        CString tt;
+        tt.Format("%d", i);
+        m_combolWidth.AddString(tt);
+    }
+    //è®¾ç½®ä¸‹æ‹‰æ¡†çš„å½“å‰é€‰æ‹©é¡¹
+    if (m_QueryLineWidth > 0)
+        m_combolWidth.SetCurSel(m_QueryLineWidth - 1);
+    else
+        m_combolWidth.SetCurSel(0);
+    m_ColorPicker.EnableAutomaticButton(_T("é»˜è®¤å€¼"), RGB(m_QueryColorR, m_QueryColorG, m_QueryColorB));
+    m_ColorPicker.EnableOtherButton(_T("å…¶ä½™é¢œè‰²"));
+    m_ColorPicker.SetColor((COLORREF) - 1);
+    //m_ColorPicker.SetColumnsNumber(10);
+    this->UpdateData(FALSE);//æ•°æ®å˜é‡æ›´æ–°
+    //æ ¹æ®æ ‡å¿—çº¿é¢œè‰²åˆ›å»ºç”»åˆ·
+    //pbrush.CreateSolidBrush(RGB(m_QueryColorR,m_QueryColorG,m_QueryColorB));
+    return TRUE;
 }
 
-BOOL CSpaceSearchSet::PreTranslateMessage(MSG* pMsg) 
-{
-
-	if(pMsg->wParam == VK_RETURN)//Èç¹û°´Å¥ÊÇ»Ø³µ¼ü
-	{
-		CDialog *pWnd=(CDialog*)GetParent();
-		pWnd->NextDlgCtrl ();
-		return FALSE;
-	}	
-	else
-		return CDialog::PreTranslateMessage(pMsg);
+BOOL CSpaceSearchSet::PreTranslateMessage(MSG* pMsg) {
+    if (pMsg->wParam == VK_RETURN) { //å¦‚æœæŒ‰é’®æ˜¯å›è½¦é”®
+        CDialog* pWnd = (CDialog*)GetParent();
+        pWnd->NextDlgCtrl();
+        return FALSE;
+    } else
+        return CDialog::PreTranslateMessage(pMsg);
 }
 
 
-//È·¶¨É¨Å¥ÏìÓ¦º¯Êı
-void CSpaceSearchSet::OnOK() 
-{
-	this->UpdateData();//¸üĞÂÊı¾İ
-	CString tt;
-	m_combolWidth.GetLBText(m_combolWidth.GetCurSel(),tt);//µÃµ½
-	m_QueryLineWidth=m_combolWidth.GetCurSel();//µÃµ½±êÖ¾Ïß¿í¶È
-	CDialog::OnOK();//ÒÔIDOKÄ£Ê½¹Ø±ÕÍË³ö¶Ô»°¿ò
+//ç¡®å®šæ‰«é’®å“åº”å‡½æ•°
+void CSpaceSearchSet::OnOK() {
+    this->UpdateData();//æ›´æ–°æ•°æ®
+    CString tt;
+    m_combolWidth.GetLBText(m_combolWidth.GetCurSel(), tt); //å¾—åˆ°
+    m_QueryLineWidth = m_combolWidth.GetCurSel(); //å¾—åˆ°æ ‡å¿—çº¿å®½åº¦
+    CDialog::OnOK();//ä»¥IDOKæ¨¡å¼å…³é—­é€€å‡ºå¯¹è¯æ¡†
 }

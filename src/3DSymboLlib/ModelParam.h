@@ -1,45 +1,45 @@
-#pragma once
+ï»¿#pragma once
 
 #include "afxcmn.h"
-// ModelParam ¶Ô»°¿ò
+// ModelParam å¯¹è¯æ¡†
 
-class ModelParam : public CDialog
-{
-	DECLARE_DYNAMIC(ModelParam)
+class ModelParam : public CDialog {
+    DECLARE_DYNAMIC(ModelParam)
 
-public:
-	ModelParam(CWnd* pParent = NULL);   // ±ê×¼¹¹Ôìº¯Êı
-	virtual ~ModelParam();
+  public:
+    ModelParam(CWnd* pParent = NULL);   // æ ‡å‡†æ„é€ å‡½æ•°
+    virtual ~ModelParam();
 
-// ¶Ô»°¿òÊı¾İ
-	enum { IDD = IDD_DIALOG_MODEL_PARAM };
+    // å¯¹è¯æ¡†æ•°æ®
+    enum { IDD = IDD_DIALOG_MODEL_PARAM };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+  protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
 
-	DECLARE_MESSAGE_MAP()
-public:
-	int posX;
-	int posY;
-	int posZ;
-	int rotX;
-	int rotY;
-	int rotZ;
-	float scale;
-	CString displayPath;
-	bool modelChanged;// Ä£ĞÍÊÇ·ñÒÑ¸ü»»
+    DECLARE_MESSAGE_MAP()
 
-	bool isModelTextureUpdated;// Ä£ĞÍÎÆÀíÊÇ·ñ·¢Éú¸Ä±ä
+  public:
+    int posX;
+    int posY;
+    int posZ;
+    int rotX;
+    int rotY;
+    int rotZ;
+    float scale;
+    CString displayPath;
+    bool modelChanged;// æ¨¡å‹æ˜¯å¦å·²æ›´æ¢
 
-	// ÎÆÀíµÄÂ·¾¶¼°ÎÄ¼şÃû
-	CString m_TexturePathAndName;
+    bool isModelTextureUpdated;// æ¨¡å‹çº¹ç†æ˜¯å¦å‘ç”Ÿæ”¹å˜
+
+    // çº¹ç†çš„è·¯å¾„åŠæ–‡ä»¶å
+    CString m_TexturePathAndName;
 
 
-	virtual BOOL OnInitDialog(); 
-	CString m_strTitle; //ÉèÖÃ¶Ô»°¿ò±êÌâ
-	CString modelPath;
-	CString modelFolder;
-	afx_msg void OnBnClickedButtonChangeModelPath();
-	afx_msg void OnBnClickedButtonChangeModelTexture();
-	CString m_TextureName;
+    virtual BOOL OnInitDialog();
+    CString m_strTitle; //è®¾ç½®å¯¹è¯æ¡†æ ‡é¢˜
+    CString modelPath;
+    CString modelFolder;
+    afx_msg void OnBnClickedButtonChangeModelPath();
+    afx_msg void OnBnClickedButtonChangeModelTexture();
+    CString m_TextureName;
 };

@@ -1,133 +1,126 @@
-#ifndef _3DS_H
+ï»¿#ifndef _3DS_H
 #define _3DS_H
 
 #include <math.h>
 #include <vector>
-//  »ù±¾¿é(Primary Chunk)£¬Î»ÓÚÎÄ¼şµÄ¿ªÊ¼
+//  åŸºæœ¬å—(Primary Chunk)ï¼Œä½äºæ–‡ä»¶çš„å¼€å§‹
 #define PRIMARY       0x4D4D
-//  Ö÷¿é(Main Chunks)
-#define OBJECTINFO    0x3D3D		// Íø¸ñ¶ÔÏóµÄ°æ±¾ºÅ
-#define VERSION       0x0002		// .3dsÎÄ¼şµÄ°æ±¾
-#define EDITKEYFRAME  0xB000		// ËùÓĞ¹Ø¼üÖ¡ĞÅÏ¢µÄÍ·²¿
-//  ¶ÔÏóµÄ´Î¼¶¶¨Òå(°üÀ¨¶ÔÏóµÄ²ÄÖÊºÍ¶ÔÏó£©
-#define MATERIAL	  0xAFFF		// ±£´æÎÆÀíĞÅÏ¢
-#define OBJECT		  0x4000		// ±£´æ¶ÔÏóµÄÃæ¡¢¶¥µãµÈĞÅÏ¢
-//  ²ÄÖÊµÄ´Î¼¶¶¨Òå
-#define MATNAME       0xA000		// ±£´æ²ÄÖÊÃû³Æ
-#define MATDIFFUSE    0xA020		// ¶ÔÏó/²ÄÖÊµÄÑÕÉ«
-#define MATMAP        0xA200		// ĞÂ²ÄÖÊµÄÍ·²¿
-#define MATMAPFILE    0xA300		// ±£´æÎÆÀíµÄÎÄ¼şÃû
-#define OBJ_MESH	  0x4100		// ĞÂµÄÍø¸ñ¶ÔÏó
-#define MAX_TEXTURES  100			// ×î´óµÄÎÆÀíÊıÄ¿
-//  OBJ_MESHµÄ´Î¼¶¶¨Òå
-#define OBJ_VERTICES  0x4110		// ¶ÔÏó¶¥µã
-#define OBJ_FACES	  0x4120		// ¶ÔÏóµÄÃæ
-#define OBJ_MATERIAL  0x4130		// ¶ÔÏóµÄ²ÄÖÊ
-#define OBJ_UV		  0x4140		// ¶ÔÏóµÄUVÎÆÀí×ø±ê
+//  ä¸»å—(Main Chunks)
+#define OBJECTINFO    0x3D3D        // ç½‘æ ¼å¯¹è±¡çš„ç‰ˆæœ¬å·
+#define VERSION       0x0002        // .3dsæ–‡ä»¶çš„ç‰ˆæœ¬
+#define EDITKEYFRAME  0xB000        // æ‰€æœ‰å…³é”®å¸§ä¿¡æ¯çš„å¤´éƒ¨
+//  å¯¹è±¡çš„æ¬¡çº§å®šä¹‰(åŒ…æ‹¬å¯¹è±¡çš„æè´¨å’Œå¯¹è±¡ï¼‰
+#define MATERIAL      0xAFFF        // ä¿å­˜çº¹ç†ä¿¡æ¯
+#define OBJECT        0x4000        // ä¿å­˜å¯¹è±¡çš„é¢ã€é¡¶ç‚¹ç­‰ä¿¡æ¯
+//  æè´¨çš„æ¬¡çº§å®šä¹‰
+#define MATNAME       0xA000        // ä¿å­˜æè´¨åç§°
+#define MATDIFFUSE    0xA020        // å¯¹è±¡/æè´¨çš„é¢œè‰²
+#define MATMAP        0xA200        // æ–°æè´¨çš„å¤´éƒ¨
+#define MATMAPFILE    0xA300        // ä¿å­˜çº¹ç†çš„æ–‡ä»¶å
+#define OBJ_MESH      0x4100        // æ–°çš„ç½‘æ ¼å¯¹è±¡
+#define MAX_TEXTURES  100           // æœ€å¤§çš„çº¹ç†æ•°ç›®
+//  OBJ_MESHçš„æ¬¡çº§å®šä¹‰
+#define OBJ_VERTICES  0x4110        // å¯¹è±¡é¡¶ç‚¹
+#define OBJ_FACES     0x4120        // å¯¹è±¡çš„é¢
+#define OBJ_MATERIAL  0x4130        // å¯¹è±¡çš„æè´¨
+#define OBJ_UV        0x4140        // å¯¹è±¡çš„UVçº¹ç†åæ ‡
 
 using namespace std;
-class CVector3Model		//¶¨Òå3DµãµÄÀà£¬ÓÃÓÚ±£´æÄ£ĞÍÖĞµÄ¶¥µã
-{
-public:	float x, y, z;
+class CVector3Model {   //å®šä¹‰3Dç‚¹çš„ç±»ï¼Œç”¨äºä¿å­˜æ¨¡å‹ä¸­çš„é¡¶ç‚¹
+  public:
+    float x, y, z;
 };
 
-class CVector2Model		//¶¨Òå2DµãÀà£¬ÓÃÓÚ±£´æÄ£ĞÍµÄUVÎÆÀí×ø±ê
-{
-public:	float x, y;
+class CVector2Model {   //å®šä¹‰2Dç‚¹ç±»ï¼Œç”¨äºä¿å­˜æ¨¡å‹çš„UVçº¹ç†åæ ‡
+  public:
+    float x, y;
 };
 
-struct tFace		//ÃæµÄ½á¹¹¶¨Òå
-{	
-	int vertIndex[3];			// ¶¥µãË÷Òı
-	int coordIndex[3];			// ÎÆÀí×ø±êË÷Òı
+struct tFace {      //é¢çš„ç»“æ„å®šä¹‰
+    int vertIndex[3];           // é¡¶ç‚¹ç´¢å¼•
+    int coordIndex[3];          // çº¹ç†åæ ‡ç´¢å¼•
 };
 
-struct tMatInfo//²ÄÖÊĞÅÏ¢½á¹¹Ìå
-{	
-	char  strName[255];			// ÎÆÀíÃû³Æ
-	char  strFile[255];			// Èç¹û´æÔÚÎÆÀíÓ³Éä£¬Ôò±íÊ¾ÎÆÀíÎÄ¼şÃû³Æ
-	BYTE  color[3];				// ¶ÔÏóµÄRGBÑÕÉ«
-	int   texureId;				// ÎÆÀíID
-	float uTile;				// u ÖØ¸´
-	float vTile;				// v ÖØ¸´
-	float uOffset;			    // u ÎÆÀíÆ«ÒÆ
-	float vOffset;				// v ÎÆÀíÆ«ÒÆ
+struct tMatInfo { //æè´¨ä¿¡æ¯ç»“æ„ä½“
+    char  strName[255];         // çº¹ç†åç§°
+    char  strFile[255];         // å¦‚æœå­˜åœ¨çº¹ç†æ˜ å°„ï¼Œåˆ™è¡¨ç¤ºçº¹ç†æ–‡ä»¶åç§°
+    BYTE  color[3];             // å¯¹è±¡çš„RGBé¢œè‰²
+    int   texureId;             // çº¹ç†ID
+    float uTile;                // u é‡å¤
+    float vTile;                // v é‡å¤
+    float uOffset;              // u çº¹ç†åç§»
+    float vOffset;              // v çº¹ç†åç§»
 } ;
 
-struct t3DObject	//¶ÔÏóĞÅÏ¢½á¹¹Ìå
-{	
-	int  numOfVerts;			// Ä£ĞÍÖĞ¶¥µãµÄÊıÄ¿
-	int  numOfFaces;			// Ä£ĞÍÖĞÃæµÄÊıÄ¿
-	int  numTexVertex;			// Ä£ĞÍÖĞÎÆÀí×ø±êµÄÊıÄ¿
-	int  materialID;			// ÎÆÀíID
-	bool bHasTexture;			// ÊÇ·ñ¾ßÓĞÎÆÀíÓ³Éä
-	char strName[255];			// ¶ÔÏóµÄÃû³Æ
-	CVector3Model  *pVerts;			// ¶ÔÏóµÄ¶¥µã
-	CVector3Model  *pNormals;		// ¶ÔÏóµÄ·¨ÏòÁ¿
-	CVector2Model  *pTexVerts;		// ÎÆÀíUV×ø±ê
-	tFace *pFaces;				// ¶ÔÏóµÄÃæĞÅÏ¢
+struct t3DObject {  //å¯¹è±¡ä¿¡æ¯ç»“æ„ä½“
+    int  numOfVerts;            // æ¨¡å‹ä¸­é¡¶ç‚¹çš„æ•°ç›®
+    int  numOfFaces;            // æ¨¡å‹ä¸­é¢çš„æ•°ç›®
+    int  numTexVertex;          // æ¨¡å‹ä¸­çº¹ç†åæ ‡çš„æ•°ç›®
+    int  materialID;            // çº¹ç†ID
+    bool bHasTexture;           // æ˜¯å¦å…·æœ‰çº¹ç†æ˜ å°„
+    char strName[255];          // å¯¹è±¡çš„åç§°
+    CVector3Model*  pVerts;         // å¯¹è±¡çš„é¡¶ç‚¹
+    CVector3Model*  pNormals;       // å¯¹è±¡çš„æ³•å‘é‡
+    CVector2Model*  pTexVerts;      // çº¹ç†UVåæ ‡
+    tFace* pFaces;              // å¯¹è±¡çš„é¢ä¿¡æ¯
 };
 
-// °üÎ§ÔÚ3DÄ£ĞÍÍâÎ§µÄ³¤·½ÌåºĞ×Ó
-struct t3DBox
-{
-	float w;
-	float h;
-	float l;					// Ä£ĞÍ³¤¿í¸ß
+// åŒ…å›´åœ¨3Dæ¨¡å‹å¤–å›´çš„é•¿æ–¹ä½“ç›’å­
+struct t3DBox {
+    float w;
+    float h;
+    float l;                    // æ¨¡å‹é•¿å®½é«˜
 };
 
-struct t3DModel	//Ä£ĞÍĞÅÏ¢½á¹¹Ìå
-{	
-	int numOfObjects;			// Ä£ĞÍÖĞ¶ÔÏóµÄÊıÄ¿
-	int numOfMaterials;			// Ä£ĞÍÖĞ²ÄÖÊµÄÊıÄ¿
-	vector<tMatInfo>pMaterials;	// ²ÄÖÊÁ´±íĞÅÏ¢
-	vector<t3DObject> pObject;	// Ä£ĞÍÖĞ¶ÔÏóÁ´±íĞÅÏ¢
-	t3DBox t3DModelBox;
+struct t3DModel { //æ¨¡å‹ä¿¡æ¯ç»“æ„ä½“
+    int numOfObjects;           // æ¨¡å‹ä¸­å¯¹è±¡çš„æ•°ç›®
+    int numOfMaterials;         // æ¨¡å‹ä¸­æè´¨çš„æ•°ç›®
+    vector<tMatInfo>pMaterials; // æè´¨é“¾è¡¨ä¿¡æ¯
+    vector<t3DObject> pObject;  // æ¨¡å‹ä¸­å¯¹è±¡é“¾è¡¨ä¿¡æ¯
+    t3DBox t3DModelBox;
 };
 
-struct tChunk	//±£´æ¿éĞÅÏ¢µÄ½á¹¹
-{	
-	unsigned short int ID;		// ¿éµÄID		
-	unsigned int length;		// ¿éµÄ³¤¶È
-	unsigned int bytesRead;		// ĞèÒª¶ÁµÄ¿éÊı¾İµÄ×Ö½ÚÊı
+struct tChunk { //ä¿å­˜å—ä¿¡æ¯çš„ç»“æ„
+    unsigned short int ID;      // å—çš„ID
+    unsigned int length;        // å—çš„é•¿åº¦
+    unsigned int bytesRead;     // éœ€è¦è¯»çš„å—æ•°æ®çš„å­—èŠ‚æ•°
 };
 
 
 
 
-// CLoad3DSÀà´¦ÀíËùÓĞµÄ×°Èë´úÂë
-class CLoad3DS															
-{
-public:
-	CLoad3DS();															// ³õÊ¼»¯Êı¾İ³ÉÔ±
-	virtual ~CLoad3DS();
-	void Show3ds(int j0,float tx,float ty,float tz,float size);			//ÏÔÊ¾3dsÄ£ĞÍ
-	void Init(char *_3DSFilename,int j, char *_3DSTexture);
+// CLoad3DSç±»å¤„ç†æ‰€æœ‰çš„è£…å…¥ä»£ç 
+class CLoad3DS {
+  public:
+    CLoad3DS();                                                         // åˆå§‹åŒ–æ•°æ®æˆå‘˜
+    virtual ~CLoad3DS();
+    void Show3ds(int j0, float tx, float ty, float tz, float size);     //æ˜¾ç¤º3dsæ¨¡å‹
+    void Init(char* _3DSFilename, int j, char* _3DSTexture);
 
-	// [ADD]ÏÔÊ¾ÒõÓ°
-	//void Show3dsShadow(int j0,float tx,float ty,float tz,float size);
+    // [ADD]æ˜¾ç¤ºé˜´å½±
+    //void Show3dsShadow(int j0,float tx,float ty,float tz,float size);
 
-private:
-	bool Import3DS(t3DModel *pModel, char *strFileName);// ×°Èë3dsÎÄ¼şµ½Ä£ĞÍ½á¹¹ÖĞ
-	void CreateTexture(UINT textureArray[], LPSTR strFileName, int textureID);// ´ÓÎÄ¼şÖĞ´´½¨ÎÆÀí
-	int  GetString(char *);								// ¶ÁÒ»¸ö×Ö·û´®
-	void ReadChunk(tChunk *);							// ¶ÁÏÂÒ»¸ö¿é
-	void ReadNextChunk(t3DModel *pModel, tChunk *);		// ¶ÁÏÂÒ»¸ö¿é
-	void ReadNextObjChunk(t3DModel *pModel,t3DObject *pObject,tChunk *);// ¶ÁÏÂÒ»¸ö¶ÔÏó¿é
-	void ReadNextMatChunk(t3DModel *pModel, tChunk *);	// ¶ÁÏÂÒ»¸ö²ÄÖÊ¿é
-	void ReadColor(tMatInfo *pMaterial, tChunk *pChunk);// ¶Á¶ÔÏóÑÕÉ«µÄRGBÖµ
-	void ReadVertices(t3DObject *pObject, tChunk *);	// ¶Á¶ÔÏóµÄ¶¥µã
-	void ReadVertexIndices(t3DObject *pObject,tChunk *);// ¶Á¶ÔÏóµÄÃæĞÅÏ¢
-	void ReadUVCoordinates(t3DObject *pObject,tChunk *);// ¶Á¶ÔÏóµÄÎÆÀí×ø±ê
-	void ReadObjMat(t3DModel *pModel,t3DObject *pObject,tChunk *pPreChunk);// ¶Á¸³Óè¶ÔÏóµÄ²ÄÖÊÃû³Æ
-	void ComputeNormals(t3DModel *pModel);				// ¼ÆËã¶ÔÏó¶¥µãµÄ·¨ÏòÁ¿
-	void CleanUp();										// ¹Ø±ÕÎÄ¼ş£¬ÊÍ·ÅÄÚ´æ¿Õ¼ä
-	FILE	*m_FilePointer;								// ÎÄ¼şÖ¸Õë
-	tChunk	*m_CurrentChunk;
-	tChunk	*m_TempChunk;
+  private:
+    bool Import3DS(t3DModel* pModel, char* strFileName);// è£…å…¥3dsæ–‡ä»¶åˆ°æ¨¡å‹ç»“æ„ä¸­
+    void CreateTexture(UINT textureArray[], LPSTR strFileName, int textureID);// ä»æ–‡ä»¶ä¸­åˆ›å»ºçº¹ç†
+    int  GetString(char*);                              // è¯»ä¸€ä¸ªå­—ç¬¦ä¸²
+    void ReadChunk(tChunk*);                            // è¯»ä¸‹ä¸€ä¸ªå—
+    void ReadNextChunk(t3DModel* pModel, tChunk*);      // è¯»ä¸‹ä¸€ä¸ªå—
+    void ReadNextObjChunk(t3DModel* pModel, t3DObject* pObject, tChunk*); // è¯»ä¸‹ä¸€ä¸ªå¯¹è±¡å—
+    void ReadNextMatChunk(t3DModel* pModel, tChunk*);   // è¯»ä¸‹ä¸€ä¸ªæè´¨å—
+    void ReadColor(tMatInfo* pMaterial, tChunk* pChunk);// è¯»å¯¹è±¡é¢œè‰²çš„RGBå€¼
+    void ReadVertices(t3DObject* pObject, tChunk*);     // è¯»å¯¹è±¡çš„é¡¶ç‚¹
+    void ReadVertexIndices(t3DObject* pObject, tChunk*);// è¯»å¯¹è±¡çš„é¢ä¿¡æ¯
+    void ReadUVCoordinates(t3DObject* pObject, tChunk*);// è¯»å¯¹è±¡çš„çº¹ç†åæ ‡
+    void ReadObjMat(t3DModel* pModel, t3DObject* pObject, tChunk* pPreChunk); // è¯»èµ‹äºˆå¯¹è±¡çš„æè´¨åç§°
+    void ComputeNormals(t3DModel* pModel);              // è®¡ç®—å¯¹è±¡é¡¶ç‚¹çš„æ³•å‘é‡
+    void CleanUp();                                     // å…³é—­æ–‡ä»¶ï¼Œé‡Šæ”¾å†…å­˜ç©ºé—´
+    FILE*    m_FilePointer;                             // æ–‡ä»¶æŒ‡é’ˆ
+    tChunk*  m_CurrentChunk;
+    tChunk*  m_TempChunk;
 
-public:
-	
+  public:
+
 
 };
 #endif

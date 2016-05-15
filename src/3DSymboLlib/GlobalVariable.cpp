@@ -1,65 +1,65 @@
-/************************************************************************/
-/*         È«¾Ö±äÁ¿¶¨Òå													*/
+ï»¿/************************************************************************/
+/*         å…¨å±€å˜é‡å®šä¹‰                                                 */
 /************************************************************************/
 
 #include "stdafx.h"
 #include "GlobalVariable.h"
 
 
-// XML Óë tree control 
+// XML ä¸ tree control
 
-// Ä£ĞÍÖÖÀàµÄ¸öÊı
+// æ¨¡å‹ç§ç±»çš„ä¸ªæ•°
 const int g_modelKindNumber = 5;
 
 // "3DS Model","City Symbol","Tree Model","3D Tree Model","Weather Symbol"
 list<string> g_modelList[5];
-// ±£´æ±»É¾µÄÑ¡Ïî,È¡ÏûÊ±»¹Ô­µ½g_modelListÖĞ
+// ä¿å­˜è¢«åˆ çš„é€‰é¡¹,å–æ¶ˆæ—¶è¿˜åŸåˆ°g_modelListä¸­
 list<string> g_delList[5];
-// ±£´æÌí¼ÓµÄÑ¡Ïî,È¡ÏûÊ±´Óg_modelListÉ¾³ıÖĞ
+// ä¿å­˜æ·»åŠ çš„é€‰é¡¹,å–æ¶ˆæ—¶ä»g_modelListåˆ é™¤ä¸­
 list<string> g_addList[5];
 
 
 ModelTreeStruct g_modelTree[5] = {
-	{"3DS Model", "/root/T3DSModel/*",0},
-	{"City Symbol", "/root/CitySymbol/*",0},
-	{"Tree Model"," /root/TreeModel/*",0},
-	{"3D Tree Model", "/root/T3DTreeModel/*",0},
-	{"Weather Symbol", "/root/WeatherSymbol/*",0}
+    {"3DS Model", "/root/T3DSModel/*", 0},
+    {"City Symbol", "/root/CitySymbol/*", 0},
+    {"Tree Model", " /root/TreeModel/*", 0},
+    {"3D Tree Model", "/root/T3DTreeModel/*", 0},
+    {"Weather Symbol", "/root/WeatherSymbol/*", 0}
 };
 
-//·ûºÅËùÔÚÎÄ¼ş¼ĞÃû³Æ
+//ç¬¦å·æ‰€åœ¨æ–‡ä»¶å¤¹åç§°
 SymbolFolder g_symbolFolder = {
-	"3DModel","CitySymbol","TreeModel","TreeModel","Weather"
+    "3DModel", "CitySymbol", "TreeModel", "TreeModel", "Weather"
 };
 
 
-// µØĞÎ
-float	g_terrain	[MAP_W*MAP_W][3];		// µØĞÎÊı¾İ
-GLuint	g_index		[MAP_W*MAP_W* 2];		// ¶¥µãÊı¾İ
-float	g_texcoord	[MAP_W*MAP_W][2];		// Ë÷ÒıÊı×é
+// åœ°å½¢
+float   g_terrain   [MAP_W * MAP_W][3];     // åœ°å½¢æ•°æ®
+GLuint  g_index     [MAP_W * MAP_W * 2];    // é¡¶ç‚¹æ•°æ®
+float   g_texcoord  [MAP_W * MAP_W][2];     // ç´¢å¼•æ•°ç»„
 
 
 
-// ³¡¾°Êı¾İÄ¿Â¼
+// åœºæ™¯æ•°æ®ç›®å½•
 string g_sceneDataPath = "";
 
 
-// ÏµÍ³ÉèÖÃÅäÖÃÎÄ¼şÃû
+// ç³»ç»Ÿè®¾ç½®é…ç½®æ–‡ä»¶å
 string g_systemConfigureFile = "";
 
 
-// ·ûºÅ¿âÅäÖÃÎÄ¼ş(Â·¾¶+ÎÄ¼şÃû)
+// ç¬¦å·åº“é…ç½®æ–‡ä»¶(è·¯å¾„+æ–‡ä»¶å)
 //string g_symbolConfigureFile = "";
 
-string g_point_symbolConfigureFile	= "";
-string g_line_symbolConfigureFile	= "";
-string g_area_symbolConfigureFile	= "";
+string g_point_symbolConfigureFile  = "";
+string g_line_symbolConfigureFile   = "";
+string g_area_symbolConfigureFile   = "";
 
 
-float g_max_height = 0;// ×î´ó¸ß³Ì
+float g_max_height = 0;// æœ€å¤§é«˜ç¨‹
 
 
-string g_recentlyOpenedProjectName = "";	// Ñ¡ÖĞµÄ×î½ü´ò¿ªµÄ¹¤³ÌÎÄ¼şÃû
+string g_recentlyOpenedProjectName = "";    // é€‰ä¸­çš„æœ€è¿‘æ‰“å¼€çš„å·¥ç¨‹æ–‡ä»¶å
 
-// ×î½ü´ò¿ªµÄ¹¤³ÌÎÄ¼şÁĞ±í
+// æœ€è¿‘æ‰“å¼€çš„å·¥ç¨‹æ–‡ä»¶åˆ—è¡¨
 CStringArray g_strRecentOpenedFileArray;

@@ -1,93 +1,76 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "TerrainImportContour.h"
 #include "afxdialogex.h"
 
 
-// TerrainImportContour ¶Ô»°¿ò
+// TerrainImportContour å¯¹è¯æ¡†
 
 IMPLEMENT_DYNAMIC(TerrainImportContour, CDialog)
 
 TerrainImportContour::TerrainImportContour(CWnd* pParent /*=NULL*/)
-	: CDialog(TerrainImportContour::IDD, pParent)
-	, m_TerrainContoureTex(_T(""))
-	, m_TerrainContour(_T(""))
-{
-	// Empty
+    : CDialog(TerrainImportContour::IDD, pParent)
+    , m_TerrainContoureTex(_T(""))
+    , m_TerrainContour(_T("")) {
+    // Empty
 }
 
-TerrainImportContour::~TerrainImportContour()
-{
-	// Empty
+TerrainImportContour::~TerrainImportContour() {
+    // Empty
 }
 
-void TerrainImportContour::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_TERRAIN_TEXTURE, m_TerrainContoureTex);
-	DDX_Text(pDX, IDC_EDIT_TERRAIN_CONTOUR, m_TerrainContour);
+void TerrainImportContour::DoDataExchange(CDataExchange* pDX) {
+    CDialog::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_EDIT_TERRAIN_TEXTURE, m_TerrainContoureTex);
+    DDX_Text(pDX, IDC_EDIT_TERRAIN_CONTOUR, m_TerrainContour);
 }
 
 
 BEGIN_MESSAGE_MAP(TerrainImportContour, CDialog)
-	ON_BN_CLICKED(IDC_BUTTON_TERRAIN_TEX_BROSWER, &TerrainImportContour::OnBnClickedButtonTerrainTexBroswer)
-	ON_BN_CLICKED(IDC_BUTTON_CONTOURE_BROSWER, &TerrainImportContour::OnBnClickedButtonContoureBroswer)
+    ON_BN_CLICKED(IDC_BUTTON_TERRAIN_TEX_BROSWER, &TerrainImportContour::OnBnClickedButtonTerrainTexBroswer)
+    ON_BN_CLICKED(IDC_BUTTON_CONTOURE_BROSWER, &TerrainImportContour::OnBnClickedButtonContoureBroswer)
 END_MESSAGE_MAP()
 
 
-// TerrainImportContour ÏûÏ¢´¦Àí³ÌĞò
+// TerrainImportContour æ¶ˆæ¯å¤„ç†ç¨‹åº
 
-// ä¯ÀÀµØĞÎÎÆÀíÍ¼Æ¬
-void TerrainImportContour::OnBnClickedButtonTerrainTexBroswer()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	CString tt,stt;
-	FILE *fp;
-
-	CFileDialog FileDialog(TRUE,"µØ±íÎÆÀí",NULL,OFN_HIDEREADONLY \
-		| OFN_OVERWRITEPROMPT,\
-		"µØ±íÎÆÀísand(*.bmp)|*.bmp|\
-		ÎÄ±¾¸ñÊ½(*.txt)|*.txt||",NULL);
-
-	FileDialog.m_ofn.lpstrTitle="Ñ¡ÔñµØ±íÎÆÀíÎÄ¼ş";	
-
-
-	if(FileDialog.DoModal() == IDOK)
-		m_TerrainContoureTex = FileDialog.GetPathName();
-	else
-		return;	
-	this->UpdateData(FALSE);
-
-	if((fp=fopen(m_TerrainContoureTex,"r"))==NULL)
-	{
-		MessageBox("µØÃæÎÆÀíÎÄ¼ş²»´æÔÚ!","³õÊ¼»¯µØÃæÄ£ĞÍ",MB_ICONINFORMATION+MB_OK);
-		exit(-1);
-	}
+// æµè§ˆåœ°å½¢çº¹ç†å›¾ç‰‡
+void TerrainImportContour::OnBnClickedButtonTerrainTexBroswer() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    CString tt, stt;
+    FILE* fp;
+    CFileDialog FileDialog(TRUE, "åœ°è¡¨çº¹ç†", NULL, OFN_HIDEREADONLY \
+                           | OFN_OVERWRITEPROMPT, \
+                           "åœ°è¡¨çº¹ç†sand(*.bmp)|*.bmp|\
+		æ–‡æœ¬æ ¼å¼(*.txt)|*.txt||", NULL);
+    FileDialog.m_ofn.lpstrTitle = "é€‰æ‹©åœ°è¡¨çº¹ç†æ–‡ä»¶";
+    if (FileDialog.DoModal() == IDOK)
+        m_TerrainContoureTex = FileDialog.GetPathName();
+    else
+        return;
+    this->UpdateData(FALSE);
+    if ((fp = fopen(m_TerrainContoureTex, "r")) == NULL) {
+        MessageBox("åœ°é¢çº¹ç†æ–‡ä»¶ä¸å­˜åœ¨!", "åˆå§‹åŒ–åœ°é¢æ¨¡å‹", MB_ICONINFORMATION + MB_OK);
+        exit(-1);
+    }
 }
 
-void TerrainImportContour::OnBnClickedButtonContoureBroswer()
-{
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	CString tt,stt;
-	FILE *fp;
-
-	CFileDialog FileDialog(TRUE,"µÈ¸ßÊÆÍ¼",NULL,OFN_HIDEREADONLY \
-		| OFN_OVERWRITEPROMPT,\
-		"µÈ¸ßÊÆÍ¼terrain(*.bmp)|*.bmp|\
-		ÎÄ±¾¸ñÊ½(*.txt)|*.txt||",NULL);
-
-	FileDialog.m_ofn.lpstrTitle="Ñ¡ÔñµÈ¸ßÊÆÍ¼ÎÄ¼ş";	
-
-
-	if(FileDialog.DoModal() == IDOK)
-		m_TerrainContour = FileDialog.GetPathName();
-	else
-		return;	
-	this->UpdateData(FALSE);
-
-	if((fp=fopen(m_TerrainContour,"r"))==NULL)
-	{
-		MessageBox("µÈ¸ßÊÆÍ¼ÎÄ¼ş²»´æÔÚ!","³õÊ¼»¯µØÃæÄ£ĞÍ",MB_ICONINFORMATION+MB_OK);
-		exit(-1);
-	}
+void TerrainImportContour::OnBnClickedButtonContoureBroswer() {
+    // TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+    CString tt, stt;
+    FILE* fp;
+    CFileDialog FileDialog(TRUE, "ç­‰é«˜åŠ¿å›¾", NULL, OFN_HIDEREADONLY \
+                           | OFN_OVERWRITEPROMPT, \
+                           "ç­‰é«˜åŠ¿å›¾terrain(*.bmp)|*.bmp|\
+		æ–‡æœ¬æ ¼å¼(*.txt)|*.txt||", NULL);
+    FileDialog.m_ofn.lpstrTitle = "é€‰æ‹©ç­‰é«˜åŠ¿å›¾æ–‡ä»¶";
+    if (FileDialog.DoModal() == IDOK)
+        m_TerrainContour = FileDialog.GetPathName();
+    else
+        return;
+    this->UpdateData(FALSE);
+    if ((fp = fopen(m_TerrainContour, "r")) == NULL) {
+        MessageBox("ç­‰é«˜åŠ¿å›¾æ–‡ä»¶ä¸å­˜åœ¨!", "åˆå§‹åŒ–åœ°é¢æ¨¡å‹", MB_ICONINFORMATION + MB_OK);
+        exit(-1);
+    }
 }

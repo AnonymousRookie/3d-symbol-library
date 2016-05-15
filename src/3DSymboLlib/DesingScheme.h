@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 
 #include <math.h>
@@ -6,191 +6,187 @@
 using namespace std;
 #include <vector>
 
-//ÈıÎ¬µã×ø±ê½á¹¹
-typedef struct  
-{
-	double x;	//x×ø±ê
-	double y;	//y×ø±ê
-	double z;	//z×ø±ê
-}Cordinate3D, *PCordinate3D;
+//ä¸‰ç»´ç‚¹åæ ‡ç»“æ„
+typedef struct {
+    double x;   //xåæ ‡
+    double y;   //yåæ ‡
+    double z;   //zåæ ‡
+} Cordinate3D, *PCordinate3D;
 
-//Â·»ù¶ÏÃæ½á¹¹
-typedef struct  
-{
-	float   m_Railway_width;		//Â·»ù¶ÏÃæ×Ü¿í¶È
-	float	m_Lj_width;				//Â·¼ç¿í¶È
-	float	m_Lj_Dh;				//²ê¼çÖÁ²ê½ÅµÄ¸ß¶È
-	float   m_GuiMianToLujianWidth;	//Ìú¹ìµ½²ê¼çµÄ¾àÀë
-	float	m_TieGui_width;			//Ìú¹ì¼ä¾à
-	
-}Railway;
+//è·¯åŸºæ–­é¢ç»“æ„
+typedef struct {
+    float   m_Railway_width;        //è·¯åŸºæ–­é¢æ€»å®½åº¦
+    float   m_Lj_width;             //è·¯è‚©å®½åº¦
+    float   m_Lj_Dh;                //ç¢´è‚©è‡³ç¢´è„šçš„é«˜åº¦
+    float   m_GuiMianToLujianWidth; //é“è½¨åˆ°ç¢´è‚©çš„è·ç¦»
+    float   m_TieGui_width;         //é“è½¨é—´è·
+} Railway;
 
 
-//ÏßÂ·¹ìµÀ½á¹¹
-typedef struct  
-{
-	//×ó²à¹ìµÀµã×ø±ê
-	double x1; double y1; double z1;
-	//ÓÒ²à¹ìµÀµã×ø±ê
-	double x2; double y2; double z2;
+//çº¿è·¯è½¨é“ç»“æ„
+typedef struct {
+    //å·¦ä¾§è½¨é“ç‚¹åæ ‡
+    double x1;
+    double y1;
+    double z1;
+    //å³ä¾§è½¨é“ç‚¹åæ ‡
+    double x2;
+    double y2;
+    double z2;
 
-	int TW_left;	//×ó²àÌîÍÚÀàĞÍ
-	int TW_right;	//×ó²àÌîÍÚÀàĞÍ
-	float mAngle;	//µ±Ç°Ğı×ª½Ç¶È
-}Railway3DCordinate, *PRailway3DCordinate;
+    int TW_left;    //å·¦ä¾§å¡«æŒ–ç±»å‹
+    int TW_right;   //å·¦ä¾§å¡«æŒ–ç±»å‹
+    float mAngle;   //å½“å‰æ—‹è½¬è§’åº¦
+} Railway3DCordinate, *PRailway3DCordinate;
 
-// ÏßÂ·ÈıÎ¬µã×ÛºÏ½á¹¹
-typedef struct  
-{
-	//µãµÄ×ø±ê(x,y,z)
-	double x; double y; double z; 
-	CString strJDStyle;	//½»µãÀàĞÍ
-	float dmh;			//µãµÄµØÃæ¸ß³Ì
-	float Derh;			//µãµÄ¸ß²î
-	double Lc;			//µãµÄÀï³Ì
-}Cordinate, *PCordinate;
-
-
-
-//ÏßÂ·Éè¼Æ½»µã½á¹¹
-typedef struct  
-{
-	CString  ID;	//½»µãIDºÅ
-	double  JDLC;	//½»µãÀï³Ì
-	float Alfa;		//½»µã×ª½Ç
-	float fwj;		//½»µãÆ«½Ç1
-	float fwj2;		//½»µãÆ«½Ç2
-	float T;		//ÇĞÏß³¤
-	int L0;			//»ººÍÇúÏß³¤
-	float L;		//ÇúÏß³¤
-	float Ly;		//
-	float Jzxc;		//¼ĞÖ±Ïß³¤
-	double HZ;		//»ºÖ±µãÀï³Ì
-	double ZH;		//Ö±»ºµãÀï³Ì
-	double HY;		//»ºÔ²µãÀï³Ì
-	double YH;		//Ô²»ºµãÀï³Ì
-	long R;			//ÇúÏß°ë¾¶
-	float E;		//ÍâÊ¸¾à
-	float P;		//
-	float Dist;		//
-	int  RoateStyle;//Ğı×ªÀàĞÍ(×ó×ª,ÓÒ×ª)
-	double x;		//½»µãx×ø±ê
-	double y;		//½»µãy×ø±ê
-	double z;		//½»µãz×ø±ê
-	
-	PCordinate ZH_xy;//Ö±»ºµã×ø±ê
-	PCordinate HZ_xy;//»ºÖ±µã×ø±ê
-	PCordinate YH_xy;//Ô²»ºµã×ø±ê
-	PCordinate HY_xy;//»ºÔ²µã×ø±ê
-	
-	double Cneterx; //ÇúÏßÔ²ĞÄx×ø±ê
-	double Cnetery;//ÇúÏßÔ²ĞÄy×ø±ê
-	
-}LineCurve, *PLineCurve;
+// çº¿è·¯ä¸‰ç»´ç‚¹ç»¼åˆç»“æ„
+typedef struct {
+    //ç‚¹çš„åæ ‡(x,y,z)
+    double x;
+    double y;
+    double z;
+    CString strJDStyle; //äº¤ç‚¹ç±»å‹
+    float dmh;          //ç‚¹çš„åœ°é¢é«˜ç¨‹
+    float Derh;         //ç‚¹çš„é«˜å·®
+    double Lc;          //ç‚¹çš„é‡Œç¨‹
+} Cordinate, *PCordinate;
 
 
-//»¤ÆÂ½á¹¹
-typedef struct  
-{
-	Cordinate3D Hp[3];	//Ò»½×»¤ÆÂ3¸öµã
-	float h;			//¸ß
-	float m;			//ÆÂÂÊ	
-	float b;			//±ßÆÂÆ½Ì¨¿í
-	int style;			//»¤ÆÂÀàĞÍ
-}HuPo, *PHuPo;
 
-//Â·»ù×Ü½á¹¹
-typedef struct  
-{
-	HuPo HuPo_L[3];		// ×ó²à»¤ÆÂ½á¹¹
-	int Huponums_L;		// ×ó²à»¤ÆÂ¼¶Êı
-	HuPo HuPo_R[3];		// ÓÒ²à»¤ÆÂ½á¹¹
-	int Huponums_R;		// ÓÒ²à»¤ÆÂ¼¶Êı
-	int TW_left;		// TW_left=-1: Â·Çµ
-	int TW_right;		// TW_right=-1:Â·Çµ
-	double Lc;			// Àï³Ì
-	CString strJDStyle;
-}LuQianHuPo,*PLuQianHuPo;
+//çº¿è·¯è®¾è®¡äº¤ç‚¹ç»“æ„
+typedef struct {
+    CString  ID;    //äº¤ç‚¹IDå·
+    double  JDLC;   //äº¤ç‚¹é‡Œç¨‹
+    float Alfa;     //äº¤ç‚¹è½¬è§’
+    float fwj;      //äº¤ç‚¹åè§’1
+    float fwj2;     //äº¤ç‚¹åè§’2
+    float T;        //åˆ‡çº¿é•¿
+    int L0;         //ç¼“å’Œæ›²çº¿é•¿
+    float L;        //æ›²çº¿é•¿
+    float Ly;       //
+    float Jzxc;     //å¤¹ç›´çº¿é•¿
+    double HZ;      //ç¼“ç›´ç‚¹é‡Œç¨‹
+    double ZH;      //ç›´ç¼“ç‚¹é‡Œç¨‹
+    double HY;      //ç¼“åœ†ç‚¹é‡Œç¨‹
+    double YH;      //åœ†ç¼“ç‚¹é‡Œç¨‹
+    long R;         //æ›²çº¿åŠå¾„
+    float E;        //å¤–çŸ¢è·
+    float P;        //
+    float Dist;     //
+    int  RoateStyle;//æ—‹è½¬ç±»å‹(å·¦è½¬,å³è½¬)
+    double x;       //äº¤ç‚¹xåæ ‡
+    double y;       //äº¤ç‚¹yåæ ‡
+    double z;       //äº¤ç‚¹zåæ ‡
 
-typedef struct 
-{
-	long InsertIndex;
-	CArray<PLuQianHuPo,PLuQianHuPo> tempHuPo;
-}LuQianHuPoTemp,*PLuQianHuPoTemp;
+    PCordinate ZH_xy;//ç›´ç¼“ç‚¹åæ ‡
+    PCordinate HZ_xy;//ç¼“ç›´ç‚¹åæ ‡
+    PCordinate YH_xy;//åœ†ç¼“ç‚¹åæ ‡
+    PCordinate HY_xy;//ç¼“åœ†ç‚¹åæ ‡
 
+    double Cneterx; //æ›²çº¿åœ†å¿ƒxåæ ‡
+    double Cnetery;//æ›²çº¿åœ†å¿ƒyåæ ‡
 
-class CDesingScheme
-{
-public:
-	CDesingScheme(void);
-	~CDesingScheme(void);
-
-
-public:
-	double GetDistenceXY(double x1,double y1,double x2,double y2);
-
-	float GetDistenceXYZ(double x1, double y1, double z1, double x2, double y2, double z2);
-	 
-	void Get3DLineModel(double x1,double y1,double z1,double x2,double y2,double z2,float fRailwayWidth,float LjWidth,float h_FromGmToLj,float mWidthGuiMianToLujian,float mAngleLujinaToBianPo,CString strJDstyle,CString strJDstyleNext,long index,double mLC);
-	void Get3DLineModelLast(double x1, double y1, double z1,double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj,float mWidthGuiMianToLujian,float mAngleLujinaToBianPo,CString strJDstyle,CString strJDstyleNext,long index,double mLC);
-	
-	//¸ù¾İÏßÂ·Ç°ºóÖĞĞÄÏßµÄÈıÎ¬×ø±ê¼ÆËãÌú¹ì¶¥Ãæ×óÓÒµãµÄx,y,z×ø±ê
-	void Get3DCorrdinate(double x1, double y1, double z1,double x2, double y2, double z2,float dx,float dz, float L,double *x11,double *y11,double *z11,double *x12,double *y12,double *z12,double *x21,double *y21,double *z21,double *x22,double *y22,double *z22 ,float *angle);
-	
-	// ¼ÆËã¸÷½»µãµÄÇúÏßÒªËØ
-	void CalculateCurveData();
-
-	//ÔÚ½»µã¼äÄÚ²åµã²¢±£´æµ½Êı×éÖĞ,¹©³ÌĞòµ÷ÓÃ
-	void Save3DlineZX();
-
-	void NeiChaDian(float ZHLength, double x1, double y1, double z1, double x2, double y2, double z2,double lc);
-	void GetQLXY(float L0, long R, int RoateStyle, float LL, float fwj, double ZH_xy_x, double ZH_xy_y, double HZ_xy_x, double HZ_xy_y, double *xc, double *yc, int Q_H_L);
-	void GetYQXXY(double centerx, double centery, long R, int RoateStyle, float LL, float alfa, double HY_xy_x, double HY_xy_y, double YH_xy_x, double YH_xy_y, double *xc, double *yc);
-	
-
-	//¼ÆËã±ßÆÂÓëÔÚÃæµÄ½»µã×ø±ê 
-	void GetDMJD(double x1, double y1, double z1, double x2, double y2, double z2,float L,float h0, double x0,double z0,int TW, int LeftRight,\
-			double tx0,double ty0,double tz0,double tx1,double ty1,double tz1,double mLC,CString strJDstyle);
-	
-	//¼ÆËãÖÕµã´¦±ßÆÂÓëÔÚÃæµÄ½»µã×ø±ê 
-	void GetDMJDLast(double x1, double y1, double z1, double x2, double y2, double z2,float L,float h0, double x0,double z0,int TW, int LeftRight,\
-		double tx0,double ty0,double tz0,double tx1,double ty1,double tz1,double mLC,CString strJDstyle);
-
-	
-	//¼ÆËã±ßÆÂµãÓëµØÃæÏßµÄ½»µã×ø±ê 
-	void GetBpJD(float H0, float Afla, float mangle, double x0, double z0, int bsignTW, int mLeftRight, double *tx, double *ty, double *tz);
-
-	float GetH(float L, float Afla, float mAngle,double x0,double z0,int mLeftRight,double *xx,double *zz);
-	//¼ÆËã±ßÆÂµÄÌîÍÚÀàĞÍ
-	int GetTW(double x, double z, float H);
-
-	float GetHeightValue(float x, float z);
+} LineCurve, *PLineCurve;
 
 
-	// ¼ÆËãÌî²¹Ãæ±ßÉÏµÄµã
-	void CalculateFillFacePoints(vector<Railway3DCordinate> &rcVector2,vector<Railway3DCordinate> &rcVector1);
+//æŠ¤å¡ç»“æ„
+typedef struct {
+    Cordinate3D Hp[3];  //ä¸€é˜¶æŠ¤å¡3ä¸ªç‚¹
+    float h;            //é«˜
+    float m;            //å¡ç‡
+    float b;            //è¾¹å¡å¹³å°å®½
+    int style;          //æŠ¤å¡ç±»å‹
+} HuPo, *PHuPo;
 
-public:
-	// ÌúÂ·ÖĞÏß
-	CArray<PCordinate,PCordinate> PtS_3DLineZX;
+//è·¯åŸºæ€»ç»“æ„
+typedef struct {
+    HuPo HuPo_L[3];     // å·¦ä¾§æŠ¤å¡ç»“æ„
+    int Huponums_L;     // å·¦ä¾§æŠ¤å¡çº§æ•°
+    HuPo HuPo_R[3];     // å³ä¾§æŠ¤å¡ç»“æ„
+    int Huponums_R;     // å³ä¾§æŠ¤å¡çº§æ•°
+    int TW_left;        // TW_left=-1: è·¯å ‘
+    int TW_right;       // TW_right=-1:è·¯å ‘
+    double Lc;          // é‡Œç¨‹
+    CString strJDStyle;
+} LuQianHuPo, *PLuQianHuPo;
 
-	// Â·¼ç
-	CArray<PRailway3DCordinate,PRailway3DCordinate> PtS_RailwayLj3D;
+typedef struct {
+    long InsertIndex;
+    CArray<PLuQianHuPo, PLuQianHuPo> tempHuPo;
+} LuQianHuPoTemp, *PLuQianHuPoTemp;
 
-	// ¹ìµÀ
-	CArray<PRailway3DCordinate,PRailway3DCordinate> PtS_Railway3D;
 
-	// ÏßÂ·Éè¼Æ½»µã
-	CArray<PLineCurve,PLineCurve> JDCurveElements;
+class CDesingScheme {
+  public:
+    CDesingScheme(void);
+    ~CDesingScheme(void);
 
-	// ½»µã
-	CArray<PCordinate,PCordinate> PtS_JD;
 
-	CArray<PRailway3DCordinate,PRailway3DCordinate> PtS_RailwayLjToBP3D;
-	CArray<PRailway3DCordinate,PRailway3DCordinate> PtS_RailwayBP3D;
+  public:
+    double GetDistenceXY(double x1, double y1, double x2, double y2);
 
-	CArray<PLuQianHuPo,PLuQianHuPo> PtS_HuPo;
-	CArray<PLuQianHuPoTemp,PLuQianHuPoTemp> PtSHuPoTemp;
- 
+    float GetDistenceXYZ(double x1, double y1, double z1, double x2, double y2, double z2);
+
+    void Get3DLineModel(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo, CString strJDstyle, CString strJDstyleNext, long index, double mLC);
+    void Get3DLineModelLast(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo, CString strJDstyle, CString strJDstyleNext, long index, double mLC);
+
+    //æ ¹æ®çº¿è·¯å‰åä¸­å¿ƒçº¿çš„ä¸‰ç»´åæ ‡è®¡ç®—é“è½¨é¡¶é¢å·¦å³ç‚¹çš„x,y,zåæ ‡
+    void Get3DCorrdinate(double x1, double y1, double z1, double x2, double y2, double z2, float dx, float dz, float L, double* x11, double* y11, double* z11, double* x12, double* y12, double* z12, double* x21, double* y21, double* z21, double* x22, double* y22, double* z22 , float* angle);
+
+    // è®¡ç®—å„äº¤ç‚¹çš„æ›²çº¿è¦ç´ 
+    void CalculateCurveData();
+
+    //åœ¨äº¤ç‚¹é—´å†…æ’ç‚¹å¹¶ä¿å­˜åˆ°æ•°ç»„ä¸­,ä¾›ç¨‹åºè°ƒç”¨
+    void Save3DlineZX();
+
+    void NeiChaDian(float ZHLength, double x1, double y1, double z1, double x2, double y2, double z2, double lc);
+    void GetQLXY(float L0, long R, int RoateStyle, float LL, float fwj, double ZH_xy_x, double ZH_xy_y, double HZ_xy_x, double HZ_xy_y, double* xc, double* yc, int Q_H_L);
+    void GetYQXXY(double centerx, double centery, long R, int RoateStyle, float LL, float alfa, double HY_xy_x, double HY_xy_y, double YH_xy_x, double YH_xy_y, double* xc, double* yc);
+
+
+    //è®¡ç®—è¾¹å¡ä¸åœ¨é¢çš„äº¤ç‚¹åæ ‡
+    void GetDMJD(double x1, double y1, double z1, double x2, double y2, double z2, float L, float h0, double x0, double z0, int TW, int LeftRight, \
+                 double tx0, double ty0, double tz0, double tx1, double ty1, double tz1, double mLC, CString strJDstyle);
+
+    //è®¡ç®—ç»ˆç‚¹å¤„è¾¹å¡ä¸åœ¨é¢çš„äº¤ç‚¹åæ ‡
+    void GetDMJDLast(double x1, double y1, double z1, double x2, double y2, double z2, float L, float h0, double x0, double z0, int TW, int LeftRight, \
+                     double tx0, double ty0, double tz0, double tx1, double ty1, double tz1, double mLC, CString strJDstyle);
+
+
+    //è®¡ç®—è¾¹å¡ç‚¹ä¸åœ°é¢çº¿çš„äº¤ç‚¹åæ ‡
+    void GetBpJD(float H0, float Afla, float mangle, double x0, double z0, int bsignTW, int mLeftRight, double* tx, double* ty, double* tz);
+
+    float GetH(float L, float Afla, float mAngle, double x0, double z0, int mLeftRight, double* xx, double* zz);
+    //è®¡ç®—è¾¹å¡çš„å¡«æŒ–ç±»å‹
+    int GetTW(double x, double z, float H);
+
+    float GetHeightValue(float x, float z);
+
+
+    // è®¡ç®—å¡«è¡¥é¢è¾¹ä¸Šçš„ç‚¹
+    void CalculateFillFacePoints(vector<Railway3DCordinate>& rcVector2, vector<Railway3DCordinate>& rcVector1);
+
+  public:
+    // é“è·¯ä¸­çº¿
+    CArray<PCordinate, PCordinate> PtS_3DLineZX;
+
+    // è·¯è‚©
+    CArray<PRailway3DCordinate, PRailway3DCordinate> PtS_RailwayLj3D;
+
+    // è½¨é“
+    CArray<PRailway3DCordinate, PRailway3DCordinate> PtS_Railway3D;
+
+    // çº¿è·¯è®¾è®¡äº¤ç‚¹
+    CArray<PLineCurve, PLineCurve> JDCurveElements;
+
+    // äº¤ç‚¹
+    CArray<PCordinate, PCordinate> PtS_JD;
+
+    CArray<PRailway3DCordinate, PRailway3DCordinate> PtS_RailwayLjToBP3D;
+    CArray<PRailway3DCordinate, PRailway3DCordinate> PtS_RailwayBP3D;
+
+    CArray<PLuQianHuPo, PLuQianHuPo> PtS_HuPo;
+    CArray<PLuQianHuPoTemp, PLuQianHuPoTemp> PtSHuPoTemp;
+
 };
 
