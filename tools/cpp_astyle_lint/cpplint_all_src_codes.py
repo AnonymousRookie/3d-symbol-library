@@ -5,7 +5,7 @@ import os
 import os.path
 
 need_cpplint_dir = '..\..\src'
-ignore_lists="-legal/copyright,-whitespace/line_length"
+ignore_lists="-legal/copyright,-whitespace/line_length,-build/include_what_you_use,-whitespace/braces,-build/include,-whitespace/blank_line,-whitespace/ending_newline,-build/header_guard,-readability/streams,-whitespace/parens,-whitespace/operators,-build/storage_class,-whitespace/labels"
 
 for parent,dirnames,filenames in os.walk(need_cpplint_dir):
 	for filename in filenames:
