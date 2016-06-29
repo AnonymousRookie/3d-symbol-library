@@ -1,7 +1,4 @@
-﻿// SplashWnd.cpp : 实现文件
-//
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "SplashWnd.h"
 
@@ -27,16 +24,16 @@ void CSplashWnd::Create(UINT nBitmapID) {
     m_bitmap.LoadBitmap(nBitmapID);
     BITMAP bitmap;
     m_bitmap.GetBitmap(&bitmap);
-    //CreateEx(0,AfxRegisterWndClass(0),"",WS_POPUP|WS_VISIBLE|WS_BORDER,0,0,bitmap.bmWidth,bitmap.bmHeight,NULL,0);
+    // CreateEx(0,AfxRegisterWndClass(0),"",WS_POPUP|WS_VISIBLE|WS_BORDER,0,0,bitmap.bmWidth,bitmap.bmHeight,NULL,0);
     CreateEx(0,
              AfxRegisterWndClass(0, AfxGetApp()->LoadStandardCursor(IDC_ARROW)),
              NULL, WS_POPUP | WS_VISIBLE, 0, 0, bitmap.bmWidth, bitmap.bmHeight, NULL , NULL);
 }
 
 void CSplashWnd::OnPaint() {
-    // TODO: 在此处添加消息处理程序代码
+    // TODO(jason): 在此处添加消息处理程序代码
     // 不为绘图消息调用 CWnd::OnPaint()
-    CPaintDC dc(this); // device context forpainting
+    CPaintDC dc(this);  // device context forpainting
     BITMAP bitmap;
     m_bitmap.GetBitmap(&bitmap);
     CDC dcComp;
@@ -47,7 +44,7 @@ void CSplashWnd::OnPaint() {
 }
 
 void CSplashWnd::OnTimer(UINT_PTR nIDEvent) {
-    // TODO: 在此添加消息处理程序代码和/或调用默认值
-    //CWnd::OnTimer(nIDEvent);
-    DestroyWindow(); //销毁初始画面窗口
+    // TODO(jason): 在此添加消息处理程序代码和/或调用默认值
+    // CWnd::OnTimer(nIDEvent);
+    DestroyWindow();  // 销毁初始画面窗口
 }

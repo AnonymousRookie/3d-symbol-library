@@ -8,7 +8,7 @@
 #endif
 
 #include "resource.h"       // 主符号
-//#include "GdiPlus.h"
+// #include "GdiPlus.h"
 #include "stdafx.h"
 #include "GlobalVariable.h"
 
@@ -27,7 +27,7 @@ class CMy3DSymbolLibNewApp : public CWinAppEx {
     CMy3DSymbolLibNewApp();
 
 
-    // 重写
+  // 重写
   public:
     virtual BOOL InitInstance();
     virtual int ExitInstance();
@@ -43,8 +43,8 @@ class CMy3DSymbolLibNewApp : public CWinAppEx {
     afx_msg void OnAppAbout();
     DECLARE_MESSAGE_MAP()
 
-    GdiplusStartupInput   m_gdiplusStartupInput;   //只需要在程序运行最开始初始化一次
-    ULONG_PTR             m_gdiplusToken;          //只需要在程序运行最开始初始化一次
+    GdiplusStartupInput   m_gdiplusStartupInput;   // 只需要在程序运行最开始初始化一次
+    ULONG_PTR             m_gdiplusToken;          // 只需要在程序运行最开始初始化一次
 };
 
 extern CMy3DSymbolLibNewApp theApp;

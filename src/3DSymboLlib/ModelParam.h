@@ -27,16 +27,16 @@ class ModelParam : public CDialog {
     int rotZ;
     float scale;
     CString displayPath;
-    bool modelChanged;// 模型是否已更换
+    bool modelChanged;  // 模型是否已更换
 
-    bool isModelTextureUpdated;// 模型纹理是否发生改变
+    bool isModelTextureUpdated;  // 模型纹理是否发生改变
 
     // 纹理的路径及文件名
     CString m_TexturePathAndName;
 
 
     virtual BOOL OnInitDialog();
-    CString m_strTitle; //设置对话框标题
+    CString m_strTitle;  // 设置对话框标题
     CString modelPath;
     CString modelFolder;
     afx_msg void OnBnClickedButtonChangeModelPath();

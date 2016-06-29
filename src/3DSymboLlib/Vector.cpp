@@ -18,9 +18,9 @@ CVector3 Vector(CVector3 vPoint1, CVector3 vPoint2) {
 CVector3 Normalize(CVector3 vNormal) {
     double Magnitude;
     Magnitude = Mag(vNormal);
-    vNormal.x /= (float)Magnitude;
-    vNormal.y /= (float)Magnitude;
-    vNormal.z /= (float)Magnitude;
+    vNormal.x /= static_cast<float>(Magnitude);
+    vNormal.y /= static_cast<float>(Magnitude);
+    vNormal.z /= static_cast<float>(Magnitude);
     return vNormal;
 }
 
@@ -30,7 +30,7 @@ float Absolute(float num) {
 
 
 float Magnitude(CVector3 vNormal) {
-    return (float)sqrt((vNormal.x * vNormal.x) + (vNormal.y * vNormal.y) + (vNormal.z * vNormal.z));
+    return static_cast<float>(sqrt((vNormal.x * vNormal.x) + (vNormal.y * vNormal.y) + (vNormal.z * vNormal.z)));
 }
 
 // 叉积
@@ -43,12 +43,12 @@ CVector3 Cross(CVector3 vVector1, CVector3 vVector2) {
 }
 
 // 点积
-float DotProduct(const CVector3& v1, const CVector3& v2) { //点积计算
+float DotProduct(const CVector3& v1, const CVector3& v2) {  // 点积计算
     return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
 };
 
 
-CVector3 CrossProduct(const CVector3& v1, const CVector3& v2) { //叉积计算
+CVector3 CrossProduct(const CVector3& v1, const CVector3& v2) {  // 叉积计算
     CVector3 result(0.0f, 0.0f, 0.0f);
     result.x = (v1.y * v2.z) - (v1.z * v2.y);
     result.y = (v1.z * v2.x) - (v1.x * v2.z);
@@ -75,5 +75,5 @@ bool PntFrontOrBack2(const CVector3& vPnt, const CVector3& vPtStart, const CVect
 }
 
 float Dist(const CVector3& v1, const CVector3& v2) {
-    return float(sqrt((v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y) + (v1.z - v2.z) * (v1.z - v2.z)));
+    return static_cast<float>(sqrt((v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y) + (v1.z - v2.z) * (v1.z - v2.z)));
 }

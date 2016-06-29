@@ -36,7 +36,7 @@ END_MESSAGE_MAP()
 
 // 浏览地形纹理图片
 void TerrainImportContour::OnBnClickedButtonTerrainTexBroswer() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CString tt, stt;
     FILE* fp;
     CFileDialog FileDialog(TRUE, "地表纹理", NULL, OFN_HIDEREADONLY \
@@ -56,7 +56,7 @@ void TerrainImportContour::OnBnClickedButtonTerrainTexBroswer() {
 }
 
 void TerrainImportContour::OnBnClickedButtonContoureBroswer() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CString tt, stt;
     FILE* fp;
     CFileDialog FileDialog(TRUE, "等高势图", NULL, OFN_HIDEREADONLY \

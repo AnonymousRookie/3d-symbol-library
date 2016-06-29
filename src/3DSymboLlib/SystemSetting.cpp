@@ -39,7 +39,7 @@ END_MESSAGE_MAP()
 
 
 void CSystemSetting::OnBnClickedOk() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     g_sceneDataPath = m_SceneDataPATH;
     char sceneDir[256];
     GetCurrentDirectoryA(256, sceneDir);
@@ -56,14 +56,14 @@ void CSystemSetting::OnBnClickedOk() {
 
 
 void CSystemSetting::OnBnClickedCancel() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CDialog::OnCancel();
 }
 
 
 void CSystemSetting::OnBnClickedButtonChangePath() {
-    // TODO: 在此添加控件通知处理程序代码
-    char szPath[MAX_PATH];     //存放选择的目录路径
+    // TODO(jason): 在此添加控件通知处理程序代码
+    char szPath[MAX_PATH];     // 存放选择的目录路径
     CString str;
     ZeroMemory(szPath, sizeof(szPath));
     BROWSEINFO bi;
@@ -75,11 +75,11 @@ void CSystemSetting::OnBnClickedButtonChangePath() {
     bi.lpfn = NULL;
     bi.lParam = 0;
     bi.iImage = 0;
-    //弹出选择目录对话框
+    // 弹出选择目录对话框
     LPITEMIDLIST lp = SHBrowseForFolder(&bi);
     if (lp && SHGetPathFromIDList(lp, szPath)) {
         str.Format("选择的目录为 %s",  szPath);
-        //AfxMessageBox(str);
+        // AfxMessageBox(str);
         m_SceneDataPATH = szPath;
         UpdateData(FALSE);
     }

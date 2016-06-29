@@ -1,7 +1,4 @@
-﻿// C3DModelParamSet.cpp : 实现文件
-
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "C3DModelParamSet.h"
 #include "afxdialogex.h"
@@ -23,11 +20,11 @@ C3DModelParamSet::C3DModelParamSet(CWnd* pParent /*=NULL*/)
     , iRotateY(0)
     , iRotateZ(0)
     , iDisplayType(0) {
-    //模态对话框的构造函数，m_pView为空
+    // 模态对话框的构造函数，m_pView为空
     m_pView = NULL;
 }
 
-C3DModelParamSet::C3DModelParamSet(CView* pView)// 非模态对话框构造函数
+C3DModelParamSet::C3DModelParamSet(CView* pView)  // 非模态对话框构造函数
     : xPos(389)
     , zPos(-389)
     , hPos(0)
@@ -38,7 +35,7 @@ C3DModelParamSet::C3DModelParamSet(CView* pView)// 非模态对话框构造函�
     , iRotateY(0)
     , iRotateZ(0)
     , iDisplayType(0) {
-    //非模态对话框的构造函数，m_pView不为空
+    // 非模态对话框的构造函数，m_pView不为空
     m_pView = pView;
     isSetXYByMouse = 0;
 }
@@ -92,39 +89,39 @@ BOOL C3DModelParamSet::OnInitDialog() {
 
 
 void C3DModelParamSet::OnBnClickedRadioRepeat() {
-    // TODO: 在此添加控件通知处理程序代码
-    iDisplayType = 0; // 纹理重复映射 repeat
+    // TODO(jason): 在此添加控件通知处理程序代码
+    iDisplayType = 0;  // 纹理重复映射 repeat
 }
 
 
 void C3DModelParamSet::OnBnClickedRadioStretch() {
-    // TODO: 在此添加控件通知处理程序代码
-    iDisplayType = 1; // 纹理拉伸映射
+    // TODO(jason): 在此添加控件通知处理程序代码
+    iDisplayType = 1;  // 纹理拉伸映射
 }
 
 
 void C3DModelParamSet::OnOK() {
-    // TODO: 在此添加专用代码和/或调用基类
+    // TODO(jason): 在此添加专用代码和/或调用基类
     if (m_pView != NULL) {
-        //非模式对话框不调用基类CDialog的OnOK函数
+        // 非模式对话框不调用基类CDialog的OnOK函数
         UpdateData(TRUE);
         m_pView->PostMessage(WM_GOODBYE, IDOK);
     } else {
-        //AfxMessageBox("模式o   ...  k");
-        //模态对话框直接调用基类的OnOK函数
+        // AfxMessageBox("模式o   ...  k");
+        // 模态对话框直接调用基类的OnOK函数
         CDialog::OnOK();
     }
 }
 
 
 void C3DModelParamSet::OnCancel() {
-    // TODO: 在此添加专用代码和/或调用基类
+    // TODO(jason): 在此添加专用代码和/或调用基类
     if (m_pView != NULL) {
-        //非模式对话框不调用基类CDialog的OnCancel函数
-        //发送用户定义的消息WM_GOODBYE
+        // 非模式对话框不调用基类CDialog的OnCancel函数
+        // 发送用户定义的消息WM_GOODBYE
         m_pView->PostMessage(WM_GOODBYE, IDCANCEL);
     } else {
-        //模态对话框直接调用基类的OnCancel函数
+        // 模态对话框直接调用基类的OnCancel函数
         CDialog::OnCancel();
     }
 }
@@ -134,14 +131,14 @@ void C3DModelParamSet::OnCancel() {
 /* Function: 通过鼠标点击屏幕获取坐标来设置模型摆放位置                     */
 /************************************************************************/
 void C3DModelParamSet::OnClickedCheckSetXyByMouse() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     if (m_SetPosCheckBox.GetCheck() == 0) {
         isSetXYByMouse = 0;
-        //AfxMessageBox("n");
+        // AfxMessageBox("n");
         m_pView->PostMessage(WM_GOODBYE, SET_XY_BY_MOUSE_FALSE);
     } else if (m_SetPosCheckBox.GetCheck() == 1) {
         isSetXYByMouse = true;
-        //AfxMessageBox("y");
+        // AfxMessageBox("y");
         m_pView->PostMessage(WM_GOODBYE, SET_XY_BY_MOUSE_TRUE);
     }
 }
@@ -151,6 +148,6 @@ void C3DModelParamSet::OnClickedCheckSetXyByMouse() {
 /* Function: 自定义消息响应, 非模式对话框, 根据鼠标选取的坐标更新对话框     */
 /************************************************************************/
 LRESULT C3DModelParamSet::OnUpdateEditXY(WPARAM wParam, LPARAM lParam) {
-    UpdateData(FALSE); // 更新对话框
+    UpdateData(FALSE);  // 更新对话框
     return 0;
 }

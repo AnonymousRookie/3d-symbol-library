@@ -192,15 +192,15 @@ void CClassView::OnClassAddMemberFunction() {
 }
 
 void CClassView::OnClassAddMemberVariable() {
-    // TODO: 在此处添加命令处理程序代码
+    // TODO(jason): 在此处添加命令处理程序代码
 }
 
 void CClassView::OnClassDefinition() {
-    // TODO: 在此处添加命令处理程序代码
+    // TODO(jason): 在此处添加命令处理程序代码
 }
 
 void CClassView::OnClassProperties() {
-    // TODO: 在此处添加命令处理程序代码
+    // TODO(jason): 在此处添加命令处理程序代码
 }
 
 void CClassView::OnNewFolder() {
@@ -208,7 +208,7 @@ void CClassView::OnNewFolder() {
 }
 
 void CClassView::OnPaint() {
-    CPaintDC dc(this); // 用于绘制的设备上下文
+    CPaintDC dc(this);  // 用于绘制的设备上下文
     CRect rectTree;
     m_wndClassView.GetWindowRect(rectTree);
     ScreenToClient(rectTree);

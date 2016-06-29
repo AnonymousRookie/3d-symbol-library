@@ -1,6 +1,4 @@
-﻿// ModelListConfigureDialog.cpp : 实现文件
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "ModelListConfigureDialog.h"
 #include "afxdialogex.h"
@@ -48,11 +46,11 @@ END_MESSAGE_MAP()
 
 
 void ModelListConfigureDialog::OnBnClickedOk() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     for (int i = 0; i < g_modelKindNumber; ++i) {
         // Update only changed
         if (g_modelTree[i].isChanged) {
-            CoInitialize(NULL); // 初始化COM。
+            CoInitialize(NULL);  // 初始化COM。
             CComPtr<IXMLDOMDocument> spXMLDOM;
             // 创建解析器实例。
             HRESULT hr = spXMLDOM.CoCreateInstance(_uuidof(DOMDocument));
@@ -64,14 +62,14 @@ void ModelListConfigureDialog::OnBnClickedOk() {
             string subStr = g_modelTree[i]._noteDirectory.substr(0, strLen - 2);
             CComBSTR bstrSS(subStr.c_str());
             CComPtr<IXMLDOMNode> spDevice;
-            hr = spXMLDOM->selectSingleNode(bstrSS, &spDevice); //搜索bstrSS。
+            hr = spXMLDOM->selectSingleNode(bstrSS, &spDevice);  // 搜索bstrSS。
             CComPtr<IXMLDOMElement> spRootEle;
-            spXMLDOM->get_documentElement(&spRootEle); //根节点
+            spXMLDOM->get_documentElement(&spRootEle);  // 根节点
             CComPtr<IXMLDOMNodeList> spNodeList;
             spRootEle->selectNodes(_bstr_t(g_modelTree[i]._noteDirectory.c_str()), &spNodeList);
-            long nLen;//子节点数
-            spNodeList->get_length(&nLen); //子节点数
-            for (long j = 0; j != nLen; ++j) { //遍历子节点
+            long nLen;  // 子节点数
+            spNodeList->get_length(&nLen);  // 子节点数
+            for (long j = 0; j != nLen; ++j) {  // 遍历子节点
                 CComPtr<IXMLDOMNode> spNode;
                 spNodeList->get_item(j, &spNode);
                 // 删除所有子节点(item)
@@ -89,7 +87,7 @@ void ModelListConfigureDialog::OnBnClickedOk() {
                 // 设置"Model"的文本。
                 spInsertedNode->put_text(strID.AllocSysString());
             }
-            //保存文档。
+            // 保存文档。
             spXMLDOM->save(CComVariant(g_point_symbolConfigureFile.c_str()));
             // 结束对COM的使用。
             CoUninitialize();
@@ -103,15 +101,15 @@ void ModelListConfigureDialog::OnBnClickedOk() {
 /* Function: 取消的时候将List中被删除的元素重新插入                         */
 /************************************************************************/
 void ModelListConfigureDialog::OnBnClickedCancel() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     for (int i = 0; i < g_modelKindNumber; ++i) {
-        //add
+        // add
         list<string>::iterator iter_del;
         for (iter_del = g_delList[i].begin(); iter_del != g_delList[i].end(); ++iter_del) {
             g_modelList[i].push_back(*iter_del);
         }
         g_delList[i].clear();
-        //delete
+        // delete
         list<string>::iterator iter_add = g_delList[i].begin();
         while (iter_add != g_delList[i].end()) {
             iter_add = g_delList[i].erase(iter_add);
@@ -124,9 +122,9 @@ void ModelListConfigureDialog::OnBnClickedCancel() {
 
 BOOL ModelListConfigureDialog::OnInitDialog() {
     CDialog::OnInitDialog();
-    //============================================
+    // ============================================
     // 从list中读取信息显示在tree中
-    //============================================
+    // ============================================
     for (int i = 0; i < g_modelKindNumber; ++i) {
         g_modelTree[i].isChanged = 0;
         // 排序
@@ -152,7 +150,7 @@ BOOL ModelListConfigureDialog::OnInitDialog() {
 /* Function: 弹出菜单                                                   */
 /************************************************************************/
 void ModelListConfigureDialog::OnContextMenu(CWnd* pWnd, CPoint point) {
-    // TODO: 在此处添加消息处理程序代码
+    // TODO(jason): 在此处添加消息处理程序代码
     if (point != CPoint(-1, -1)) {
         CPoint ptTree = point;
         m_configureModeListTree.ScreenToClient(&ptTree);
@@ -164,24 +162,24 @@ void ModelListConfigureDialog::OnContextMenu(CWnd* pWnd, CPoint point) {
             menu.LoadMenu(IDR_MENU_POPUP_CONFIGURE_EDIT);
             CMenu* pMenu = menu.GetSubMenu(0);
             m_configureModeListTree.SetFocus();
-            //========================================================
+            // ========================================================
             HTREEITEM selectedItem = m_configureModeListTree.GetSelectedItem();
             HTREEITEM selectedParentItem = m_configureModeListTree.GetParentItem(selectedItem);
             HTREEITEM rootItem = m_configureModeListTree.GetRootItem();
             if (rootItem == selectedParentItem) {
-                //MessageBox("二级节点","",MB_OK);
+                // MessageBox("二级节点","",MB_OK);
                 pMenu->EnableMenuItem(ID_EDIT_DELETE_SYMBOL, MF_DISABLED | MF_GRAYED);
             }
             if (rootItem == m_configureModeListTree.GetParentItem(selectedParentItem)) {
                 pMenu->EnableMenuItem(ID_EDIT_ADD_SYMBOL, MF_DISABLED | MF_GRAYED);
-                //MessageBox("3级节点","",MB_OK);
+                // MessageBox("3级节点","",MB_OK);
             }
             if (rootItem == selectedItem) {
-                //MessageBox("根节点","",MB_OK);
+                // MessageBox("根节点","",MB_OK);
                 pMenu->EnableMenuItem(ID_EDIT_ADD_SYMBOL, MF_DISABLED | MF_GRAYED);
                 pMenu->EnableMenuItem(ID_EDIT_DELETE_SYMBOL, MF_DISABLED | MF_GRAYED);
             }
-            //========================================================
+            // ========================================================
             pMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
         }
     }
@@ -192,7 +190,7 @@ void ModelListConfigureDialog::OnContextMenu(CWnd* pWnd, CPoint point) {
 /* Function: tree control 上右击菜单，delete                                */
 /************************************************************************/
 void ModelListConfigureDialog::OnEditDeleteSymbol() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     HTREEITEM selectItem = m_configureModeListTree.GetSelectedItem();
     CString selectItemText = m_configureModeListTree.GetItemText(selectItem);
     HTREEITEM parentItem = m_configureModeListTree.GetParentItem(selectItem);
@@ -230,7 +228,7 @@ void ModelListConfigureDialog::OnEditDeleteSymbol() {
 /* Function: tree control 上右击菜单，add                                   */
 /************************************************************************/
 void ModelListConfigureDialog::OnEditAddSymbol() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     HTREEITEM selectItem = m_configureModeListTree.GetSelectedItem();
     CString selectItemText = m_configureModeListTree.GetItemText(selectItem);
     // 文件对话框标题,格式过滤器,默认路径
@@ -320,15 +318,15 @@ void ModelListConfigureDialog::OnTvnSelchangedTreeCongigureModellist(NMHDR* pNMH
         if (parentItemText == g_modelTree[i]._item.c_str()) {
             if (0 == i) {
                 imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._3DSFolder.c_str() + tmp + selectItemText + ".bmp";
-                //MessageBox(imgPathAndName,"");
+                // MessageBox(imgPathAndName,"");
             }
             // PNG
             else if (1 == i) {
                 imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._CityFolder.c_str() + tmp + selectItemText + ".png";
-                //MessageBox(imgPathAndName,"");
+                // MessageBox(imgPathAndName,"");
                 GetDlgItem(IDC_STATIC_IMAGE)->GetParent()->RedrawWindow();
                 CWnd* pWnd;
-                pWnd = GetDlgItem(IDC_STATIC_IMAGE); //这里是获得控件句柄
+                pWnd = GetDlgItem(IDC_STATIC_IMAGE);  // 这里是获得控件句柄
                 CDC* pDC = pWnd->GetDC();
                 HDC hDC = pDC->m_hDC;
                 CRect rect_frame;
@@ -338,16 +336,16 @@ void ModelListConfigureDialog::OnTvnSelchangedTreeCongigureModellist(NMHDR* pNMH
                 ::SetStretchBltMode(hDC, HALFTONE);
                 ::SetBrushOrgEx(hDC, 0, 0, NULL);
                 image.Draw(hDC, rect_frame);
-                ReleaseDC(pDC);//释放picture控件的DC
+                ReleaseDC(pDC);  // 释放picture控件的DC
             } else if (2 == i) {
                 imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._TreeFolder.c_str() + tmp + selectItemText + ".bmp";
-                //MessageBox(imgPathAndName,"");
+                // MessageBox(imgPathAndName,"");
             } else if (3 == i) {
                 imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._3DTreeFolder.c_str() + tmp + selectItemText + ".bmp";
-                //MessageBox(imgPathAndName,"");
+                // MessageBox(imgPathAndName,"");
             } else if (4 == i) {
                 imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._WeatherFolder.c_str() + tmp + selectItemText + ".bmp";
-                //MessageBox(imgPathAndName,"");
+                // MessageBox(imgPathAndName,"");
             }
             // BMP
             if (i != 1) {
@@ -366,20 +364,20 @@ void ModelListConfigureDialog::OnTvnSelchangedTreeCongigureModellist(NMHDR* pNMH
 /* Function: 将选中的bmp纹理影像在控件上绘制                                */
 /************************************************************************/
 void ModelListConfigureDialog::drawBitmapFromFile(CString bitmapFilePath, CDC* pDC, CRect rect) {
-    HANDLE   filehandle =::LoadImage(NULL, bitmapFilePath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE); //加载影像文件
-    if (filehandle != NULL) { //如果加载成功
+    HANDLE   filehandle =::LoadImage(NULL, bitmapFilePath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);  // 加载影像文件
+    if (filehandle != NULL) {  // 如果加载成功
         CBitmap   bmp;
         if (bmp.Attach(filehandle)) {
             BITMAP   bmpInfo;
-            bmp.GetBitmap(&bmpInfo);   //获取资源位图信息
+            bmp.GetBitmap(&bmpInfo);   // 获取资源位图信息
             CDC   dcMemory;
-            dcMemory.CreateCompatibleDC(pDC);   //创建一个与特定设备场景一致的内存设备场景
-            dcMemory.SelectObject(&bmp);   //选择bmp对象到指定的设备上下文环境中,该新对象替换先前的相同类型的对象
-            //设置指定设备环境中的位图拉伸模式. HALFTONE：将源矩形区中的像素映射到目标矩形区的像素块中，
-            //覆盖目标像素块的一般颜色与源像素的颜色接近。
-            //StretchBlt():源矩形中复制一个位图到目标矩形,必要时按目前目标设备设置的模式进行图像的拉伸或压缩。
+            dcMemory.CreateCompatibleDC(pDC);   // 创建一个与特定设备场景一致的内存设备场景
+            dcMemory.SelectObject(&bmp);   // 选择bmp对象到指定的设备上下文环境中,该新对象替换先前的相同类型的对象
+            // 设置指定设备环境中的位图拉伸模式. HALFTONE：将源矩形区中的像素映射到目标矩形区的像素块中，
+            // 覆盖目标像素块的一般颜色与源像素的颜色接近。
+            // StretchBlt():源矩形中复制一个位图到目标矩形,必要时按目前目标设备设置的模式进行图像的拉伸或压缩。
             pDC->StretchBlt(rect.left, rect.top, rect.Width(), rect.Height(), &dcMemory, 0, 0, bmpInfo.bmWidth, bmpInfo.bmHeight, SRCCOPY);
-            bmp.Detach();   //销毁bmp对象
+            bmp.Detach();   // 销毁bmp对象
         }
     }
 }

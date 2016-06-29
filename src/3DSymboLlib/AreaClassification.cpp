@@ -1,7 +1,4 @@
-﻿// AreaClassification.cpp : 实现文件
-//
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "AreaClassification.h"
 #include "afxdialogex.h"
@@ -35,7 +32,7 @@ BEGIN_MESSAGE_MAP(CAreaClassification, CDialog)
     ON_BN_CLICKED(IDCANCEL, &CAreaClassification::OnBnClickedCancel)
     ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_AREA_LIST, &CAreaClassification::OnSelchangedTreeAreaList)
     //  ON_COMMAND(ID_MENU_UPDATE_AREA_TEXTURE, &CAreaClassification::OnMenuUpdateAreaTexture)
-    //ON_COMMAND(ID_MENU_AREA_DELETE, &CAreaClassification::OnMenuAreaDelete)
+    // ON_COMMAND(ID_MENU_AREA_DELETE, &CAreaClassification::OnMenuAreaDelete)
 END_MESSAGE_MAP()
 
 
@@ -43,7 +40,7 @@ END_MESSAGE_MAP()
 
 
 void CAreaClassification::OnBnClickedOk() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CDialog::OnOK();
     CString tmp = "\\";
     CString topItem = "AreaTexture";
@@ -57,7 +54,7 @@ void CAreaClassification::OnBnClickedOk() {
 
 
 void CAreaClassification::OnBnClickedCancel() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CDialog::OnCancel();
 }
 
@@ -66,7 +63,7 @@ void CAreaClassification::OnBnClickedCancel() {
 
 void CAreaClassification::OnSelchangedTreeAreaList(NMHDR* pNMHDR, LRESULT* pResult) {
     LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     *pResult = 0;
     HTREEITEM selectItem = m_Area_Texture_List.GetSelectedItem();
     CString selectItemText = m_Area_Texture_List.GetItemText(selectItem);
@@ -79,7 +76,7 @@ void CAreaClassification::OnSelchangedTreeAreaList(NMHDR* pNMHDR, LRESULT* pResu
     for (int i = 0; i < 1; ++i) {
         if (parentItemText == RockType[i]) {
             imgPathAndName = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i] + tmp + selectItemText;
-            //MessageBox(imgPathAndName,"");
+            // MessageBox(imgPathAndName,"");
             // BMP
             if (1) {
                 CRect rect;
@@ -95,20 +92,20 @@ void CAreaClassification::OnSelchangedTreeAreaList(NMHDR* pNMHDR, LRESULT* pResu
 
 // 将选中的bmp纹理影像在控件上绘制
 void CAreaClassification::drawBitmapFromFile(CString bitmapFilePath, CDC* pDC, CRect rect) {
-    HANDLE   filehandle =::LoadImage(NULL, bitmapFilePath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE); //加载影像文件
-    if (filehandle != NULL) { //如果加载成功
+    HANDLE   filehandle =::LoadImage(NULL, bitmapFilePath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);  // 加载影像文件
+    if (filehandle != NULL) {  // 如果加载成功
         CBitmap   bmp;
         if (bmp.Attach(filehandle)) {
             BITMAP   bmpInfo;
-            bmp.GetBitmap(&bmpInfo);   //获取资源位图信息
+            bmp.GetBitmap(&bmpInfo);   // 获取资源位图信息
             CDC   dcMemory;
-            dcMemory.CreateCompatibleDC(pDC);   //创建一个与特定设备场景一致的内存设备场景
-            dcMemory.SelectObject(&bmp);   //选择bmp对象到指定的设备上下文环境中,该新对象替换先前的相同类型的对象
-            //设置指定设备环境中的位图拉伸模式. HALFTONE：将源矩形区中的像素映射到目标矩形区的像素块中，
-            //覆盖目标像素块的一般颜色与源像素的颜色接近。
-            //StretchBlt():源矩形中复制一个位图到目标矩形,必要时按目前目标设备设置的模式进行图像的拉伸或压缩。
+            dcMemory.CreateCompatibleDC(pDC);   // 创建一个与特定设备场景一致的内存设备场景
+            dcMemory.SelectObject(&bmp);   // 选择bmp对象到指定的设备上下文环境中,该新对象替换先前的相同类型的对象
+            // 设置指定设备环境中的位图拉伸模式. HALFTONE：将源矩形区中的像素映射到目标矩形区的像素块中，
+            // 覆盖目标像素块的一般颜色与源像素的颜色接近。
+            // StretchBlt():源矩形中复制一个位图到目标矩形,必要时按目前目标设备设置的模式进行图像的拉伸或压缩。
             pDC->StretchBlt(rect.left, rect.top, rect.Width(), rect.Height(), &dcMemory, 0, 0, bmpInfo.bmWidth, bmpInfo.bmHeight, SRCCOPY);
-            bmp.Detach();   //销毁bmp对象
+            bmp.Detach();   // 销毁bmp对象
         }
     }
 }
@@ -129,13 +126,13 @@ BOOL CAreaClassification::OnInitDialog() {
             sprintf(dir, m_Dir + "\\*.BMP");
             long lfDir;
             int fileNum = 0;
-            //搜索与指定的文件名称匹配的第一个实例，若成功则返回第一个实例的句柄，否则返回-1L
+            // 搜索与指定的文件名称匹配的第一个实例，若成功则返回第一个实例的句柄，否则返回-1L
             if ((lfDir = _findfirst(dir, &fileDir)) == -1l)
                 printf("No file is found\n");
             else {
                 printf("file list:\n");
                 do {
-                    printf("%s\n", fileDir.name); // XXX.format
+                    printf("%s\n", fileDir.name);  // XXX.format
                     hArtItem = m_Area_Texture_List.InsertItem(fileDir.name, 2, 2, hCataItem, TVI_LAST);
                     ++fileNum;
                 } while (_findnext(lfDir, &fileDir) == 0);
@@ -146,15 +143,3 @@ BOOL CAreaClassification::OnInitDialog() {
     return TRUE;
 }
 
-
-//void CAreaClassification::OnMenuUpdateAreaTexture()
-//{
-//  // TODO: 在此添加命令处理程序代码
-//
-//}
-
-
-//void CAreaClassification::OnMenuAreaDelete()
-//{
-//  // TODO: 在此添加命令处理程序代码
-//}

@@ -1,8 +1,4 @@
-﻿
-// MainFrm.cpp : CMainFrame 类的实现
-//
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
 
 #include "MainFrm.h"
@@ -29,25 +25,25 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
     ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
     ON_WM_SETTINGCHANGE()
 
-    ON_COMMAND_RANGE(ID_INDICATOR_FPS, ID_INDICATOR_MOUSEPOS, NULL) // 加上这一句标识状态栏的始末，状态栏的修改才会起效
+    ON_COMMAND_RANGE(ID_INDICATOR_FPS, ID_INDICATOR_MOUSEPOS, NULL)  // 加上这一句标识状态栏的始末，状态栏的修改才会起效
 END_MESSAGE_MAP()
 
 static UINT indicators[] = {
-    //ID_SEPARATOR,           // 状态行指示器
-    //ID_INDICATOR_CAPS,
-    //ID_INDICATOR_NUM,
-    //ID_INDICATOR_SCRL,
-    ID_INDICATOR_FPS,//刷新频率
-    ID_INDICATOR_FSANGLE,//【俯视角】=
-    ID_INDICATOR_EYEPOS,//视点坐标
-    ID_INDICATOR_VIEWPOS,// 观察点坐标
-    ID_INDICATOR_MOUSEPOS,// 鼠标坐标
+    // ID_SEPARATOR,           // 状态行指示器
+    // ID_INDICATOR_CAPS,
+    // ID_INDICATOR_NUM,
+    // ID_INDICATOR_SCRL,
+    ID_INDICATOR_FPS,       // 刷新频率
+    ID_INDICATOR_FSANGLE,   // 【俯视角】=
+    ID_INDICATOR_EYEPOS,    // 视点坐标
+    ID_INDICATOR_VIEWPOS,   // 观察点坐标
+    ID_INDICATOR_MOUSEPOS,  // 鼠标坐标
 };
 
 // CMainFrame 构造/析构
 
 CMainFrame::CMainFrame() {
-    // TODO: 在此添加成员初始化代码
+    // TODO(jason): 在此添加成员初始化代码
     theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
 }
 
@@ -87,7 +83,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
         return -1;      // 未能创建
     }
     m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
-    //设置各指示器的索引、宽度等信息
+    // 设置各指示器的索引、宽度等信息
     m_wndStatusBar.SetPaneInfo(0, ID_INDICATOR_FPS, SBPS_NORMAL, 150);
     m_wndStatusBar.SetPaneInfo(1, ID_INDICATOR_FSANGLE, SBPS_NORMAL, 180);
     m_wndStatusBar.SetPaneInfo(2, ID_INDICATOR_EYEPOS, SBPS_NORMAL, 350);
@@ -104,8 +100,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     sfontStatusBar.CreateFontIndirect(&logfont);
     m_wndStatusBar.SetFont(&sfontStatusBar);
     m_wndStatusBar.SetPaneTextColor(1, RGB(1, 0, 0));
-    //m_wndStatusBar.SetPaneTextColor (1, RGB(1,0,0)); // 修改文字颜色
-    // TODO: 如果您不希望工具栏和菜单栏可停靠，请删除这五行
+    // m_wndStatusBar.SetPaneTextColor (1, RGB(1,0,0));  // 修改文字颜色
+    // TODO(jason): 如果您不希望工具栏和菜单栏可停靠，请删除这五行
     m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
     m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
     EnableDocking(CBRS_ALIGN_ANY);
@@ -142,7 +138,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
         }
     }
     // 启用菜单个性化(最近使用的命令)
-    // TODO: 定义您自己的基本命令，确保每个下拉菜单至少有一个基本命令。
+    // TODO(jason): 定义您自己的基本命令，确保每个下拉菜单至少有一个基本命令。
     CList<UINT, UINT> lstBasicCommands;
     lstBasicCommands.AddTail(ID_FILE_NEW);
     lstBasicCommands.AddTail(ID_FILE_OPEN);
@@ -166,23 +162,22 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     lstBasicCommands.AddTail(ID_SORTING_SORTBYTYPE);
     lstBasicCommands.AddTail(ID_SORTING_SORTBYACCESS);
     lstBasicCommands.AddTail(ID_SORTING_GROUPBYTYPE);
-    //CMFCToolBar::SetBasicCommands(lstBasicCommands);
-    //// 启动画面
-    /////////////////显示Splash，2010-10-15///////////////////////////////////
-    //CSplashWnd wndSplash;                 // 创建启动窗口类的实例
-    //wndSplash.Create(IDB_SPLASH);
-    //wndSplash.CenterWindow();
-    //wndSplash.UpdateWindow();             // send WM_PAINT
-    //Sleep(500);                           // 3000 = 3秒
-    //wndSplash.DestroyWindow();                // 销毁初始画面窗口
+    // CMFCToolBar::SetBasicCommands(lstBasicCommands);
+    // 启动画面
+    // CSplashWnd wndSplash;                 // 创建启动窗口类的实例
+    // wndSplash.Create(IDB_SPLASH);
+    // wndSplash.CenterWindow();
+    // wndSplash.UpdateWindow();             // send WM_PAINT
+    // Sleep(500);                           // 3000 = 3秒
+    // wndSplash.DestroyWindow();            // 销毁初始画面窗口
     return 0;
 }
 
-BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
+BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {  // NOLINT
     if (!CFrameWndEx::PreCreateWindow(cs))
         return FALSE;
-    // TODO: 在此处通过修改
-    //  CREATESTRUCT cs 来修改窗口类或样式
+    // TODO(jason): 在此处通过修改
+    // CREATESTRUCT cs 来修改窗口类或样式
     cs.style &= ~FWS_ADDTOTITLE;
     cs.lpszName = "三维符号库";
     return TRUE;
@@ -196,7 +191,7 @@ BOOL CMainFrame::CreateDockingWindows() {
     ASSERT(bNameValid);
     if (!m_wndClassView.Create(strClassView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_CLASSVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI)) {
         TRACE0("未能创建“类视图”窗口\n");
-        return FALSE; // 未能创建
+        return FALSE;  // 未能创建
     }
     // 创建文件视图
     CString strFileView;
@@ -204,7 +199,7 @@ BOOL CMainFrame::CreateDockingWindows() {
     ASSERT(bNameValid);
     if (!m_wndFileView.Create(strFileView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_FILEVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI)) {
         TRACE0("未能创建“文件视图”窗口\n");
-        return FALSE; // 未能创建
+        return FALSE;  // 未能创建
     }
     // 创建输出窗口
     CString strOutputWnd;
@@ -212,7 +207,7 @@ BOOL CMainFrame::CreateDockingWindows() {
     ASSERT(bNameValid);
     if (!m_wndOutput.Create(strOutputWnd, this, CRect(0, 0, 100, 100), TRUE, ID_VIEW_OUTPUTWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI)) {
         TRACE0("未能创建输出窗口\n");
-        return FALSE; // 未能创建
+        return FALSE;  // 未能创建
     }
     // 创建属性窗口
     CString strPropertiesWnd;
@@ -220,7 +215,7 @@ BOOL CMainFrame::CreateDockingWindows() {
     ASSERT(bNameValid);
     if (!m_wndProperties.Create(strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTIESWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI)) {
         TRACE0("未能创建“属性”窗口\n");
-        return FALSE; // 未能创建
+        return FALSE;  // 未能创建
     }
     SetDockingWindowIcons(theApp.m_bHiColorIcons);
     return TRUE;
@@ -244,10 +239,10 @@ void CMainFrame::AssertValid() const {
     CFrameWndEx::AssertValid();
 }
 
-void CMainFrame::Dump(CDumpContext& dc) const {
+void CMainFrame::Dump(CDumpContext& dc) const {  // NOLINT
     CFrameWndEx::Dump(dc);
 }
-#endif //_DEBUG
+#endif  // _DEBUG
 
 
 // CMainFrame 消息处理程序
@@ -353,7 +348,7 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
     m_wndOutput.UpdateFonts();
 }
 
-//根据索引在状态栏上显示相关信息
+// 根据索引在状态栏上显示相关信息
 void CMainFrame::Set_BarText(int index, CString strText) {
     m_wndStatusBar.SetPaneText(index, strText);
 }

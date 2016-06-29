@@ -1,63 +1,34 @@
 ﻿#include "stdafx.h"
 #include  "texture.h"
 
-//从BMP文件创建纹理,并返回纹理ID号
+// 从BMP文件创建纹理,并返回纹理ID号
 int CTexture::LoadGLTextures(char* Filename) {
     AUX_RGBImageRec* pImage = NULL;
-    FILE* pFile = NULL; // 文件句柄
-    if (!Filename) { // 确保文件名已提供。
-        return false; // 如果没提供，返回 false
+    FILE* pFile = NULL;  // 文件句柄
+    if (!Filename) {  // 确保文件名已提供。
+        return false;  // 如果没提供，返回 false
     }
-    if ((pFile = fopen(Filename, "rb")) == NULL) { //尝试打开文件
+    if ((pFile = fopen(Filename, "rb")) == NULL) {  // 尝试打开文件
         MessageBox(NULL, "不能够打开BMP纹理文件!", "打开BMP纹理文件失败", MB_OK);
         MessageBox(NULL, Filename, "Error", MB_OK);
-        return NULL;//打开文件失败,返回 false
+        return NULL;  // 打开文件失败,返回 false
     }
-    pImage = auxDIBImageLoad(Filename); //读取图象数据并将其返回(使用glaux辅助库函数auxDIBImageLoad来载入位图)
-    if (pImage == NULL) //如果读取失败,返回
+    pImage = auxDIBImageLoad(Filename);  // 读取图象数据并将其返回(使用glaux辅助库函数auxDIBImageLoad来载入位图)
+    if (pImage == NULL)  // 如果读取失败,返回
         return false;
-    glGenTextures(1, &m_nTxt); // 创建纹理,告诉OpenGL我们想生成一个纹理名字(如果您想载入多个纹理，加大数字)。
+    glGenTextures(1, &m_nTxt);  // 创建纹理,告诉OpenGL我们想生成一个纹理名字(如果您想载入多个纹理，加大数字)。
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glBindTexture(GL_TEXTURE_2D, m_nTxt);// 使用来自位图数据生成 的典型纹理
+    glBindTexture(GL_TEXTURE_2D, m_nTxt);  // 使用来自位图数据生成 的典型纹理
     gluBuild2DMipmaps(GL_TEXTURE_2D, 3, pImage->sizeX,
                       pImage->sizeY, GL_RGB, GL_UNSIGNED_BYTE, pImage->data);
-    //pImage->data:告诉OpenGL纹理数据的来源。这里指向存放在pImage->data中的数据。
-    //gluBuild2DMipmaps()代替glTexImage2D(),这样可以载入任意大小的图片
-    /*
-    gluBuild2DMipmaps()与glTexImage2D()的使用方法及区别2008年08月02日 星期六 下午 10:53glTexImage2D()的用法举例
-
-      glTexImage2D(GL_TEXTURE_2D, //此纹理是一个2D纹理
-      0,                                         //代表图像的详细程度, 默认为0即可
-      3,                                         //颜色成分R(红色分量)、G(绿色分量)、B(蓝色分量)三部分，若为4则是R(红色分量)、G(绿色分量)、B(蓝色分量)、Alpha
-      TextureImage[0]->sizeX,          //纹理的宽度
-      TextureImage[0]->sizeY,          //纹理的高度
-      0,                                         //边框的值
-      GL_RGB,                               //告诉OpenGL图像数据由红、绿、蓝三色数据组成
-      GL_UNSIGNED_BYTE,                //组成图像的数据是无符号字节类型
-      TextureImage[0]->data);          //告诉OpenGL纹理数据的来源,此例中指向存放在TextureImage[0]记录中的数据
-
-
-          gluBuild2DMipmaps()的用法举例
-
-            gluBuild2DMipmaps(GL_TEXTURE_2D,//此纹理是一个2D纹理
-            3,                                             //颜色成分R(红色分量)、G(绿色分量)、B(蓝色分量)三部分，若为4则是R(红色分量)、G(绿色分量)、B(蓝色分量)、Alpha
-            TextureImage[0]->sizeX,               //纹理的宽度
-            TextureImage[0]->sizeY,               //纹理的高度
-            GL_RGB,                                      //告诉OpenGL图像数据由红、绿、蓝三色数据组成
-            GL_UNSIGNED_BYTE,                     //组成图像的数据是无符号字节类型
-            TextureImage[0]->data);             //告诉OpenGL纹理数据的来源,此例中指向存放在TextureImage[0]记录中的数据
-
-
-                使用注意事项
-
-                  使用glTexImage2D()时所采用的位图文件分辨率必须为：64×64、128×128、256×256三种格式，如果其他大小则会出现绘制不正常。
-
-    */
+    // pImage->data:告诉OpenGL纹理数据的来源。这里指向存放在pImage->data中的数据。
+    // gluBuild2DMipmaps()代替glTexImage2D(),这样可以载入任意大小的图片
+    
     // 设置纹理模式
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);// 双线过滤
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);// 双线过滤
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); //边缘截取,总是忽略边界
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); //边缘截取,总是忽略边界
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);  // 双线过滤
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);  // 双线过滤
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);  // 边缘截取,总是忽略边界
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);  // 边缘截取,总是忽略边界
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
     if (pImage) {   // 纹理是否存在
         if (pImage->data) {  // 纹理图像是否存在
@@ -65,8 +36,8 @@ int CTexture::LoadGLTextures(char* Filename) {
         }
         free(pImage);   // 释放图像结构
     }
-    fclose(pFile);// 关闭文件
-    return m_nTxt;//返回纹理ID号
+    fclose(pFile);  // 关闭文件
+    return m_nTxt;  // 返回纹理ID号
 }
 bool CTexture::MakeTextureBind(char* TextureFileName, bool bLinear, bool bMip) {
     bool status = true;
@@ -239,8 +210,8 @@ bool  CTexture::MakeScreenTextureBind() {
         unsigned char temp[6];
         for (int y = 0; y < newWidth; y++)
             for (int x = 0; x < newWidth; x++) {
-                sx = int(float(x * Viewport[2]) / newWidth);
-                sy = int(float(y * Viewport[3]) / newWidth);
+                sx = static_cast<int>(static_cast<float>(x * Viewport[2]) / newWidth);
+                sy = static_cast<int>(static_cast<float>(y * Viewport[3]) / newWidth);
                 glReadPixels(sx, sy, 1, 1,
                              GL_RGB, GL_UNSIGNED_BYTE, temp);
                 pData[y * newWidth * 3 + x * 3 + 0] = unsigned char(temp[0] * 0.8f);
@@ -305,7 +276,7 @@ bool CTexture::LoadTGA(char* filename) {
         fclose(file);
         return FALSE;
     }
-    for (GLuint i = 0; i < int(imageSize); i += bytesPerPixel) {
+    for (GLuint i = 0; i < static_cast<int>(imageSize); i += bytesPerPixel) {
         temp = texture->imageData[i];
         texture->imageData[i] = texture->imageData[i + 2];
         texture->imageData[i + 2] = temp;

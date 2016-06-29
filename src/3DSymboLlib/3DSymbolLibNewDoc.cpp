@@ -28,7 +28,7 @@ END_MESSAGE_MAP()
 // CMy3DSymbolLibNewDoc 构造/析构
 
 CMy3DSymbolLibNewDoc::CMy3DSymbolLibNewDoc() {
-    // TODO: 在此添加一次性构造代码
+
 }
 
 CMy3DSymbolLibNewDoc::~CMy3DSymbolLibNewDoc() {
@@ -37,8 +37,7 @@ CMy3DSymbolLibNewDoc::~CMy3DSymbolLibNewDoc() {
 BOOL CMy3DSymbolLibNewDoc::OnNewDocument() {
     if (!CDocument::OnNewDocument())
         return FALSE;
-    // TODO: 在此添加重新初始化代码
-    // (SDI 文档将重用该文档)
+
     return TRUE;
 }
 
@@ -47,21 +46,21 @@ BOOL CMy3DSymbolLibNewDoc::OnNewDocument() {
 
 // CMy3DSymbolLibNewDoc 序列化
 
-void CMy3DSymbolLibNewDoc::Serialize(CArchive& ar) {
+void CMy3DSymbolLibNewDoc::Serialize(CArchive& ar) {  // NOLINT
     if (ar.IsStoring()) {
-        // TODO: 在此添加存储代码
+        // TODO(jason): 在此添加存储代码
     } else {
-        // TODO: 在此添加加载代码
+        // TODO(jason): 在此添加加载代码
     }
 }
 
 #ifdef SHARED_HANDLERS
 
 // 缩略图的支持
-void CMy3DSymbolLibNewDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds) {
+void CMy3DSymbolLibNewDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds) {  // NOLINT
     // 修改此代码以绘制文档数据
     dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
-    CString strText = _T("TODO: implement thumbnail drawing here");
+    CString strText = _T("TODO(jason): implement thumbnail drawing here");
     LOGFONT lf;
     CFont* pDefaultGUIFont = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
     pDefaultGUIFont->GetLogFont(&lf);
@@ -95,7 +94,7 @@ void CMy3DSymbolLibNewDoc::SetSearchContent(const CString& value) {
     }
 }
 
-#endif // SHARED_HANDLERS
+#endif  // SHARED_HANDLERS
 
 // CMy3DSymbolLibNewDoc 诊断
 
@@ -104,10 +103,10 @@ void CMy3DSymbolLibNewDoc::AssertValid() const {
     CDocument::AssertValid();
 }
 
-void CMy3DSymbolLibNewDoc::Dump(CDumpContext& dc) const {
+void CMy3DSymbolLibNewDoc::Dump(CDumpContext& dc) const {  // NOLINT
     CDocument::Dump(dc);
 }
-#endif //_DEBUG
+#endif  // _DEBUG
 
 
 // CMy3DSymbolLibNewDoc 命令

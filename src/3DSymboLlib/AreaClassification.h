@@ -22,7 +22,7 @@ class CAreaClassification : public CDialog {
 
 
   public:
-    HTREEITEM hRoot;    //根节点句柄
+    HTREEITEM hRoot;    // 根节点句柄
     HTREEITEM hCataItem;
     HTREEITEM hArtItem;
 

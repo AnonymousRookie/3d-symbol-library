@@ -1,7 +1,4 @@
-﻿// AddPointDlg.cpp : 实现文件
-//
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "AddPointDlg.h"
 #include "afxdialogex.h"

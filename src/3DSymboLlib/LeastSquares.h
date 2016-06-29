@@ -2,15 +2,16 @@
 /*  最小二乘曲线拟合                                                        */
 /************************************************************************/
 
-#pragma once
+#ifndef LEAST_SQUARES_H
+#define LEAST_SQUARES_H
 
 #include <stdio.h>
 #include <conio.h>
 #include <math.h>
 #include <process.h>
-#define L_N 3   //N个点
-#define L_T 2   //T次拟合
-#define L_W 1   //权函数
+#define L_N 3   // N个点
+#define L_T 2   // T次拟合
+#define L_W 1   // 权函数
 #define L_PRECISION 0.00001
 
 class CLeastSquares {
@@ -34,3 +35,4 @@ class CLeastSquares {
     void process(float (*input_points)[2], float* a);
 };
 
+#endif  // LEAST_SQUARES_H

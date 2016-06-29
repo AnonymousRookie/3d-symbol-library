@@ -10,13 +10,13 @@
 
 class CMainFrame : public CFrameWndEx {
 
-  protected: // 仅从序列化创建
+  protected:  // 仅从序列化创建
     CMainFrame();
     DECLARE_DYNCREATE(CMainFrame)
 
     // 重写
   public:
-    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);  // NOLINT
     virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL);
 
     // 实现
@@ -24,7 +24,7 @@ class CMainFrame : public CFrameWndEx {
     virtual ~CMainFrame();
 #ifdef _DEBUG
     virtual void AssertValid() const;
-    virtual void Dump(CDumpContext& dc) const;
+    virtual void Dump(CDumpContext& dc) const;  // NOLINT
 #endif
 
   protected:  // 控件条嵌入成员

@@ -88,7 +88,7 @@ CVector3 ClosestPointOnLine(CVector3 vA, CVector3 vB, CVector3 vPoint);
 float PlaneDistance(CVector3 Normal, CVector3 Point);
 
 
-bool IntersectedPlane(CVector3 vPoly[], CVector3 vLine[], CVector3& vNormal, float& originDistance);
+bool IntersectedPlane(CVector3 vPoly[], CVector3 vLine[], const CVector3& vNormal, float& originDistance);
 
 
 float Dot(CVector3 vVector1, CVector3 vVector2);
@@ -112,17 +112,15 @@ int ClassifySphere(CVector3& vCenter,
 
 
 
-bool EdgeSphereCollision(CVector3& vCenter,
-                         CVector3 vPolygon[], int vertexCount, float radius);
+bool EdgeSphereCollision(const CVector3& vCenter, CVector3 vPolygon[], int vertexCount, float radius);
 
 
-bool SpherePolygonCollision(CVector3 vPolygon[],
-                            CVector3& vCenter, int vertexCount, float radius);
+bool SpherePolygonCollision(CVector3 vPolygon[], CVector3& vCenter, int vertexCount, float radius);
 
 
 
 
-CVector3 GetCollisionOffset(CVector3& vNormal, float radius, float distance);
+CVector3 GetCollisionOffset(const CVector3& vNormal, float radius, float distance);
 
 void ComputeNormal(CVector3* v1, CVector3* v2, CVector3* v3);
 

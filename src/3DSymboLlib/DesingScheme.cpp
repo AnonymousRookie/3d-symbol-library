@@ -31,9 +31,9 @@ void CDesingScheme::Get3DLineModel(double x1, double y1, double z1, double x2, d
     float dz = z2 - z1;
     double x11, y11, z11, x12, y12, z12;
     double x21, y21, z21, x22, y22, z22;
-    //fRailwayWidth：单线地段道床顶面宽度
+    // fRailwayWidth：单线地段道床顶面宽度
     float L1 = fRailwayWidth / 2.0;
-    //1.根据线路前后中心线的三维坐标计算 铁轨顶面 左右点的x,y,z坐标
+    // 1.根据线路前后中心线的三维坐标计算 铁轨顶面 左右点的x,y,z坐标
     Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
     PRailway3DCordinate pt;
     pt = new Railway3DCordinate;
@@ -44,7 +44,7 @@ void CDesingScheme::Get3DLineModel(double x1, double y1, double z1, double x2, d
     pt->y2 = y12;
     pt->z2 = z12;
     PtS_Railway3D.Add(pt);
-    //２.根据线路前后中心线的三维坐标计算 道床顶面 左右点的x,y,z坐标
+    // ２.根据线路前后中心线的三维坐标计算 道床顶面 左右点的x,y,z坐标
     L1 = fRailwayWidth / 2.0 + mWidthGuiMianToLujian;
     Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
     pt = new Railway3DCordinate;
@@ -55,7 +55,7 @@ void CDesingScheme::Get3DLineModel(double x1, double y1, double z1, double x2, d
     pt->y2 = y12 - h_FromGmToLj;
     pt->z2 = z12;
     PtS_RailwayLj3D.Add(pt);
-    //3.根据线路前后中心线的三维坐标计算碴脚左右点的x,y,z坐标 LjWidth=碴肩至碴脚的水平距离
+    // 3.根据线路前后中心线的三维坐标计算碴脚左右点的x,y,z坐标 LjWidth=碴肩至碴脚的水平距离
     L1 = fRailwayWidth / 2.0 + mWidthGuiMianToLujian + LjWidth;
     Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
     pt = new Railway3DCordinate;
@@ -65,19 +65,19 @@ void CDesingScheme::Get3DLineModel(double x1, double y1, double z1, double x2, d
     pt->x2 = x12;
     pt->y2 = y12 - h_FromGmToLj;
     pt->z2 = z12;
-    //根据线路前后中心线的三维坐标计算计算路基面左右点的x,y,z坐标
-    pt->TW_left = GetTW(pt->x1, pt->z1, pt->y1); //计算左边坡的填挖类型
-    pt->TW_right = GetTW(pt->x2, pt->z2, pt->y2); //计算右边坡的填挖类型
-    pt->mAngle = mangle; //
-    PtS_RailwayLjToBP3D.Add(pt);//存储边坡左面侧的填挖类型
-    //正常边坡处
+    // 根据线路前后中心线的三维坐标计算计算路基面左右点的x,y,z坐标
+    pt->TW_left = GetTW(pt->x1, pt->z1, pt->y1);  // 计算左边坡的填挖类型
+    pt->TW_right = GetTW(pt->x2, pt->z2, pt->y2);  // 计算右边坡的填挖类型
+    pt->mAngle = mangle;
+    PtS_RailwayLjToBP3D.Add(pt);  // 存储边坡左面侧的填挖类型
+    // 正常边坡处
     {
         L1 = fRailwayWidth / 2.0 + mWidthGuiMianToLujian + LjWidth;
-        //计算左侧边坡点与地面的交点坐标
+        // 计算左侧边坡点与地面的交点坐标
         GetDMJD(x1, y1, z1, x2, y2, z2, L1, pt->y1, pt->x1, pt->z1, pt->TW_left, -1, \
                 pt->x1, pt->y1, pt->z1, \
                 pt->x1, pt->y1, pt->z1, mLC, strJDstyle);
-        //计算右侧边坡点与地面的交点坐标
+        // 计算右侧边坡点与地面的交点坐标
         GetDMJD(x1, y1, z1, x2, y2, z2, L1, pt->y2, pt->x2, pt->z2, pt->TW_right, 1, \
                 pt->x2, pt->y2, pt->z2, \
                 pt->x2, pt->y2, pt->z2, mLC, strJDstyle);
@@ -143,69 +143,69 @@ void CDesingScheme::Get3DLineModelLast(double x1, double y1, double z1, double x
 /************************************************************************/
 void CDesingScheme::Get3DCorrdinate(double x1, double y1, double z1, double x2, double y2, double z2, float dx, float dz, float L, double* x11, double* y11, double* z11, double* x12, double* y12, double* z12, double* x21, double* y21, double* z21, double* x22, double* y22, double* z22, float* angle) {
     float mangle;
-    if (fabs(dx) <= 0.000001) { //如果前后线路中线点的X坐标之差<=0.000001,则认为两点组成的直线平行于Y轴
+    if (fabs(dx) <= 0.000001) {  // 如果前后线路中线点的X坐标之差<=0.000001,则认为两点组成的直线平行于Y轴
         if (dz < 0)
-            mangle = PAI / 2.0; //如果dz<0,直线角度=90
+            mangle = PAI / 2.0;  // 如果dz<0,直线角度=90
         else
-            mangle = 3 / 2.0 * PAI; //如果dz<0,直线角度=270
-        //计算线路中线当前点(x1,y1,z1)对应的左侧点三维坐标
+            mangle = 3 / 2.0 * PAI;  // 如果dz<0,直线角度=270
+        // 计算线路中线当前点(x1,y1,z1)对应的左侧点三维坐标
         *x11 = x1 - L * sin(mangle);
         *y11 = y1;
         *z11 = z1;
-        //计算线路中线下一点(x2,y2,z2)对应的左侧点三维坐标
+        // 计算线路中线下一点(x2,y2,z2)对应的左侧点三维坐标
         *x21 = x2 - L * sin(mangle);
         *y21 = y2;
         *z21 = z2;
         *angle = mangle;
-    } else { //根据fabs(dz/dx)值计算前后线路中线点构成的直线角度
+    } else {  // 根据fabs(dz/dx)值计算前后线路中线点构成的直线角度
         mangle = atan(fabs(dz / dx));
-        if (dx >= 0 && dz <= 0) { //1 象限
-            //计算线路中线当前点(x1,y1,z1)对应的左侧点三维坐标
+        if (dx >= 0 && dz <= 0) {  // 1 象限
+            // 计算线路中线当前点(x1,y1,z1)对应的左侧点三维坐标
             *x11 = x1 - L * sin(mangle);
             *y11 = y1;
             *z11 = z1 - L * cos(mangle);
-            //计算线路中线下一点(x2,y2,z2)对应的左侧点三维坐标
+            // 计算线路中线下一点(x2,y2,z2)对应的左侧点三维坐标
             *x21 = x2 - L * sin(mangle);
             *y21 = y2;
             *z21 = z2 - L * cos(mangle);
             *angle = mangle;
-        } else if (dx <= 0 && dz <= 0) { //2 象限
-            //计算线路中线当前点(x1,y1,z1)对应的左侧点三维坐标
+        } else if (dx <= 0 && dz <= 0) {  // 2 象限
+            // 计算线路中线当前点(x1,y1,z1)对应的左侧点三维坐标
             *x11 = x1 - L * sin(mangle);
             *y11 = y1;
             *z11 = z1 + L * cos(mangle);
-            //计算线路中线下一点(x2,y2,z2)对应的左侧点三维坐标
+            // 计算线路中线下一点(x2,y2,z2)对应的左侧点三维坐标
             *x21 = x2 - L * sin(mangle);
             *y21 = y2;
             *z21 = z2 + L * cos(mangle);
             *angle = PAI - mangle;
-        } else if (dx <= 0 && dz >= 0) { //3 象限
-            //计算线路中线当前点(x1,y1,z1)对应的左侧点三维坐标
+        } else if (dx <= 0 && dz >= 0) {  // 3 象限
+            // 计算线路中线当前点(x1,y1,z1)对应的左侧点三维坐标
             *x11 = x1 + L * sin(mangle);
             *y11 = y1;
             *z11 = z1 + L * cos(mangle);
-            //计算线路中线下一点(x2,y2,z2)对应的左侧点三维坐标
+            // 计算线路中线下一点(x2,y2,z2)对应的左侧点三维坐标
             *x21 = x2 + L * sin(mangle);
             *y21 = y2;
             *z21 = z2 + L * cos(mangle);
             *angle = PAI + mangle;
-        } else if (dx >= 0 && dz >= 0) { //4 象限
-            //计算线路中线当前点(x1,y1,z1)对应的左侧点三维坐标
+        } else if (dx >= 0 && dz >= 0) {  // 4 象限
+            // 计算线路中线当前点(x1,y1,z1)对应的左侧点三维坐标
             *x11 = x1 + L * sin(mangle);
             *y11 = y1;
             *z11 = z1 - L * cos(mangle);
-            //计算线路中线下一点(x2,y2,z2)对应的左侧点三维坐标
+            // 计算线路中线下一点(x2,y2,z2)对应的左侧点三维坐标
             *x21 = x2 + L * sin(mangle);
             *y21 = y2;
             *z21 = z2 - L * cos(mangle);
             *angle = 2 * PAI - mangle;
         }
     }
-    //计算线路中线当前点(x1,y1,z1)对应的右侧点三维坐标
+    // 计算线路中线当前点(x1,y1,z1)对应的右侧点三维坐标
     *x12 = 2 * x1 - *x11;
     *y12 = 2 * y1 - *y11;
     *z12 = 2 * z1 - *z11;
-    //计算线路中线下一点(x2,y2,z2)对应的右侧点三维坐标
+    // 计算线路中线下一点(x2,y2,z2)对应的右侧点三维坐标
     *x22 = 2 * x2 - *x21;
     *y22 = 2 * y2 - *y21;
     *z22 = 2 * z2 - *z21;
@@ -219,10 +219,10 @@ void CDesingScheme::CalculateCurveData() {
     CString tt;
     PLineCurve pTempCurveElements;
     double m_startLC = 0;   // 起点里程
-    if (PtS_JD.GetSize() > 1) { // 如果设计交点数大于1
-        //计算第1个交点"JD0"的曲线要素
+    if (PtS_JD.GetSize() > 1) {  // 如果设计交点数大于1
+        // 计算第1个交点"JD0"的曲线要素
         pTempCurveElements          = JDCurveElements.GetAt(0);
-        pTempCurveElements->ZH      = pTempCurveElements->HZ             = m_startLC; // 缓直点里程 直缓点里程
+        pTempCurveElements->ZH      = pTempCurveElements->HZ             = m_startLC;  // 缓直点里程 直缓点里程
         pTempCurveElements->HY      = pTempCurveElements->YH             = m_startLC;
         pTempCurveElements->Alfa        = pTempCurveElements->T          = pTempCurveElements->L      = 0;
         pTempCurveElements->R       = pTempCurveElements->RoateStyle = pTempCurveElements->E      = 0;
@@ -232,41 +232,41 @@ void CDesingScheme::CalculateCurveData() {
         pTempCurveElements->x       = PtS_JD.GetAt(0)->x;   // 交点x坐标
         pTempCurveElements->y       = -PtS_JD.GetAt(0)->z;  // 交点y坐标
         pTempCurveElements->z       = PtS_JD.GetAt(0)->y;   // 交点z坐标
-        pTempCurveElements->Cneterx = pTempCurveElements->x;// 曲线圆心x坐标
-        pTempCurveElements->Cnetery = pTempCurveElements->y;// 曲线圆心y坐标
-        pTempCurveElements->ZH_xy   = new  Cordinate;        //直缓点坐标
+        pTempCurveElements->Cneterx = pTempCurveElements->x;  // 曲线圆心x坐标
+        pTempCurveElements->Cnetery = pTempCurveElements->y;  // 曲线圆心y坐标
+        pTempCurveElements->ZH_xy   = new  Cordinate;        // 直缓点坐标
         pTempCurveElements->ZH_xy->x = pTempCurveElements->x;
         pTempCurveElements->ZH_xy->y = pTempCurveElements->y;
-        pTempCurveElements->HY_xy   = new  Cordinate;       //缓圆点坐标
+        pTempCurveElements->HY_xy   = new  Cordinate;       // 缓圆点坐标
         pTempCurveElements->HY_xy->x = pTempCurveElements->x;
         pTempCurveElements->HY_xy->y = pTempCurveElements->y;
-        pTempCurveElements->YH_xy   = new  Cordinate;       //圆缓点坐标
+        pTempCurveElements->YH_xy   = new  Cordinate;       // 圆缓点坐标
         pTempCurveElements->YH_xy->x = pTempCurveElements->x;
         pTempCurveElements->YH_xy->y = pTempCurveElements->y;
-        pTempCurveElements->HZ_xy   = new  Cordinate;       //缓直点坐标
+        pTempCurveElements->HZ_xy   = new  Cordinate;       // 缓直点坐标
         pTempCurveElements->HZ_xy->x = pTempCurveElements->x;
         pTempCurveElements->HZ_xy->y = pTempCurveElements->y;
-        //计算最后一个交点JDN的曲线要素
+        // 计算最后一个交点JDN的曲线要素
         pTempCurveElements       = JDCurveElements.GetAt(PtS_JD.GetSize() - 1);
-        pTempCurveElements->Alfa = pTempCurveElements->T = pTempCurveElements->L = 0; //交点转角
-        pTempCurveElements->RoateStyle = pTempCurveElements->E = 0;             //外矢距
-        pTempCurveElements->Ly   = pTempCurveElements->Jzxc = 0;                    //夹直线
-        pTempCurveElements->Dist = pTempCurveElements->fwj  = 0;                //交点偏角
-        pTempCurveElements->x       = PtS_JD.GetAt(PtS_JD.GetSize() - 1)->x;    //交点x坐标
-        pTempCurveElements->y       = -PtS_JD.GetAt(PtS_JD.GetSize() - 1)->z;   //交点y坐标
-        pTempCurveElements->z       = PtS_JD.GetAt(PtS_JD.GetSize() - 1)->y;    //交点z坐标
-        pTempCurveElements->Cneterx = pTempCurveElements->x;                        //曲线圆心x坐标
-        pTempCurveElements->Cnetery = pTempCurveElements->y;                        //曲线圆心y坐标
-        pTempCurveElements->ZH_xy   = new Cordinate;            //直缓点坐标
+        pTempCurveElements->Alfa = pTempCurveElements->T = pTempCurveElements->L = 0;  // 交点转角
+        pTempCurveElements->RoateStyle = pTempCurveElements->E = 0;             // 外矢距
+        pTempCurveElements->Ly   = pTempCurveElements->Jzxc = 0;                    // 夹直线
+        pTempCurveElements->Dist = pTempCurveElements->fwj  = 0;                // 交点偏角
+        pTempCurveElements->x       = PtS_JD.GetAt(PtS_JD.GetSize() - 1)->x;    // 交点x坐标
+        pTempCurveElements->y       = -PtS_JD.GetAt(PtS_JD.GetSize() - 1)->z;   // 交点y坐标
+        pTempCurveElements->z       = PtS_JD.GetAt(PtS_JD.GetSize() - 1)->y;    // 交点z坐标
+        pTempCurveElements->Cneterx = pTempCurveElements->x;                        // 曲线圆心x坐标
+        pTempCurveElements->Cnetery = pTempCurveElements->y;                        // 曲线圆心y坐标
+        pTempCurveElements->ZH_xy   = new Cordinate;            // 直缓点坐标
         pTempCurveElements->ZH_xy->x = pTempCurveElements->x;
         pTempCurveElements->ZH_xy->y = pTempCurveElements->y;
-        pTempCurveElements->HY_xy   = new Cordinate;            //缓圆点坐标
+        pTempCurveElements->HY_xy   = new Cordinate;            // 缓圆点坐标
         pTempCurveElements->HY_xy->x = pTempCurveElements->x;
         pTempCurveElements->HY_xy->y = pTempCurveElements->y;
-        pTempCurveElements->YH_xy   = new Cordinate;            //圆缓点坐标
+        pTempCurveElements->YH_xy   = new Cordinate;            // 圆缓点坐标
         pTempCurveElements->YH_xy->x = pTempCurveElements->x;
         pTempCurveElements->YH_xy->y = pTempCurveElements->y;
-        pTempCurveElements->HZ_xy   = new  Cordinate;           //缓直点坐标
+        pTempCurveElements->HZ_xy   = new  Cordinate;           // 缓直点坐标
         pTempCurveElements->HZ_xy->x = pTempCurveElements->x;
         pTempCurveElements->HZ_xy->y = pTempCurveElements->y;
         float dertE, dertN;
@@ -280,18 +280,18 @@ void CDesingScheme::CalculateCurveData() {
         |
         |____________ E
          */
-        //计算交点JD1与交点JDN之间交点的曲线要素
+        // 计算交点JD1与交点JDN之间交点的曲线要素
         for (i = 0; i < PtS_JD.GetSize() - 1; i++) {
             // 求方位角fwj
             dertE   = PtS_JD.GetAt(i + 1)->x      -   PtS_JD.GetAt(i)->x;
             dertN   = (-PtS_JD.GetAt(i + 1)->z)   - (-PtS_JD.GetAt(i)->z);
-            if (dertE >= 0 && dertN > 0) {           //1象限
-                fwj = atan(fabs(dertE / dertN));    //方位角
-            } else if (dertE >= 0 && dertN < 0) {   //2象限
+            if (dertE >= 0 && dertN > 0) {           // 1象限
+                fwj = atan(fabs(dertE / dertN));    // 方位角
+            } else if (dertE >= 0 && dertN < 0) {   // 2象限
                 fwj = PAI - atan(fabs(dertE / dertN));
-            } else if (dertE < 0 && dertN < 0) {    //3象限
+            } else if (dertE < 0 && dertN < 0) {    // 3象限
                 fwj = PAI + atan(fabs(dertE / dertN));
-            } else if (dertE < 0 && dertN > 0) {    //4象限
+            } else if (dertE < 0 && dertN > 0) {    // 4象限
                 fwj = 2 * PAI - atan(fabs(dertE / dertN));
             } else if (dertE > 0 && dertN == 0) {
                 fwj = PAI / 2.0;
@@ -299,15 +299,15 @@ void CDesingScheme::CalculateCurveData() {
                 fwj = 3 * PAI / 2.0;
             }
             JDCurveElements.GetAt(i)->fwj   =   fwj;                            // 方位角
-            JDCurveElements.GetAt(i)->Dist  =   sqrt(dertE * dertE + dertN * dertN); // 交点距离
+            JDCurveElements.GetAt(i)->Dist  =   sqrt(dertE * dertE + dertN * dertN);  // 交点距离
             // 求方位角fwj2
-            if (dertN >= 0 && dertE > 0) {          //1象限
-                fwj2 = atan(fabs(dertN / dertE));   //方位角2
-            } else if (dertN >= 0 && dertE < 0) {   //2象限
+            if (dertN >= 0 && dertE > 0) {          // 1象限
+                fwj2 = atan(fabs(dertN / dertE));   // 方位角2
+            } else if (dertN >= 0 && dertE < 0) {   // 2象限
                 fwj2 = PAI - atan(fabs(dertN / dertE));
-            } else if (dertN < 0 && dertE < 0) {    //3象限
+            } else if (dertN < 0 && dertE < 0) {    // 3象限
                 fwj2 = PAI + atan(fabs(dertN / dertE));
-            } else if (dertN < 0 && dertE > 0) {    //4象限
+            } else if (dertN < 0 && dertE > 0) {    // 4象限
                 fwj2 = 2 * PAI - atan(fabs(dertN / dertE));
             } else if (dertN > 0 && dertE == 0) {
                 fwj2 = PAI / 2.0;
@@ -328,11 +328,11 @@ void CDesingScheme::CalculateCurveData() {
             CString tmpAlfaStr;
             tmpAlfaStr.Format("Alfa = %f 度", (JDCurveElements.GetAt(i + 1)->Alfa) * 180 / PAI);
             if (JDCurveElements.GetAt(i + 1)->Alfa > 0) {
-                JDCurveElements.GetAt(i + 1)->RoateStyle = 1; // 右转
-                //AfxMessageBox("右转" + tmpAlfaStr);
+                JDCurveElements.GetAt(i + 1)->RoateStyle = 1;  // 右转
+                // AfxMessageBox("右转" + tmpAlfaStr);
             } else if (JDCurveElements.GetAt(i + 1)->Alfa < 0) {
                 JDCurveElements.GetAt(i + 1)->RoateStyle = -1;  // 左转
-                //AfxMessageBox("左转" + tmpAlfaStr);
+                // AfxMessageBox("左转" + tmpAlfaStr);
             }
             if (PtS_JD.GetAt(i + 1)->x - PtS_JD.GetAt(i)->x > 0) {
                 if (JDCurveElements.GetAt(i + 1)->Alfa < 0)
@@ -376,14 +376,14 @@ void CDesingScheme::CalculateCurveData() {
             pty = LL * LL * LL / (6.0 * R * L0) * (1 - LL * LL * LL * LL / (56.0 * R * R * L0 * L0) + LL * LL * LL * LL * LL * LL * LL * LL / (7040.0 * R * R * R * R * L0 * L0 * L0 * L0));
             float xita = PAI / 2.0 - JDCurveElements.GetAt(i)->fwj;
             double xc, yc;
-            if (JDCurveElements.GetAt(i + 1)->RoateStyle == -1) { //左转
+            if (JDCurveElements.GetAt(i + 1)->RoateStyle == -1) {  // 左转
                 xc = cos(xita) * ptx - sin(xita) * pty + JDCurveElements.GetAt(i + 1)->ZH_xy->x;
                 yc = sin(xita) * ptx + cos(xita) * pty + JDCurveElements.GetAt(i + 1)->ZH_xy->y;
-            } else if (JDCurveElements.GetAt(i + 1)->RoateStyle == 1) { //右转
+            } else if (JDCurveElements.GetAt(i + 1)->RoateStyle == 1) {  // 右转
                 xc = cos(xita) * ptx + sin(xita) * pty + JDCurveElements.GetAt(i + 1)->ZH_xy->x;
                 yc = sin(xita) * ptx - cos(xita) * pty + JDCurveElements.GetAt(i + 1)->ZH_xy->y;
             }
-            //缓圆点坐标(x,y)
+            // 缓圆点坐标(x,y)
             JDCurveElements.GetAt(i + 1)->HY_xy    = new  Cordinate;
             JDCurveElements.GetAt(i + 1)->HY_xy->x = xc;
             JDCurveElements.GetAt(i + 1)->HY_xy->y = yc;
@@ -395,7 +395,7 @@ void CDesingScheme::CalculateCurveData() {
                 xc = cos(xita) * ptx - sin(xita) * pty + JDCurveElements.GetAt(i + 1)->HZ_xy->x;
                 yc = sin(xita) * ptx + cos(xita) * pty + JDCurveElements.GetAt(i + 1)->HZ_xy->y;
             }
-            //圆缓点坐标(x,y)
+            // 圆缓点坐标(x,y)
             JDCurveElements.GetAt(i + 1)->YH_xy    = new  Cordinate;
             JDCurveElements.GetAt(i + 1)->YH_xy->x = xc;
             JDCurveElements.GetAt(i + 1)->YH_xy->y = yc;
@@ -423,7 +423,7 @@ void CDesingScheme::CalculateCurveData() {
                 centerx = JDCurveElements.GetAt(i + 1)->HY_xy->x + JDCurveElements.GetAt(i + 1)->R * cos(thetaAngle);
                 centery = JDCurveElements.GetAt(i + 1)->HY_xy->y - JDCurveElements.GetAt(i + 1)->R * sin(thetaAngle);
             }
-            //曲线圆心x,y坐标
+            // 曲线圆心x,y坐标
             JDCurveElements.GetAt(i + 1)->Cneterx = centerx;
             JDCurveElements.GetAt(i + 1)->Cnetery = centery;
         }
@@ -444,7 +444,7 @@ void CDesingScheme::CalculateCurveData() {
         pTempCurveElements->fwj = 0;
         pTempCurveElements->fwj2 = 0;
     }
-    Save3DlineZX();//在交点间内插点并保存到数组中,供程序调用
+    Save3DlineZX();  // 在交点间内插点并保存到数组中,供程序调用
 }
 
 
@@ -499,7 +499,7 @@ void CDesingScheme::Save3DlineZX() {
                 PtS_3DLineZX.RemoveAt(PtS_3DLineZX.GetSize() - 1);
                 PtS_3DLineZX.Add(ppt);
             }
-        } else if (i > 0 && i < JDCurveElements.GetSize() - 1) { //当前交点i不是方案的最后一个交点,有缓和曲线段,曲线段
+        } else if (i > 0 && i < JDCurveElements.GetSize() - 1) {  // 当前交点i不是方案的最后一个交点,有缓和曲线段,曲线段
             x1 = PtS_JD.GetAt(i - 1)->x;
             y1 = PtS_JD.GetAt(i - 1)->y;
             z1 = PtS_JD.GetAt(i - 1)->z;
@@ -633,12 +633,12 @@ void CDesingScheme::Save3DlineZX() {
 /* Function: 內插点                                                     */
 /************************************************************************/
 void CDesingScheme::NeiChaDian(float ZHLength, double x1, double y1, double z1, double x2, double y2, double z2, double lc) {
-    float inputArr[3][2]; // 记录3点
+    float inputArr[3][2];  // 记录3点
     inputArr[0][0] = x1;
     inputArr[0][1] = y1;
     inputArr[2][0] = x2;
     inputArr[2][1] = y2;
-    float outPutArr[3] = {0};// 系数
+    float outPutArr[3] = {0};  // 系数
     float h;
     int m_XX;
     double x, z;
@@ -728,7 +728,7 @@ void CDesingScheme::NeiChaDian(float ZHLength, double x1, double y1, double z1, 
                     z = lt * sin(mangle) + z1;
                     break;
             }
-            //h = GetHeightValue(x,z) + 10;
+            // h = GetHeightValue(x,z) + 10;
             h = outPutArr[0] + outPutArr[1] * x + outPutArr[2] * x * x;
             ppt = new Cordinate;
             ppt->x = x;
@@ -860,15 +860,15 @@ void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y
     float dz = z2 - z1;
     PLuQianHuPo ptt;
     ptt = new LuQianHuPo;
-    float m_Lj_Dh = 0.6;// 碴肩至碴脚的高度
-    //根据规范设置的 路堤 护坡数值
-    float Lt_h1 = 6;        //1级边坡坡高
-    float Lt_h2 = 12;       //2级边坡坡高
-    float Lt_m1 = 1.5;      //1级边坡坡率
-    float Lt_m2 = 1.75;     //2级边坡坡率
-    float Lt_b = 2.0;       //边坡平台宽度
-    float Lt_h3 = ty0 - Lt_h1 - Lt_h2;      //2级边坡坡高
-    float Lt_m3 = 0.45;                     //1级边坡坡率
+    float m_Lj_Dh = 0.6;  // 碴肩至碴脚的高度
+    // 根据规范设置的 路堤 护坡数值
+    float Lt_h1 = 6;        // 1级边坡坡高
+    float Lt_h2 = 12;       // 2级边坡坡高
+    float Lt_m1 = 1.5;      // 1级边坡坡率
+    float Lt_m2 = 1.75;     // 2级边坡坡率
+    float Lt_b = 2.0;       // 边坡平台宽度
+    float Lt_h3 = ty0 - Lt_h1 - Lt_h2;      // 2级边坡坡高
+    float Lt_m3 = 0.45;                     // 1级边坡坡率
     // ----------------------------------------------------------
     if (LeftRight == -1) {  // 左侧边坡
         ptt->Huponums_L = 3;
@@ -939,8 +939,8 @@ void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y
         PtS_HuPo.GetAt(MN)->TW_left = TW;
         PtS_HuPo.GetAt(MN)->Lc = mLC;
         PtS_HuPo.GetAt(MN)->strJDStyle = strJDstyle;
-    }// End 左侧边坡
-    else if (LeftRight == 1) { // 右侧边坡
+    }  // End 左侧边坡
+    else if (LeftRight == 1) {  // 右侧边坡
         ptt = PtS_HuPo.GetAt(PtS_HuPo.GetSize() - 1);
         ptt->Huponums_R = 3;
         /************************************************************************/
@@ -1007,7 +1007,7 @@ void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y
         ptt->HuPo_R[2].style = 2;
         long MN = PtS_HuPo.GetSize() - 1;
         PtS_HuPo.GetAt(MN)->TW_right = TW;
-    }// End 右侧边坡
+    }  // End 右侧边坡
     // ----------------------------------------------------------
 }
 
@@ -1026,15 +1026,15 @@ void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, doub
     float dz = z2 - z1;
     PLuQianHuPo ptt;
     ptt = new LuQianHuPo;
-    float m_Lj_Dh = 0.6;// 碴肩至碴脚的高度
-    //根据规范设置的 路堤 护坡数值
-    float Lt_h1 = 6;        //1级边坡坡高
-    float Lt_h2 = 12;       //2级边坡坡高
-    float Lt_m1 = 1.5;      //1级边坡坡率
-    float Lt_m2 = 1.75;     //2级边坡坡率
-    float Lt_b = 2.0;       //边坡平台宽度
-    float Lt_h3 = ty0 - Lt_h1 - Lt_h2;      //2级边坡坡高
-    float Lt_m3 = 0.45;                     //1级边坡坡率
+    float m_Lj_Dh = 0.6;  // 碴肩至碴脚的高度
+    // 根据规范设置的 路堤 护坡数值
+    float Lt_h1 = 6;        // 1级边坡坡高
+    float Lt_h2 = 12;       // 2级边坡坡高
+    float Lt_m1 = 1.5;      // 1级边坡坡率
+    float Lt_m2 = 1.75;     // 2级边坡坡率
+    float Lt_b = 2.0;       // 边坡平台宽度
+    float Lt_h3 = ty0 - Lt_h1 - Lt_h2;      // 2级边坡坡高
+    float Lt_m3 = 0.45;                     // 1级边坡坡率
     // ----------------------------------------------------------
     if (LeftRight == -1) {  // 左侧边坡
         ptt->Huponums_L = 3;
@@ -1105,8 +1105,8 @@ void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, doub
         PtS_HuPo.GetAt(MN)->TW_left = TW;
         PtS_HuPo.GetAt(MN)->Lc = mLC;
         PtS_HuPo.GetAt(MN)->strJDStyle = strJDstyle;
-    }// End 左侧边坡
-    else if (LeftRight == 1) { // 右侧边坡
+    }  // End 左侧边坡
+    else if (LeftRight == 1) {  // 右侧边坡
         ptt = PtS_HuPo.GetAt(PtS_HuPo.GetSize() - 1);
         ptt->Huponums_R = 3;
         /************************************************************************/
@@ -1173,7 +1173,7 @@ void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, doub
         ptt->HuPo_R[2].style = 2;
         long MN = PtS_HuPo.GetSize() - 1;
         PtS_HuPo.GetAt(MN)->TW_right = TW;
-    }// End 右侧边坡
+    }  // End 右侧边坡
     // ----------------------------------------------------------
 }
 
@@ -1188,15 +1188,15 @@ void CDesingScheme::GetBpJD(float H0, float Afla, float mangle, double x0, doubl
     float L = 0.1;
     float h1 = -999;
     float hNew = -9999;
-    float m_bc = 0.2; //
-    float DerC = 0.05; //0.05
+    float m_bc = 0.2;
+    float DerC = 0.05;
     while (fabs(h1 - hNew) > DerC) {
         h1 = H0 - bsignTW * L * sin(Afla);
-        hNew = GetH(L, Afla, mangle, x0, z0, mLeftRight, &xx, &zz); //对应的地面高程
+        hNew = GetH(L, Afla, mangle, x0, z0, mLeftRight, &xx, &zz);  // 对应的地面高程
         if (bsignTW == -1) {
-            if (h1 - hNew > 0) { //如果超出了地面
+            if (h1 - hNew > 0) {  // 如果超出了地面
                 hNew = h1;
-            } else { //还是低于地面线
+            } else {  // 还是低于地面线
                 L = L * 1.1;
             }
         } else  if (bsignTW == 1) {
@@ -1249,8 +1249,8 @@ float CDesingScheme::GetH(float L, float Afla, float mAngle, double x0, double z
 float CDesingScheme::GetHeightValue(float x, float z) {
     float CameraX = x / MAP_SCALE;                  // 计算在哪一列
     float CameraZ = -z / MAP_SCALE;                     // 计算在哪一行
-    int Col0 = int(CameraX);                        // 块的列号
-    int Row0 = int(CameraZ);                        // 块的行号
+    int Col0 = static_cast<int>(CameraX);                        // 块的列号
+    int Row0 = static_cast<int>(CameraZ);                        // 块的行号
     int Col1 = Col0 + 1;                            // 相邻列
     int Row1 = Row0 + 1;                            // 相邻块
     if (Col1 > MAP_W)   Col1 = 0;                   // 相邻列大于地块数，取首列
@@ -1259,8 +1259,8 @@ float CDesingScheme::GetHeightValue(float x, float z) {
     float h01 = g_terrain[Col1 + Row0 * MAP_W][1];
     float h11 = g_terrain[Col1 + Row1 * MAP_W][1];
     float h10 = g_terrain[Col0 + Row1 * MAP_W][1];
-    float tx = CameraX - int(CameraX);              // 求块内X偏移位置
-    float ty = CameraZ - int(CameraZ);              // 求块内Z偏移位置
+    float tx = CameraX - static_cast<int>(CameraX);              // 求块内X偏移位置
+    float ty = CameraZ - static_cast<int>(CameraZ);              // 求块内Z偏移位置
     float txty = tx * ty;                           // 以下为双线性插值（内插）计算
     // 返回插值计算值，为所求点的高度
     return h00 * (1.0f - ty - tx + txty) + h01 * (tx - txty) + h11 * txty + h10 * (ty - txty);
@@ -1275,13 +1275,13 @@ int CDesingScheme::GetTW(double x, double z, float H) {
     double tx1 = x;
     double ty1 = -z;
     float mh = GetHeightValue(tx1, ty1);
-    if (fabs(H - mh) <= 0.001) //如果路基面点的高程与垂直正下方的地面点高程之差<=0.001
-        mTW = 0; //认为是填挖平衡点(即填挖0点)
+    if (fabs(H - mh) <= 0.001)  // 如果路基面点的高程与垂直正下方的地面点高程之差<=0.001
+        mTW = 0;  // 认为是填挖平衡点(即填挖0点)
     else if (H < mh)
-        mTW = -1; //<垂直正下方的地面点高程,为路堑
+        mTW = -1;  // <垂直正下方的地面点高程,为路堑
     else
-        mTW = 1; //>垂直正下方的地面点高程,为路堤
-    return mTW;  //返回计算的边坡填挖类型
+        mTW = 1;  // >垂直正下方的地面点高程,为路堤
+    return mTW;  // 返回计算的边坡填挖类型
 }
 
 
@@ -1289,8 +1289,8 @@ int CDesingScheme::GetTW(double x, double z, float H) {
 /* Function: 计算2端横断面上的点坐标                                        */
 /************************************************************************/
 void CDesingScheme::CalculateFillFacePoints(vector<Railway3DCordinate>& rcVector2, vector<Railway3DCordinate>& rcVector1) {
-    Railway3DCordinate rc2;//面2
-    Railway3DCordinate rc1;//面1
+    Railway3DCordinate rc2;  // 面2
+    Railway3DCordinate rc1;  // 面1
     //1------------------------------------------------------------
     int a = PtS_Railway3D.GetSize();
     int railway3D_bIndex = 0;

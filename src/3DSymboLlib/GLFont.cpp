@@ -1,6 +1,4 @@
-﻿// GLFont.cpp: implementation of the CGLFont class.
-//////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "GLFont.h"
 
@@ -11,7 +9,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 //////////////////////////////////////////////////////////////////////
-//unsigned int Base;
+// unsigned int Base;
 //////////////////////////////////////////////////////////////////////
 
 CGLFont::CGLFont() {
@@ -81,7 +79,7 @@ void CGLFont::Printfc3d(CString strText, HFONT hFont, float z) {    // 主要原
 }
 
 ////////////////////////////////////////////////////////////////////////
-void CGLFont:: Settext(float x, float y, CString str, HFONT Font, float r, float g, float b) { // 平面汉字
+void CGLFont:: Settext(float x, float y, CString str, HFONT Font, float r, float g, float b) {  // 平面汉字
     glLoadIdentity();
     glPushAttrib(GL_CURRENT_BIT);
     glDisable(GL_TEXTURE_2D);
@@ -102,7 +100,7 @@ void CGLFont:: Printftext(int x, int y, LPCTSTR lpszText, HFONT hFont) {
     SIZE size;                                                      // 位图尺寸
     HDC MDC = ::CreateCompatibleDC(0);                              // 暂存设备场景
     SelectObject(MDC, hFont);                                       // 选择新字体
-    ::GetTextExtentPoint32(MDC, lpszText, strlen(lpszText), &size); // 获取字符位图大小
+    ::GetTextExtentPoint32(MDC, lpszText, strlen(lpszText), &size);  // 获取字符位图大小
     bitmap.CreateBitmap(size.cx, size.cy, 1, 1, NULL);              // 创建与MDC相关单色位图
     HBITMAP oldBmp = (HBITMAP)SelectObject(MDC, bitmap);            // 字符位图与MDC关连
     SetBkColor(MDC, RGB(0,     0,   0));                            // 底色 黑色
@@ -124,7 +122,7 @@ void CGLFont:: Printftext(int x, int y, LPCTSTR lpszText, HFONT hFont) {
     binf->bmiHeader.biCompression = BI_RGB;                         // 颜色方式
     binf->bmiHeader.biSizeImage   = bufsize;                        // 图形数据长度
     UCHAR* Bits = new UCHAR[bufsize];                               // 定义图形数据块变量
-    ::GetDIBits(MDC, bitmap, 0, bm.bmHeight, Bits, binf, DIB_RGB_COLORS); // 取设备无关数据到Bits
+    ::GetDIBits(MDC, bitmap, 0, bm.bmHeight, Bits, binf, DIB_RGB_COLORS);  // 取设备无关数据到Bits
     glPixelStorei(GL_UNPACK_ALIGNMENT , 1);                         // 控制像素存储
     glRasterPos2i(x, y);                                            // 平面定位
     glBitmap(size.cx, size.cy, 0, 0, 0, 0, Bits);                   // 平面位图显示

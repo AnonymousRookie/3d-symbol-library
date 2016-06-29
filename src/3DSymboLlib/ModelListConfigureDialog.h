@@ -3,7 +3,7 @@
 #include "afxwin.h"
 
 
-// ModelListConfigureDialog 对话框
+//  ModelListConfigureDialog 对话框
 
 class ModelListConfigureDialog : public CDialog {
     DECLARE_DYNAMIC(ModelListConfigureDialog)
@@ -16,7 +16,7 @@ class ModelListConfigureDialog : public CDialog {
     enum { IDD = IDD_MODELLISTCONFIGUREDIALOG };
 
   public:
-    HTREEITEM hRoot;    //根节点句柄
+    HTREEITEM hRoot;    // 根节点句柄
     HTREEITEM hCataItem;
     HTREEITEM hArtItem;
 

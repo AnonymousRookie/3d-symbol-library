@@ -1,5 +1,5 @@
-﻿
-#pragma once
+﻿#ifndef FILE_VIEW_H
+#define FILE_VIEW_H
 
 #include "ViewTree.h"
 
@@ -51,3 +51,4 @@ class CFileView : public CDockablePane {
     DECLARE_MESSAGE_MAP()
 };
 
+#endif  // FILE_VIEW_H

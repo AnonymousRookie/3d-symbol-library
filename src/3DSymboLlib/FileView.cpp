@@ -135,31 +135,31 @@ void CFileView::OnProperties() {
 }
 
 void CFileView::OnFileOpen() {
-    // TODO: 在此处添加命令处理程序代码
+    // TODO(jason): 在此处添加命令处理程序代码
 }
 
 void CFileView::OnFileOpenWith() {
-    // TODO: 在此处添加命令处理程序代码
+    // TODO(jason): 在此处添加命令处理程序代码
 }
 
 void CFileView::OnDummyCompile() {
-    // TODO: 在此处添加命令处理程序代码
+    // TODO(jason): 在此处添加命令处理程序代码
 }
 
 void CFileView::OnEditCut() {
-    // TODO: 在此处添加命令处理程序代码
+    // TODO(jason): 在此处添加命令处理程序代码
 }
 
 void CFileView::OnEditCopy() {
-    // TODO: 在此处添加命令处理程序代码
+    // TODO(jason): 在此处添加命令处理程序代码
 }
 
 void CFileView::OnEditClear() {
-    // TODO: 在此处添加命令处理程序代码
+    // TODO(jason): 在此处添加命令处理程序代码
 }
 
 void CFileView::OnPaint() {
-    CPaintDC dc(this); // 用于绘制的设备上下文
+    CPaintDC dc(this);  // 用于绘制的设备上下文
     CRect rectTree;
     m_wndFileView.GetWindowRect(rectTree);
     ScreenToClient(rectTree);

@@ -54,7 +54,7 @@ unsigned char* LoadBitmapFile(char* filename, BITMAPINFOHEADER* bitmapInfoHeader
     // close the file and return the bitmap image data
     fclose(filePtr);
     return bitmapImage;
-} // end LoadBitmapFile()
+}  // end LoadBitmapFile()
 
 
 /*****************************************************************************
@@ -82,4 +82,4 @@ unsigned char* LoadBitmapFileWithAlpha(char* filename, BITMAPINFOHEADER* bitmapI
     }
     free(bitmapImage);
     return bitmapWithAlpha;
-} // end LoadBitmapFileWithAlpha()
+}  // end LoadBitmapFileWithAlpha()

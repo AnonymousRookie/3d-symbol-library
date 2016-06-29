@@ -1,7 +1,4 @@
-﻿// DialogModelList.cpp : 实现文件
-//
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "DialogModelList.h"
 #include "afxdialogex.h"
@@ -100,18 +97,18 @@ BOOL CDialogModelList::OnInitDialog() {
     else if (m_type == "StoneTexture") {
         // 获取文件夹下所有指定类型文件
         _finddata_t fileDir;
-        char* dir = new char[m_Dir.GetLength() + strlen("\\*") + m_format.GetLength()]; //"d:\\temp\\*.*";
+        char* dir = new char[m_Dir.GetLength() + strlen("\\*") + m_format.GetLength()];  // "d:\\temp\\*.*";
         sprintf(dir, m_Dir + "\\*" + m_format);
         long lfDir;
         int fileNum = 0;
-        //vector<CString> fileName;
-        //搜索与指定的文件名称匹配的第一个实例，若成功则返回第一个实例的句柄，否则返回-1L
+        // vector<CString> fileName;
+        // 搜索与指定的文件名称匹配的第一个实例，若成功则返回第一个实例的句柄，否则返回-1L
         if ((lfDir = _findfirst(dir, &fileDir)) == -1l)
             printf("No file is found\n");
         else {
             printf("file list:\n");
             do {
-                printf("%s\n", fileDir.name); // XXX.format
+                printf("%s\n", fileDir.name);  // XXX.format
                 m_fileNameArray.Add(fileDir.name);
                 ++fileNum;
             } while (_findnext(lfDir, &fileDir) == 0);
@@ -120,8 +117,8 @@ BOOL CDialogModelList::OnInitDialog() {
     }
     // 填充ClistCtrl 和CimageList
     m_listCtlModel.SetExtendedStyle(LVS_ALIGNTOP | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-    //m_listCtlModel.SetIconSpacing(CSize(80, 80));     //set pictures spacing
-    m_imgListModel.Create(50, 50, ILC_COLOR32 | ILC_MASK , m_fileNameArray.GetSize(), m_fileNameArray.GetSize());
+    // m_listCtlModel.SetIconSpacing(CSize(80, 80));     // set pictures spacing
+    m_imgListModel.Create(50, 50, ILC_COLOR32 | ILC_MASK, m_fileNameArray.GetSize(), m_fileNameArray.GetSize());
     m_listCtlModel.SetImageList(&m_imgListModel, LVSIL_NORMAL);
     DrawThumbnails();
     return TRUE;  // return TRUE  unless you set the focus to a control

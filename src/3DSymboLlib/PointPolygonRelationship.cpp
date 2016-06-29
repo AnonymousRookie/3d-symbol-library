@@ -45,7 +45,7 @@ int CPointPolygonRelationship::InPolygon(const PPR_Polygon& polygon, PPR_Point p
         side.pt1 = polygon[i];
         side.pt2 = polygon[(i + 1) % n];
         if (IsOnline(point, side)) {
-            return 1 ;
+            return 1;
         }
         // 如果side平行x轴则不作考虑
         if (fabs(side.pt1.y - side.pt2.y) < ESP) {

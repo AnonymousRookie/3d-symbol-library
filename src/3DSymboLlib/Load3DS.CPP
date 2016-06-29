@@ -12,16 +12,16 @@ t3DBox t3dBox;
 int   g_ViewMode      = GL_TRIANGLES;
 bool  g_bLighting     = true;
 
-CLoad3DS::CLoad3DS() { //  构造函数的功能是初始化tChunk数据
+CLoad3DS::CLoad3DS() {  //  构造函数的功能是初始化tChunk数据
     m_CurrentChunk = new tChunk;    // 初始化并为当前的块分配空间
     m_TempChunk = new tChunk;       // 初始化一个临时块并分配空间
 }
 
 CLoad3DS::~CLoad3DS() {
-    CleanUp();// 释放内存空间
+    CleanUp();  // 释放内存空间
     for (int j = 0; j < 10; j++)
         for (int i = 0; i < g_3DModel[j].numOfObjects; i++) {
-            delete [] g_3DModel[j].pObject[i].pFaces;// 删除所有的变量
+            delete [] g_3DModel[j].pObject[i].pFaces;  // 删除所有的变量
             delete [] g_3DModel[j].pObject[i].pNormals;
             delete [] g_3DModel[j].pObject[i].pVerts;
             delete [] g_3DModel[j].pObject[i].pTexVerts;
@@ -40,7 +40,7 @@ void CLoad3DS::Init(char* _3DSFilename, int j, char* _3DSTexture) { //
     int index = path1.ReverseFind('\\');
     CString dir = path1.Left(index);
     for (int i = 0; i < g_3DModel[j].numOfMaterials; i++) {
-        if (strlen(g_3DModel[j].pMaterials[i].strFile) > 0) { // 判断是否是一个文件名
+        if (strlen(g_3DModel[j].pMaterials[i].strFile) > 0) {  // 判断是否是一个文件名
             CString texName;
             texName.Format("%s", g_3DModel[j].pMaterials[i].strFile);
             CString finalTexPath = _3DSTexture;
@@ -59,8 +59,8 @@ void CLoad3DS::Init(char* _3DSFilename, int j, char* _3DSTexture) { //
     maxy = -99999;
     maxz = -99999;
     for (int i = 0; i <  g_3DModel[j].numOfObjects; i++) {
-        if (g_3DModel[j].pObject.size() <= 0) break; // 如果对象的大小小于0，则退出
-        t3DObject* pObject = &g_3DModel[j].pObject[i];// 获得当前显示的对象
+        if (g_3DModel[j].pObject.size() <= 0) break;  // 如果对象的大小小于0，则退出
+        t3DObject* pObject = &g_3DModel[j].pObject[i];  // 获得当前显示的对象
         for (int j = 0; j < pObject->numOfFaces; j++) {     // 遍历所有的面
             for (int tex = 0; tex < 3; tex++) {                 // 遍历三角形的所有点
                 int index = pObject->pFaces[j].vertIndex[tex];  // 获得面对每个点的索引
@@ -88,7 +88,7 @@ void CLoad3DS::CreateTexture(UINT textureArray[], LPSTR strFileName, int texture
     AUX_RGBImageRec* pBitmap = NULL;
     if (!strFileName) return;                   // 如果无此文件，则直接返回
     pBitmap = auxDIBImageLoad(strFileName);     // 装入位图，并保存数据
-    //if(pBitmap == NULL)exit(0);               // 如果装入位图失败，则退出
+    // if(pBitmap == NULL)exit(0);               // 如果装入位图失败，则退出
     if (pBitmap != NULL) {
         // 生成纹理
         glGenTextures(1, &textureArray[textureID]);
@@ -109,8 +109,8 @@ void CLoad3DS::CreateTexture(UINT textureArray[], LPSTR strFileName, int texture
 /************************************************************************/
 /* Function: 显示3DS模型; j0 模型序列号; tx,ty,tz 模型位置; size大小比率   */
 /************************************************************************/
-void CLoad3DS::Show3ds(int j0, float tx, float ty, float tz, float size) { //显示3ds模型
-    glPushAttrib(GL_CURRENT_BIT);//保存现有颜色属实性
+void CLoad3DS::Show3ds(int j0, float tx, float ty, float tz, float size) {  // 显示3ds模型
+    glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属实性
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
     ::glTranslatef(tx, ty, tz);
@@ -118,16 +118,16 @@ void CLoad3DS::Show3ds(int j0, float tx, float ty, float tz, float size) { //显
     glRotatef(90, 0, 1.0f, 0);
     // 遍历模型中所有的对象
     for (int i = 0; i < g_3DModel[j0].numOfObjects; i++) {
-        if (g_3DModel[j0].pObject.size() <= 0) break; // 如果对象的大小小于0，则退出
-        t3DObject* pObject = &g_3DModel[j0].pObject[i];// 获得当前显示的对象
-        if (pObject->bHasTexture) { // 判断该对象是否有纹理映射
-            glEnable(GL_TEXTURE_2D);// 打开纹理映射
+        if (g_3DModel[j0].pObject.size() <= 0) break;  // 如果对象的大小小于0，则退出
+        t3DObject* pObject = &g_3DModel[j0].pObject[i];  // 获得当前显示的对象
+        if (pObject->bHasTexture) {  // 判断该对象是否有纹理映射
+            glEnable(GL_TEXTURE_2D);  // 打开纹理映射
             glBindTexture(GL_TEXTURE_2D, g_Texture[j0][pObject->materialID]);
         } else
-            glDisable(GL_TEXTURE_2D);// 关闭纹理映射
-        //这里原来有错，不行正确调用模型的贴图，g_Texture应该为2维数组
+            glDisable(GL_TEXTURE_2D);  // 关闭纹理映射
+        // 这里原来有错，不行正确调用模型的贴图，g_Texture应该为2维数组
         glColor3ub(255, 255, 255);
-        glBegin(g_ViewMode);//开始以g_ViewMode模式绘制
+        glBegin(g_ViewMode);  // 开始以g_ViewMode模式绘制
         for (int j = 0; j < pObject->numOfFaces; j++) {     // 遍历所有的面
             for (int tex = 0; tex < 3; tex++) {                 // 遍历三角形的所有点
                 int index = pObject->pFaces[j].vertIndex[tex];  // 获得面对每个点的索引
@@ -144,11 +144,11 @@ void CLoad3DS::Show3ds(int j0, float tx, float ty, float tz, float size) { //显
                 glVertex3f(pObject->pVerts[index].x, pObject->pVerts[index].y, pObject->pVerts[index].z);
             }
         }
-        glEnd();// 绘制结束
+        glEnd();  // 绘制结束
     }
     glEnable(GL_TEXTURE_2D);
     glPopMatrix();
-    glPopAttrib();//恢复前一属性
+    glPopAttrib();  // 恢复前一属性
 }
 
 
@@ -158,12 +158,12 @@ void CLoad3DS::Show3ds(int j0, float tx, float ty, float tz, float size) { //显
 bool CLoad3DS::Import3DS(t3DModel* pModel, char* strFileName) {
     // 进行修改模型路径时判断使用
     if (pModel->t3DModelBox.h != 0) {
-        //pModel = {0};                 // 用来添加到对象链表;
+        // pModel = {0};                 // 用来添加到对象链表;
         t3DModel Model = {0};
         // pModel = &Model;             // 将pModel变量指向Model变量的地址，由此得到*pModel以后都是代表着Model的值，不能将传进来的参数g_Model[i]进行改变
         *pModel = Model;                // 将pModel指向的地址的变量值改变成Model变量的值
     }
-    //pModel->pMaterials->
+    // pModel->pMaterials->
     char strMessage[255] = {0};
     // 打开一个3ds文件
     m_FilePointer = fopen(strFileName, "rb");
@@ -563,9 +563,9 @@ CVector3Model Cross(CVector3Model vVector1, CVector3Model vVector2) {
 CVector3Model Normalize(CVector3Model vNormal) {
     double Magnitude;
     Magnitude = Mag(vNormal);                   // 获得矢量的长度
-    vNormal.x /= (float)Magnitude;
-    vNormal.y /= (float)Magnitude;
-    vNormal.z /= (float)Magnitude;
+    vNormal.x /= static_cast<float>(Magnitude);
+    vNormal.y /= static_cast<float>(Magnitude);
+    vNormal.z /= static_cast<float>(Magnitude);
     return vNormal;
 }
 
@@ -606,7 +606,7 @@ void CLoad3DS::ComputeNormals(t3DModel* pModel) {
         int shared = 0;
         // 遍历所有的顶点
         for (i = 0; i < pObject->numOfVerts; i++) {
-            for (int j = 0; j < pObject->numOfFaces; j++) { // 遍历所有的三角形面
+            for (int j = 0; j < pObject->numOfFaces; j++) {  // 遍历所有的三角形面
                 // 判断该点是否与其它的面共享
                 if (pObject->pFaces[j].vertIndex[0] == i ||
                         pObject->pFaces[j].vertIndex[1] == i ||

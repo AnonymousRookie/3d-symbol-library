@@ -4,15 +4,15 @@
 
 // C3DModelParamSet 对话框
 
-#define WM_GOODBYE              WM_USER+100     //对话框消息响应
-#define WM_UPDATE_EDIT_XY       WM_USER+101     //更新对话框
+#define WM_GOODBYE              WM_USER+100     // 对话框消息响应
+#define WM_UPDATE_EDIT_XY       WM_USER+101     // 更新对话框
 
-#define SET_XY_BY_MOUSE_FALSE   WM_USER+102     //checkbox 状态 ==> 选中
-#define SET_XY_BY_MOUSE_TRUE    WM_USER+103     //checkbox 状态 ==> 未选中
+#define SET_XY_BY_MOUSE_FALSE   WM_USER+102     // checkbox 状态 ==> 选中
+#define SET_XY_BY_MOUSE_TRUE    WM_USER+103     // checkbox 状态 ==> 未选中
 
 struct ModeParam {
-    //景观树,3d景观树,城市符号
-    //tree,3dtree,CitySymbol
+    // 景观树,3d景观树,城市符号
+    // tree,3dtree,CitySymbol
     CString type;
 };
 
@@ -39,7 +39,7 @@ class C3DModelParamSet : public CDialog {
 
 
   public:
-    CView* m_pView; //指向调用此对话框的视类对象的指针
+    CView* m_pView;  // 指向调用此对话框的视类对象的指针
     ModeParam m_modeParam;
 
   public:
@@ -55,7 +55,7 @@ class C3DModelParamSet : public CDialog {
     float   scale;
     virtual BOOL OnInitDialog();
 
-    CString m_strTitle; //对话框标题
+    CString m_strTitle;  // 对话框标题
 
     // 模型绕 X 轴旋转角度
     int iRotateX;

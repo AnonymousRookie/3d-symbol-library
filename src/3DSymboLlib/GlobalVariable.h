@@ -2,7 +2,8 @@
 /*    全局变量声明                                                      */
 /************************************************************************/
 
-#pragma once
+#ifndef GLOBAL_VARIABLE_H
+#define GLOBAL_VARIABLE_H
 
 
 #include <iostream>
@@ -27,13 +28,13 @@ extern list<string> g_delList[5];
 extern list<string> g_addList[5];
 
 struct ModelTreeStruct {
-    string _item;           //"3DS Model","City Symbol","Tree Model","3D Tree Model","Weather Symbol"
-    string _noteDirectory;  //"/root/T3DSModel/*","/root/CitySymbol/*","/root/TreeModel/*","/root/T3DTreeModel/*",/root/WeatherSymbol/*
+    string _item;           // "3DS Model","City Symbol","Tree Model","3D Tree Model","Weather Symbol"
+    string _noteDirectory;  // "/root/T3DSModel/*","/root/CitySymbol/*","/root/TreeModel/*","/root/T3DTreeModel/*",/root/WeatherSymbol/*
     bool isChanged;         // 是否发生了add/delete操作
 };
 extern ModelTreeStruct g_modelTree[5];
 
-//符号所在文件夹名称
+// 符号所在文件夹名称
 struct SymbolFolder {
     string _3DSFolder;
     string _CityFolder;
@@ -69,7 +70,7 @@ extern float    g_texcoord  [MAP_W * MAP_W][2];     // 索引数组
 
 
 
-extern float g_max_height;// 最大高程
+extern float g_max_height;  // 最大高程
 
 
 extern string g_recentlyOpenedProjectName;  // 选中的最近打开的工程文件名
@@ -77,3 +78,5 @@ extern string g_recentlyOpenedProjectName;  // 选中的最近打开的工程文
 
 // 最近打开的工程文件列表
 extern CStringArray g_strRecentOpenedFileArray;
+
+#endif  // GLOBAL_VARIABLE_H

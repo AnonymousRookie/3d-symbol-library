@@ -134,7 +134,7 @@ CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView() {
 }
 
 BOOL CMy3DSymbolLibNewView::PreCreateWindow(CREATESTRUCT& cs) {
-    // TODO: 在此处通过修改
+
     //  CREATESTRUCT cs 来修改窗口类或样式
     return CView::PreCreateWindow(cs);
 }
@@ -145,11 +145,11 @@ void CMy3DSymbolLibNewView::OnDraw(CDC* pDC) {
     ASSERT_VALID(pDoc);
     if (!pDoc)
         return;
-    // TODO: 在此处为本机数据添加绘制代码
+
     wglMakeCurrent(pDC->m_hDC, m_hRC);  // 使 RC 与当前 DC 相关联
-    DrawScene(); // 场景绘制
+    DrawScene();  // 场景绘制
     glFlush();
-    ::SwapBuffers(m_pDC->GetSafeHdc()); //交换缓冲区
+    ::SwapBuffers(m_pDC->GetSafeHdc());  // 交换缓冲区
 }
 
 // CMy3DSymbolLibNewView 打印
@@ -165,23 +165,23 @@ BOOL CMy3DSymbolLibNewView::OnPreparePrinting(CPrintInfo* pInfo) {
 }
 
 void CMy3DSymbolLibNewView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
-    // TODO: 添加额外的打印前进行的初始化过程
+
 }
 
 void CMy3DSymbolLibNewView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
-    // TODO: 添加打印后进行的清理过程
+
 }
 
 void CMy3DSymbolLibNewView::OnRButtonUp(UINT /* nFlags */, CPoint point) {
-    //m_bRbtnDown = false;
+    // m_bRbtnDown = false;
     ClientToScreen(&point);
     OnContextMenu(this, point);
 }
 
 void CMy3DSymbolLibNewView::OnContextMenu(CWnd* /* pWnd */, CPoint point) {
-    //#ifndef SHARED_HANDLERS
+    // #ifndef SHARED_HANDLERS
     //  theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
-    //#endif
+    // #endif
 }
 
 // CMy3DSymbolLibNewView 诊断
@@ -194,11 +194,11 @@ void CMy3DSymbolLibNewView::Dump(CDumpContext& dc) const {
     CView::Dump(dc);
 }
 
-CMy3DSymbolLibNewDoc* CMy3DSymbolLibNewView::GetDocument() const { // 非调试版本是内联的
+CMy3DSymbolLibNewDoc* CMy3DSymbolLibNewView::GetDocument() const {  // 非调试版本是内联的
     ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CMy3DSymbolLibNewDoc)));
     return (CMy3DSymbolLibNewDoc*)m_pDocument;
 }
-#endif //_DEBUG
+#endif  // _DEBUG
 
 
 
@@ -209,45 +209,45 @@ CMy3DSymbolLibNewDoc* CMy3DSymbolLibNewView::GetDocument() const { // 非调试�
 void CMy3DSymbolLibNewView::InitData() {
     glActiveTextureARB = NULL;
     glMultiTexCoord2fARB = NULL;
-    m_ViewWideNarrow = 0.0f;                            //初始飞行视口宽窄变量
+    m_ViewWideNarrow = 0.0f;                            // 初始飞行视口宽窄变量
     hwnd = GetSafeHwnd();
     CDC* pDestDC = CDC::FromHandle(::GetDC(hwnd));
-    m_SCREEN_WIDTH = pDestDC->GetDeviceCaps(HORZRES);   //屏幕宽度
-    m_SCREEN_HEIGHT = pDestDC->GetDeviceCaps(VERTRES);  //屏幕高度
-    m_near = 1;                                         //观察点与近侧剪裁平面的距离
-    m_far = 5000 ;                                      // 观察点与远侧剪裁平面的距离
-    m_shizxLength = 2 ;                                 // 查询标志十字线长度
-    m_shuzxHeight = 2 ;                                 // 查询标志竖直线高度
-    m_QueryLineWidth = 1 ;                              // 查询标志线的宽度
-    m_QueryColorR = 255 ;                               // 查询标志线的颜色(红)
-    m_QueryColorG = 0 ;                                 // 查询标志线的颜色(绿)
-    m_QueryColorB = 0 ;                                 // 查询标志线的颜色(蓝)
+    m_SCREEN_WIDTH = pDestDC->GetDeviceCaps(HORZRES);   // 屏幕宽度
+    m_SCREEN_HEIGHT = pDestDC->GetDeviceCaps(VERTRES);  // 屏幕高度
+    m_near = 1;                                         // 观察点与近侧剪裁平面的距离
+    m_far = 5000;                                      // 观察点与远侧剪裁平面的距离
+    m_shizxLength = 2;                                 // 查询标志十字线长度
+    m_shuzxHeight = 2;                                 // 查询标志竖直线高度
+    m_QueryLineWidth = 1;                              // 查询标志线的宽度
+    m_QueryColorR = 255;                               // 查询标志线的颜色(红)
+    m_QueryColorG = 0;                                 // 查询标志线的颜色(绿)
+    m_QueryColorB = 0;                                 // 查询标志线的颜色(蓝)
     m_bSearchDistencePtNums = 0;
     // 渲染模式
     m_Drawmode = 3;
     iTerrainType = 0;
     iSkyBoxLoaded = false;
     g_isTerrainInit = false;
-    //相机参数向上矢量
+    // 相机参数向上矢量
     m_vUp.x = 0;
     m_vUp.y = 1;
     m_vUp.z = 0;
-    m_viewdegree = 0 ; // 初始视角增量
-    m_viewHeight = m_oldviewHeight = 88 ; // 相机初始高度
+    m_viewdegree = 0;  // 初始视角增量
+    m_viewHeight = m_oldviewHeight = 88;  // 相机初始高度
     m_vEyePosition.x = 334;
     m_vEyePosition.z = -384;
     m_vEyePosition.y = 88;
     g_Angle = 6;                        // 视点方位角初值
     g_elev = 0;                         // 俯仰角初始值
     gao = 1.8;
-    rad_xz = float (PAI_D180 * g_Angle); // 计算左右旋转角度
+    rad_xz = float (PAI_D180 * g_Angle);  // 计算左右旋转角度
     m_vLook.x = m_vEyePosition.x + 100 * cos(rad_xz);
     m_vLook.z = m_vEyePosition.z + 100 * sin(rad_xz);
     m_vLook.y = m_vEyePosition.y + g_elev;
-    m_Step_X = 5.0;     //相机在X方向移动的步长初始值(鼠标控制)
-    m_Step_Z = 5.0;     //相机在Z方向移动的步长初始值(鼠标控制)
-    m_xTrans = 0;       //在X方向上移动的步长(键盘控制)
-    m_zTrans = 0;       //在Z方向上移动的步长(键盘控制)
+    m_Step_X = 5.0;     // 相机在X方向移动的步长初始值(鼠标控制)
+    m_Step_Z = 5.0;     // 相机在Z方向移动的步长初始值(鼠标控制)
+    m_xTrans = 0;       // 在X方向上移动的步长(键盘控制)
+    m_zTrans = 0;       // 在Z方向上移动的步长(键盘控制)
     derAngleY = 500.0f;
     derAngleZ = 4000.0f;
     derDisScale = 1.5;
@@ -258,7 +258,7 @@ void CMy3DSymbolLibNewView::InitData() {
     m_ViewUpDown = 0;
     m_FlyPause = FALSE;
     m_fly_start_pause_Enable = FALSE;  // 暂停/开始是否生效
-    //指北针初始指向角度(90度,即表示正北方向,在三维空间中则指向Z员负方向,即指向屏幕里面)
+    // 指北针初始指向角度(90度,即表示正北方向,在三维空间中则指向Z员负方向,即指向屏幕里面)
     m_NorthPtangle = 90;
     m_bShowbreviary = TRUE;
     m_i3DModelNum = 0;
@@ -283,13 +283,13 @@ void CMy3DSymbolLibNewView::InitData() {
     m_QueryType = -1;
     // checkbox,是否通过鼠标设置模型摆放位置
     m_isSetXYByMouse = 0;
-    initLines();// 初始化线路数据
+    initLines();  // 初始化线路数据
     // [160220]
     // 初始化各种点模型所在路径
     m_3DModelFolder     = "3DModel";
     m_CitySymbolFolder  = "CitySymbol";
     m_TreeModelFolder   = "TreeModel";
-    //[160119]
+    // [160119]
     m_LineEdit_pointNum = 0;
     fuse_Flag = FALSE;
     // [160209]
@@ -311,13 +311,13 @@ void CMy3DSymbolLibNewView::InitData() {
 /************************************************************************/
 void CMy3DSymbolLibNewView::initLines() {
     //==========================================================
-    b_haveMadeRail3DwayList = FALSE; //是否已经有三维线路显示列表(透视投影模式下)
-    m_Railway.m_Railway_width = 5.0; //路基断面总宽度
-    m_Railway.m_Lj_width = 0.8;     //路肩宽度
-    m_Railway.m_GuiMianToLujianWidth = 0.6; //碴肩至碴脚的高度
-    m_Railway.m_Lj_Dh = m_Railway.m_GuiMianToLujianWidth * (1 / 1.75); //铁轨到碴肩的距离
-    m_Railway.m_TieGui_width = 1.435; //铁轨间距
-    //==========================================================
+    b_haveMadeRail3DwayList = FALSE;  // 是否已经有三维线路显示列表(透视投影模式下)
+    m_Railway.m_Railway_width = 5.0;  // 路基断面总宽度
+    m_Railway.m_Lj_width = 0.8;     // 路肩宽度
+    m_Railway.m_GuiMianToLujianWidth = 0.6;  // 碴肩至碴脚的高度
+    m_Railway.m_Lj_Dh = m_Railway.m_GuiMianToLujianWidth * (1 / 1.75);  // 铁轨到碴肩的距离
+    m_Railway.m_TieGui_width = 1.435;  // 铁轨间距
+    // ==========================================================
     // 选线阈值设定(距离,夹角)
     // 用于计算2点之间线段长度
     last_x = 0, last_y = 0, last_z = 0;
@@ -359,10 +359,10 @@ BOOL CMy3DSymbolLibNewView::SetupPixelFormat() {
     PIXELFORMATDESCRIPTOR pfd = {
         sizeof(PIXELFORMATDESCRIPTOR) ,  // pfd结构的大小
         1 ,  // 版本号
-        PFD_DRAW_TO_WINDOW | // 支持在窗口中绘图
-        PFD_SUPPORT_OPENGL | // 支持 OpenGL
-        PFD_DOUBLEBUFFER | // 双缓存模式
-        PFD_STEREO |  //支持立体模式
+        PFD_DRAW_TO_WINDOW |  // 支持在窗口中绘图
+        PFD_SUPPORT_OPENGL |  // 支持 OpenGL
+        PFD_DOUBLEBUFFER |  // 双缓存模式
+        PFD_STEREO |  // 支持立体模式
         PFD_TYPE_RGBA ,  // RGBA 颜色模式
         24 ,  // 24 位颜色深度
         0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  // 忽略颜色位
@@ -375,7 +375,7 @@ BOOL CMy3DSymbolLibNewView::SetupPixelFormat() {
         0 ,  // 无辅助缓存
         PFD_MAIN_PLANE ,  // 主层
         0 ,  // 保留
-        0 ,  0 ,  0 // 忽略层 , 可见性和损毁掩模
+        0 ,  0 ,  0  // 忽略层 , 可见性和损毁掩模
     };
     // 在DC中选择合适的象素格式并返回索引号
     int pixelformat;
@@ -396,11 +396,11 @@ BOOL CMy3DSymbolLibNewView::SetupPixelFormat() {
         return 1;
     }
     if ((pfd.dwFlags & PFD_STEREO) == 0)
-        bStereoAvailable = FALSE ; // 显卡不支持立体模式
+        bStereoAvailable = FALSE;  // 显卡不支持立体模式
     else
         bStereoAvailable = TRUE;
     CString stt[5];
-    if (bStereoAvailable == FALSE) { // 如果显卡不支持立体模式，给出可能的错误原因
+    if (bStereoAvailable == FALSE) {  // 如果显卡不支持立体模式，给出可能的错误原因
         stt[0] = "①.图形卡不支持立体缓冲;\n";
         stt[1] = "②.图形卡驱动程序不支持立体缓冲;\n";
         stt[2] = "③.只有在特定的解析度或刷新率设置下 , 才可以支持立体缓冲;\n";
@@ -415,14 +415,13 @@ BOOL CMy3DSymbolLibNewView::SetupPixelFormat() {
 int CMy3DSymbolLibNewView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     if (CView::OnCreate(lpCreateStruct) == -1)
         return -1;
-    // TODO:  在此添加您专用的创建代码
     pMain = (CMainFrame*)AfxGetApp()->m_pMainWnd;
     // 获取客户区的设备描述表
     m_pDC = new CClientDC(this);
     // 初始化OpenGL
     InitializeOpenGL(m_pDC);
     InitData();
-    InitList() ; // 初始化显示列表
+    InitList();  // 初始化显示列表
     return 0;
 }
 
@@ -444,13 +443,13 @@ void CMy3DSymbolLibNewView::OnDestroy() {
 void CMy3DSymbolLibNewView::OnSize(UINT nType, int cx, int cy) {
     CView::OnSize(nType, cx, cy);
     if (cy > 0) {
-        WinViewX = cx ;                             // 视口宽度
-        WinViewY = cy ;                             // 视口高度
-        glViewport(0 , 0 , cx , cy);                // 设置视口大小
-        float m_aspectRatio = (float)cx / (float)cy ; // 视口的横纵比例
+        WinViewX = cx;                             // 视口宽度
+        WinViewY = cy;                             // 视口高度
+        glViewport(0, 0, cx, cy);                // 设置视口大小
+        float m_aspectRatio = static_cast<float>(cx) / static_cast<float>(cy);  // 视口的横纵比例
         glMatrixMode(GL_PROJECTION);                // 将当前矩阵设置为投影矩阵,指明当前矩阵为GL_PROJECTION
         glLoadIdentity();                           // 将当前矩阵置换为单位阵
-        gluPerspective(50.0 + m_ViewWideNarrow , m_aspectRatio , m_near , m_far);// fovy=50.0 + m_ViewWideNarrow , 是视野角度
+        gluPerspective(50.0 + m_ViewWideNarrow , m_aspectRatio , m_near , m_far);  // fovy=50.0 + m_ViewWideNarrow , 是视野角度
         glMatrixMode(GL_MODELVIEW);                 // 将当前矩阵设置为模型矩阵
         glLoadIdentity();                           // 将当前矩阵置换为单位阵
     }
@@ -533,17 +532,17 @@ void CMy3DSymbolLibNewView::InitTerrain() {
     for (int z = 0; z < MAP_W; z++)
         for (int x = 0; x < MAP_W; x++) {                               // MAP_W是地形块数，32行，32列的方形地形
             Vertex = z * MAP_W + x;
-            g_terrain [Vertex][0] = float(x) * MAP_SCALE;               // 地域数组 3维，MAP_SCALE是边长
-            g_terrain [Vertex][1] = (float)(g_imageData[Vertex * 3] / 3); // 地域数组 3维 灰度等高线生成高度图，在Modelobj初始化就赋值了
-            g_terrain [Vertex][2] = -float(z) * MAP_SCALE;                  // 地域数组 3维
-            g_texcoord[Vertex][0] = (float) x;                          // 索引数组2维，指示曲面贴图的平面坐标
-            g_texcoord[Vertex][1] = (float) z;
+            g_terrain [Vertex][0] = static_cast<float>(x) * MAP_SCALE;               // 地域数组 3维，MAP_SCALE是边长
+            g_terrain [Vertex][1] = static_cast<float>(g_imageData[Vertex * 3] / 3);  // 地域数组 3维 灰度等高线生成高度图，在Modelobj初始化就赋值了
+            g_terrain [Vertex][2] = -static_cast<float>(z) * MAP_SCALE;                  // 地域数组 3维
+            g_texcoord[Vertex][0] = static_cast<float>(x);                          // 索引数组2维，指示曲面贴图的平面坐标
+            g_texcoord[Vertex][1] = static_cast<float>(z);
             g_index [index++] = Vertex;                                 // 顶点数组1维，曲面顶点，一维顶点数组加快显示
             g_index [index++] = Vertex + MAP_W;
             // 获取地形高度极值
             if (m_maxHeight < g_terrain [Vertex][1]) m_maxHeight = g_terrain [Vertex][1];
             if (m_minHeight > g_terrain [Vertex][1]) m_minHeight = g_terrain [Vertex][1];
-            g_max_height = m_maxHeight; // 保存最大高程值到全局变量中
+            g_max_height = m_maxHeight;  // 保存最大高程值到全局变量中
         }
     // 顶点数组  第一步 启用数组
     glEnableClientState(GL_VERTEX_ARRAY);                   // 允许使用地域数组
@@ -558,13 +557,13 @@ void CMy3DSymbolLibNewView::InitTerrain() {
 /* Function: 三维地形绘制   ,利用glDrawElements快速绘制排列好的顶点地形     */
 /************************************************************************/
 void CMy3DSymbolLibNewView::DrawTerrain() {
-    //glShadeModel函数用来设置阴影的效果，GL_SMOOTH为默认值，表示平滑阴影效果；
+    // glShadeModel函数用来设置阴影的效果，GL_SMOOTH为默认值，表示平滑阴影效果；
     glShadeModel(GL_SMOOTH);
     SetDrawMode();
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(50.0 + m_ViewWideNarrow , (float)WinViewX / (float)WinViewY , m_near , m_far);
-    glMatrixMode(GL_MODELVIEW); // 定义矩阵为模型模型矩阵
+    gluPerspective(50.0 + m_ViewWideNarrow , static_cast<float>(WinViewX) / static_cast<float>(WinViewY), m_near , m_far);
+    glMatrixMode(GL_MODELVIEW);  // 定义矩阵为模型模型矩阵
     glLoadIdentity();           // 将当前矩阵置换为单位矩阵
     /*glClearDepth函数设置深度缓冲区的，它的含义就在OpenGL窗口绘制的图形深入到屏幕中的程度，
     深度的意义就是在三维空间中的z坐标的数值，z取0时表示在平面上，你就看不到窗口中的图形了，
@@ -573,7 +572,7 @@ void CMy3DSymbolLibNewView::DrawTerrain() {
     glEnable(GL_DEPTH_TEST);    // 启用深度测试
     glDepthFunc(GL_LESS);       // 在调用glEnable(GL_DEPTH_TEST); 开启这个功能以后，当深度变化小于当前深度值时，更新深度值。
     SetCamra();
-    glViewport(0 ,  0 ,  WinViewX ,  WinViewY); //设置视口大小和位置
+    glViewport(0 ,  0 ,  WinViewX ,  WinViewY);  // 设置视口大小和位置
     glBindTexture(GL_TEXTURE_2D, texTerrain);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -581,7 +580,7 @@ void CMy3DSymbolLibNewView::DrawTerrain() {
     for (int z = 0; z < MAP_W - 1; z++) {
         glDrawElements(GL_TRIANGLE_STRIP, MAP_W * 2, GL_UNSIGNED_INT, &g_index[z * MAP_W * 2]);
     }
-    if (m_bShowbreviary == TRUE) { // 显示缩略视图
+    if (m_bShowbreviary == TRUE) {  // 显示缩略视图
         glViewport(WinViewX * 5 / 6 ,  WinViewY * 5 / 6 , WinViewX / 6 ,  WinViewY / 6);
         glBindTexture(GL_TEXTURE_2D, texTerrain);
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
@@ -591,7 +590,7 @@ void CMy3DSymbolLibNewView::DrawTerrain() {
             // 顶点数组  第三步 渲染
             glDrawElements(GL_TRIANGLE_STRIP, MAP_W * 2, GL_UNSIGNED_INT, &g_index[z * MAP_W * 2]);
         }
-        glViewport(0, 0, WinViewX, WinViewY); // 重新设置视口大小
+        glViewport(0, 0, WinViewX, WinViewY);  // 重新设置视口大小
     }
 }
 
@@ -602,8 +601,8 @@ void CMy3DSymbolLibNewView::DrawTerrain() {
 float CMy3DSymbolLibNewView::GetHeight(float x, float z) {
     float CameraX = x / MAP_SCALE;                  // 计算在哪一列
     float CameraZ = -z / MAP_SCALE;                     // 计算在哪一行
-    int Col0 = int(CameraX);                        // 块的列号
-    int Row0 = int(CameraZ);                        // 块的行号
+    int Col0 = static_cast<int>(CameraX);                        // 块的列号
+    int Row0 = static_cast<int>(CameraZ);                        // 块的行号
     int Col1 = Col0 + 1;                            // 相邻列
     int Row1 = Row0 + 1;                            // 相邻块
     if (Col1 > MAP_W)   Col1 = 0;                   // 相邻列大于地块数，取首列
@@ -612,15 +611,14 @@ float CMy3DSymbolLibNewView::GetHeight(float x, float z) {
     float h01 = g_terrain[Col1 + Row0 * MAP_W][1];
     float h11 = g_terrain[Col1 + Row1 * MAP_W][1];
     float h10 = g_terrain[Col0 + Row1 * MAP_W][1];
-    float tx = CameraX - int(CameraX);              // 求块内X偏移位置
-    float ty = CameraZ - int(CameraZ);              // 求块内Z偏移位置
+    float tx = CameraX - static_cast<int>(CameraX);              // 求块内X偏移位置
+    float ty = CameraZ - static_cast<int>(CameraZ);              // 求块内Z偏移位置
     float txty = tx * ty;                           // 以下为双线性插值（内插）计算
     // 返回插值计算值，为所求点的高度
     return h00 * (1.0f - ty - tx + txty) + h01 * (tx - txty) + h11 * txty + h10 * (ty - txty);
 }
 
 void CMy3DSymbolLibNewView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
-    // TODO: 在此添加消息处理程序代码和/或调用默认值
     if (nChar == 'W' || nChar == 'w') {
         m_Drawmode = 1;
     }
@@ -638,25 +636,25 @@ void CMy3DSymbolLibNewView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 /* Function:设置绘图模式                                    */
 /********************************************************/
 void  CMy3DSymbolLibNewView::SetDrawMode() {
-    switch (m_Drawmode) { // 绘制模式
+    switch (m_Drawmode) {  // 绘制模式
         case 1:  // 线框模式
-            glDisable(GL_TEXTURE_2D) ; // 关闭纹理功能
-            glPolygonMode(GL_FRONT_AND_BACK , GL_LINE);
+            glDisable(GL_TEXTURE_2D);  // 关闭纹理功能
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             break;
         case 2:  // 渲晕模式
-            glDisable(GL_TEXTURE_2D) ; // 开启纹理功能
-            glPolygonMode(GL_FRONT_AND_BACK , GL_FILL);
+            glDisable(GL_TEXTURE_2D);  // 开启纹理功能
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             break;
         case 3:  // 纹理模式
-            glEnable(GL_TEXTURE_2D) ; // 开启纹理功能
-            glPolygonMode(GL_FRONT_AND_BACK , GL_FILL);
+            glEnable(GL_TEXTURE_2D);  // 开启纹理功能
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             break;
     }
 }
 
 
 /********************************************************/
-/* Function:场景绘制                                        */
+/* Function:场景绘制                                     */
 /********************************************************/
 void CMy3DSymbolLibNewView::DrawScene() {
     glClearColor(0.53, 0.81, 0.92, 0.0);                // 设置刷新背景色SkyBlue: 135,206,235
@@ -685,8 +683,8 @@ void CMy3DSymbolLibNewView::DrawScene() {
         DrawFlyPath();
         DrawRailwaythesme();    // 绘制铁路
         if (m_QueryType == QUERY_COORDINATE || m_QueryType == QUERY_DISTENCE || m_QueryType == SELECTLINE
-                || m_QueryType == LINE_ADD  //Line
-                || m_QueryType == AREA_ADD  //Area
+                || m_QueryType == LINE_ADD  // Line
+                || m_QueryType == AREA_ADD  // Area
            ) {
             DrawSearchPoint();  // 绘制空间查询标志
         }
@@ -901,36 +899,30 @@ void CMy3DSymbolLibNewView::SkyBoxTexture(UINT textur) {
 }
 
 void CMy3DSymbolLibNewView::OnDrawmodeLine() {
-    // TODO: 在此添加命令处理程序代码
     m_Drawmode = 1;
     Invalidate(FALSE);
 }
 
 void CMy3DSymbolLibNewView::OnUpdateDrawmodeLine(CCmdUI* pCmdUI) {
-    // TODO: 在此添加命令更新用户界面处理程序代码
-    pCmdUI->SetCheck(m_Drawmode == 1);//根据m_ViewType值是否设置选中标志
+    pCmdUI->SetCheck(m_Drawmode == 1);  // 根据m_ViewType值是否设置选中标志
 }
 
 void CMy3DSymbolLibNewView::OnDrawmodeRender() {
-    // TODO: 在此添加命令处理程序代码
     m_Drawmode = 2;
     Invalidate(FALSE);
 }
 
 void CMy3DSymbolLibNewView::OnUpdateDrawmodeRender(CCmdUI* pCmdUI) {
-    // TODO: 在此添加命令更新用户界面处理程序代码
-    pCmdUI->SetCheck(m_Drawmode == 2);//根据m_ViewType值是否设置选中标志
+    pCmdUI->SetCheck(m_Drawmode == 2);  // 根据m_ViewType值是否设置选中标志
 }
 
 void CMy3DSymbolLibNewView::OnDrawmodeTexture() {
-    // TODO: 在此添加命令处理程序代码
     m_Drawmode = 3;
     Invalidate(FALSE);
 }
 
 void CMy3DSymbolLibNewView::OnUpdateDrawmodeTexture(CCmdUI* pCmdUI) {
-    // TODO: 在此添加命令更新用户界面处理程序代码
-    pCmdUI->SetCheck(m_Drawmode == 3);//根据m_ViewType值是否设置选中标志
+    pCmdUI->SetCheck(m_Drawmode == 3);  // 根据m_ViewType值是否设置选中标志
 }
 
 
@@ -973,12 +965,10 @@ void CMy3DSymbolLibNewView::OnQueryCoordinate() {
 /* Function: 设置是否选中状态                               */
 /********************************************************/
 void CMy3DSymbolLibNewView::OnUpdateQueryCoordinate(CCmdUI* pCmdUI) {
-    // TODO: 在此添加命令更新用户界面处理程序代码
     pCmdUI->SetCheck(m_QueryType == QUERY_COORDINATE);
 }
 
 void CMy3DSymbolLibNewView::OnQueryDistence() {
-    // TODO: 在此添加命令处理程序代码
     if (m_QueryType == QUERY_DISTENCE) {  // 如果当前已经是查询空间距离状态，则关闭
         m_QueryType = -1;
     } else {                            // 如果当前不是查询空间距离状态，则关闭，则打开
@@ -987,7 +977,6 @@ void CMy3DSymbolLibNewView::OnQueryDistence() {
 }
 
 void CMy3DSymbolLibNewView::OnUpdateQueryDistence(CCmdUI* pCmdUI) {
-    // TODO: 在此添加命令更新用户界面处理程序代码
     pCmdUI->SetCheck(m_QueryType == QUERY_DISTENCE);
 }
 
@@ -1009,9 +998,9 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
     glGetDoublev(GL_PROJECTION_MATRIX, projection);
     glGetIntegerv(GL_VIEWPORT, viewport);
     glPopMatrix();
-    winX = (float)mouse_x;
-    winY = (float)viewport[3] - (float)mouse_y - 1;
-    glReadPixels(mouse_x, int(winY), 1, 1,
+    winX = static_cast<float>(mouse_x);
+    winY = static_cast<float>(viewport[3]) - static_cast<float>(mouse_y) - 1;
+    glReadPixels(mouse_x, static_cast<int>(winY), 1, 1,
                  GL_DEPTH_COMPONENT , GL_FLOAT ,
                  &winZ);  // 获取深度值，只有在有渲染的地方才能准确获取，一旦没有渲染点就不能获取正确值
     // 逆变换和模拟变换
@@ -1036,7 +1025,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
     pMainFrame->Set_BarText(4 , strText);
     CString tt;
     if (winZ >= 0 && winZ < 1.0) {
-        if (m_isSetXYByMouse) {  //通过鼠标设置模型摆放位置
+        if (m_isSetXYByMouse) {  // 通过鼠标设置模型摆放位置
             pt1[0] = wx;
             pt1[1] = wy;
             pt1[2] = wz;
@@ -1054,12 +1043,12 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             Invalidate(FALSE);
             MessageBox(tt, "三维坐标查询", MB_ICONINFORMATION);     // 给出坐标查询信息
             IsSearchPoint = true;
-        } else if (m_QueryType == QUERY_DISTENCE) { // 查询空间距离
-            if (m_bSearchDistencePtNums >= 2) { // 如果选择点数2个，归零
+        } else if (m_QueryType == QUERY_DISTENCE) {  // 查询空间距离
+            if (m_bSearchDistencePtNums >= 2) {  // 如果选择点数2个，归零
                 m_bSearchDistencePtNums = 0;
             }
-            m_bSearchDistencePtNums++ ;         // 选择点数 + 1
-            if (m_bSearchDistencePtNums == 1) { // 如果只选择了1个点
+            m_bSearchDistencePtNums++;         // 选择点数 + 1
+            if (m_bSearchDistencePtNums == 1) {  // 如果只选择了1个点
                 pt1[0] = wx;
                 pt1[1] = wy;
                 pt1[2] = wz;  // 将三维点坐标存储到数组 pt1[] 里面
@@ -1077,7 +1066,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
         }
         // [160119] 线编辑  添加线
         else if (m_QueryType == LINE_ADD) {
-            m_LineEdit_pointNum++ ;         // 选择点数 + 1
+            m_LineEdit_pointNum++;         // 选择点数 + 1
             if (m_LineEdit_pointNum == 1) {  // 如果只选择了1个点
                 m_line.pt1._x = wx;
                 m_line.pt1._y = wy;
@@ -1097,7 +1086,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
         }
         // [160209]选取面符号上的点
         else if (m_QueryType == AREA_ADD) {
-            m_Area_pointNum++ ;         // 选择点数 + 1
+            m_Area_pointNum++;         // 选择点数 + 1
             if (m_Area_pointNum == 1) {
                 m_area4_forScreenRecord.pt1._x = wx;
                 m_area4_forScreenRecord.pt1._y = wy;
@@ -1132,13 +1121,13 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             PCordinate ppt = new Cordinate;
             float tmpH = 0;                         // (x,z)处高程值
             float* pDegree = new float(0);          // 通过函数参数返回夹角的值
-            const float threshold_distance = 100.0f;// 2点间最短距离
+            const float threshold_distance = 100.0f;  // 2点间最短距离
             // 2线段间最小夹角
             const float threshold_degree = 20;
             CString warningMsg;                     // 提示信息
             if ((ppt == NULL)) {
                 AfxMessageBox("Failed to add a new ppt");
-                return ;
+                return;
             }
             if (1) {
                 // 记录设计交点三维坐标
@@ -1167,8 +1156,8 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
                     last_x = ppt->x;
                     last_y = tmpH;
                     last_z = ppt->z;
-                    m_distance_between_2_points = (float)sqrt((last_x - pre_x) * (last_x - pre_x) + (last_y - pre_y) * (last_y - pre_y) + (last_z - pre_z) * (last_z - pre_z));
-                    if (m_distance_between_2_points > threshold_distance) { // 距离阈值
+                    m_distance_between_2_points = static_cast<float>(sqrt((last_x - pre_x) * (last_x - pre_x) + (last_y - pre_y) * (last_y - pre_y) + (last_z - pre_z) * (last_z - pre_z)));
+                    if (m_distance_between_2_points > threshold_distance) {  // 距离阈值
                         if (p_count == 1) {
                             fun(ppt);
                             p_count++;
@@ -1188,7 +1177,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
                             v2_end.z = last_z;
                             // 计算2个向量之间的夹角, 通过指针作函数参数返回
                             getDegreeBetween2Vectors(v1_begin, v1_end, v2_begin, v2_end, pDegree);
-                            if (*pDegree > threshold_degree) { // 夹角阈值
+                            if (*pDegree > threshold_degree) {  // 夹角阈值
                                 v1_end.x = pre_x;
                                 v1_end.y = 0;
                                 v1_end.z = pre_z;
@@ -1232,12 +1221,12 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             Invalidate(FALSE);
         }
         if (m_OperateType == SELECT) {                              // 如果是选择3D模型
-            //射线选择功能
+            // 射线选择功能
             GLfloat  winX, winY;
             GLdouble posX, posY, posZ;
             CRect re;
             GetWindowRect(&re);
-            int screenHeight = re.Height(), screenWidth = re.Width();  //屏幕宽和高
+            int screenHeight = re.Height(), screenWidth = re.Width();  // 屏幕宽和高
             // 变换要绘图函数里的顺序一样，否则坐标转换会产生错误
             winX = point.x;
             winY = screenHeight - point.y;
@@ -1263,7 +1252,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
         } else if (m_OperateType == MOVE) {             // 鼠标移动3D模型
             if (m_bMouseMove3DModelPtNums >= 2)          // 如果选择点数2个，归零
                 m_bMouseMove3DModelPtNums = 0;
-            m_bMouseMove3DModelPtNums++ ;               // 选择点数 + 1
+            m_bMouseMove3DModelPtNums++;               // 选择点数 + 1
             if (m_bMouseMove3DModelPtNums == 1) {       // 如果只选择了1个点
                 // JudgeRayIntersect(nearPoint, n_vector, resultP);
                 PCordinate ppt = new Cordinate;
@@ -1277,7 +1266,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
                 GLdouble posX, posY, posZ;
                 CRect re;
                 GetWindowRect(&re);
-                int screenHeight = re.Height(), screenWidth = re.Width();  //屏幕宽和高
+                int screenHeight = re.Height(), screenWidth = re.Width();  // 屏幕宽和高
                 // 变换要绘图函数里的顺序一样，否则坐标转换会产生错误
                 winX = point.x;
                 winY = screenHeight - point.y;
@@ -1328,7 +1317,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             GLdouble posX, posY, posZ;
             CRect re;
             GetWindowRect(&re);
-            int screenHeight = re.Height(), screenWidth = re.Width();  //屏幕宽和高
+            int screenHeight = re.Height(), screenWidth = re.Width();  // 屏幕宽和高
             // 变换要绘图函数里的顺序一样，否则坐标转换会产生错误
             winX = point.x;
             winY = screenHeight - point.y;
@@ -1364,16 +1353,16 @@ void CMy3DSymbolLibNewView::ScreenToGL2(CPoint point, GLdouble& wx , GLdouble& w
     int mouse_y = point.y;
     GLint viewport[4];
     GLdouble modelview[16] , projection[16];
-    GLdouble  wy ;
+    GLdouble  wy;
     float winX , winY , winZ;
     glPushMatrix();
     glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
     glGetDoublev(GL_PROJECTION_MATRIX, projection);
     glGetIntegerv(GL_VIEWPORT, viewport);
     glPopMatrix();
-    winX = (float)mouse_x;
-    winY = (float)viewport[3] - (float)mouse_y - 1;
-    glReadPixels(mouse_x, int(winY), 1, 1,
+    winX = static_cast<float>(mouse_x);
+    winY = static_cast<float>(viewport[3]) - static_cast<float>(mouse_y) - 1;
+    glReadPixels(mouse_x, static_cast<int>(winY), 1, 1,
                  GL_DEPTH_COMPONENT , GL_FLOAT ,
                  &winZ);  // 获取深度值，只有在有渲染的地方才能准确获取，一旦没有渲染点就不能获取正确值
     // 逆变换和模拟变换
@@ -1417,7 +1406,7 @@ void CMy3DSymbolLibNewView::fun(PCordinate ppt) {
         PLineCurve pTempCurveElements = new LineCurve;  // 定义新的交点变量
         // 第一个设计交点
         pTempCurveElements->fwj = 0.0;
-        double StartLC = 0;//...
+        double StartLC = 0;
         // 直缓里程=方案的起点里程   缓直里程=方案的起点里程
         pTempCurveElements->ZH = pTempCurveElements->HZ = StartLC;
         // 缓圆里程=方案的起点里程   圆缓里程=方案的起点里程
@@ -1437,7 +1426,7 @@ void CMy3DSymbolLibNewView::fun(PCordinate ppt) {
         pTempCurveElements->z = -myDesingScheme.PtS_JD.GetAt(0)->y;     // 交点的z坐标
         // 加入交点元素到DCurveElementss模板数组中
         myDesingScheme.JDCurveElements.Add(pTempCurveElements);
-    } else {  //如果当前线路方案设计交点数>0,表示已经进行该方案的设计
+    } else {  // 如果当前线路方案设计交点数>0,表示已经进行该方案的设计
         if (m_linePtnums <= 0) {
             m_linePtnums = myDesingScheme.PtS_JD.GetSize();
         }
@@ -1488,7 +1477,7 @@ void CMy3DSymbolLibNewView::fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0) {
         PLineCurve pTempCurveElements = new LineCurve;  // 定义新的交点变量
         // 第一个设计交点
         pTempCurveElements->fwj = 0.0;
-        double StartLC = 0;//...
+        double StartLC = 0;  // ...
         // 直缓里程=方案的起点里程   缓直里程=方案的起点里程
         pTempCurveElements->ZH = pTempCurveElements->HZ = StartLC;
         // 缓圆里程=方案的起点里程   圆缓里程=方案的起点里程
@@ -1513,7 +1502,7 @@ void CMy3DSymbolLibNewView::fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0) {
             m_linePtnums = myDesingScheme.PtS_JD.GetSize();
         }
         CString tt;
-        tt.Format("JD%d", m_linePtnums);  //交点ID自动增加
+        tt.Format("JD%d", m_linePtnums);  // 交点ID自动增加
         if (1) {
             PLineCurve pTempCurveElements = new LineCurve;
             pTempCurveElements->R = pcrl0->curve_R;         // 曲线半径
@@ -1542,10 +1531,10 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
     glPushAttrib(GL_CURRENT_BIT);                                                       // 保存现有颜色属性
     glDisable(GL_TEXTURE_2D);                                                           // 取消贴图
     glPushMatrix();                                                                     // 压入堆栈
-    if (m_QueryType == QUERY_COORDINATE) {                                              //三维空间坐标查询
+    if (m_QueryType == QUERY_COORDINATE) {                                              // 三维空间坐标查询
         if (pt1[0] != -99999) {
             glLineWidth(m_QueryLineWidth);                                              // 设置查询标志线宽度
-            glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0); // 设置查询标志线颜色
+            glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0);  // 设置查询标志线颜色
             // 绘制十字型查询标志线
             glBegin(GL_LINES);
             glVertex3f(pt1[0] - m_shizxLength , pt1[1] , pt1[2]);
@@ -1561,36 +1550,36 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
             glEnd();
         }
     } else if (m_QueryType == QUERY_DISTENCE) {     // 三维空间距离查询(在选择两个空间点之后才能够计算空间距离)
-        glLineWidth(m_QueryLineWidth) ;             // 设置查询标志线宽度
-        glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0) ; // 设置查询标志线颜色
+        glLineWidth(m_QueryLineWidth);             // 设置查询标志线宽度
+        glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0);  // 设置查询标志线颜色
         // 绘制十字型查询标志线
         glBegin(GL_LINES);
-        glVertex3f(pt1[0] - m_shizxLength , pt1[1] , pt1[2]);
-        glVertex3f(pt1[0] + m_shizxLength , pt1[1] , pt1[2]);
+        glVertex3f(pt1[0] - m_shizxLength, pt1[1], pt1[2]);
+        glVertex3f(pt1[0] + m_shizxLength, pt1[1], pt1[2]);
         glEnd();
         glBegin(GL_LINES);
-        glVertex3f(pt1[0] , pt1[1] , pt1[2] - m_shizxLength);
-        glVertex3f(pt1[0] , pt1[1] , pt1[2] + m_shizxLength);
+        glVertex3f(pt1[0], pt1[1], pt1[2] - m_shizxLength);
+        glVertex3f(pt1[0], pt1[1], pt1[2] + m_shizxLength);
         glEnd();
         glBegin(GL_LINES);
-        glVertex3f(pt1[0] , pt1[1] , pt1[2]);
-        glVertex3f(pt1[0] , pt1[1] + m_shuzxHeight , pt1[2]);
+        glVertex3f(pt1[0], pt1[1] , pt1[2]);
+        glVertex3f(pt1[0], pt1[1] + m_shuzxHeight, pt1[2]);
         glEnd();
         glBegin(GL_LINES);
-        glVertex3f(pt2[0] - m_shizxLength , pt2[1] , pt2[2]);
-        glVertex3f(pt2[0] + m_shizxLength , pt2[1] , pt2[2]);
+        glVertex3f(pt2[0] - m_shizxLength, pt2[1], pt2[2]);
+        glVertex3f(pt2[0] + m_shizxLength, pt2[1], pt2[2]);
         glEnd();
         glBegin(GL_LINES);
-        glVertex3f(pt2[0] , pt2[1] , pt2[2] - m_shizxLength);
-        glVertex3f(pt2[0] , pt2[1] , pt2[2] + m_shizxLength);
+        glVertex3f(pt2[0], pt2[1], pt2[2] - m_shizxLength);
+        glVertex3f(pt2[0], pt2[1], pt2[2] + m_shizxLength);
         glEnd();
         glBegin(GL_LINES);
-        glVertex3f(pt2[0] , pt2[1] , pt2[2]);
-        glVertex3f(pt2[0] , pt2[1] + m_shuzxHeight , pt2[2]);
+        glVertex3f(pt2[0], pt2[1], pt2[2]);
+        glVertex3f(pt2[0], pt2[1] + m_shuzxHeight, pt2[2]);
         glEnd();
         glBegin(GL_LINES);
-        glVertex3f(pt1[0] , pt1[1] , pt1[2]);
-        glVertex3f(pt2[0] , pt2[1] , pt2[2]);
+        glVertex3f(pt1[0], pt1[1], pt1[2]);
+        glVertex3f(pt2[0], pt2[1], pt2[2]);
         glEnd();
         glLineWidth(1.0);
     }
@@ -1601,12 +1590,12 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         glColor3f(0, 0, 1);
         glLineWidth(2.0);
         for (int i = 0; i < myDesingScheme.PtS_JD.GetSize() - 1; i++) {
-            DrawCenterLine(i, TRUE); // 绘制线路中心线
+            DrawCenterLine(i, TRUE);  // 绘制线路中心线
         }
         // 绘制交点标志
         for (int j = 0; j <= myDesingScheme.PtS_JD.GetSize() - 1; ++j) {
             glLineWidth(m_QueryLineWidth + 1);                                          // 设置标志线宽度
-            glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0); // 设置标志线颜色
+            glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0);  // 设置标志线颜色
             float tmp_x = myDesingScheme.PtS_JD[j]->x;
             float tmp_z = myDesingScheme.PtS_JD[j]->z;
             float tmp_y = GetHeight(tmp_x, tmp_z);
@@ -1627,27 +1616,27 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
     }
     // [160119]  绘制线段
     else if (m_QueryType == LINE_ADD) {
-        glLineWidth(3.0) ;              // 设置查询标志线宽度
-        glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0) ; // 设置查询标志线颜色
+        glLineWidth(3.0);              // 设置查询标志线宽度
+        glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0);  // 设置查询标志线颜色
         for (int i = 0; i < m_LinesArray.GetSize(); ++i) {
             glBegin(GL_LINES);
-            glVertex3f(m_LinesArray[i]->pt1._x , m_LinesArray[i]->pt1._y , m_LinesArray[i]->pt1._z);
-            glVertex3f(m_LinesArray[i]->pt2._x , m_LinesArray[i]->pt2._y , m_LinesArray[i]->pt2._z);
+            glVertex3f(m_LinesArray[i]->pt1._x, m_LinesArray[i]->pt1._y, m_LinesArray[i]->pt1._z);
+            glVertex3f(m_LinesArray[i]->pt2._x, m_LinesArray[i]->pt2._y, m_LinesArray[i]->pt2._z);
             glEnd();
         }
         glLineWidth(1.0);
     }
     // [160209] 绘制4边形
     else if (m_QueryType == AREA_ADD) {
-        glLineWidth(3.0) ;              // 设置查询标志线宽度
-        glColor3f(0.3 , 0.6 , 0.5) ;  // 设置查询标志线颜色
+        glLineWidth(3.0);              // 设置查询标志线宽度
+        glColor3f(0.3, 0.6, 0.5);  // 设置查询标志线颜色
         for (int i = 0; i < m_Area4_Array.GetSize(); ++i) {
             if (m_Area4_Array[i]->deleted != 1) {
                 glBegin(GL_QUADS);
-                glVertex3f(m_Area4_Array[i]->pt1._x , m_Area4_Array[i]->pt1._y , m_Area4_Array[i]->pt1._z);
-                glVertex3f(m_Area4_Array[i]->pt2._x , m_Area4_Array[i]->pt2._y , m_Area4_Array[i]->pt2._z);
-                glVertex3f(m_Area4_Array[i]->pt3._x , m_Area4_Array[i]->pt3._y , m_Area4_Array[i]->pt3._z);
-                glVertex3f(m_Area4_Array[i]->pt4._x , m_Area4_Array[i]->pt4._y , m_Area4_Array[i]->pt4._z);
+                glVertex3f(m_Area4_Array[i]->pt1._x, m_Area4_Array[i]->pt1._y, m_Area4_Array[i]->pt1._z);
+                glVertex3f(m_Area4_Array[i]->pt2._x, m_Area4_Array[i]->pt2._y, m_Area4_Array[i]->pt2._z);
+                glVertex3f(m_Area4_Array[i]->pt3._x, m_Area4_Array[i]->pt3._y, m_Area4_Array[i]->pt3._z);
+                glVertex3f(m_Area4_Array[i]->pt4._x, m_Area4_Array[i]->pt4._y, m_Area4_Array[i]->pt4._z);
                 glEnd();
             }
         }
@@ -1814,7 +1803,7 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
             OnDraw(GetDC());        // 刷新三维场景
             break;
         case 'B':
-            m_StaticHeight = m_StaticHeight / 1.1; // 减少固定飞行高度
+            m_StaticHeight = m_StaticHeight / 1.1;  // 减少固定飞行高度
             OnDraw(GetDC());        // 刷新三维场景
             break;
         case VK_F2:                 // 显示漫游热键帮助
@@ -1827,7 +1816,7 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
             OnFlyPlaypause();
             break;
         case 'H':
-        case VK_PRIOR: // PgUp   俯仰角
+        case VK_PRIOR:  // PgUp   俯仰角
             vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // 叉积计算
             vAxis = Normalize(vAxis);                                   // vAxis归一化
             RotateView(20 / derAngleZ, vAxis.x, vAxis.y, vAxis.z);      // 通过鼠标控制相机的旋转(旋转视角)
@@ -2005,10 +1994,10 @@ void CMy3DSymbolLibNewView::SetViewByMouse() {
         return;
     /* 对鼠标y坐标前后之差进行缩小(这里缩小500倍,这个值可根据实际地形设置),如果angleY值
     太大,表示即使鼠标y坐标前后之差很小,也会导致三维地形场景在Y方向上变化很大 */
-    angleY = (float)((m_oldMousePos.x - mousePos.x)) / derAngleY;
+    angleY = static_cast<float>((m_oldMousePos.x - mousePos.x)) / derAngleY;
     /* 对鼠标z坐标前后之差进行缩小(这里缩小4000倍,这个值可根据实际地形设置),如果angleZ值
     太大,表示即使鼠标z坐标前后之差很小,也会导致三维地形场景在Z方向上变化很大 */
-    angleZ = (float)((m_oldMousePos.y - mousePos.y)) / derAngleZ;
+    angleZ = static_cast<float>((m_oldMousePos.y - mousePos.y)) / derAngleZ;
     currentRotX -= angleZ;
     if (angleY >= -360 && angleY <= 360 && angleZ >= -360 && angleY <= 360) {
         CVector3 vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);     // 叉积计算
@@ -2027,8 +2016,8 @@ void CMy3DSymbolLibNewView::SetViewByMouse() {
 void CMy3DSymbolLibNewView::RotateView(float angle, float x, float y, float z) {
     CVector3 vNewView;
     CVector3 vView = m_vLook - m_vEyePosition;          // 相机视点与观察点三维坐标差值
-    float cosTheta = (float)cos(angle);                 // 得到旋转视角的cos函数值
-    float sinTheta = (float)sin(angle);                 // 得到旋转视角的sin函数值
+    float cosTheta = static_cast<float>(cos(angle));                 // 得到旋转视角的cos函数值
+    float sinTheta = static_cast<float>(sin(angle));                 // 得到旋转视角的sin函数值
     vNewView.x  = (cosTheta + (1 - cosTheta) * x * x)       * vView.x;
     vNewView.x += ((1 - cosTheta) * x * y - z * sinTheta)   * vView.y;
     vNewView.x += ((1 - cosTheta) * x * z + y * sinTheta)   * vView.z;
@@ -2043,7 +2032,6 @@ void CMy3DSymbolLibNewView::RotateView(float angle, float x, float y, float z) {
 }
 
 void CMy3DSymbolLibNewView::OnCameraParamSet() {
-    // TODO: 在此添加命令处理程序代码
     CCameraParamSet dlg;
     dlg.m_DerAngleY = derAngleY;
     dlg.m_DerAngleZ = derAngleZ;
@@ -2060,7 +2048,6 @@ void CMy3DSymbolLibNewView::OnCameraParamSet() {
 /* Function: 手动设置飞行路径                                       */
 /****************************************************************/
 void CMy3DSymbolLibNewView::OnPathManuinput() {
-    // TODO: 在此添加命令处理程序代码
     m_ShowFlyPath = TRUE;           // 标识是否显示飞行路径
     m_QueryType = SELECTFLYPATH;    // 进行飞行路径选择
     m_FlayPath.RemoveAll();         // 存储进行飞行路径坐标数组清空
@@ -2072,7 +2059,7 @@ void CMy3DSymbolLibNewView::OnPathManuinput() {
 /****************************************************************/
 void CMy3DSymbolLibNewView::DrawFlyPath() {
     // 如果显示飞行路径并且飞行路径坐标点数>1,才绘制飞行路径
-    if (m_ShowFlyPath == TRUE  && m_FlayPath.GetSize() > 1) {  //进行飞行路径选择
+    if (m_ShowFlyPath == TRUE  && m_FlayPath.GetSize() > 1) {  // 进行飞行路径选择
         glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
         glPushMatrix();             // 压入矩阵堆栈
         glDisable(GL_TEXTURE_2D);   // 关闭纹理(即飞行路径不采用纹理)
@@ -2098,7 +2085,7 @@ void CMy3DSymbolLibNewView::OnFlppathInterpolation() {
     int i;
     float m_InsertDdis = 1;         // 插值间距
     double x1, y1, z1, x2, y2, z2;
-    PCordinate ppt ;
+    PCordinate ppt;
     m_FlayPathTempPts.RemoveAll();  // 临时存储飞行路径
     for (i = 0; i < m_FlayPath.GetSize() - 1; i++) {
         x1 = m_FlayPath.GetAt(i)->x;  // 获取飞行路径当前点的x坐标
@@ -2196,7 +2183,7 @@ int CMy3DSymbolLibNewView::FlyPathSave(char* pathfile) {
 void CMy3DSymbolLibNewView::OnFlyOpenpath() {
     CString     NeededFile;
     char        FileFilter[] = "飞行路径(*.pth)|*.pth||";
-    //设置文件对话框属性
+    // 设置文件对话框属性
     DWORD       FileDialogFlag = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
     CFileDialog FileDialogBoxFile(TRUE, NULL, 0, FileDialogFlag, FileFilter, this);
     FileDialogBoxFile.m_ofn.lpstrTitle = "打开飞行路径文件";
@@ -2228,7 +2215,7 @@ int CMy3DSymbolLibNewView::FlyPathRead(char* pathfile) {
     PCordinate ppt = new Cordinate;
     m_FlayPath.RemoveAll();                             // 飞行路径数组清空
     CStdioFile m_inFile;
-    if (m_inFile.Open(pathfile, CFile::modeRead) == FALSE) { // 打开文件
+    if (m_inFile.Open(pathfile, CFile::modeRead) == FALSE) {  // 打开文件
         return 0;                                       // 返回失败标志
     }
     m_inFile.ReadString(m_strszLine);                   // 读取飞行路径坐标点总数
@@ -2283,9 +2270,9 @@ void CMy3DSymbolLibNewView::OnFlyStaticheight() {
         MessageBox("没有输入路径文件", "飞行浏览", MB_ICONWARNING);
         return;
     }
-    m_fly_start_pause_Enable = TRUE;//[]
+    m_fly_start_pause_Enable = TRUE;
     m_FlyHeightType = GIS_FLY_STATICHEIGHT;             // 设置漫游类型为固定高度漫游
-    m_StaticHeight = (m_maxHeight + m_minHeight) / 2.0; // 取固定高度值=地形最大和最小高度的1/4
+    m_StaticHeight = (m_maxHeight + m_minHeight) / 2.0;  // 取固定高度值=地形最大和最小高度的1/4
     m_flypathPtIndex = 0;                               // 飞行路径坐标索引=0
     SetFLyTimer();                                      // 设置三维漫游计时器
 }
@@ -2358,7 +2345,7 @@ void CMy3DSymbolLibNewView::GetCameraCorrdinate(double x1, double y1, double z1,
             m_StaticHeight = 85;
         m_vLook.x = x2;  // 观察点x坐标
         m_vLook.y = m_StaticHeight;  // 观察点y坐标=y2+m_StaticHeight固定高度值
-        m_vLook.z = z2; // 观察点z坐标
+        m_vLook.z = z2;  // 观察点z坐标
         m_vEyePosition.x = x1;  // 视点x坐标
         m_vEyePosition.y = m_vLook.y;  // 视点y坐标=观察点y坐标
         m_vEyePosition.z = z1;  // 视点z坐标
@@ -2384,7 +2371,7 @@ void CMy3DSymbolLibNewView::GetCameraCorrdinate(double x1, double y1, double z1,
 /* Function: 按相对高度漫游方式                                 */
 /****************************************************************/
 void CMy3DSymbolLibNewView::OnFlyRoutineheight() {
-    if (m_FlayPath.GetSize() <= 0) { //如果飞行路径坐标点数量<=0，即飞行路径为空
+    if (m_FlayPath.GetSize() <= 0) {  // 如果飞行路径坐标点数量<=0，即飞行路径为空
         MessageBox("没有输入路径文件", "飞行浏览", MB_ICONWARNING);
         return;
     }
@@ -2592,7 +2579,7 @@ void CMy3DSymbolLibNewView::TextFlyHelp() {
 /****************************************************************/
 void CMy3DSymbolLibNewView::InitList() {
     m_ClockList = glGenLists(1);
-    m_SkyList = m_ClockList + 1 ;                   // 背景天空显示列表
+    m_SkyList = m_ClockList + 1;                   // 背景天空显示列表
     MakeClockList();                                // 创建时钟指北针显示列表
     m_Rail3DwayList = m_ClockList + 2;              // 线路三维模型显示列表
 }
@@ -2686,7 +2673,7 @@ void CMy3DSymbolLibNewView::MakeClockList() {
         d = 0.04;                                   // 偏移量
         x = R * cos(i * PAI_D180) + 0.5;            // 计算x坐标
         y = R * sin(i * PAI_D180) + 0.5;            // 计算y坐标
-        //绘制点标志
+        // 绘制点标志
         glBegin(GL_POINTS);
         x = x - d * cos(i * PAI_D180);
         y = y - d * sin(i * PAI_D180);
@@ -2745,7 +2732,7 @@ void CMy3DSymbolLibNewView::DrawNorthPt() {
     y1 = 0.5;                                // 时钟圆心点坐标，指北针围绕该点进行指向旋转
     x3 = x1 + L1 * cos((m_NorthPtangle) * PAI_D180);
     y3 = y1 + L1 * sin((m_NorthPtangle) * PAI_D180);
-    //如果指北针指向角位于第1象限
+    // 如果指北针指向角位于第1象限
     if (m_NorthPtangle >= 0 && m_NorthPtangle <= 90) {
         tempangle = m_NorthPtangle - mPtangle;
         L = 0.1 / cos(mPtangle * PAI_D180);
@@ -2788,7 +2775,7 @@ void CMy3DSymbolLibNewView::DrawNorthPt() {
         glVertex2f(x3, y3);
         glEnd();
     }
-    //如果指北针指向角位于第3象限
+    // 如果指北针指向角位于第3象限
     if (m_NorthPtangle > 180 && m_NorthPtangle <= 270) {
         tempangle = m_NorthPtangle - 180 - mPtangle;
         x2 = x1 + L2 * cos(tempangle * PAI_D180);
@@ -2809,7 +2796,7 @@ void CMy3DSymbolLibNewView::DrawNorthPt() {
         glVertex2f(x3, y3);
         glEnd();
     }
-    //如果指北针指向角位于第4象限
+    // 如果指北针指向角位于第4象限
     if (m_NorthPtangle > 270 && m_NorthPtangle <= 360) {
         tempangle = 360 - m_NorthPtangle - mPtangle;
         x2 = x1 - L2 * cos(tempangle * PAI_D180);
@@ -2849,10 +2836,10 @@ void CMy3DSymbolLibNewView::DrawNorthPt() {
 /****************************************************************/
 void CMy3DSymbolLibNewView::PrintText(float x, float y, char* string) {
     int length;
-    length = (int) strlen(string);                  // 字符串长度
+    length = static_cast<int>(strlen(string));                  // 字符串长度
     glRasterPos2f(x, y);                            // 定位当前光标
     for (int m = 0; m < length; m++) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, string[m]); // 用位图方式按指定的字体绘制一个字符串
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, string[m]);  // 用位图方式按指定的字体绘制一个字符串
     }
 }
 
@@ -2873,19 +2860,19 @@ void CMy3DSymbolLibNewView::GetNorthPtangle() {
         if (dx > 0) {
             if (dz > 0) {                           // 第2象限
                 ar = fabs(atan(dx / dz));
-                m_NorthPtangle = 90 + ar * HDANGLE; // 指北针初始指向角度
+                m_NorthPtangle = 90 + ar * HDANGLE;  // 指北针初始指向角度
             } else {                                // 第3象限
                 ar = fabs(atan(dx / dz));
-                m_NorthPtangle = 270 - ar * HDANGLE; // 指北针初始指向角度
+                m_NorthPtangle = 270 - ar * HDANGLE;  // 指北针初始指向角度
             }
         }
         if (dx < 0) {
             if (dz > 0) {                           // 第1象限
                 ar = fabs(atan(dx / dz));
-                m_NorthPtangle = 90 - ar * HDANGLE; // 指北针初始指向角度
+                m_NorthPtangle = 90 - ar * HDANGLE;  // 指北针初始指向角度
             } else {                                // 第4象限
                 ar = fabs(atan(dx / dz));
-                m_NorthPtangle = 270 + ar * HDANGLE; // 指北针初始指向角度
+                m_NorthPtangle = 270 + ar * HDANGLE;  // 指北针初始指向角度
             }
         }
     }
@@ -2909,11 +2896,11 @@ void CMy3DSymbolLibNewView::DrawSky() {
     glPushAttrib(GL_CURRENT_BIT);
     glPushMatrix();
     glPushMatrix();
-    if (m_bShowbreviary == TRUE) {          //如果显示导航图
-        SetSkyProjectionNavigate() ;        // 设置导航图的背景天空投影
+    if (m_bShowbreviary == TRUE) {          // 如果显示导航图
+        SetSkyProjectionNavigate();        // 设置导航图的背景天空投影
     }
     glPopMatrix();
-    SetSkyProjection() ;                    // 设置背景天空投影
+    SetSkyProjection();                    // 设置背景天空投影
     glCallList(m_SkyList);
     glPopMatrix();
     glPopAttrib();
@@ -2927,7 +2914,7 @@ void CMy3DSymbolLibNewView::SetSkyProjection() {
     glViewport(0 ,  0 ,  WinViewX ,  WinViewY);             // 设置视口大小和位置
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(50.0 + m_ViewWideNarrow , (float)WinViewX / (float)WinViewY , m_near , m_far);
+    gluPerspective(50.0 + m_ViewWideNarrow , static_cast<float>(WinViewX) / static_cast<float>(WinViewY) , m_near , m_far);
     glMatrixMode(GL_MODELVIEW);                             // 定义矩阵为模型模型矩阵
     glLoadIdentity();                                       // 将当前矩阵置换为单位矩阵
     SetCamra();
@@ -2941,15 +2928,15 @@ void CMy3DSymbolLibNewView::SetSkyProjectionNavigate() {
     glClearDepth(1.0f);                             // 设置初始化深度缓存值
     glEnable(GL_DEPTH_TEST);                        // 启用深度测试
     glDepthFunc(GL_LESS);                           // 在调用glEnable(GL_DEPTH_TEST); 开启这个功能以后，当深度变化小于当前深度值时，更新深度值。
-    glViewport(WinViewX * 5 / 6 ,  WinViewY * 5 / 6 , WinViewX / 6 ,  WinViewY / 6) ; // 设置视口大小
+    glViewport(WinViewX * 5 / 6 ,  WinViewY * 5 / 6 , WinViewX / 6 ,  WinViewY / 6);  // 设置视口大小
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(50.0 + m_ViewWideNarrow , (float)WinViewX / (float)WinViewY , m_near , m_far);
-    //设置正射投影视景体
+    gluPerspective(50.0 + m_ViewWideNarrow , static_cast<float>(WinViewX) / static_cast<float>(WinViewY) , m_near , m_far);
+    // 设置正射投影视景体
     glMatrixMode(GL_MODELVIEW);                         // 定义矩阵为模型模型矩阵
     glLoadIdentity();                                   // 将当前矩阵置换为单位矩阵
     glClearColor(0.53, 0.81, 0.92, 0.0);                // 设置刷新背景色SkyBlue: 135,206,235
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // 刷新背景
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // 刷新背景
     glLoadIdentity();                                   // 重置当前的模型观察矩阵
     SetCamra();
 }
@@ -2959,7 +2946,7 @@ void CMy3DSymbolLibNewView::SetSkyProjectionNavigate() {
 /* Function: 导入3DS模型 设置参数                                   */
 /****************************************************************/
 void CMy3DSymbolLibNewView::On3dsModelLoad() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     CString tt, stt;
     FILE* fp;
     CString modelFileFormat = ".3DS";
@@ -3011,7 +2998,7 @@ void CMy3DSymbolLibNewView::Draw3DModel(PModelParamStruct model) {
     t3dBox.w = g_3DModel[model->modelID].t3DModelBox.w * model->scale;
     t3dBox.h = g_3DModel[model->modelID].t3DModelBox.h * model->scale;
     // 获取地面高度
-    int y = GetHeight((float)model->posX, (float)model->posZ) + t3dBox.h / 2 + model->posY;
+    int y = GetHeight(static_cast<float>(model->posX), static_cast<float>(model->posZ)) + t3dBox.h / 2 + model->posY;
     glTranslatef(model->posX, y, model->posZ);                  // 模型定位
     glRotatef(model->rotY, 0.0, 1.0, 0.0);                  // 模型旋转
     glRotatef(model->rotX, 1.0, 0.0, 0.0);                  // 模型旋转
@@ -3038,7 +3025,7 @@ void CMy3DSymbolLibNewView::Draw3DModel(PModelParamStruct model) {
 /* Function: 3d模型选择以及参数设置                             */
 /****************************************************************/
 void CMy3DSymbolLibNewView::On3dsModelSelectSet() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     bIsSelect3DModel = !bIsSelect3DModel;
     if (bIsSelect3DModel) {
         m_OperateType = SELECT;
@@ -3071,7 +3058,7 @@ void CMy3DSymbolLibNewView::OnUpdate3dsModelSelectSet(CCmdUI* pCmdUI) {
 /* Function: 移动模型,从左键按下到左键弹起的距离                    */
 /****************************************************************/
 void CMy3DSymbolLibNewView::OnLButtonUp(UINT nFlags, CPoint point) {
-    // TODO: 在此添加消息处理程序代码和/或调用默认值
+    // TODO(jason): 在此添加消息处理程序代码和/或调用默认值
     if (m_OperateType == MOVE) {  // 移动选中3D模型
         m_oldMousePos = point;
         ScreenToGL(point);
@@ -3081,7 +3068,7 @@ void CMy3DSymbolLibNewView::OnLButtonUp(UINT nFlags, CPoint point) {
 }
 
 void CMy3DSymbolLibNewView::On3dsModelMouseMove() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     bIsMouseMove3DModel = !bIsMouseMove3DModel;
     if (bIsMouseMove3DModel) {
         m_OperateType = MOVE;
@@ -3131,7 +3118,7 @@ void CMy3DSymbolLibNewView::JudgeModelSelected(PCordinate ppt) {
 /* Function: 导入景观树 设置参数                                    */
 /****************************************************************/
 void CMy3DSymbolLibNewView::OnTreeLoad() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     CString tt, stt;
     FILE* fp;
     CString treeTexPath;
@@ -3214,13 +3201,13 @@ void CMy3DSymbolLibNewView::ShowTree(int i) {
     CVector3 pos(x, y, z);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0, 0.0);
-    glVertex3f((pos + (X + Z) * -h).x, (pos + (X + Z) * -h).y, (pos + (X + Z) * -h).z); // 左下点
+    glVertex3f((pos + (X + Z) * -h).x, (pos + (X + Z) * -h).y, (pos + (X + Z) * -h).z);  // 左下点
     glTexCoord2f(1.0, 0.0);
-    glVertex3f((pos + (X - Z)* h).x, (pos + (X - Z)* h).y, (pos + (X - Z)* h).z); // 右下点
+    glVertex3f((pos + (X - Z)* h).x, (pos + (X - Z)* h).y, (pos + (X - Z)* h).z);  // 右下点
     glTexCoord2f(1.0, 1.0);
-    glVertex3f((pos + (X + Z)* h).x, (pos + (X + Z)* h).y, (pos + (X + Z)* h).z); // 右上点
+    glVertex3f((pos + (X + Z)* h).x, (pos + (X + Z)* h).y, (pos + (X + Z)* h).z);  // 右上点
     glTexCoord2f(0.0, 1.0);
-    glVertex3f((pos + (Z - X)* h).x, (pos + (Z - X)* h).y, (pos + (Z - X)* h).z); // 左上点
+    glVertex3f((pos + (Z - X)* h).x, (pos + (Z - X)* h).y, (pos + (Z - X)* h).z);  // 左上点
     glEnd();
     glDisable(GL_ALPHA);
     glDisable(GL_BLEND);
@@ -3309,7 +3296,7 @@ void CMy3DSymbolLibNewView::ShowCitySymbol(int i) {
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER , 0.9);                      //0.5可以换成任何在0~1之间的数
+    glAlphaFunc(GL_GREATER , 0.9);                      // 0.5可以换成任何在0~1之间的数
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  // 背景为白色
     float mat[16];
@@ -3320,13 +3307,13 @@ void CMy3DSymbolLibNewView::ShowCitySymbol(int i) {
     CVector3 pos(x, y, z);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0, 0.0);
-    glVertex3f((pos + (X + Z) * -h).x, (pos + (X + Z) * -h).y, (pos + (X + Z) * -h).z); // 左下点
+    glVertex3f((pos + (X + Z) * -h).x, (pos + (X + Z) * -h).y, (pos + (X + Z) * -h).z);  // 左下点
     glTexCoord2f(1.0, 0.0);
-    glVertex3f((pos + (X - Z)* h).x, (pos + (X - Z)* h).y, (pos + (X - Z)* h).z); // 右下点
+    glVertex3f((pos + (X - Z)* h).x, (pos + (X - Z)* h).y, (pos + (X - Z)* h).z);  // 右下点
     glTexCoord2f(1.0, 1.0);
-    glVertex3f((pos + (X + Z)* h).x, (pos + (X + Z)* h).y, (pos + (X + Z)* h).z); // 右上点
+    glVertex3f((pos + (X + Z)* h).x, (pos + (X + Z)* h).y, (pos + (X + Z)* h).z);  // 右上点
     glTexCoord2f(0.0, 1.0);
-    glVertex3f((pos + (Z - X)* h).x, (pos + (Z - X)* h).y, (pos + (Z - X)* h).z); // 左上点
+    glVertex3f((pos + (Z - X)* h).x, (pos + (Z - X)* h).y, (pos + (Z - X)* h).z);  // 左上点
     glEnd();
     glDisable(GL_ALPHA_TEST);
     glDisable(GL_ALPHA);
@@ -3344,7 +3331,7 @@ void CMy3DSymbolLibNewView::LoadPNG(const char* fileName, GLuint& texture) {
     BITMAP bm;
     CImage img;                                     // 需要头文件atlimage.h
     HRESULT hr = img.Load(fileName);
-    if (!SUCCEEDED(hr)) {                            //文件加载失败
+    if (!SUCCEEDED(hr)) {                            // 文件加载失败
         MessageBox(NULL, "文件加载失败", MB_OK);
     }
     HBITMAP hbmp = img;
@@ -3354,7 +3341,7 @@ void CMy3DSymbolLibNewView::LoadPNG(const char* fileName, GLuint& texture) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glPixelStoref(GL_PACK_ALIGNMENT, 1);
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, bm.bmWidth, bm.bmHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, bm.bmBits); //这里不是GL_RGB,一定要设置成4和GL_BGRA，否则不能背景透明，一般的纹理是设置为3和GL_BGR，这样就不能透明化显示
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, bm.bmWidth, bm.bmHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, bm.bmBits);  // 这里不是GL_RGB,一定要设置成4和GL_BGRA，否则不能背景透明，一般的纹理是设置为3和GL_BGR，这样就不能透明化显示
 }
 
 
@@ -3421,10 +3408,10 @@ void CMy3DSymbolLibNewView::ShowWeather() {
     glEnd();
     glPopMatrix();                                  // 弹出矩阵堆栈
     glPopAttrib();
-    glViewport(0 ,  0 ,  WinViewX ,  WinViewY);     //设置视口大小和位置
+    glViewport(0 ,  0 ,  WinViewX ,  WinViewY);     // 设置视口大小和位置
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(50.0 + m_ViewWideNarrow , (float)WinViewX / (float)WinViewY , m_near , m_far);
+    gluPerspective(50.0 + m_ViewWideNarrow , static_cast<float>(WinViewX) / static_cast<float>(WinViewY) , m_near , m_far);
     glMatrixMode(GL_MODELVIEW);                     // 定义矩阵为模型模型矩阵
     glLoadIdentity();                               // 将当前矩阵置换为单位矩阵
 }
@@ -3582,7 +3569,7 @@ void CMy3DSymbolLibNewView::Show3DTree(int i) {
     glEnd();
     glPopMatrix();
     glPushMatrix();
-    glTranslatef(h / 2, 0, h / 2); // 将坐标移到树干中心位置，进行旋转，生成立体景观树
+    glTranslatef(h / 2, 0, h / 2);  // 将坐标移到树干中心位置，进行旋转，生成立体景观树
     glRotated(90, 0, 1, 0);
     glBegin(GL_QUADS);
     glTexCoord2f(1.0f, 0.0f);
@@ -3621,7 +3608,7 @@ BOOL CMy3DSymbolLibNewView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) {
         }
     } else {
         // 缩放整个视景窗口
-        if (zDelta > 0) {           //向前滚动，放大
+        if (zDelta > 0) {           // 向前滚动，放大
             m_ViewWideNarrow += ((zDelta / 120) + 0.1);
         } else if (zDelta < 0) {
             zDelta = - zDelta;
@@ -3653,21 +3640,20 @@ float CMy3DSymbolLibNewView::RayIntersect(
     // 如果未相交则返回这个大数
     /*final*/const float kNoIntersection = 1e30f;
     // 检查点在矩形边界内的情况，并计算到每个面的距离
-    bool inside = true;//点在矩形边界内的情况,是指射线起点在边界内么？
+    bool inside = true;  // 点在矩形边界内的情况,是指射线起点在边界内么？
     float xt, xn = 0.0f;
     if (rayStart.x < min.x) {  // 如果射线的起点在左边界以左
         xt = min.x - rayStart.x;  // 求得从射线起点到左边界的向量的x分量
         if (xt > rayDir.x) {
-            return kNoIntersection;    //如果射线更偏左则无法相交
+            return kNoIntersection;    // 如果射线更偏左则无法相交
         }
-        // 这里是什么意思？？？？？？？？？？？？？？？？？？？？？？
-        // 我想着是有什么几何意义吧，有哪位高人知道？？？？？？？？？？？
-        // 是指从射线起点到物体包围盒边界处向量偏移射线方向的比例么？？？？？
+        // 这里是什么意思？
+        // 是指从射线起点到物体包围盒边界处向量偏移射线方向的比例么？
         xt /= rayDir.x;
         inside = false;  // 是指射线的起点不在矩形边界内么？
         xn = -1.0f;
     } else if (rayStart.x > max.x) {  // 如果射线的起点在左边界以右
-        xt = max.x - rayStart.x; // 求得从射线起点到右边界的xt
+        xt = max.x - rayStart.x;  // 求得从射线起点到右边界的xt
         if (xt < rayDir.x) {
             return kNoIntersection;    // 如果射线更偏右则无法相交
         }
@@ -4053,7 +4039,7 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         }
 
         int s1 = myDesingScheme.PtS_JD.GetSize();
-        float a ;
+        float a;
         for(int i=0;i<s1;++i)
         {
             a = myDesingScheme.PtS_JD[i]->x;
@@ -4474,7 +4460,7 @@ void CMy3DSymbolLibNewView::OnSceneSave() {
 /* Function: 当前场景另存为                                                 */
 /****************************************************************************/
 void CMy3DSymbolLibNewView::OnSceneSaveAs() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     CString     NeededFile;
     char        FileFilter[] = "工程文件(*.prj)|*.prj|";
     // 设置文件对话框属性
@@ -4574,7 +4560,7 @@ int CMy3DSymbolLibNewView::savePointSymbolFile(CString filename) {
                 CString model;
                 CString path = m_3DModel.GetAt(i)->modelPath;
                 CString temp;
-                int n = path.ReverseFind('\\');//从后往前寻找
+                int n = path.ReverseFind('\\');  // 从后往前寻找
                 temp = path.Right(path.GetLength() - n - 1);
                 float pos_x = m_3DModel.GetAt(i)->posX;
                 float pos_z = m_3DModel.GetAt(i)->posZ;
@@ -4598,7 +4584,7 @@ int CMy3DSymbolLibNewView::savePointSymbolFile(CString filename) {
             CString model;
             CString path = m_CitySymbolModel.GetAt(i)->strModelPath;
             CString temp;
-            int n = path.ReverseFind('\\');//从后往前寻找
+            int n = path.ReverseFind('\\');  // 从后往前寻找
             temp = path.Right(path.GetLength() - n - 1);
             model.Format("%s %d %.3f %d", temp, \
                          m_CitySymbolModel.GetAt(i)->xPos, m_CitySymbolModel.GetAt(i)->hPos, m_CitySymbolModel.GetAt(i)->zPos);
@@ -4615,7 +4601,7 @@ int CMy3DSymbolLibNewView::savePointSymbolFile(CString filename) {
             CString model;
             CString path = m_TreeModel.GetAt(i)->strModelPath;
             CString temp;
-            int n = path.ReverseFind('\\');//从后往前寻找
+            int n = path.ReverseFind('\\');  // 从后往前寻找
             temp = path.Right(path.GetLength() - n - 1);
             model.Format("%s %d %.3f %d", temp, \
                          m_TreeModel.GetAt(i)->xPos, m_TreeModel.GetAt(i)->hPos, m_TreeModel.GetAt(i)->zPos);
@@ -4631,7 +4617,7 @@ int CMy3DSymbolLibNewView::savePointSymbolFile(CString filename) {
             CString model;
             CString path = m_3DTreeModel.GetAt(i)->strModelPath;
             CString temp;
-            int n = path.ReverseFind('\\');//从后往前寻找
+            int n = path.ReverseFind('\\');  // 从后往前寻找
             temp = path.Right(path.GetLength() - n - 1);
             model.Format("%s %d %.3f %d", temp, \
                          m_3DTreeModel.GetAt(i)->xPos, m_3DTreeModel.GetAt(i)->hPos, m_3DTreeModel.GetAt(i)->zPos);
@@ -4717,7 +4703,7 @@ void CMy3DSymbolLibNewView::ModelParamDlgToPModelParamStruct(ModelParam& model, 
     pStruct->rotZ = model.rotZ;
     pStruct->scale = model.scale;
     // 更新3DS模型
-    if ((model.modelChanged || model.isModelTextureUpdated)) { // && (pStruct->modelPath.Compare(model.modelPath) != 0))
+    if ((model.modelChanged || model.isModelTextureUpdated)) {  // && (pStruct->modelPath.Compare(model.modelPath) != 0))
         pStruct->modelPath = model.modelPath;
         pStruct->m_3DS_Mode_Texture_PATH_NAME = model.m_TexturePathAndName;
         Load3DModel(pStruct, MODEL_CHANGE);
@@ -4761,7 +4747,7 @@ void CMy3DSymbolLibNewView::OnModelScale() {
 /* Function: 配置符号列表                 */
 /**************************************/
 void CMy3DSymbolLibNewView::OnConfigureSymbolList() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     ModelListConfigureDialog mlcDlg;;
     if (mlcDlg.DoModal() == IDOK) {
         // null
@@ -4772,7 +4758,7 @@ void CMy3DSymbolLibNewView::OnConfigureSymbolList() {
 /* Function: 系统设置                 */
 /**************************************/
 void CMy3DSymbolLibNewView::OnSystemSetting() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     CSystemSetting sysSetDlg;
     if (sysSetDlg.DoModal() == IDOK) {
         // null
@@ -4783,7 +4769,7 @@ void CMy3DSymbolLibNewView::OnSystemSetting() {
 /* Function: 关闭当前场景                 */
 /**************************************/
 void CMy3DSymbolLibNewView::OnCloseCurrentScene() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     InitData();
     // 清空场景中的景观树
     m_TreeModel.RemoveAll();
@@ -4851,7 +4837,7 @@ void CMy3DSymbolLibNewView::OnModelDelete() {
 /* Function: 线路三维建模                 */
 /**************************************/
 void CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     // 鼠标光标 系统忙
     BeginWaitCursor();
     myDesingScheme.CalculateCurveData();
@@ -4881,7 +4867,7 @@ void CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle() {
                                          );
         }
     }
-    if (myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 1)->Lc <= EndLC) { //myDesingScheme.SchemeDatass.EndLC)
+    if (myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 1)->Lc <= EndLC) {  // myDesingScheme.SchemeDatass.EndLC)
         myDesingScheme.Get3DLineModelLast(myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->x, \
                                           myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->y, \
                                           myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->z, \
@@ -4897,14 +4883,14 @@ void CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle() {
                                          );
     }
     b_haveMadeRail3DwayList = FALSE;
-    OnDraw(GetDC());  //刷新三维场景
+    OnDraw(GetDC());  // 刷新三维场景
 }
 
 /**************************************/
 /* Function: 三维选线设计                 */
 /**************************************/
 void CMy3DSymbolLibNewView::OnMenuLinedesign() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     if (m_QueryType == SELECTLINE)  // 如果当前已经三维选线状态，则关闭
         m_QueryType = -1;
     else                            // 如果当前不是三维选线状态，则打开
@@ -4915,7 +4901,7 @@ void CMy3DSymbolLibNewView::OnMenuLinedesign() {
 /* Function: 设置三维选线设计选中状态                   */
 /****************************************************/
 void CMy3DSymbolLibNewView::OnUpdateMenuLinedesign(CCmdUI* pCmdUI) {
-    // TODO: 在此添加命令更新用户界面处理程序代码
+    // TODO(jason): 在此添加命令更新用户界面处理程序代码
     pCmdUI->SetCheck(m_QueryType == SELECTLINE);
 }
 
@@ -4924,7 +4910,7 @@ void CMy3DSymbolLibNewView::OnUpdateMenuLinedesign(CCmdUI* pCmdUI) {
 /* Function: 实现透视投影模式下的线路三维模型绘制       */
 /****************************************************/
 void CMy3DSymbolLibNewView::DrawRailwaythesme() {
-    //压入属性堆栈
+    // 压入属性堆栈
     glPushAttrib(GL_DEPTH_BUFFER_BIT | GL_ENABLE_BIT | GL_POLYGON_BIT);
     glEnable(GL_DEPTH_TEST | GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -4940,7 +4926,7 @@ void CMy3DSymbolLibNewView::DrawRailwaythesme() {
         glColor3f(1, 0, 0);
         glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());           // 绑定路基边坡纹理
         for (int i = 0; i < myDesingScheme.PtS_HuPo.GetSize() - 1; i++) {
-            m_style = myDesingScheme.PtS_3DLineZX.GetAt(i)->strJDStyle; // 交点类型
+            m_style = myDesingScheme.PtS_3DLineZX.GetAt(i)->strJDStyle;  // 交点类型
             m_styleNext = myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->strJDStyle;
             // 如果交点类型是非其他的点，则绘制路基边坡
             if (m_style != "...") {
@@ -5132,7 +5118,7 @@ void CMy3DSymbolLibNewView::DrawCenterLine(long index, BOOL ifSelectLine) {
     float DerDistence = 2.0;
     float Dh;
     m_TempPts.RemoveAll();
-    if (ifSelectLine == TRUE) {  //在选线设计
+    if (ifSelectLine == TRUE) {  // 在选线设计
         Dh = 5;
         x1 = myDesingScheme.PtS_JD.GetAt(index)->x;
         // y1=myDesingScheme.PtS_JD.GetAt(index)->y;
@@ -5565,7 +5551,7 @@ void CMy3DSymbolLibNewView::DrawBP(long index, int BPside) {
 /* Function: 清除所有线路                 */
 /**************************************/
 void CMy3DSymbolLibNewView::OnMenuClearLines() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     clearLinesData();
     initLines();
 }
@@ -5575,7 +5561,7 @@ void CMy3DSymbolLibNewView::OnMenuClearLines() {
 /* Function: 新建工程                                                   */
 /************************************************************************/
 void CMy3DSymbolLibNewView::OnSceneNew() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     // step 1 : 设置工程文件名, 创建该文件
     CString     NeededFile;
     char        FileFilter[] = "工程文件(*.prj)|*.prj|";
@@ -5587,8 +5573,8 @@ void CMy3DSymbolLibNewView::OnSceneNew() {
     CString sceneDir = m_AllDataPath + "\\" + m_SceneConfig;
     FileDialogBoxFile.m_ofn.lpstrInitialDir = sceneDir;
     CString tt[3];
-    if (FileDialogBoxFile.DoModal() == IDOK) {           //如果对话框成果打开
-        NeededFile = FileDialogBoxFile.GetPathName();   //得到文件名
+    if (FileDialogBoxFile.DoModal() == IDOK) {           // 如果对话框成果打开
+        NeededFile = FileDialogBoxFile.GetPathName();   // 得到文件名
         sprintf(FileName, "%s", NeededFile);
         if (strcmp(FileDialogBoxFile.GetFileExt(), "prj") != 0)
             strcat(FileName, ".prj");
@@ -5638,11 +5624,11 @@ void CMy3DSymbolLibNewView::OnSceneNew() {
                 /************************************************************************/
                 file.WriteString(tmpWeatherFolder + "\n");
                 file.WriteString(tmpWeatherTex + "\n");
-                //点线面符号文件链接
-                file.WriteString("3\n");    //个数
-                file.WriteString("0\n");    //point  (0表示暂无该文件)
-                file.WriteString("0\n");    //line
-                file.WriteString("0");      //area
+                // 点线面符号文件链接
+                file.WriteString("3\n");    // 个数
+                file.WriteString("0\n");    // point  (0表示暂无该文件)
+                file.WriteString("0\n");    // line
+                file.WriteString("0");      // area
                 file.Close();
             }
         }
@@ -5651,7 +5637,7 @@ void CMy3DSymbolLibNewView::OnSceneNew() {
     // step 2 : 通过新建的工程文件加载该工程到视图窗口中
     loadSceneFile(FileName);
     m_CurrentProjectName = FileName;
-    OnDraw(GetDC());  //刷新三维场景
+    OnDraw(GetDC());  // 刷新三维场景
 }
 
 
@@ -5743,7 +5729,7 @@ int CMy3DSymbolLibNewView::new_area_file() {
 
 // 线编辑 ==》 添加线
 void CMy3DSymbolLibNewView::OnMenuLineAdd() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     if (m_QueryType == LINE_ADD)
         m_QueryType = -1;
     else
@@ -5753,7 +5739,7 @@ void CMy3DSymbolLibNewView::OnMenuLineAdd() {
 
 // 线编辑 ==》融合   线矢量与地表三角网融合
 void CMy3DSymbolLibNewView::OnMenuLineFuse() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     int tmp_rowNum = 0;
     int tmp_row_index_begin = 0;
     int tmp_row_index_end = 0;
@@ -5763,7 +5749,7 @@ void CMy3DSymbolLibNewView::OnMenuLineFuse() {
     Line3 tmp_line;
     tmp_line.pt1 = m_LinesArray[0]->pt1;
     tmp_line.pt2 = m_LinesArray[0]->pt2;
-    //1
+    // 1
     tmp_line.pt1 = m_LinesArray[0]->pt1;
     tmp_line.pt2 = m_LinesArray[0]->pt2;
     // if(abs(tmp_line.pt1._x - tmp_line.pt2._x) < MAP_SCALE)
@@ -5801,12 +5787,12 @@ void CMy3DSymbolLibNewView::OnMenuLineFuse() {
 
 
 void CMy3DSymbolLibNewView::OnUpdateMenuLineAdd(CCmdUI* pCmdUI) {
-    // TODO: 在此添加命令更新用户界面处理程序代码
+    // TODO(jason): 在此添加命令更新用户界面处理程序代码
     pCmdUI->SetCheck(m_QueryType == LINE_ADD);
 }
 
 
-//空间点求投影到平面的直线方程系数ABC, Ax+By+C=0
+// 空间点求投影到平面的直线方程系数ABC, Ax+By+C=0
 void CMy3DSymbolLibNewView::getLine2ABC(double* A, double* B, double* C, Point3 p1, Point3 p2) {
     // 直线AX+BY+C=0的一般式方程就是：
     //  A = Y2 - Y1
@@ -5831,10 +5817,10 @@ void CMy3DSymbolLibNewView::CalcuateGridNum(int* rowNum, int* row_index_begin, i
     double c1 = abs(_line.pt1._z);
     double r2 = abs(_line.pt2._x);
     double c2 = abs(_line.pt2._z);
-    tmp_row_index_begin = (int)r1 / (int)MAP_SCALE;
-    tmp_row_index_end = (int)r2 / (int)MAP_SCALE;
-    tmp_col_index_begin = (int)c1 / (int)MAP_SCALE;
-    tmp_col_index_end = (int)c2 / (int)MAP_SCALE;
+    tmp_row_index_begin = static_cast<int>(r1) / static_cast<int>(MAP_SCALE);
+    tmp_row_index_end = static_cast<int>(r2) / static_cast<int>(MAP_SCALE);
+    tmp_col_index_begin = static_cast<int>(c1) / static_cast<int>(MAP_SCALE);
+    tmp_col_index_end = static_cast<int>(c2) / static_cast<int>(MAP_SCALE);
     *rowNum = abs(tmp_row_index_end - tmp_row_index_begin);
     *row_index_begin = tmp_row_index_begin;
     *row_index_end = tmp_row_index_end;
@@ -5869,7 +5855,7 @@ void CMy3DSymbolLibNewView::CalcuateJD(int rowNum, int row_index_begin, int row_
     // 通过格网横坐标 求与线段交点
     if (row_index_begin < row_index_end) {
         for (int r = row_index_begin + 1; r < row_index_end; ++r) {
-            tmp_point._x = float(r) * MAP_SCALE;  // 平面横坐标
+            tmp_point._x = static_cast<float>(r) * MAP_SCALE;  // 平面横坐标
             // 平面纵坐标
             if (DOUBLE_NUMBER_IS_ZERO(B)) {
                 break;
@@ -5881,7 +5867,7 @@ void CMy3DSymbolLibNewView::CalcuateJD(int rowNum, int row_index_begin, int row_
         }
     } else if (row_index_begin > row_index_end) {
         for (int r = row_index_begin - 1; r > row_index_end; --r) {
-            tmp_point._x = float(r) * MAP_SCALE;  // 平面横坐标
+            tmp_point._x = static_cast<float>(r) * MAP_SCALE;  // 平面横坐标
             // 平面纵坐标
             if (DOUBLE_NUMBER_IS_ZERO(B)) {
                 break;
@@ -5896,12 +5882,12 @@ void CMy3DSymbolLibNewView::CalcuateJD(int rowNum, int row_index_begin, int row_
     if (col_index_begin < col_index_end) {
         // 通过格网纵坐标 求与线段交点
         for (int c = col_index_begin + 1; c < col_index_end; ++c) {
-            tmp_point._z = float(-c) * MAP_SCALE;  // 平面纵坐标
+            tmp_point._z = static_cast<float>(-c) * MAP_SCALE;  // 平面纵坐标
             // 平面横坐标
             if (DOUBLE_NUMBER_IS_ZERO(A)) {
                 break;
             } else {
-                //Ax+By+C=0
+                // Ax+By+C=0
                 tmp_point._x = ((-B) * tmp_point._z - C) / A;
             }
             tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
@@ -5910,12 +5896,12 @@ void CMy3DSymbolLibNewView::CalcuateJD(int rowNum, int row_index_begin, int row_
     } else if (col_index_begin > col_index_end) {
         // 通过格网纵坐标 求与线段交点
         for (int c = col_index_begin - 1; c > col_index_end; --c) {
-            tmp_point._z = float(-c) * MAP_SCALE;  // 平面纵坐标
+            tmp_point._z = static_cast<float>(-c) * MAP_SCALE;  // 平面纵坐标
             // 平面横坐标
             if (DOUBLE_NUMBER_IS_ZERO(A)) {
                 break;
             } else {
-                //Ax+By+C=0
+                // Ax+By+C=0
                 tmp_point._x = ((-B) * tmp_point._z - C) / A;
             }
             tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
@@ -5928,7 +5914,7 @@ void CMy3DSymbolLibNewView::CalcuateJD(int rowNum, int row_index_begin, int row_
     double line_pos_b = (_line.pt1._x < _line.pt2._x) ? _line.pt1._x : _line.pt2._x;
     double line_pos_e = (_line.pt1._x >= _line.pt2._x) ? _line.pt1._x : _line.pt2._x;;
     for (int r = 0; r < MAP_W; ++r) {
-        double b = float(-r) * MAP_SCALE;
+        double b = static_cast<float>(-r) * MAP_SCALE;
         if (GetJDFrom2Line(&tmp_point, b, A, B, C)) {
             if ((line_pos_b < tmp_point._x) && (tmp_point._x < line_pos_e)) {
                 JD_vector3.push_back(tmp_point);
@@ -5956,7 +5942,7 @@ void CMy3DSymbolLibNewView::CalcuateJD(int rowNum, int row_index_begin, int row_
 
 // 计算2条直线的交点y=x+b, Ax+By+C=0, 返回0表示无交点
 BOOL CMy3DSymbolLibNewView::GetJDFrom2Line(PPoint3 p/*out*/, double b, double A, double B, double C) {
-    if (DOUBLE_NUMBER_IS_ZERO(A)) { // A == 0
+    if (DOUBLE_NUMBER_IS_ZERO(A)) {  // A == 0
         p->_z = -C / B;
         p->_x = p->_z - b;
         p->_y = GetHeight(p->_x, p->_z);
@@ -6054,7 +6040,7 @@ void CMy3DSymbolLibNewView::DrawJDLine(vector<Point3>& _pv1, vector<Point3>& _pv
 
 // 增加线符号的宽度信息
 void CMy3DSymbolLibNewView::OnMenuAddLineWidth() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
 }
 
 
@@ -6065,7 +6051,7 @@ void CMy3DSymbolLibNewView::OnMenuAddLineWidth() {
 
 // 添加面符号
 void CMy3DSymbolLibNewView::OnMenuAddAreaSlib() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     int newFlag = 0;
     if (!exist_area_file()) {
         INT_PTR nRes;
@@ -6086,14 +6072,14 @@ void CMy3DSymbolLibNewView::OnMenuAddAreaSlib() {
 
 // 更新添加面符号勾选状态
 void CMy3DSymbolLibNewView::OnUpdateMenuAddAreaSlib(CCmdUI* pCmdUI) {
-    // TODO: 在此添加命令更新用户界面处理程序代码
+    // TODO(jason): 在此添加命令更新用户界面处理程序代码
     pCmdUI->SetCheck(m_QueryType == AREA_ADD);
 }
 
 
 // 多边形矢量与DEM融合
 void CMy3DSymbolLibNewView::OnMenuAreaFuse() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     int tmp_rowNum = 0;
     int tmp_row_index_begin = 0;
     int tmp_row_index_end = 0;
@@ -6266,13 +6252,13 @@ void CMy3DSymbolLibNewView::Area_Triangled(PArea_4& _area4) {
         glPopAttrib();
         glPopMatrix();              // 弹出矩阵堆栈
     }
-    //...............................................................
+    // ...............................................................
     if (Area_fuse_Flag == TRUE && m_Drawmode == 1) {
         glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
         glPushMatrix();             // 压入矩阵堆栈
         glLineWidth(3.0);           // 设置线宽
         glColor3f(0, 0.5, 1);       // 设置颜色
-        //test begin
+        // test begin
         {
             /*unsigned int i = 0;
 
@@ -6386,7 +6372,7 @@ void CMy3DSymbolLibNewView::Area_Triangled(PArea_4& _area4) {
 
 
 
-void CMy3DSymbolLibNewView::LoadAreaTexture(CString _areaTexture_str, UINT& texture_id) { // 加载面符号纹理
+void CMy3DSymbolLibNewView::LoadAreaTexture(CString _areaTexture_str, UINT& texture_id) {  // 加载面符号纹理
     char cc[256] = "";
     strcpy(cc,  _areaTexture_str);
     LoadT8(cc,  texture_id);
@@ -6418,7 +6404,7 @@ int CMy3DSymbolLibNewView::FindAllPointsInPolygon(Area_4& m_area4) {
             tmp_dem_point.x = g_terrain [Vertex][0];
             tmp_dem_point.y = g_terrain [Vertex][2];
             int inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, tmp_dem_point);
-            if (inPolygonFlag == 0) { // 点在多边形内
+            if (inPolygonFlag == 0) {  // 点在多边形内
                 Point3 tmp_point3;
                 tmp_point3._x = g_terrain [Vertex][0];
                 tmp_point3._y = g_terrain [Vertex][1];
@@ -6516,7 +6502,7 @@ int CMy3DSymbolLibNewView::FindTriangles_1_point_inPolygon(Area_4& m_area4) {
                     tmp_triangle.pt1._z = g_terrain [Vertex][2];
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
-                    PPR_Point tmp_point1, tmp_point21, tmp_point22; // 三角形三点
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
                     tmp_point1.x = g_terrain [Vertex][0];
                     tmp_point1.y = g_terrain [Vertex][2];
                     Vertex = (z + 1) * MAP_W + (x);
@@ -6637,7 +6623,7 @@ int CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) {
                 Vertex = z * MAP_W + x;
                 Triangle tmp_triangle1;
                 Triangle tmp_triangle2;
-                //ok1
+                // ok1
                 if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
                     Vertex = (z) * MAP_W + (x);
                     tmp_triangle1.pt1._x = g_terrain [Vertex][0];
@@ -6743,7 +6729,7 @@ int CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) {
                     tmp_triangle1.pt2._z = g_terrain [Vertex][2];
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
-                    PPR_Point tmp_point1, tmp_point21, tmp_point22; // 三角形三点
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
                     Vertex = (z + 1) * MAP_W + (x);
                     tmp_point1.x = g_terrain [Vertex][0];
                     tmp_point1.y = g_terrain [Vertex][2];
@@ -6898,7 +6884,7 @@ int CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) {
                             tmp_triangle2.pt3._x = JD2.x;
                             tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
                             tmp_triangle2.pt3._z = JD2.y;
-                            //AfxMessageBox("3");
+                            // AfxMessageBox("3");
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
                         }
@@ -6921,7 +6907,7 @@ int CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) {
                     tmp_triangle1.pt2._z = g_terrain [Vertex][2];
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
-                    PPR_Point tmp_point1, tmp_point21, tmp_point22; // 三角形三点
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
                     Vertex = (z) * MAP_W + (x + 1);
                     tmp_point1.x = g_terrain [Vertex][0];
                     tmp_point1.y = g_terrain [Vertex][2];
@@ -7013,7 +6999,7 @@ int CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) {
                     tmp_triangle1.pt2._z = g_terrain [Vertex][2];
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
-                    PPR_Point tmp_point1, tmp_point21, tmp_point22; // 三角形三点
+                    PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
                     Vertex = (z + 1) * MAP_W + (x);
                     tmp_point1.x = g_terrain [Vertex][0];
                     tmp_point1.y = g_terrain [Vertex][2];
@@ -7168,7 +7154,7 @@ int CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) {
                             tmp_triangle2.pt3._x = JD2.x;
                             tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
                             tmp_triangle2.pt3._z = JD2.y;
-                            //AfxMessageBox(" - 3");
+                            // AfxMessageBox(" - 3");
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
                         }
@@ -7187,7 +7173,7 @@ int CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) {
 void CMy3DSymbolLibNewView::Find_triangles_1_line_2_JD(Area_4& m_area4, Triangle& tmp_triangle, CPointPolygonRelationship& tmp_PPR, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22) {
     PPR_Point tmp_point3, tmp_point4;  // 多边形边的端点
     PPR_Point JD1, JD2;
-    //CString msg;
+    // CString msg;
     bool intersectFlag1 = false;
     bool intersectFlag2 = false;
     short tmp_cout = 4;
@@ -7735,8 +7721,8 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_1_1(Are
     tmp_polygon_tri.push_back(tmp_point21);
     tmp_polygon_tri.push_back(tmp_point22);
     PPR_Point tmp_polygon_point;    // 多边形顶点
-    PPR_Point tmp_polygon_point_ra; // 多边形顶点 相邻的 一个顶点
-    PPR_Point tmp_polygon_point_rb; // 多边形顶点 相邻的 另一个顶点
+    PPR_Point tmp_polygon_point_ra;  // 多边形顶点 相邻的 一个顶点
+    PPR_Point tmp_polygon_point_rb;  // 多边形顶点 相邻的 另一个顶点
     PPR_Point JD1, JD2;
     // CString msg;
     bool intersectFlag11 = false;
@@ -7821,10 +7807,10 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_2_1(Are
     tmp_polygon_tri.push_back(tmp_point21);
     tmp_polygon_tri.push_back(tmp_point22);
     PPR_Point tmp_polygon_point;    // 多边形顶点
-    PPR_Point tmp_polygon_point_ra; // 多边形顶点 相邻的 一个顶点
-    PPR_Point tmp_polygon_point_rb; // 多边形顶点 相邻的 另一个顶点
+    PPR_Point tmp_polygon_point_ra;  // 多边形顶点 相邻的 一个顶点
+    PPR_Point tmp_polygon_point_rb;  // 多边形顶点 相邻的 另一个顶点
     PPR_Point JD1, JD2;
-    //CString msg;
+    // CString msg;
     bool intersectFlag11 = false;
     bool intersectFlag12 = false;
     bool intersectFlag21 = false;
@@ -7892,7 +7878,7 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_2_1(Are
                 tmp_triangle3.pt3._x = tmp_polygon_point.x;
                 tmp_triangle3.pt3._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
                 tmp_triangle3.pt3._z = tmp_polygon_point.y;
-                //AfxMessageBox("21");
+                // AfxMessageBox("21");
                 m_area4.LocalTrianglesVecotr2_1.push_back(tmp_triangle1);
                 m_area4.LocalTrianglesVecotr2_1.push_back(tmp_triangle2);
                 m_area4.LocalTrianglesVecotr2_1.push_back(tmp_triangle3);
@@ -7911,10 +7897,10 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_last(Ar
     tmp_polygon_tri.push_back(tmp_point21);
     tmp_polygon_tri.push_back(tmp_point22);
     PPR_Point tmp_polygon_point;    // 多边形顶点
-    PPR_Point tmp_polygon_point_ra; // 多边形顶点 相邻的 一个顶点
-    PPR_Point tmp_polygon_point_rb; // 多边形顶点 相邻的 另一个顶点
+    PPR_Point tmp_polygon_point_ra;  // 多边形顶点 相邻的 一个顶点
+    PPR_Point tmp_polygon_point_rb;  // 多边形顶点 相邻的 另一个顶点
     PPR_Point JD1, JD2 , JD3, JD4;
-    //CString msg;
+    // CString msg;
     short tmp_cout = 4;
     while (tmp_cout > 0) {
         if (4 == tmp_cout) {
@@ -8009,7 +7995,7 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_last(Ar
                 tmp_triangle3.pt3._x = JD4.x;
                 tmp_triangle3.pt3._y = GetHeight(JD4.x, JD4.y);
                 tmp_triangle3.pt3._z = JD4.y;
-                //AfxMessageBox("last2");
+                // AfxMessageBox("last2");
                 m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle1);
                 m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle2);
                 m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle3);
@@ -8050,7 +8036,7 @@ void CMy3DSymbolLibNewView::UpdateAreaTexture(PPR_Point _mp, CPoint point) {
         tmp_polygon.push_back(tmp_point);
         PPR_Point tmp_dem_point;
         int inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, _mp);
-        if (inPolygonFlag == 0) { // 点在多边形内
+        if (inPolygonFlag == 0) {  // 点在多边形内
             // 右键快捷菜单
             CMenu menu;
             menu.LoadMenu(IDR_POPUP_MENU_AREA_TEXTURE_UPDATE);
@@ -8059,7 +8045,7 @@ void CMy3DSymbolLibNewView::UpdateAreaTexture(PPR_Point _mp, CPoint point) {
             pPopUp->TrackPopupMenu(/*TPM_LEFTALIGN | */TPM_RIGHTBUTTON, point.x, point.y, this);
             area_id = i;
         } else {
-            //AfxMessageBox("点不在多边形内!");
+            // AfxMessageBox("点不在多边形内!");
         }
     }
 }
@@ -8075,12 +8061,12 @@ void CMy3DSymbolLibNewView::UpdateAreaTexture(PPR_Point _mp, CPoint point) {
 /************************************************************************/
 // 菜单 ==》添加点符号模型
 void CMy3DSymbolLibNewView::OnMenuAddPointSymbol() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
 }
 
 // 3dsMax 标记符号
 void CMy3DSymbolLibNewView::OnMenuAddPoint3dsmax() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     int newFlag = 0;
     if (!exist_point_file()) {
         INT_PTR nRes;
@@ -8098,7 +8084,7 @@ void CMy3DSymbolLibNewView::OnMenuAddPoint3dsmax() {
 
 // 2D 图片标记符号
 void CMy3DSymbolLibNewView::OnMenuAddPoint2dImg() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     int newFlag = 0;
     if (!exist_point_file()) {
         INT_PTR nRes;
@@ -8116,7 +8102,7 @@ void CMy3DSymbolLibNewView::OnMenuAddPoint2dImg() {
 
 // 3D 图片标记符号
 void CMy3DSymbolLibNewView::OnMenuAddPoint3dImg() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     int newFlag = 0;
     if (!exist_point_file()) {
         INT_PTR nRes;
@@ -8136,9 +8122,9 @@ void CMy3DSymbolLibNewView::OnMenuAddPoint3dImg() {
 
 // 新建工程/打开工程 对话框, 消息响应
 LRESULT CMy3DSymbolLibNewView::OnProjectSetted(WPARAM wParam, LPARAM lParam) {
-    if (1 == wParam) {      //new project
+    if (1 == wParam) {      // new project
         OnSceneNew();
-    } else if (0 == wParam) { //open project
+    } else if (0 == wParam) {  // open project
         if (g_recentlyOpenedProjectName == "") {
             AfxMessageBox(_T("请选择需要打开的工程!"));
         } else if (g_recentlyOpenedProjectName == _T("更多工程...")) {
@@ -8158,8 +8144,8 @@ LRESULT CMy3DSymbolLibNewView::OnProjectSetted(WPARAM wParam, LPARAM lParam) {
 
 // 鼠标移到面符号多边形上右击弹出菜单单击响应
 void CMy3DSymbolLibNewView::OnMenuUpdateAreaTexture() {
-    // TODO: 在此添加命令处理程序代码
-    //AfxMessageBox("点在多边形内.");
+    // TODO(jason): 在此添加命令处理程序代码
+    // AfxMessageBox("点在多边形内.");
     CAreaClassification ac_dlg;
     CString selectItem = "";
     if (ac_dlg.DoModal() == IDOK) {
@@ -8176,6 +8162,6 @@ void CMy3DSymbolLibNewView::OnMenuUpdateAreaTexture() {
 
 // 删除指定面符号
 void CMy3DSymbolLibNewView::OnMenuAreaDelete() {
-    // TODO: 在此添加命令处理程序代码
+    // TODO(jason): 在此添加命令处理程序代码
     m_Area4_Array[area_id]->deleted = 1;
 }

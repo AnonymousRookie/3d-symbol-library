@@ -1,7 +1,4 @@
-﻿// SkyBoxTexLoad.cpp : 实现文件
-//
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "SkyBoxTexLoad.h"
 #include "afxdialogex.h"
@@ -46,7 +43,7 @@ END_MESSAGE_MAP()
 
 
 void CSkyBoxTexLoad::OnBnClickedButtonSkyTp() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CString tt, stt;
     FILE* fp;
     CFileDialog FileDialog(TRUE, "天空盒", NULL, OFN_HIDEREADONLY \
@@ -66,8 +63,8 @@ void CSkyBoxTexLoad::OnBnClickedButtonSkyTp() {
 
 
 void CSkyBoxTexLoad::OnBnClickedButtonSkyLf() {
-    // TODO: 在此添加控件通知处理程序代码
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CString tt, stt;
     FILE* fp;
     CFileDialog FileDialog(TRUE, "天空盒", NULL, OFN_HIDEREADONLY \
@@ -87,7 +84,7 @@ void CSkyBoxTexLoad::OnBnClickedButtonSkyLf() {
 
 
 void CSkyBoxTexLoad::OnBnClickedButtonSkyBk() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CString tt, stt;
     FILE* fp;
     CFileDialog FileDialog(TRUE, "天空盒", NULL, OFN_HIDEREADONLY \
@@ -107,7 +104,7 @@ void CSkyBoxTexLoad::OnBnClickedButtonSkyBk() {
 
 
 void CSkyBoxTexLoad::OnBnClickedButtonSkyRt() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CString tt, stt;
     FILE* fp;
     CFileDialog FileDialog(TRUE, "天空盒", NULL, OFN_HIDEREADONLY \
@@ -127,7 +124,7 @@ void CSkyBoxTexLoad::OnBnClickedButtonSkyRt() {
 
 
 void CSkyBoxTexLoad::OnBnClickedButtonSkyFr() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CString tt, stt;
     FILE* fp;
     CFileDialog FileDialog(TRUE, "天空盒", NULL, OFN_HIDEREADONLY \

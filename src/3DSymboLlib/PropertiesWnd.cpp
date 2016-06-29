@@ -105,19 +105,19 @@ void CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI) {
 }
 
 void CPropertiesWnd::OnProperties1() {
-    // TODO: 在此处添加命令处理程序代码
+    // TODO(jason): 在此处添加命令处理程序代码
 }
 
 void CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/) {
-    // TODO: 在此处添加命令更新 UI 处理程序代码
+    // TODO(jason): 在此处添加命令更新 UI 处理程序代码
 }
 
 void CPropertiesWnd::OnProperties2() {
-    // TODO: 在此处添加命令处理程序代码
+    // TODO(jason): 在此处添加命令处理程序代码
 }
 
 void CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/) {
-    // TODO: 在此处添加命令更新 UI 处理程序代码
+    // TODO(jason): 在此处添加命令更新 UI 处理程序代码
 }
 
 void CPropertiesWnd::InitPropList() {

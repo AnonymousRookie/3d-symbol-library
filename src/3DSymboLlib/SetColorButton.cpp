@@ -1,10 +1,7 @@
-﻿// SkinColorButton.cpp : 实现文件
-//
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "SetColorButton.h"
 
-//static const int nImageHorzMargin = 8;
+// static const int nImageHorzMargin = 8;
 // CSetColorButton
 
 IMPLEMENT_DYNAMIC(CSetColorButton, CMFCColorButton)
@@ -40,9 +37,9 @@ void CSetColorButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState) {
     CBrush* obr = (CBrush*)pDC->SelectObject(br);
     pDC->Polygon(point, 3);
     pDC->SelectObject(&obr);
-    //----------------
+    // ----------------
     // Draw color box:
-    //----------------
+    // ----------------
     CRect rectColor = rect;
     rectColor.right -= 13;
     rectColor.DeflateRect(4, 4);
@@ -54,10 +51,10 @@ void CSetColorButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState) {
     CPalette* pCurPalette = pDC->SelectPalette(m_pPalette, FALSE);
     pDC->RealizePalette();
     COLORREF color = m_Color;
-    if (color == (COLORREF) - 1) // Automatic
+    if (color == (COLORREF) - 1)  // Automatic
         color = m_ColorAutomatic;
     if (color != (COLORREF) - 1 && (uiState & ODS_DISABLED) == 0) {
-        if (afxGlobalData.m_nBitsPerPixel == 8) { // 256 colors
+        if (afxGlobalData.m_nBitsPerPixel == 8) {  // 256 colors
             ASSERT_VALID(m_pPalette);
             color =  PALETTEINDEX(m_pPalette->GetNearestPaletteIndex(color));
         }

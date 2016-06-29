@@ -40,11 +40,9 @@ CMy3DSymbolLibNewApp::CMy3DSymbolLibNewApp() {
     //     2) 在您的项目中，您必须按照生成顺序向 System.Windows.Forms 添加引用。
     System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
 #endif
-    // TODO: 将以下应用程序 ID 字符串替换为唯一的 ID 字符串；建议的字符串格式
-    //为 CompanyName.ProductName.SubProduct.VersionInformation
+    // TODO(jason): 将以下应用程序 ID 字符串替换为唯一的 ID 字符串；建议的字符串格式
+    // 为 CompanyName.ProductName.SubProduct.VersionInformation
     SetAppID(_T("3DSymbolLibNew.AppID.NoVersion"));
-    // TODO: 在此处添加构造代码，
-    // 将所有重要的初始化放置在 InitInstance 中
 }
 
 // 唯一的一个 CMy3DSymbolLibNewApp 对象
@@ -57,7 +55,7 @@ CMy3DSymbolLibNewApp theApp;
 BOOL CMy3DSymbolLibNewApp::InitInstance() {
     // 如果一个运行在 Windows XP 上的应用程序清单指定要
     // 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
-    //则需要 InitCommonControlsEx()。否则，将无法创建窗口。
+    // 则需要 InitCommonControlsEx()。否则，将无法创建窗口。
     INITCOMMONCONTROLSEX InitCtrls;
     InitCtrls.dwSize = sizeof(InitCtrls);
     // 将它设置为包括所有要在应用程序中使用的
@@ -79,8 +77,6 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     // 最终可执行文件的大小，则应移除下列
     // 不需要的特定初始化例程
     // 更改用于存储设置的注册表项
-    // TODO: 应适当修改该字符串，
-    // 例如修改为公司或组织名
     SetRegistryKey(_T("三维符号库"));
     LoadStdProfileSettings(4);  // 加载标准 INI 文件选项(包括 MRU)
     // 最近文件列表
@@ -96,7 +92,7 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
             }
         }
     }
-    //InitContextMenuManager();
+    // InitContextMenuManager();
     InitKeyboardManager();
     InitTooltipManager();
     CMFCToolTipInfo ttParams;
@@ -122,19 +118,19 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     if (!ProcessShellCommand(cmdInfo))
         return FALSE;
     // 唯一的一个窗口已初始化，因此显示它并对其进行更新
-    //m_pMainWnd->ShowWindow(SW_SHOW);
-    //m_pMainWnd->UpdateWindow();
+    // m_pMainWnd->ShowWindow(SW_SHOW);
+    // m_pMainWnd->UpdateWindow();
     m_pMainWnd->ShowWindow(SW_SHOWMAXIMIZED);
     m_pMainWnd->UpdateWindow();
     // 仅当具有后缀时才调用 DragAcceptFiles
     //  在 SDI 应用程序中，这应在 ProcessShellCommand 之后发生
-    //初始化GID+
+    // 初始化GID+
     GdiplusStartupInput gdiplusStartupInput;
     GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
     // [ADD]
-    //==============================================================
+    // ==============================================================
     // 读取系统设置配置文件
-    //==============================================================
+    // ==============================================================
     char systemConfigureDir[256];
     GetCurrentDirectoryA(256, systemConfigureDir);
     g_systemConfigureFile = strcat(systemConfigureDir, "\\system.ini");
@@ -150,10 +146,10 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     ::GetPrivateProfileStringA("SceneDataPath", "path", "error", tmpPath.GetBuffer(MAX_SIZE), MAX_SIZE, g_systemConfigureFile.c_str());
     g_sceneDataPath = tmpPath.GetBuffer(0);
     tmpPath.ReleaseBuffer();
-    //==============================================================
-    //==============================================================
+    // ==============================================================
+    // ==============================================================
     // 读取符号配置文件
-    //==============================================================
+    // ==============================================================
     /*char symbolsConfigureDir[256];
     GetCurrentDirectoryA(256,symbolsConfigureDir);
     g_symbolConfigureFile = strcat(symbolsConfigureDir,"\\symbols.xml");
@@ -165,9 +161,9 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
         MessageBox(NULL,"Can not symbols.xml!","warning",MB_OK);
     }*/
     char symbolsConfigureDir[256];
-    //GetCurrentDirectoryA(256,symbolsConfigureDir);
+    // GetCurrentDirectoryA(256,symbolsConfigureDir);
     strcpy(symbolsConfigureDir, g_sceneDataPath.c_str());
-    //g_symbolConfigureFile = strcat(symbolsConfigureDir,"\\SymbolLibrary\\symbols.xml");
+    // g_symbolConfigureFile = strcat(symbolsConfigureDir,"\\SymbolLibrary\\symbols.xml");
     g_point_symbolConfigureFile = strcat(symbolsConfigureDir, "\\SymbolLibrary\\point.plib");
     g_line_symbolConfigureFile = strcat(symbolsConfigureDir, "\\SymbolLibrary\\line.llib");
     g_area_symbolConfigureFile = strcat(symbolsConfigureDir, "\\SymbolLibrary\\area.alib");
@@ -176,17 +172,17 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     if (!isSymbolConfigureFind) {
         MessageBox(NULL, "Can not point.plib!", "warning", MB_OK);
     }
-    //==============================================================
+    // ==============================================================
     // 将XML文件中的信息读入全局list中
-    //==============================================================
-    CoInitialize(NULL); // 初始化COM。
-    // TODO: 在此添加控件通知处理程序代码
-    CComPtr<IXMLDOMDocument> spDoc; //DOM
+    // ==============================================================
+    CoInitialize(NULL);  // 初始化COM。
+    
+    CComPtr<IXMLDOMDocument> spDoc;  // DOM
     spDoc.CoCreateInstance(CLSID_DOMDocument);
     VARIANT_BOOL vb;
-    spDoc->load(CComVariant(g_point_symbolConfigureFile.c_str()), &vb); //加载XML文件
+    spDoc->load(CComVariant(g_point_symbolConfigureFile.c_str()), &vb);  // 加载XML文件
     CComPtr<IXMLDOMElement> spRootEle;
-    spDoc->get_documentElement(&spRootEle); //根节点
+    spDoc->get_documentElement(&spRootEle);  // 根节点
     CComPtr<IXMLDOMNodeList> spNodeList[5];
     string tmp[5];
     for (int i = 0; i < g_modelKindNumber; ++i) {
@@ -194,9 +190,9 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     }
     for (int i = 0; i < g_modelKindNumber; ++i) {
         spRootEle->selectNodes(_bstr_t(tmp[i].c_str()), &spNodeList[i]);
-        long nLen;//子节点数
-        spNodeList[i]->get_length(&nLen); //子节点数
-        for (long j = 0; j != nLen; ++j) { //遍历子节点
+        long nLen;  // 子节点数
+        spNodeList[i]->get_length(&nLen);  // 子节点数
+        for (long j = 0; j != nLen; ++j) {  // 遍历子节点
             CComPtr<IXMLDOMNode> spNode;
             spNodeList[i]->get_item(j, &spNode);
             BSTR text;
@@ -210,7 +206,7 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
         }
     }
     CoUninitialize();
-    //==============================================================
+    // ==============================================================
     // 新建工程  OR  打开工程
     CProjectFileSetting prjFileSetDlg;
     prjFileSetDlg.DoModal();
@@ -218,7 +214,7 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
 }
 
 int CMy3DSymbolLibNewApp::ExitInstance() {
-    //TODO: 处理可能已添加的附加资源
+
     GdiplusShutdown(m_gdiplusToken);
     AfxOleTerm(FALSE);
     return CWinAppEx::ExitInstance();

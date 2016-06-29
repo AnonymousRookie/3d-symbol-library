@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿#ifndef DIALOG_MODEL_LIST_H
+#define DIALOG_MODEL_LIST_H
+
 #include "afxcmn.h"
 
 #define  THUMBNAIL_WIDTH 50
@@ -23,12 +25,12 @@ class CDialogModelList : public CDialog {
   public:
     CListCtrl m_listCtlModel;
     CImageList m_imgListModel;
-    //vector<CString> m_fileNameList;
+    // vector<CString> m_fileNameList;
     CArray<CString, CString> m_fileNameArray;
     CString m_Dir;
     // [ADD]
-    CString m_format;//图片格式
-    CString m_type; // 符号类别
+    CString m_format;  // 图片格式
+    CString m_type;  // 符号类别
 
     CString m_selectItem;
 
@@ -37,3 +39,5 @@ class CDialogModelList : public CDialog {
     void  DrawThumbnails();
     afx_msg void OnLvnItemchangedListModel(NMHDR* pNMHDR, LRESULT* pResult);
 };
+
+#endif  // DIALOG_MODEL_LIST_H

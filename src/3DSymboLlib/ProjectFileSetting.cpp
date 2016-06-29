@@ -1,7 +1,4 @@
-﻿// ProjectFileSetting.cpp : 实现文件
-//
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "ProjectFileSetting.h"
 #include "afxdialogex.h"
@@ -44,31 +41,31 @@ END_MESSAGE_MAP()
 
 
 void CProjectFileSetting::OnBnClickedOk() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CDialog::OnOK();
-    CMainFrame* pMF = (CMainFrame*)AfxGetApp()->m_pMainWnd; //先通过获取当前框架指针
-    CView* active = pMF->GetActiveView(); //才能获取当前视类指针
-    if (active != NULL) //获取了当前视类指针才能发送消息
-        active->PostMessage(WM_PROJECT_SET_OK, new_project_flag, 0); //使用PostMessage发送消息
+    CMainFrame* pMF = (CMainFrame*)AfxGetApp()->m_pMainWnd;  // 先通过获取当前框架指针
+    CView* active = pMF->GetActiveView();  // 才能获取当前视类指针
+    if (active != NULL)  // 获取了当前视类指针才能发送消息
+        active->PostMessage(WM_PROJECT_SET_OK, new_project_flag, 0);  // 使用PostMessage发送消息
 }
 
 
 void CProjectFileSetting::OnBnClickedCancel() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CDialog::OnCancel();
 }
 
 
 // 单选按钮 新建工程 点击消息的消息处理函数
 void CProjectFileSetting::OnBnClickedRadioNewProject() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     m_recentlyOpenedProjectList.EnableWindow(FALSE);
     new_project_flag = 1;
 }
 
 // 单选按钮 打开工程 点击消息的消息处理函数
 void CProjectFileSetting::OnBnClickedRadioOpenProject() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     m_recentlyOpenedProjectList.EnableWindow(TRUE);
     new_project_flag = 0;
 }
@@ -82,7 +79,7 @@ BOOL CProjectFileSetting::OnInitDialog() {
     CheckDlgButton(IDC_RADIO_NEW_PROJECT, 1);
     CheckDlgButton(IDC_RADIO_OPEN_PROJECT, 0);
     m_recentlyOpenedProjectList.EnableWindow(FALSE);
-    //list box
+    // list box
     for (int i = 0; i < g_strRecentOpenedFileArray.GetSize(); ++i) {
         int pos_begin = 0;
         int pos_end = 0;
@@ -122,16 +119,16 @@ BOOL CProjectFileSetting::OnInitDialog() {
 
 // 选中项改变时, 响应消息
 void CProjectFileSetting::OnSelchangeListRecentlyOpenedProject() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     CString strText = "";
     int nCurSel = -1;
-    nCurSel = m_recentlyOpenedProjectList.GetCurSel();      //获取当前选中列表项
+    nCurSel = m_recentlyOpenedProjectList.GetCurSel();      // 获取当前选中列表项
     int listCount = m_recentlyOpenedProjectList.GetCount();
     if (nCurSel != listCount - 1) {
         g_recentlyOpenedProjectName = g_strRecentOpenedFileArray.GetAt(nCurSel);
     } else {
-        nCurSel = m_recentlyOpenedProjectList.GetCurSel();      //获取当前选中列表项
-        m_recentlyOpenedProjectList.GetText(nCurSel, strText);  //获取选中列表项的字符串
+        nCurSel = m_recentlyOpenedProjectList.GetCurSel();      // 获取当前选中列表项
+        m_recentlyOpenedProjectList.GetText(nCurSel, strText);  // 获取选中列表项的字符串
         g_recentlyOpenedProjectName = strText;  // 选中的最近打开的工程文件名
     }
 }

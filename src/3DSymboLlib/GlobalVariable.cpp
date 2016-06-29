@@ -27,7 +27,7 @@ ModelTreeStruct g_modelTree[5] = {
     {"Weather Symbol", "/root/WeatherSymbol/*", 0}
 };
 
-//符号所在文件夹名称
+// 符号所在文件夹名称
 SymbolFolder g_symbolFolder = {
     "3DModel", "CitySymbol", "TreeModel", "TreeModel", "Weather"
 };
@@ -49,14 +49,14 @@ string g_systemConfigureFile = "";
 
 
 // 符号库配置文件(路径+文件名)
-//string g_symbolConfigureFile = "";
+// string g_symbolConfigureFile = "";
 
 string g_point_symbolConfigureFile  = "";
 string g_line_symbolConfigureFile   = "";
 string g_area_symbolConfigureFile   = "";
 
 
-float g_max_height = 0;// 最大高程
+float g_max_height = 0;  // 最大高程
 
 
 string g_recentlyOpenedProjectName = "";    // 选中的最近打开的工程文件名

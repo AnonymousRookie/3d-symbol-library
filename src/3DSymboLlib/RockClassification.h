@@ -28,7 +28,7 @@ class CRockClassification : public CDialog {
     afx_msg void OnSelchangedTreeRockList(NMHDR* pNMHDR, LRESULT* pResult);
 
   public:
-    HTREEITEM hRoot;    //根节点句柄
+    HTREEITEM hRoot;    // 根节点句柄
     HTREEITEM hCataItem;
     HTREEITEM hArtItem;
 

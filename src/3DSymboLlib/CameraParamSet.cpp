@@ -1,7 +1,4 @@
-﻿// CameraParamSet.cpp : 实现文件
-//
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
 #include "CameraParamSet.h"
 #include "afxdialogex.h"
@@ -37,12 +34,12 @@ END_MESSAGE_MAP()
 
 
 void CCameraParamSet::OnBnClickedButtonRecoverY() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     SetDlgItemInt(IDC_EDIT_MOUSE_Y_SENSI, m_OriginDerAngleY);
 }
 
 
 void CCameraParamSet::OnBnClickedButtonRecoverZ() {
-    // TODO: 在此添加控件通知处理程序代码
+    // TODO(jason): 在此添加控件通知处理程序代码
     SetDlgItemInt(IDC_EDIT_MOUSE_Z_SENSI, m_OriginDerAngleZ);
 }
