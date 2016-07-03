@@ -80,12 +80,12 @@ BOOL CProjectFileSetting::OnInitDialog() {
     CheckDlgButton(IDC_RADIO_OPEN_PROJECT, 0);
     m_recentlyOpenedProjectList.EnableWindow(FALSE);
     // list box
-    for (int i = 0; i < g_strRecentOpenedFileArray.GetSize(); ++i) {
-        int pos_begin = 0;
-        int pos_end = 0;
-        int tmp_len = g_strRecentOpenedFileArray.GetAt(i).GetLength();
-        int pos = 0;
-        int count = 0;
+    for (int32 i = 0; i < g_strRecentOpenedFileArray.GetSize(); ++i) {
+        int32 pos_begin = 0;
+        int32 pos_end = 0;
+        int32 tmp_len = g_strRecentOpenedFileArray.GetAt(i).GetLength();
+        int32 pos = 0;
+        int32 count = 0;
         while (pos != -1) {
             pos = g_strRecentOpenedFileArray.GetAt(i).Find('\\', pos + 1);
             if (pos != -1) {
@@ -111,7 +111,7 @@ BOOL CProjectFileSetting::OnInitDialog() {
     g_recentlyOpenedProjectName = _T("更多工程...");
     m_recentlyOpenedProjectList.AddString(_T("更多工程..."));
     // 默认选中最后一项 "更多工程..."
-    int listCount = m_recentlyOpenedProjectList.GetCount();
+    int32 listCount = m_recentlyOpenedProjectList.GetCount();
     m_recentlyOpenedProjectList.SetCurSel(listCount - 1);
     return TRUE;  // return TRUE unless you set the focus to a control
 }
@@ -121,9 +121,9 @@ BOOL CProjectFileSetting::OnInitDialog() {
 void CProjectFileSetting::OnSelchangeListRecentlyOpenedProject() {
     // TODO(jason): 在此添加控件通知处理程序代码
     CString strText = "";
-    int nCurSel = -1;
+    int32 nCurSel = -1;
     nCurSel = m_recentlyOpenedProjectList.GetCurSel();      // 获取当前选中列表项
-    int listCount = m_recentlyOpenedProjectList.GetCount();
+    int32 listCount = m_recentlyOpenedProjectList.GetCount();
     if (nCurSel != listCount - 1) {
         g_recentlyOpenedProjectName = g_strRecentOpenedFileArray.GetAt(nCurSel);
     } else {

@@ -9,7 +9,7 @@
 // XML 与 tree control
 
 // 模型种类的个数
-const int g_modelKindNumber = 5;
+const int32 g_modelKindNumber = 5;
 
 // "3DS Model","City Symbol","Tree Model","3D Tree Model","Weather Symbol"
 list<string> g_modelList[5];

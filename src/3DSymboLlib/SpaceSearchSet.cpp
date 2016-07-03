@@ -61,7 +61,7 @@ BOOL CSpaceSearchSet::OnInitDialog() {
     //  myedit[0].SubclassDlgItem(IDC_EDIT_SHIZXLENGTH,this);
     //  myedit[1].SubclassDlgItem(IDC_EDIT_SHUZXHEIGHT,this);
     m_combolWidth.ResetContent();  // 存储标志线宽度的下拉框清空
-    for (int i = 1; i <= 20; i++) {  // 线宽最大宽度为20
+    for (int32 i = 1; i <= 20; i++) {  // 线宽最大宽度为20
         CString tt;
         tt.Format("%d", i);
         m_combolWidth.AddString(tt);

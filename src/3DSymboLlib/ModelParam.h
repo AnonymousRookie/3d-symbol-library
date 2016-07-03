@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include "afxcmn.h"
+#include "define.h"
+
 // ModelParam 对话框
 
 class ModelParam : public CDialog {
@@ -19,12 +21,12 @@ class ModelParam : public CDialog {
     DECLARE_MESSAGE_MAP()
 
   public:
-    int posX;
-    int posY;
-    int posZ;
-    int rotX;
-    int rotY;
-    int rotZ;
+    int32 posX;
+    int32 posY;
+    int32 posZ;
+    int32 rotX;
+    int32 rotY;
+    int32 rotZ;
     float scale;
     CString displayPath;
     bool modelChanged;  // 模型是否已更换

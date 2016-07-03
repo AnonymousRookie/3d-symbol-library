@@ -2,6 +2,7 @@
 #define FILE_VIEW_H
 
 #include "ViewTree.h"
+#include "define.h"
 
 class CFileViewToolBar : public CMFCToolBar {
     virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) {
@@ -35,8 +36,8 @@ class CFileView : public CDockablePane {
     virtual ~CFileView();
 
   protected:
-    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg int32 OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnSize(UINT nType, int32 cx, int32 cy);
     afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
     afx_msg void OnProperties();
     afx_msg void OnFileOpen();

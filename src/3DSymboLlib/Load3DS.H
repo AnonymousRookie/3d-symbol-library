@@ -3,6 +3,8 @@
 
 #include <math.h>
 #include <vector>
+#include "define.h"
+
 // 基本块(Primary Chunk)，位于文件的开始
 #define PRIMARY       0x4D4D
 // 主块(Main Chunks)
@@ -37,15 +39,15 @@ class CVector2Model {   // 定义2D点类，用于保存模型的UV纹理坐标
 };
 
 struct tFace {      // 面的结构定义
-    int vertIndex[3];           // 顶点索引
-    int coordIndex[3];          // 纹理坐标索引
+    int32 vertIndex[3];           // 顶点索引
+    int32 coordIndex[3];          // 纹理坐标索引
 };
 
 struct tMatInfo {  // 材质信息结构体
     char  strName[255];         // 纹理名称
     char  strFile[255];         // 如果存在纹理映射，则表示纹理文件名称
     BYTE  color[3];             // 对象的RGB颜色
-    int   texureId;             // 纹理ID
+    int32   texureId;             // 纹理ID
     float uTile;                // u 重复
     float vTile;                // v 重复
     float uOffset;              // u 纹理偏移
@@ -53,10 +55,10 @@ struct tMatInfo {  // 材质信息结构体
 } ;
 
 struct t3DObject {  //对象信息结构体
-    int  numOfVerts;            // 模型中顶点的数目
-    int  numOfFaces;            // 模型中面的数目
-    int  numTexVertex;          // 模型中纹理坐标的数目
-    int  materialID;            // 纹理ID
+    int32  numOfVerts;            // 模型中顶点的数目
+    int32  numOfFaces;            // 模型中面的数目
+    int32  numTexVertex;          // 模型中纹理坐标的数目
+    int32  materialID;            // 纹理ID
     bool bHasTexture;           // 是否具有纹理映射
     char strName[255];          // 对象的名称
     CVector3Model*  pVerts;         // 对象的顶点
@@ -73,17 +75,17 @@ struct t3DBox {
 };
 
 struct t3DModel {  // 模型信息结构体
-    int numOfObjects;           // 模型中对象的数目
-    int numOfMaterials;         // 模型中材质的数目
+    int32 numOfObjects;           // 模型中对象的数目
+    int32 numOfMaterials;         // 模型中材质的数目
     vector<tMatInfo>pMaterials; // 材质链表信息
     vector<t3DObject> pObject;  // 模型中对象链表信息
     t3DBox t3DModelBox;
 };
 
 struct tChunk {  // 保存块信息的结构
-    unsigned short int ID;      // 块的ID
-    unsigned int length;        // 块的长度
-    unsigned int bytesRead;     // 需要读的块数据的字节数
+    uint16 ID;      // 块的ID
+    uint32 length;        // 块的长度
+    uint32 bytesRead;     // 需要读的块数据的字节数
 };
 
 
@@ -94,16 +96,16 @@ class CLoad3DS {
   public:
     CLoad3DS();                                                         // 初始化数据成员
     virtual ~CLoad3DS();
-    void Show3ds(int j0, float tx, float ty, float tz, float size);     //显示3ds模型
-    void Init(char* _3DSFilename, int j, char* _3DSTexture);
+    void Show3ds(int32 j0, float tx, float ty, float tz, float size);     //显示3ds模型
+    void Init(char* _3DSFilename, int32 j, char* _3DSTexture);
 
     // [ADD]显示阴影
-    // void Show3dsShadow(int j0,float tx,float ty,float tz,float size);
+    // void Show3dsShadow(int32 j0,float tx,float ty,float tz,float size);
 
   private:
     bool Import3DS(t3DModel* pModel, char* strFileName);  // 装入3ds文件到模型结构中
-    void CreateTexture(UINT textureArray[], LPSTR strFileName, int textureID);  // 从文件中创建纹理
-    int  GetString(char*);                              // 读一个字符串
+    void CreateTexture(UINT textureArray[], LPSTR strFileName, int32 textureID);  // 从文件中创建纹理
+    int32  GetString(char*);                              // 读一个字符串
     void ReadChunk(tChunk*);                            // 读下一个块
     void ReadNextChunk(t3DModel* pModel, tChunk*);      // 读下一个块
     void ReadNextObjChunk(t3DModel* pModel, t3DObject* pObject, tChunk*);  // 读下一个对象块

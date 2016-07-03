@@ -38,7 +38,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CWorkspaceBar 消息处理程序
 
-int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+int32 CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     if (CDockablePane::OnCreate(lpCreateStruct) == -1)
         return -1;
     CRect rectDummy;
@@ -66,7 +66,7 @@ int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     return 0;
 }
 
-void CFileView::OnSize(UINT nType, int cx, int cy) {
+void CFileView::OnSize(UINT nType, int32 cx, int32 cy) {
     CDockablePane::OnSize(nType, cx, cy);
     AdjustLayout();
 }
@@ -125,7 +125,7 @@ void CFileView::AdjustLayout() {
     }
     CRect rectClient;
     GetClientRect(rectClient);
-    int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
+    int32 cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
     m_wndToolBar.SetWindowPos(NULL, rectClient.left, rectClient.top, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
     m_wndFileView.SetWindowPos(NULL, rectClient.left + 1, rectClient.top + cyTlb + 1, rectClient.Width() - 2, rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
 }

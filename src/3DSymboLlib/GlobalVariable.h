@@ -10,7 +10,7 @@
 #include <list>
 #include <string>
 #include <algorithm>
-
+#include "define.h"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ using namespace std;
 // XML 与 tree control
 
 // 模型种类的个数
-extern const int g_modelKindNumber;
+extern const int32 g_modelKindNumber;
 
 // "3DS Model","City Symbol","Tree Model","3D Tree Model","Weather Symbol"
 extern list<string> g_modelList[5];

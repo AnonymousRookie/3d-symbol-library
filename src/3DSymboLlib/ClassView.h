@@ -1,7 +1,8 @@
-﻿
-#pragma once
+﻿#pragma once
 
 #include "ViewTree.h"
+#include "define.h"
+
 
 class CClassToolBar : public CMFCToolBar {
     virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) {
@@ -34,8 +35,8 @@ class CClassView : public CDockablePane {
     virtual BOOL PreTranslateMessage(MSG* pMsg);
 
   protected:
-    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg int32 OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnSize(UINT nType, int32 cx, int32 cy);
     afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
     afx_msg void OnClassAddMemberFunction();
     afx_msg void OnClassAddMemberVariable();

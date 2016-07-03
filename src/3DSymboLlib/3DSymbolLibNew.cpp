@@ -81,11 +81,11 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     LoadStdProfileSettings(4);  // 加载标准 INI 文件选项(包括 MRU)
     // 最近文件列表
     if (m_pRecentFileList != NULL) {
-        int nMRUSize = m_pRecentFileList->GetSize();
+        int32 nMRUSize = m_pRecentFileList->GetSize();
         CString strMRUFile = "";
         g_strRecentOpenedFileArray.RemoveAll();
         // 将MRU列表里的工程文件提取出来
-        for (int i = 0; i < nMRUSize; ++i) {
+        for (int32 i = 0; i < nMRUSize; ++i) {
             strMRUFile = m_pRecentFileList->m_arrNames[i];
             if (strMRUFile != "") {
                 g_strRecentOpenedFileArray.Add(strMRUFile);
@@ -184,14 +184,14 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     spDoc->get_documentElement(&spRootEle);  // 根节点
     CComPtr<IXMLDOMNodeList> spNodeList[5];
     string tmp[5];
-    for (int i = 0; i < g_modelKindNumber; ++i) {
+    for (int32 i = 0; i < g_modelKindNumber; ++i) {
         tmp[i] = g_modelTree[i]._noteDirectory;
     }
-    for (int i = 0; i < g_modelKindNumber; ++i) {
+    for (int32 i = 0; i < g_modelKindNumber; ++i) {
         spRootEle->selectNodes(_bstr_t(tmp[i].c_str()), &spNodeList[i]);
-        long nLen;  // 子节点数
+        long nLen;  // 子节点数  // NOLINT
         spNodeList[i]->get_length(&nLen);  // 子节点数
-        for (long j = 0; j != nLen; ++j) {  // 遍历子节点
+        for (int64 j = 0; j != nLen; ++j) {  // 遍历子节点
             CComPtr<IXMLDOMNode> spNode;
             spNodeList[i]->get_item(j, &spNode);
             BSTR text;
@@ -212,7 +212,7 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     return TRUE;
 }
 
-int CMy3DSymbolLibNewApp::ExitInstance() {
+int32 CMy3DSymbolLibNewApp::ExitInstance() {
 
     GdiplusShutdown(m_gdiplusToken);
     AfxOleTerm(FALSE);

@@ -92,15 +92,13 @@ BOOL CDialogModelList::OnInitDialog() {
             }
             ++iter;
         }
-    }
-    // 石头纹理
-    else if (m_type == "StoneTexture") {
+    } else if (m_type == "StoneTexture") {  // 石头纹理
         // 获取文件夹下所有指定类型文件
         _finddata_t fileDir;
         char* dir = new char[m_Dir.GetLength() + strlen("\\*") + m_format.GetLength()];  // "d:\\temp\\*.*";
         sprintf(dir, m_Dir + "\\*" + m_format);  // NOLINT
-        long lfDir;
-        int fileNum = 0;
+        int64 lfDir;
+        int32 fileNum = 0;
         // vector<CString> fileName;
         // 搜索与指定的文件名称匹配的第一个实例，若成功则返回第一个实例的句柄，否则返回-1L
         if ((lfDir = _findfirst(dir, &fileDir)) == -1l)
@@ -130,13 +128,13 @@ void  CDialogModelList::DrawThumbnails() {
     CBitmap*    pImage = NULL;
     HBITMAP     hBmp = NULL;
     CString     strPath;
-    int         i;
+    int32         i;
     // no images
     if (m_fileNameArray.IsEmpty())
         return;
     // set the length of the space between thumbnails
     // you can also calculate and set it based on the length of your list control
-    int nGap = 6;
+    int32 nGap = 6;
     // hold the window update to avoid flicking
     m_listCtlModel.SetRedraw(FALSE);
     // reset our image list
@@ -149,13 +147,13 @@ void  CDialogModelList::DrawThumbnails() {
     m_imgListModel.SetImageCount(m_fileNameArray.GetSize());
     i = 0;
     // draw the thumbnails
-    for (int i = 0; i < m_fileNameArray.GetSize(); i++) {
+    for (int32 i = 0; i < m_fileNameArray.GetSize(); i++) {
         // load the bitmap
         strPath.Format(TEXT("%s\\%s"), m_Dir, m_fileNameArray.GetAt(i));
         USES_CONVERSION;
         Bitmap img(A2W(strPath));
         Bitmap* pThumbnail = static_cast<Bitmap*>(img.GetThumbnailImage(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, NULL, NULL));
-        int H = img.GetHeight();
+        int32 H = img.GetHeight();
         // attach the thumbnail bitmap handle to an CBitmap object
         pThumbnail->GetHBITMAP(Color(255, 255, 255), &hBmp);
         pImage = new CBitmap();

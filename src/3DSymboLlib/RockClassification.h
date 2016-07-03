@@ -4,7 +4,7 @@
 #pragma once
 #include "afxcmn.h"
 #include "afxwin.h"
-
+#include "define.h"
 // CRockClassification 对话框
 
 class CRockClassification : public CDialog {

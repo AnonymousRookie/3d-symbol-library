@@ -1,6 +1,6 @@
 ﻿
 #pragma once
-
+#include "define.h"
 /////////////////////////////////////////////////////////////////////////////
 // COutputList 窗口
 
@@ -49,8 +49,8 @@ class COutputWnd : public CDockablePane {
     virtual ~COutputWnd();
 
   protected:
-    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg int32 OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnSize(UINT nType, int32 cx, int32 cy);
 
     DECLARE_MESSAGE_MAP()
 };

@@ -6,6 +6,7 @@
 #include <iostream>
 using namespace std;
 #include <vector>
+#include "define.h"
 
 // 三维点坐标结构
 typedef struct {
@@ -35,8 +36,8 @@ typedef struct {
     double y2;
     double z2;
 
-    int TW_left;    // 左侧填挖类型
-    int TW_right;   // 左侧填挖类型
+    int32 TW_left;    // 左侧填挖类型
+    int32 TW_right;   // 左侧填挖类型
     float mAngle;   // 当前旋转角度
 } Railway3DCordinate, *PRailway3DCordinate;
 
@@ -62,7 +63,7 @@ typedef struct {
     float fwj;      // 交点偏角1
     float fwj2;     // 交点偏角2
     float T;        // 切线长
-    int L0;         // 缓和曲线长
+    int32 L0;         // 缓和曲线长
     float L;        // 曲线长
     float Ly;       //
     float Jzxc;     // 夹直线长
@@ -70,11 +71,11 @@ typedef struct {
     double ZH;      // 直缓点里程
     double HY;      // 缓圆点里程
     double YH;      // 圆缓点里程
-    long R;         // 曲线半径
+    int64 R;         // 曲线半径
     float E;        // 外矢距
     float P;        //
     float Dist;     //
-    int  RoateStyle;  // 旋转类型(左转,右转)
+    int32  RoateStyle;  // 旋转类型(左转,右转)
     double x;       // 交点x坐标
     double y;       // 交点y坐标
     double z;       // 交点z坐标
@@ -96,23 +97,23 @@ typedef struct {
     float h;            // 高
     float m;            // 坡率
     float b;            // 边坡平台宽
-    int style;          // 护坡类型
+    int32 style;          // 护坡类型
 } HuPo, *PHuPo;
 
 // 路基总结构
 typedef struct {
     HuPo HuPo_L[3];     // 左侧护坡结构
-    int Huponums_L;     // 左侧护坡级数
+    int32 Huponums_L;     // 左侧护坡级数
     HuPo HuPo_R[3];     // 右侧护坡结构
-    int Huponums_R;     // 右侧护坡级数
-    int TW_left;        // TW_left=-1: 路堑
-    int TW_right;       // TW_right=-1:路堑
+    int32 Huponums_R;     // 右侧护坡级数
+    int32 TW_left;        // TW_left=-1: 路堑
+    int32 TW_right;       // TW_right=-1:路堑
     double Lc;          // 里程
     CString strJDStyle;
 } LuQianHuPo, *PLuQianHuPo;
 
 typedef struct {
-    long InsertIndex;
+    int64 InsertIndex;
     CArray<PLuQianHuPo, PLuQianHuPo> tempHuPo;
 } LuQianHuPoTemp, *PLuQianHuPoTemp;
 
@@ -128,8 +129,8 @@ class CDesingScheme {
 
     float GetDistenceXYZ(double x1, double y1, double z1, double x2, double y2, double z2);
 
-    void Get3DLineModel(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo, CString strJDstyle, CString strJDstyleNext, long index, double mLC);
-    void Get3DLineModelLast(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo, CString strJDstyle, CString strJDstyleNext, long index, double mLC);
+    void Get3DLineModel(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo, CString strJDstyle, CString strJDstyleNext, int64 index, double mLC);
+    void Get3DLineModelLast(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo, CString strJDstyle, CString strJDstyleNext, int64 index, double mLC);
 
     // 根据线路前后中心线的三维坐标计算铁轨顶面左右点的x,y,z坐标
     void Get3DCorrdinate(double x1, double y1, double z1, double x2, double y2, double z2, float dx, float dz, float L, double* x11, double* y11, double* z11, double* x12, double* y12, double* z12, double* x21, double* y21, double* z21, double* x22, double* y22, double* z22 , float* angle);
@@ -141,25 +142,25 @@ class CDesingScheme {
     void Save3DlineZX();
 
     void NeiChaDian(float ZHLength, double x1, double y1, double z1, double x2, double y2, double z2, double lc);
-    void GetQLXY(float L0, long R, int RoateStyle, float LL, float fwj, double ZH_xy_x, double ZH_xy_y, double HZ_xy_x, double HZ_xy_y, double* xc, double* yc, int Q_H_L);
-    void GetYQXXY(double centerx, double centery, long R, int RoateStyle, float LL, float alfa, double HY_xy_x, double HY_xy_y, double YH_xy_x, double YH_xy_y, double* xc, double* yc);
+    void GetQLXY(float L0, int64 R, int32 RoateStyle, float LL, float fwj, double ZH_xy_x, double ZH_xy_y, double HZ_xy_x, double HZ_xy_y, double* xc, double* yc, int32 Q_H_L);
+    void GetYQXXY(double centerx, double centery, int64 R, int32 RoateStyle, float LL, float alfa, double HY_xy_x, double HY_xy_y, double YH_xy_x, double YH_xy_y, double* xc, double* yc);
 
 
     // 计算边坡与在面的交点坐标
-    void GetDMJD(double x1, double y1, double z1, double x2, double y2, double z2, float L, float h0, double x0, double z0, int TW, int LeftRight, \
+    void GetDMJD(double x1, double y1, double z1, double x2, double y2, double z2, float L, float h0, double x0, double z0, int32 TW, int32 LeftRight, \
                  double tx0, double ty0, double tz0, double tx1, double ty1, double tz1, double mLC, CString strJDstyle);
 
     // 计算终点处边坡与在面的交点坐标
-    void GetDMJDLast(double x1, double y1, double z1, double x2, double y2, double z2, float L, float h0, double x0, double z0, int TW, int LeftRight, \
+    void GetDMJDLast(double x1, double y1, double z1, double x2, double y2, double z2, float L, float h0, double x0, double z0, int32 TW, int32 LeftRight, \
                      double tx0, double ty0, double tz0, double tx1, double ty1, double tz1, double mLC, CString strJDstyle);
 
 
     // 计算边坡点与地面线的交点坐标
-    void GetBpJD(float H0, float Afla, float mangle, double x0, double z0, int bsignTW, int mLeftRight, double* tx, double* ty, double* tz);
+    void GetBpJD(float H0, float Afla, float mangle, double x0, double z0, int32 bsignTW, int32 mLeftRight, double* tx, double* ty, double* tz);
 
-    float GetH(float L, float Afla, float mAngle, double x0, double z0, int mLeftRight, double* xx, double* zz);
+    float GetH(float L, float Afla, float mAngle, double x0, double z0, int32 mLeftRight, double* xx, double* zz);
     // 计算边坡的填挖类型
-    int GetTW(double x, double z, float H);
+    int32 GetTW(double x, double z, float H);
 
     float GetHeightValue(float x, float z);
 

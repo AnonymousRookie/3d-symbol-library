@@ -7,6 +7,7 @@
 #include "ClassView.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
+#include "define.h"
 
 class CMainFrame : public CFrameWndEx {
 
@@ -39,7 +40,7 @@ class CMainFrame : public CFrameWndEx {
 
     // 生成的消息映射函数
   protected:
-    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg int32 OnCreate(LPCREATESTRUCT lpCreateStruct);
     afx_msg void OnViewCustomize();
     afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);
     afx_msg void OnApplicationLook(UINT id);
@@ -51,7 +52,7 @@ class CMainFrame : public CFrameWndEx {
     void SetDockingWindowIcons(BOOL bHiColorIcons);
 
   public:
-    void Set_BarText(int index, CString strText);
+    void Set_BarText(int32 index, CString strText);
 };
 
 

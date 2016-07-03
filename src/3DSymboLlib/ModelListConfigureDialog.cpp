@@ -47,7 +47,7 @@ END_MESSAGE_MAP()
 
 void ModelListConfigureDialog::OnBnClickedOk() {
     // TODO(jason): 在此添加控件通知处理程序代码
-    for (int i = 0; i < g_modelKindNumber; ++i) {
+    for (int32 i = 0; i < g_modelKindNumber; ++i) {
         // Update only changed
         if (g_modelTree[i].isChanged) {
             CoInitialize(NULL);  // 初始化COM。
@@ -57,7 +57,7 @@ void ModelListConfigureDialog::OnBnClickedOk() {
             VARIANT_BOOL bSuccess = false;
             // 装载XML文档。
             hr = spXMLDOM->load(CComVariant(g_point_symbolConfigureFile.c_str()), &bSuccess);
-            int strLen = g_modelTree[i]._noteDirectory.length();
+            int32 strLen = g_modelTree[i]._noteDirectory.length();
             // "/root/XXX/*" ==> "/root/XXX"
             string subStr = g_modelTree[i]._noteDirectory.substr(0, strLen - 2);
             CComBSTR bstrSS(subStr.c_str());
@@ -67,9 +67,9 @@ void ModelListConfigureDialog::OnBnClickedOk() {
             spXMLDOM->get_documentElement(&spRootEle);  // 根节点
             CComPtr<IXMLDOMNodeList> spNodeList;
             spRootEle->selectNodes(_bstr_t(g_modelTree[i]._noteDirectory.c_str()), &spNodeList);
-            long nLen;  // 子节点数
+            long nLen;  // 子节点数  // NOLINT
             spNodeList->get_length(&nLen);  // 子节点数
-            for (long j = 0; j != nLen; ++j) {  // 遍历子节点
+            for (int64 j = 0; j != nLen; ++j) {  // 遍历子节点
                 CComPtr<IXMLDOMNode> spNode;
                 spNodeList->get_item(j, &spNode);
                 // 删除所有子节点(item)
@@ -102,7 +102,7 @@ void ModelListConfigureDialog::OnBnClickedOk() {
 /************************************************************************/
 void ModelListConfigureDialog::OnBnClickedCancel() {
     // TODO(jason): 在此添加控件通知处理程序代码
-    for (int i = 0; i < g_modelKindNumber; ++i) {
+    for (int32 i = 0; i < g_modelKindNumber; ++i) {
         // add
         list<string>::iterator iter_del;
         for (iter_del = g_delList[i].begin(); iter_del != g_delList[i].end(); ++iter_del) {
@@ -125,17 +125,17 @@ BOOL ModelListConfigureDialog::OnInitDialog() {
     // ============================================
     // 从list中读取信息显示在tree中
     // ============================================
-    for (int i = 0; i < g_modelKindNumber; ++i) {
+    for (int32 i = 0; i < g_modelKindNumber; ++i) {
         g_modelTree[i].isChanged = 0;
         // 排序
         g_modelList[i].sort(MyCompare());
     }
     hRoot = m_configureModeListTree.InsertItem("符号列表配置", 0, 0);
     LPCTSTR item[5];    // {"3DS Model","City Symbol","Tree Model","3D Tree Model","Weather Symbol"};
-    for (int i = 0; i < g_modelKindNumber; ++i) {
+    for (int32 i = 0; i < g_modelKindNumber; ++i) {
         item[i] = g_modelTree[i]._item.c_str();
     }
-    for (int i = 0; i < g_modelKindNumber; ++i) {
+    for (int32 i = 0; i < g_modelKindNumber; ++i) {
         hCataItem = m_configureModeListTree.InsertItem(item[i], 1, 1, hRoot, TVI_LAST);
         list<string>::iterator iter;
         for (iter = g_modelList[i].begin(); iter != g_modelList[i].end(); ++iter) {
@@ -197,7 +197,7 @@ void ModelListConfigureDialog::OnEditDeleteSymbol() {
     CString parentItemText = m_configureModeListTree.GetItemText(parentItem);
     // delete from tree control
     m_configureModeListTree.DeleteItem(selectItem);
-    for (int i = 0; i < g_modelKindNumber; ++i) {
+    for (int32 i = 0; i < g_modelKindNumber; ++i) {
         if (parentItemText == g_modelTree[i]._item.c_str()) {
             list<string>::iterator iter = g_modelList[i].begin();
             while (iter != g_modelList[i].end()) {
@@ -235,7 +235,7 @@ void ModelListConfigureDialog::OnEditAddSymbol() {
     // 文件对话框标题,格式过滤器,默认路径
     CString l_title, l_filter, l_initialDir;
     CString l_tmp = "\\";
-    int l_symbolType = -1;
+    int32 l_symbolType = -1;
     if (selectItemText == g_modelTree[0]._item.c_str()) {
         l_symbolType = 0;
         l_title = "添加3DS模型";
@@ -273,7 +273,7 @@ void ModelListConfigureDialog::OnEditAddSymbol() {
     FileDialog.m_ofn.lpstrTitle = l_title;
     if ((FileDialog.DoModal() == IDOK) && (l_symbolType != -1)) {
         file = FileDialog.GetFileName();
-        int index = file.Find('.');
+        int32 index = file.Find('.');
         CString ret = file.Left(index);
         list<string>::iterator iter = g_modelList[l_symbolType].begin();
         while (iter != g_modelList[l_symbolType].end()) {
@@ -316,7 +316,7 @@ void ModelListConfigureDialog::OnTvnSelchangedTreeCongigureModellist(NMHDR* pNMH
     CString parentItemText = m_configureModeListTree.GetItemText(parentItem);
     CString imgPathAndName;
     CString tmp = "\\";
-    for (int i = 0; i < g_modelKindNumber; ++i) {
+    for (int32 i = 0; i < g_modelKindNumber; ++i) {
         if (parentItemText == g_modelTree[i]._item.c_str()) {
             if (0 == i) {
                 imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._3DSFolder.c_str() + tmp + selectItemText + ".bmp";

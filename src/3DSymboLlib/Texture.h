@@ -1,4 +1,6 @@
-﻿#if !defined(AFX_CTexture_H__A7C41EA3_DB80_49DA_9A84_72E6251F9A21__INCLUDED_)
+﻿#include "define.h"
+
+#if !defined(AFX_CTexture_H__A7C41EA3_DB80_49DA_9A84_72E6251F9A21__INCLUDED_)
 #define AFX_CTexture_H__A7C41EA3_DB80_49DA_9A84_72E6251F9A21__INCLUDED_
 
 
@@ -8,7 +10,7 @@
         inline GLint GetTxtID() {
             return m_nTxt;
         }
-        int LoadGLTextures(char* Filename);
+        int32 LoadGLTextures(char* Filename);
         CTexture() {
             m_nTxt = -1;
         }

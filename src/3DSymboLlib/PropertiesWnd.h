@@ -1,5 +1,6 @@
 ﻿
 #pragma once
+#include "define.h"
 
 class CPropertiesToolBar : public CMFCToolBar {
   public:
@@ -37,8 +38,8 @@ class CPropertiesWnd : public CDockablePane {
     virtual ~CPropertiesWnd();
 
   protected:
-    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg int32 OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnSize(UINT nType, int32 cx, int32 cy);
     afx_msg void OnExpandAllProperties();
     afx_msg void OnUpdateExpandAllProperties(CCmdUI* pCmdUI);
     afx_msg void OnSortProperties();

@@ -42,7 +42,7 @@ BOOL CRockClassification::OnInitDialog() {
     CString topItem = "岩石分类";
     CString RockType[3] = {"岩浆岩", "沉积岩", "变质岩"};
     hRoot = m_Rock_Tree_List.InsertItem(topItem, 0, 0);
-    for (int i = 0; i < 3; ++i) {
+    for (int32 i = 0; i < 3; ++i) {
         hCataItem = m_Rock_Tree_List.InsertItem(RockType[i], 1, 1, hRoot, TVI_LAST);
         m_Dir = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i];
         if (1) {
@@ -51,8 +51,8 @@ BOOL CRockClassification::OnInitDialog() {
             char* dir = new char[m_Dir.GetLength() + strlen("\\*.BMP")];
             sprintf(dir, m_Dir + "\\*.BMP");  // NOLINT
             
-            long lfDir;
-            int fileNum = 0;
+            int64 lfDir;
+            int32 fileNum = 0;
             // 搜索与指定的文件名称匹配的第一个实例，若成功则返回第一个实例的句柄，否则返回-1L
             if ((lfDir = _findfirst(dir, &fileDir)) == -1l)
                 printf("No file is found\n");
@@ -104,7 +104,7 @@ void CRockClassification::OnSelchangedTreeRockList(NMHDR* pNMHDR, LRESULT* pResu
     CString RockType[3] = {"岩浆岩", "沉积岩", "变质岩"};
     CString imgPathAndName;
     CString tmp = "\\";
-    for (int i = 0; i < 3; ++i) {
+    for (int32 i = 0; i < 3; ++i) {
         if (parentItemText == RockType[i]) {
             imgPathAndName = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i] + tmp + selectItemText;
             // MessageBox(imgPathAndName,"");

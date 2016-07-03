@@ -13,6 +13,7 @@
 #include "GlobalVariable.h"
 
 #include "ProjectFileSetting.h"
+#include "define.h"
 
 // 读写配置文件Buffer大小
 #define MAX_SIZE 256
@@ -30,7 +31,7 @@ class CMy3DSymbolLibNewApp : public CWinAppEx {
   // 重写
   public:
     virtual BOOL InitInstance();
-    virtual int ExitInstance();
+    virtual int32 ExitInstance();
 
     // 实现
     UINT  m_nAppLook;

@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "define.h"
 
 // CAddPointDlg 对话框
 

@@ -2,6 +2,7 @@
 #define DIALOG_MODEL_LIST_H
 
 #include "afxcmn.h"
+#include "define.h"
 
 #define  THUMBNAIL_WIDTH 50
 #define  THUMBNAIL_HEIGHT 50

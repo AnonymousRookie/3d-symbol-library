@@ -13,7 +13,7 @@
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
 
-const int  iMaxUserToolbars = 10;
+const int32  iMaxUserToolbars = 10;
 const UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
 const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
@@ -50,7 +50,7 @@ CMainFrame::CMainFrame() {
 CMainFrame::~CMainFrame() {
 }
 
-int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+int32 CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     if (CFrameWndEx::OnCreate(lpCreateStruct) == -1)
         return -1;
     BOOL bNameValid;
@@ -334,7 +334,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
     CString strCustomize;
     bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
     ASSERT(bNameValid);
-    for (int i = 0; i < iMaxUserToolbars; i ++) {
+    for (int32 i = 0; i < iMaxUserToolbars; i ++) {
         CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);
         if (pUserToolbar != NULL) {
             pUserToolbar->EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
@@ -349,6 +349,6 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 }
 
 // 根据索引在状态栏上显示相关信息
-void CMainFrame::Set_BarText(int index, CString strText) {
+void CMainFrame::Set_BarText(int32 index, CString strText) {
     m_wndStatusBar.SetPaneText(index, strText);
 }

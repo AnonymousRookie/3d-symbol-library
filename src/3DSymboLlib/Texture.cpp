@@ -2,7 +2,7 @@
 #include  "texture.h"
 
 // 从BMP文件创建纹理,并返回纹理ID号
-int CTexture::LoadGLTextures(char* Filename) {
+int32 CTexture::LoadGLTextures(char* Filename) {
     AUX_RGBImageRec* pImage = NULL;
     FILE* pFile = NULL;  // 文件句柄
     if (!Filename) {  // 确保文件名已提供。
@@ -68,7 +68,9 @@ bool CTexture::MakeTextureBind(char* TextureFileName, bool bLinear, bool bMip) {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, Image->sizeX, Image->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, Image->data);
             }
         }
-    } else status = false;
+    } else {
+        status = false;
+    }
     if (Image) {
         if (Image->data) delete Image->data;
         delete Image;
@@ -136,7 +138,7 @@ bool CTexture::MakeAlphaTextureBind(char* TextureFileName) {
     unsigned char* alpha = NULL;
     if (Image = auxDIBImageLoad(TextureFileName)) {
         alpha = new unsigned char[4 * Image->sizeX * Image->sizeY];
-        for (int a = 0; a < Image->sizeX * Image->sizeY; a++) {
+        for (int32 a = 0; a < Image->sizeX * Image->sizeY; a++) {
             alpha[4 * a] = Image->data[a * 3];
             alpha[4 * a + 1] = Image->data[a * 3 + 1];
             alpha[4 * a + 2] = Image->data[a * 3 + 2];
@@ -149,7 +151,9 @@ bool CTexture::MakeAlphaTextureBind(char* TextureFileName) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA8, Image->sizeX, Image->sizeY, GL_RGBA, GL_UNSIGNED_BYTE, alpha);
         delete [] alpha;
-    } else status = false;
+    } else {
+        status = false;
+    }
     if (Image) {
         if (Image->data) delete Image->data;
         delete Image;
@@ -163,7 +167,7 @@ bool CTexture::MakeAlphaTextureBind(char* TextureFileName, char* AlphaFileName) 
     unsigned char* alpha = NULL;
     if (Image = auxDIBImageLoad(TextureFileName)) {
         alpha = new unsigned char[4 * Image->sizeX * Image->sizeY];
-        for (int a = 0; a < Image->sizeX * Image->sizeY; a++) {
+        for (int32 a = 0; a < Image->sizeX * Image->sizeY; a++) {
             alpha[4 * a] = Image->data[a * 3];
             alpha[4 * a + 1] = Image->data[a * 3 + 1];
             alpha[4 * a + 2] = Image->data[a * 3 + 2];
@@ -174,7 +178,7 @@ bool CTexture::MakeAlphaTextureBind(char* TextureFileName, char* AlphaFileName) 
             return false;
         fseek(file, 54, SEEK_SET);
         unsigned char temp[3];
-        for (int a = 0; a < Image->sizeX * Image->sizeY; a++) {
+        for (int32 a = 0; a < Image->sizeX * Image->sizeY; a++) {
             fread(temp, sizeof(unsigned char), 3, file);
             alpha[4 * a + 3] = (temp[0] > temp[1]) ? temp[0] : temp[1];
             if (temp[2] > alpha[4 * a + 3])alpha[4 * a + 3] = temp[2];
@@ -187,7 +191,9 @@ bool CTexture::MakeAlphaTextureBind(char* TextureFileName, char* AlphaFileName) 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA8, Image->sizeX, Image->sizeY, GL_RGBA, GL_UNSIGNED_BYTE, alpha);
         delete [] alpha;
-    } else status = false;
+    } else {
+        status = false;
+    }
     if (Image) {
         if (Image->data) delete Image->data;
         delete Image;
@@ -204,14 +210,14 @@ bool  CTexture::MakeScreenTextureBind() {
     } else {
         GLint Viewport[4];
         glGetIntegerv(GL_VIEWPORT, Viewport);
-        int newWidth = 128;
+        int32 newWidth = 128;
         unsigned char* pData = new unsigned char[newWidth * newWidth * 3 + 6];
-        int sx, sy;
+        int32 sx, sy;
         unsigned char temp[6];
-        for (int y = 0; y < newWidth; y++)
-            for (int x = 0; x < newWidth; x++) {
-                sx = static_cast<int>(static_cast<float>(x * Viewport[2]) / newWidth);
-                sy = static_cast<int>(static_cast<float>(y * Viewport[3]) / newWidth);
+        for (int32 y = 0; y < newWidth; y++)
+            for (int32 x = 0; x < newWidth; x++) {
+                sx = static_cast<int32>(static_cast<float>(x * Viewport[2]) / newWidth);
+                sy = static_cast<int32>(static_cast<float>(y * Viewport[3]) / newWidth);
                 glReadPixels(sx, sy, 1, 1,
                              GL_RGB, GL_UNSIGNED_BYTE, temp);
                 pData[y * newWidth * 3 + x * 3 + 0] = unsigned char(temp[0] * 0.8f);
@@ -276,7 +282,7 @@ bool CTexture::LoadTGA(char* filename) {
         fclose(file);
         return FALSE;
     }
-    for (GLuint i = 0; i < static_cast<int>(imageSize); i += bytesPerPixel) {
+    for (GLuint i = 0; i < static_cast<int32>(imageSize); i += bytesPerPixel) {
         temp = texture->imageData[i];
         texture->imageData[i] = texture->imageData[i + 2];
         texture->imageData[i + 2] = temp;

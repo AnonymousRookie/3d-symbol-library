@@ -15,12 +15,12 @@
 
 
 #pragma once
-
+#include "define.h"
 
 
 const double INFINITY = 1e10;
 const double ESP = 1e-5;
-const int MAX_N = 1000;
+const int32 MAX_N = 1000;
 
 struct PPR_Point {
     PPR_Point() {}
@@ -52,7 +52,7 @@ class CPointPolygonRelationship {
     // 判断线段相交
     bool Intersect(LineSegment L1, LineSegment L2);
     // 判断点在多边形内
-    int InPolygon(const PPR_Polygon& polygon, PPR_Point point);
+    int32 InPolygon(const PPR_Polygon& polygon, PPR_Point point);
 
 
 
@@ -61,7 +61,7 @@ class CPointPolygonRelationship {
 
 
     // 求2线段的交点 ========================================================
-    int sgn(double x) {
+    int32 sgn(double x) {
         return x < -ESP ? -1 : (x > ESP);
     }
 

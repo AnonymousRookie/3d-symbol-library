@@ -162,6 +162,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\C3DModelParamSet.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\CameraParamSet.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\ClassView.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\define.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\DesingScheme.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\DialogModelList.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\FileView.h" />

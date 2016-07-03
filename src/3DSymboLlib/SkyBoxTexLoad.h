@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "define.h"
 
 // CSkyBoxTexLoad 对话框
 

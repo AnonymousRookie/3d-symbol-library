@@ -25,7 +25,7 @@ double CDesingScheme::GetDistenceXY(double x1, double y1, double x2, double y2) 
 /************************************************************************/
 /* Function: 根据前一个点计算边坡模型                                       */
 /************************************************************************/
-void CDesingScheme::Get3DLineModel(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo, CString strJDstyle, CString strJDstyleNext, long index, double mLC) {
+void CDesingScheme::Get3DLineModel(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo, CString strJDstyle, CString strJDstyleNext, int64 index, double mLC) {
     float mangle;
     float dx = x2 - x1;
     float dz = z2 - z1;
@@ -88,7 +88,7 @@ void CDesingScheme::Get3DLineModel(double x1, double y1, double z1, double x2, d
 /************************************************************************/
 /* Function: 根据后一个点计算边坡模型                                       */
 /************************************************************************/
-void CDesingScheme::Get3DLineModelLast(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo, CString strJDstyle, CString strJDstyleNext, long index, double mLC) {
+void CDesingScheme::Get3DLineModelLast(double x1, double y1, double z1, double x2, double y2, double z2, float fRailwayWidth, float LjWidth, float h_FromGmToLj, float mWidthGuiMianToLujian, float mAngleLujinaToBianPo, CString strJDstyle, CString strJDstyleNext, int64 index, double mLC) {
     float mangle;
     float dx = x2 - x1;
     float dz = z2 - z1;
@@ -271,7 +271,7 @@ void CDesingScheme::CalculateCurveData() {
         pTempCurveElements->HZ_xy->y = pTempCurveElements->y;
         float dertE, dertN;
         float fwj, fwj2;
-        long i;
+        int64 i;
         /*
         N
         |
@@ -369,7 +369,7 @@ void CDesingScheme::CalculateCurveData() {
             double ptx, pty;
             float LL;
             float L0 =  JDCurveElements.GetAt(i + 1)->L0;
-            long R   =  JDCurveElements.GetAt(i + 1)->R;
+            int64 R   =  JDCurveElements.GetAt(i + 1)->R;
             LL       =  JDCurveElements.GetAt(i + 1)->HY - JDCurveElements.GetAt(i + 1)->ZH;
             // (ptx,pty)在缓和曲线上
             ptx = LL - LL * LL * LL * LL * LL / (40.0 * R * R * L0 * L0) + LL * LL * LL * LL * LL * LL * LL * LL * LL / (3456.0 * R * R * R * R * L0 * L0 * L0 * L0);
@@ -457,12 +457,12 @@ float CDesingScheme::GetDistenceXYZ(double x1, double y1, double z1, double x2, 
 /* Function: 在交点间内插点并保存到数组中,供程序调用                        */
 /************************************************************************/
 void CDesingScheme::Save3DlineZX() {
-    int mNCDistence = 4;
+    int32 mNCDistence = 4;
     double x1, y1, z1, x2, y2, z2, x3, y3, z3;
     float ZH_h, HZ_h;
     CString m_strPtStyle;
     PCordinate ppt;
-    for (long i = 0; i < JDCurveElements.GetSize(); i++) {
+    for (int64 i = 0; i < JDCurveElements.GetSize(); i++) {
         if (i == 0 || i == JDCurveElements.GetSize() - 1) {
             ppt = new Cordinate;
             ppt->x = PtS_JD.GetAt(i)->x;
@@ -640,7 +640,7 @@ void CDesingScheme::NeiChaDian(float ZHLength, double x1, double y1, double z1, 
     inputArr[2][1] = y2;
     float outPutArr[3] = {0};  // 系数
     float h;
-    int m_XX;
+    int32 m_XX;
     double x, z;
     float dx, dz;
     float mangle;
@@ -792,7 +792,7 @@ void CDesingScheme::NeiChaDian(float ZHLength, double x1, double y1, double z1, 
 /************************************************************************/
 /* Function: 计算[缓和曲线段]上点的坐标                                 */
 /************************************************************************/
-void CDesingScheme::GetQLXY(float L0, long R, int RoateStyle, float LL, float fwj, double ZH_xy_x, double ZH_xy_y, double HZ_xy_x, double HZ_xy_y, double* xc, double* yc, int Q_H_L) {
+void CDesingScheme::GetQLXY(float L0, int64 R, int32 RoateStyle, float LL, float fwj, double ZH_xy_x, double ZH_xy_y, double HZ_xy_x, double HZ_xy_y, double* xc, double* yc, int32 Q_H_L) {
     double ptx, pty;
     ptx = LL - LL * LL * LL * LL * LL / (40.0 * R * R * L0 * L0) + LL * LL * LL * LL * LL * LL * LL * LL * LL / (3456.0 * R * R * R * R * L0 * L0 * L0 * L0);
     pty = LL * LL * LL / (6.0 * R * L0) * (1 - LL * LL * LL * LL / (56.0 * R * R * L0 * L0) + LL * LL * LL * LL * LL * LL * LL * LL / (7040.0 * R * R * R * R * L0 * L0 * L0 * L0));
@@ -822,7 +822,7 @@ void CDesingScheme::GetQLXY(float L0, long R, int RoateStyle, float LL, float fw
 /************************************************************************/
 /* Function: 计算[圆曲线]上点的坐标                                     */
 /************************************************************************/
-void CDesingScheme::GetYQXXY(double centerx, double centery, long R, int RoateStyle, float LL, float alfa, double HY_xy_x, double HY_xy_y, double YH_xy_x, double YH_xy_y, double* xc, double* yc) {
+void CDesingScheme::GetYQXXY(double centerx, double centery, int64 R, int32 RoateStyle, float LL, float alfa, double HY_xy_x, double HY_xy_y, double YH_xy_x, double YH_xy_y, double* xc, double* yc) {
     double dx, dy;
     dx = HY_xy_x - centerx;
     dy = HY_xy_y - centery;
@@ -851,7 +851,7 @@ void CDesingScheme::GetYQXXY(double centerx, double centery, long R, int RoateSt
 /* Function:  计算边坡与在面的交点坐标                                      */
 /************************************************************************/
 void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y2, double z2, \
-                            float L, float h0, double x0, double z0, int TW, int LeftRight, \
+                            float L, float h0, double x0, double z0, int32 TW, int32 LeftRight, \
                             double tx0, double ty0, double tz0, double tx1, double ty1, double tz1, double mLC, CString strJDstyle) {
     double x11, y11, z11, x12, y12, z12;
     double x21, y21, z21, x22, y22, z22;
@@ -876,9 +876,13 @@ void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y
         /*                              一级边坡                                 */
         /************************************************************************/
         // 点1
-        ptt->HuPo_L[0].Hp[0].x = tx0; /**/ ptt->HuPo_L[0].Hp[0].y = ty0;  /**/ ptt->HuPo_L[0].Hp[0].z = tz0;
+        ptt->HuPo_L[0].Hp[0].x = tx0;
+        ptt->HuPo_L[0].Hp[0].y = ty0;
+        ptt->HuPo_L[0].Hp[0].z = tz0;
         // 点2
-        ptt->HuPo_L[0].Hp[1].x = tx1; /**/ ptt->HuPo_L[0].Hp[1].y = ty1;  /**/ ptt->HuPo_L[0].Hp[1].z = tz1;
+        ptt->HuPo_L[0].Hp[1].x = tx1;
+        ptt->HuPo_L[0].Hp[1].y = ty1;
+        ptt->HuPo_L[0].Hp[1].z = tz1;
         // 点3
         L1 = L + Lt_h1 * Lt_m1;
         Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
@@ -935,7 +939,7 @@ void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y
         ptt->HuPo_L[2].b = Lt_b;
         ptt->HuPo_L[2].style = 2;
         PtS_HuPo.Add(ptt);
-        long MN = PtS_HuPo.GetSize() - 1;
+        int64 MN = PtS_HuPo.GetSize() - 1;
         PtS_HuPo.GetAt(MN)->TW_left = TW;
         PtS_HuPo.GetAt(MN)->Lc = mLC;
         PtS_HuPo.GetAt(MN)->strJDStyle = strJDstyle;
@@ -947,9 +951,13 @@ void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y
         /*                              一级边坡                                 */
         /************************************************************************/
         // 点1
-        ptt->HuPo_R[0].Hp[0].x = tx0; /**/ ptt->HuPo_R[0].Hp[0].y = ty0;  /**/ ptt->HuPo_R[0].Hp[0].z = tz0;
+        ptt->HuPo_R[0].Hp[0].x = tx0;
+        ptt->HuPo_R[0].Hp[0].y = ty0;
+        ptt->HuPo_R[0].Hp[0].z = tz0;
         // 点2
-        ptt->HuPo_R[0].Hp[1].x = tx1; /**/ ptt->HuPo_R[0].Hp[1].y = ty1;  /**/ ptt->HuPo_R[0].Hp[1].z = tz1;
+        ptt->HuPo_R[0].Hp[1].x = tx1;
+        ptt->HuPo_R[0].Hp[1].y = ty1;
+        ptt->HuPo_R[0].Hp[1].z = tz1;
         // 点3
         L1 = L + Lt_h1 * Lt_m1;
         Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
@@ -1005,7 +1013,7 @@ void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y
         ptt->HuPo_R[2].m     = Lt_m3;
         ptt->HuPo_R[2].b = Lt_b;
         ptt->HuPo_R[2].style = 2;
-        long MN = PtS_HuPo.GetSize() - 1;
+        int64 MN = PtS_HuPo.GetSize() - 1;
         PtS_HuPo.GetAt(MN)->TW_right = TW;
     }  // End 右侧边坡
     // ----------------------------------------------------------
@@ -1017,7 +1025,7 @@ void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y
 /* Function: 计算终点处边坡与面的交点坐标                                   */
 /************************************************************************/
 void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, double y2, double z2, \
-                                float L, float h0, double x0, double z0, int TW, int LeftRight, \
+                                float L, float h0, double x0, double z0, int32 TW, int32 LeftRight, \
                                 double tx0, double ty0, double tz0, double tx1, double ty1, double tz1, double mLC, CString strJDstyle) {
     double x11, y11, z11, x12, y12, z12;
     double x21, y21, z21, x22, y22, z22;
@@ -1052,7 +1060,9 @@ void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, doub
         ptt->HuPo_L[0].Hp[2].y = y21 - m_Lj_Dh - Lt_h1;
         ptt->HuPo_L[0].Hp[2].z = z21;
         // 一级护坡的高度、边坡坡率、边坡类型
-        ptt->HuPo_L[0].h = Lt_h1; /**/ ptt->HuPo_L[0].m = Lt_m1; /**/ ptt->HuPo_L[0].style = 0;
+        ptt->HuPo_L[0].h = Lt_h1;
+        ptt->HuPo_L[0].m = Lt_m1;
+        ptt->HuPo_L[0].style = 0;
         /************************************************************************/
         /*                              二级边坡                                 */
         /************************************************************************/
@@ -1101,7 +1111,7 @@ void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, doub
         ptt->HuPo_L[2].b = Lt_b;
         ptt->HuPo_L[2].style = 2;
         PtS_HuPo.Add(ptt);
-        long MN = PtS_HuPo.GetSize() - 1;
+        int64 MN = PtS_HuPo.GetSize() - 1;
         PtS_HuPo.GetAt(MN)->TW_left = TW;
         PtS_HuPo.GetAt(MN)->Lc = mLC;
         PtS_HuPo.GetAt(MN)->strJDStyle = strJDstyle;
@@ -1113,9 +1123,13 @@ void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, doub
         /*                              一级边坡                                 */
         /************************************************************************/
         // 点1
-        ptt->HuPo_R[0].Hp[0].x = tx0; /**/ ptt->HuPo_R[0].Hp[0].y = ty0;  /**/ ptt->HuPo_R[0].Hp[0].z = tz0;
+        ptt->HuPo_R[0].Hp[0].x = tx0;
+        ptt->HuPo_R[0].Hp[0].y = ty0;
+        ptt->HuPo_R[0].Hp[0].z = tz0;
         // 点2
-        ptt->HuPo_R[0].Hp[1].x = tx1; /**/ ptt->HuPo_R[0].Hp[1].y = ty1;  /**/ ptt->HuPo_R[0].Hp[1].z = tz1;
+        ptt->HuPo_R[0].Hp[1].x = tx1;
+        ptt->HuPo_R[0].Hp[1].y = ty1;
+        ptt->HuPo_R[0].Hp[1].z = tz1;
         // 点3
         L1 = L + Lt_h1 * Lt_m1;
         Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
@@ -1171,7 +1185,7 @@ void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, doub
         ptt->HuPo_R[2].m     = Lt_m3;
         ptt->HuPo_R[2].b = Lt_b;
         ptt->HuPo_R[2].style = 2;
-        long MN = PtS_HuPo.GetSize() - 1;
+        int64 MN = PtS_HuPo.GetSize() - 1;
         PtS_HuPo.GetAt(MN)->TW_right = TW;
     }  // End 右侧边坡
     // ----------------------------------------------------------
@@ -1183,7 +1197,7 @@ void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, doub
 /************************************************************************/
 /* Function:  计算边坡点与地面线的交点坐标                                  */
 /************************************************************************/
-void CDesingScheme::GetBpJD(float H0, float Afla, float mangle, double x0, double z0, int bsignTW, int mLeftRight, double* tx, double* ty, double* tz) {
+void CDesingScheme::GetBpJD(float H0, float Afla, float mangle, double x0, double z0, int32 bsignTW, int32 mLeftRight, double* tx, double* ty, double* tz) {
     double xx, zz;
     float L = 0.1;
     float h1 = -999;
@@ -1220,7 +1234,7 @@ void CDesingScheme::GetBpJD(float H0, float Afla, float mangle, double x0, doubl
     }
 }
 
-float CDesingScheme::GetH(float L, float Afla, float mAngle, double x0, double z0, int mLeftRight, double* xx, double* zz) {
+float CDesingScheme::GetH(float L, float Afla, float mAngle, double x0, double z0, int32 mLeftRight, double* xx, double* zz) {
     double x, z;
     float peita;
     if (mAngle >= 0 && mAngle <= PAI / 2.0) {
@@ -1249,18 +1263,18 @@ float CDesingScheme::GetH(float L, float Afla, float mAngle, double x0, double z
 float CDesingScheme::GetHeightValue(float x, float z) {
     float CameraX = x / MAP_SCALE;                  // 计算在哪一列
     float CameraZ = -z / MAP_SCALE;                     // 计算在哪一行
-    int Col0 = static_cast<int>(CameraX);                        // 块的列号
-    int Row0 = static_cast<int>(CameraZ);                        // 块的行号
-    int Col1 = Col0 + 1;                            // 相邻列
-    int Row1 = Row0 + 1;                            // 相邻块
+    int32 Col0 = static_cast<int32>(CameraX);                        // 块的列号
+    int32 Row0 = static_cast<int32>(CameraZ);                        // 块的行号
+    int32 Col1 = Col0 + 1;                            // 相邻列
+    int32 Row1 = Row0 + 1;                            // 相邻块
     if (Col1 > MAP_W)   Col1 = 0;                   // 相邻列大于地块数，取首列
     if (Row1 > MAP_W)   Row1 = 0;                   // 相邻行大于地块数，取首行
     float h00 = g_terrain[Col0 + Row0 * MAP_W][1];  // 获取块四角的高度
     float h01 = g_terrain[Col1 + Row0 * MAP_W][1];
     float h11 = g_terrain[Col1 + Row1 * MAP_W][1];
     float h10 = g_terrain[Col0 + Row1 * MAP_W][1];
-    float tx = CameraX - static_cast<int>(CameraX);              // 求块内X偏移位置
-    float ty = CameraZ - static_cast<int>(CameraZ);              // 求块内Z偏移位置
+    float tx = CameraX - static_cast<int32>(CameraX);              // 求块内X偏移位置
+    float ty = CameraZ - static_cast<int32>(CameraZ);              // 求块内Z偏移位置
     float txty = tx * ty;                           // 以下为双线性插值（内插）计算
     // 返回插值计算值，为所求点的高度
     return h00 * (1.0f - ty - tx + txty) + h01 * (tx - txty) + h11 * txty + h10 * (ty - txty);
@@ -1270,8 +1284,8 @@ float CDesingScheme::GetHeightValue(float x, float z) {
 /************************************************************************/
 /* Function: 计算边坡的填挖类型                                         */
 /************************************************************************/
-int CDesingScheme::GetTW(double x, double z, float H) {
-    int mTW;
+int32 CDesingScheme::GetTW(double x, double z, float H) {
+    int32 mTW;
     double tx1 = x;
     double ty1 = -z;
     float mh = GetHeightValue(tx1, ty1);
@@ -1292,9 +1306,9 @@ void CDesingScheme::CalculateFillFacePoints(vector<Railway3DCordinate>& rcVector
     Railway3DCordinate rc2;  // 面2
     Railway3DCordinate rc1;  // 面1
     //1------------------------------------------------------------
-    int a = PtS_Railway3D.GetSize();
-    int railway3D_bIndex = 0;
-    int railway3D_eIndex = a - 1;
+    int32 a = PtS_Railway3D.GetSize();
+    int32 railway3D_bIndex = 0;
+    int32 railway3D_eIndex = a - 1;
     rc1.x1 = PtS_Railway3D[railway3D_bIndex]->x1;
     rc1.y1 = PtS_Railway3D[railway3D_bIndex]->y1;
     rc1.z1 = PtS_Railway3D[railway3D_bIndex]->z1;
@@ -1310,9 +1324,9 @@ void CDesingScheme::CalculateFillFacePoints(vector<Railway3DCordinate>& rcVector
     rc2.z2 = PtS_Railway3D[railway3D_eIndex]->z2;
     rcVector2.push_back(rc2);
     //2------------------------------------------------------------
-    int b = PtS_RailwayLj3D.GetSize();
-    int railwayLj3D_bIndex = 0;
-    int railwayLj3D_eIndex = b - 1;
+    int32 b = PtS_RailwayLj3D.GetSize();
+    int32 railwayLj3D_bIndex = 0;
+    int32 railwayLj3D_eIndex = b - 1;
     rc1.x1 = PtS_RailwayLj3D[railwayLj3D_bIndex]->x1;
     rc1.y1 = PtS_RailwayLj3D[railwayLj3D_bIndex]->y1;
     rc1.z1 = PtS_RailwayLj3D[railwayLj3D_bIndex]->z1;
@@ -1328,9 +1342,9 @@ void CDesingScheme::CalculateFillFacePoints(vector<Railway3DCordinate>& rcVector
     rc2.z2 = PtS_RailwayLj3D[railwayLj3D_eIndex]->z2;
     rcVector2.push_back(rc2);
     //3------------------------------------------------------------
-    int c = PtS_RailwayLjToBP3D.GetSize();
-    int railwayLjToBP3D_bIndex = 0;
-    int railwayLjToBP3D_eIndex = b - 1;
+    int32 c = PtS_RailwayLjToBP3D.GetSize();
+    int32 railwayLjToBP3D_bIndex = 0;
+    int32 railwayLjToBP3D_eIndex = b - 1;
     rc1.x1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->x1;
     rc1.y1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->y1;
     rc1.z1 = PtS_RailwayLjToBP3D[railwayLjToBP3D_bIndex]->z1;
@@ -1347,10 +1361,10 @@ void CDesingScheme::CalculateFillFacePoints(vector<Railway3DCordinate>& rcVector
     rcVector2.push_back(rc2);
     //------------------------------------------------------------
     // 护坡计算断面各点
-    int d = PtS_HuPo.GetSize();
-    int hp_bIndex = 0;
-    int hp_eInde = d - 1;
-    int i, j;
+    int32 d = PtS_HuPo.GetSize();
+    int32 hp_bIndex = 0;
+    int32 hp_eInde = d - 1;
+    int32 i, j;
     // 面1-------------------------------------------------------
     for (i = 1; i < 3; ++i) {
         if (i < 2) {

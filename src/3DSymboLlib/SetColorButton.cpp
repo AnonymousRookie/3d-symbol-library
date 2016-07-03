@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
 #include "SetColorButton.h"
 
-// static const int nImageHorzMargin = 8;
+// static const int32 nImageHorzMargin = 8;
 // CSetColorButton
 
 IMPLEMENT_DYNAMIC(CSetColorButton, CMFCColorButton)

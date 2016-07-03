@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "define.h"
 
 // TerrainImportContour 对话框
 

@@ -1,6 +1,8 @@
 ﻿#ifndef _3DMATH_H
 #define _3DMATH_H
 
+#include "define.h"
+
 #define PI 3.1415926535897932
 
 // 定义2D点类，用于保存模型的UV纹理坐标
@@ -100,22 +102,22 @@ double AngleBetweenVectors(CVector3 Vector1, CVector3 Vector2);
 CVector3 IntersectionPoint(CVector3 vNormal, CVector3 vLine[], double distance);
 
 
-bool InsidePolygon(CVector3 vIntersection, CVector3 Poly[], long verticeCount);
+bool InsidePolygon(CVector3 vIntersection, CVector3 Poly[], int64 verticeCount);
 
 
-bool IntersectedPolygon(CVector3 vPoly[], CVector3 vLine[], int verticeCount);
+bool IntersectedPolygon(CVector3 vPoly[], CVector3 vLine[], int32 verticeCount);
 
 
-int ClassifySphere(CVector3& vCenter,
+int32 ClassifySphere(CVector3& vCenter,
                    CVector3& vNormal, CVector3& vPoint, float radius, float& distance);
 
 
 
 
-bool EdgeSphereCollision(const CVector3& vCenter, CVector3 vPolygon[], int vertexCount, float radius);
+bool EdgeSphereCollision(const CVector3& vCenter, CVector3 vPolygon[], int32 vertexCount, float radius);
 
 
-bool SpherePolygonCollision(CVector3 vPolygon[], const CVector3& vCenter, int vertexCount, float radius);
+bool SpherePolygonCollision(CVector3 vPolygon[], const CVector3& vCenter, int32 vertexCount, float radius);
 
 
 

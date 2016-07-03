@@ -16,8 +16,8 @@ CLeastSquares::~CLeastSquares(void) {
     // Empty
 }
 
-float  CLeastSquares::pow_n(float a, int n) {
-    int i;
+float  CLeastSquares::pow_n(float a, int32 n) {
+    int32 i;
     if (n == 0)
         return (1);
     float res = a;
@@ -29,7 +29,7 @@ float  CLeastSquares::pow_n(float a, int n) {
 
 void CLeastSquares::mutiple(float a[][L_N], float b[][L_T + 1], float c[][L_T + 1]) {
     float res = 0;
-    int i, j, k;
+    int32 i, j, k;
     for (i = 0; i < L_T + 1; i++)
         for (j = 0; j < L_T + 1; j++) {
             res = 0;
@@ -41,7 +41,7 @@ void CLeastSquares::mutiple(float a[][L_N], float b[][L_T + 1], float c[][L_T + 
 }
 
 void CLeastSquares::matrix_trans(float a[][L_T + 1], float b[][L_N]) {
-    int i, j;
+    int32 i, j;
     for (i = 0; i < L_N; i++) {
         for (j = 0; j < L_T + 1; j++) {
             b[j][i] = a[i][j];
@@ -49,8 +49,8 @@ void CLeastSquares::matrix_trans(float a[][L_T + 1], float b[][L_N]) {
     }
 }
 
-void CLeastSquares::init(float x_y[][2], int n) {
-    int i;
+void CLeastSquares::init(float x_y[][2], int32 n) {
+    int32 i;
     printf("请输入%d个已知点：\n", L_N);
     for (i = 0; i < n; i++) {
         printf("(x%d y%d):", i, i);
@@ -58,8 +58,8 @@ void CLeastSquares::init(float x_y[][2], int n) {
     }
 }
 
-void CLeastSquares::get_A(float matrix_A[][L_T + 1], float x_y[][2], int n) {
-    int i, j;
+void CLeastSquares::get_A(float matrix_A[][L_T + 1], float x_y[][2], int32 n) {
+    int32 i, j;
     for (i = 0; i < L_N; i++) {
         for (j = 0; j < L_T + 1; j++) {
             matrix_A[i][j] = L_W * pow_n(x_y[i][0], j);
@@ -67,8 +67,8 @@ void CLeastSquares::get_A(float matrix_A[][L_T + 1], float x_y[][2], int n) {
     }
 }
 
-void CLeastSquares::print_array(float array[][L_T + 1], int n) {
-    int i, j;
+void CLeastSquares::print_array(float array[][L_T + 1], int32 n) {
+    int32 i, j;
     for (i = 0; i < n; i++) {
         for (j = 0; j < L_T + 1; j++) {
             printf("%-g      ", array[i][j]);
@@ -77,8 +77,8 @@ void CLeastSquares::print_array(float array[][L_T + 1], int n) {
     }
 }
 
-void CLeastSquares::convert(float argu[][L_T + 2], int n) {
-    int i, j, k, p, t;
+void CLeastSquares::convert(float argu[][L_T + 2], int32 n) {
+    int32 i, j, k, p, t;
     float rate, temp;
     for (i = 1; i < n; i++) {
         for (j = i; j < n; j++) {
@@ -106,8 +106,8 @@ void CLeastSquares::convert(float argu[][L_T + 2], int n) {
     }
 }
 
-void CLeastSquares::compute(float argu[][L_T + 2], int n, float root[]) {
-    int i, j;
+void CLeastSquares::compute(float argu[][L_T + 2], int32 n, float root[]) {
+    int32 i, j;
     float temp;
     for (i = n - 1; i >= 0; i--) {
         temp = argu[i][n];
@@ -118,8 +118,8 @@ void CLeastSquares::compute(float argu[][L_T + 2], int n, float root[]) {
     }
 }
 
-void CLeastSquares::get_y(float trans_A[][L_N], float x_y[][2], float y[], int n) {
-    int i, j;
+void CLeastSquares::get_y(float trans_A[][L_N], float x_y[][2], float y[], int32 n) {
+    int32 i, j;
     float temp;
     for (i = 0; i < n; i++) {
         temp = 0;
@@ -131,7 +131,7 @@ void CLeastSquares::get_y(float trans_A[][L_N], float x_y[][2], float y[], int n
 }
 
 void CLeastSquares::cons_formula(float coef_A[][L_T + 1], float y[], float coef_form[][L_T + 2]) {
-    int i, j;
+    int32 i, j;
     for (i = 0; i < L_T + 1; i++) {
         for (j = 0; j < L_T + 2; j++) {
             if (j == L_T + 1)
@@ -142,8 +142,8 @@ void CLeastSquares::cons_formula(float coef_A[][L_T + 1], float y[], float coef_
     }
 }
 
-void CLeastSquares::print_root(float a[], int n) {
-    int i, j;
+void CLeastSquares::print_root(float a[], int32 n) {
+    int32 i, j;
     printf("%d个点的%d次拟合的多项式系数为:\n", L_N, L_T);
     for (i = 0; i < n; i++) {
         printf("a[%d]=%g,", i + 1, a[i]);

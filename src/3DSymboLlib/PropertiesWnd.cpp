@@ -45,14 +45,14 @@ void CPropertiesWnd::AdjustLayout() {
     CRect rectClient, rectCombo;
     GetClientRect(rectClient);
     m_wndObjectCombo.GetWindowRect(&rectCombo);
-    int cyCmb = rectCombo.Size().cy;
-    int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
+    int32 cyCmb = rectCombo.Size().cy;
+    int32 cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
     m_wndObjectCombo.SetWindowPos(NULL, rectClient.left, rectClient.top, rectClient.Width(), 200, SWP_NOACTIVATE | SWP_NOZORDER);
     m_wndToolBar.SetWindowPos(NULL, rectClient.left, rectClient.top + cyCmb, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
     m_wndPropList.SetWindowPos(NULL, rectClient.left, rectClient.top + cyCmb + cyTlb, rectClient.Width(), rectClient.Height() - (cyCmb + cyTlb), SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+int32 CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     if (CDockablePane::OnCreate(lpCreateStruct) == -1)
         return -1;
     CRect rectDummy;
@@ -84,7 +84,7 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     return 0;
 }
 
-void CPropertiesWnd::OnSize(UINT nType, int cx, int cy) {
+void CPropertiesWnd::OnSize(UINT nType, int32 cx, int32 cy) {
     CDockablePane::OnSize(nType, cx, cy);
     AdjustLayout();
 }

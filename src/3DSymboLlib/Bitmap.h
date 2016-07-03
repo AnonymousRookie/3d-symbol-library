@@ -1,6 +1,7 @@
 ﻿#include <stdlib.h>
 #include <windows.h>
 #include <stdio.h>
+#include "define.h"
 
 #define BITMAP_ID   0x4D42    // the universal bitmap ID
 /*****************************************************************************
@@ -13,7 +14,7 @@ unsigned char* LoadBitmapFile(char* filename, BITMAPINFOHEADER* bitmapInfoHeader
     FILE* filePtr;                        // the file pointer
     BITMAPFILEHEADER  bitmapFileHeader;   // bitmap file header
     unsigned char*    bitmapImage;        // bitmap image data
-    unsigned int      imageIdx = 0;       // image index counter
+    uint32      imageIdx = 0;       // image index counter
     unsigned char     tempRGB;            // swap variable
     // open filename in "read binary" mode
     filePtr = fopen(filename, "rb");
@@ -69,7 +70,7 @@ unsigned char* LoadBitmapFileWithAlpha(char* filename, BITMAPINFOHEADER* bitmapI
     if (bitmapImage == NULL || bitmapWithAlpha == NULL)
         return NULL;
     // loop through the bitmap data
-    for (unsigned int src = 0, dst = 0; src < bitmapInfoHeader->biSizeImage; src += 3, dst += 4) {
+    for (uint32 src = 0, dst = 0; src < bitmapInfoHeader->biSizeImage; src += 3, dst += 4) {
         // if the pixel is black, set the alpha to 0. Otherwise, set it to 255.
         if (bitmapImage[src] == 0 && bitmapImage[src + 1] == 0 && bitmapImage[src + 2] == 0)
             bitmapWithAlpha[dst + 3] = 0;

@@ -73,7 +73,7 @@ void CAreaClassification::OnSelchangedTreeAreaList(NMHDR* pNMHDR, LRESULT* pResu
     CString RockType[1] = {"grassland"};
     CString imgPathAndName;
     CString tmp = "\\";
-    for (int i = 0; i < 1; ++i) {
+    for (int32 i = 0; i < 1; ++i) {
         if (parentItemText == RockType[i]) {
             imgPathAndName = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i] + tmp + selectItemText;
             // MessageBox(imgPathAndName,"");
@@ -116,7 +116,7 @@ BOOL CAreaClassification::OnInitDialog() {
     CString topItem = "AreaTexture";
     CString RockType[1] = {"grassland"};
     hRoot = m_Area_Texture_List.InsertItem(topItem, 0, 0);
-    for (int i = 0; i < 1; ++i) {
+    for (int32 i = 0; i < 1; ++i) {
         hCataItem = m_Area_Texture_List.InsertItem(RockType[i], 1, 1, hRoot, TVI_LAST);
         m_Dir = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i];
         if (1) {
@@ -124,8 +124,8 @@ BOOL CAreaClassification::OnInitDialog() {
             _finddata_t fileDir;
             char* dir = new char[m_Dir.GetLength() + strlen("\\*.BMP")];
             sprintf(dir, m_Dir + "\\*.BMP");  // NOLINT
-            long lfDir;
-            int fileNum = 0;
+            int64 lfDir;
+            int32 fileNum = 0;
             // 搜索与指定的文件名称匹配的第一个实例，若成功则返回第一个实例的句柄，否则返回-1L
             if ((lfDir = _findfirst(dir, &fileDir)) == -1l)
                 printf("No file is found\n");

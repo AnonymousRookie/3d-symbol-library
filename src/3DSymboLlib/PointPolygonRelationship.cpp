@@ -32,14 +32,14 @@ bool CPointPolygonRelationship::Intersect(LineSegment L1, LineSegment L2) {
            );
 }
 // 判断点在多边形内
-int CPointPolygonRelationship::InPolygon(const PPR_Polygon& polygon, PPR_Point point) {
-    int n = polygon.size();
-    int count = 0;
+int32 CPointPolygonRelationship::InPolygon(const PPR_Polygon& polygon, PPR_Point point) {
+    int32 n = polygon.size();
+    int32 count = 0;
     LineSegment line;
     line.pt1 = point;
     line.pt2.y = point.y;
     line.pt2.x = - INFINITY;
-    for (int i = 0; i < n; i++) {
+    for (int32 i = 0; i < n; i++) {
         // 得到多边形的一条边
         LineSegment side;
         side.pt1 = polygon[i];

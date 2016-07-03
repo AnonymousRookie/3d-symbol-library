@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "define.h"
 
 // CCameraParamSet 对话框
 

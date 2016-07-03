@@ -8,6 +8,8 @@
 #pragma once
 #endif  // _MSC_VER > 1000
 
+#include "define.h"
+
 class CGLFont {
   public:
     // 常规文字显示。 平面字符显示，不支持汉字
@@ -18,7 +20,7 @@ class CGLFont {
     void Printfc3d(CString strText, HFONT hFont, float z = 0.05f);
 
     // 平面汉字
-    void Printftext(int x, int y, LPCTSTR lpszText, HFONT hFont);
+    void Printftext(int32 x, int32 y, LPCTSTR lpszText, HFONT hFont);
     void Settext(float x, float y, CString str, HFONT Font, float r, float g, float b);
 
     CGLFont();

@@ -49,7 +49,7 @@
 
 #include <atlimage.h>
 
-
+#include "define.h"
 
 #include "DesingScheme.h"
 extern CDesingScheme myDesingScheme;
@@ -75,7 +75,7 @@ extern CDesingScheme myDesingScheme;
 
 
 
-#define MAP_W       32         // size of map along x-axis 32， 32*32地面方阵 
+#define MAP_W       32         // size of map aint64 x-axis 32， 32*32地面方阵 
 #define MAP_SCALE   24.0f      // the scale of the terrain map，边长为24
 #define MAP         MAP_W*MAP_SCALE/2
 #define PAI         3.1415926       // 定义π常量
@@ -86,11 +86,11 @@ extern CDesingScheme myDesingScheme;
 
 #ifdef _UNICODE
 #if defined _M_IX86
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #elif defined _M_X64
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #else
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
 #endif
 

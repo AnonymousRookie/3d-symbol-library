@@ -1,6 +1,8 @@
 ﻿#include "afxwin.h"
 #include "afxcolorbutton.h"
 #include "SetColorButton.h"
+#include "define.h"
+
 #if !defined(AFX_SPACESEARCHSET_H__EBD6DD48_1D05_44B1_BA52_C02F76596DE1__INCLUDED_)
 #define AFX_SPACESEARCHSET_H__EBD6DD48_1D05_44B1_BA52_C02F76596DE1__INCLUDED_
 
@@ -18,14 +20,14 @@ class CSpaceSearchSet : public CDialog {
   public:
     CSpaceSearchSet(CWnd* pParent = NULL);
 
-    int m_QueryColorR, m_QueryColorG, m_QueryColorB;
-    int m_QueryLineWidth;
+    int32 m_QueryColorR, m_QueryColorG, m_QueryColorB;
+    int32 m_QueryLineWidth;
     // Dialog Data
     // {{AFX_DATA(CSpaceSearchSet)
     enum { IDD = IDD_DIALOG_SPACESELECTSET };
     CComboBox   m_combolWidth;
-    int     m_shizxLength;
-    int     m_shuzxHeight;
+    int32     m_shizxLength;
+    int32     m_shuzxHeight;
     // }}AFX_DATA
 
 

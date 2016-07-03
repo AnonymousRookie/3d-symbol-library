@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "afxwin.h"
-
+#include "define.h"
 
 // C3DModelParamSet 对话框
 
@@ -47,24 +47,24 @@ class C3DModelParamSet : public CDialog {
     // radiu 旋转半径
     // angle 角度
     // scale 大小
-    int     xPos;
-    int     zPos;
+    int32     xPos;
+    int32     zPos;
     float   hPos;
     float   radiu;
-    int     angle;
+    int32     angle;
     float   scale;
     virtual BOOL OnInitDialog();
 
     CString m_strTitle;  // 对话框标题
 
     // 模型绕 X 轴旋转角度
-    int iRotateX;
+    int32 iRotateX;
     // 模型绕Y轴旋转角度
-    int iRotateY;
+    int32 iRotateY;
     // 模型绕Z轴旋转角度
-    int iRotateZ;
+    int32 iRotateZ;
     // 纹理映射方式
-    int iDisplayType;
+    int32 iDisplayType;
     afx_msg void OnBnClickedRadioRepeat();
     afx_msg void OnBnClickedRadioStretch();
 
@@ -74,7 +74,7 @@ class C3DModelParamSet : public CDialog {
 
 
   public:
-    int isSetXYByMouse;
+    int32 isSetXYByMouse;
 
     afx_msg void OnClickedCheckSetXyByMouse();
     CButton m_SetPosCheckBox;

@@ -9,7 +9,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 //////////////////////////////////////////////////////////////////////
-// unsigned int Base;
+// uint32 Base;
 //////////////////////////////////////////////////////////////////////
 
 CGLFont::CGLFont() {
@@ -22,7 +22,7 @@ void CGLFont::Entext(float x, float y, LPCTSTR str, HFONT hFont,
                      float r, float g, float b) {                  // 平面字符显示，不支持汉字
     HDC hdc = wglGetCurrentDC();                                    // 获取设置场景
     SelectObject(hdc, hFont);                                       // 设置字体
-    unsigned int Base = glGenLists(96);                             // 创建大小为96显示列表，存放字符位图
+    uint32 Base = glGenLists(96);                             // 创建大小为96显示列表，存放字符位图
     wglUseFontBitmaps(hdc, 32, 96, Base);                           // 创建位图字体
     glDisable(GL_TEXTURE_2D);                                       // 不使用贴图
     glDisable(GL_LIGHTING);                                         // 不使用光照
@@ -50,11 +50,11 @@ void CGLFont::Printfc3d(CString strText, HFONT hFont, float z) {    // 主要原
     HDC hdc = wglGetCurrentDC();                                    // 设备场景
     HFONT hOldFont = (HFONT)::SelectObject(hdc, hFont);             // 将字体选入场景，返回之前的字体
     UCHAR* pChar = (UCHAR*)strText.GetBuffer(strText.GetLength());  // 设置字符串长度
-    int   nListNum;                                                 // 定义列表变量
+    int32   nListNum;                                                 // 定义列表变量
     DWORD dwChar;                                                   // 定义字符指针
     GLYPHMETRICSFLOAT pgmf[1];                                      // 轮廓字体字符集的信息
     glPushMatrix();                                                 // 压入堆栈
-    for (int i = 0; i < strText.GetLength(); i++) {
+    for (int32 i = 0; i < strText.GetLength(); i++) {
         if (IsDBCSLeadByte((BYTE)pChar[i])) {                       // 是否双字节（汉字）
             dwChar = (DWORD)((pChar[i] << 8) | pChar[i + 1]);       // 取当前字符，双字节转换
             i++;
@@ -95,7 +95,7 @@ void CGLFont:: Settext(float x, float y, CString str, HFONT Font, float r, float
 
 // 基本原理是在系统内部建立一个确定字体的设备场景（MDC），用GDI方式将文字在设备场景中形成单色位图
 // 再用OpenGL的平面位图显示函数glBitmap将文字显示出来
-void CGLFont:: Printftext(int x, int y, LPCTSTR lpszText, HFONT hFont) {
+void CGLFont:: Printftext(int32 x, int32 y, LPCTSTR lpszText, HFONT hFont) {
     CBitmap bitmap;                                                 // 设备相关位图变量
     BITMAP bm;                                                      // 位图结构变量
     SIZE size;                                                      // 位图尺寸
@@ -109,7 +109,7 @@ void CGLFont:: Printftext(int x, int y, LPCTSTR lpszText, HFONT hFont) {
     TextOut(MDC, 0, 0, lpszText, strlen(lpszText));                 // 输出文字到暂存MDC
     bitmap.GetBitmap(&bm);                                          // 获得相关位图数据结构
     size.cx = (bm.bmWidth + 31) & (~31);                            // 边缘对齐
-    int bufsize = size.cy * size.cx;                                // 图形数据长度
+    int32 bufsize = size.cy * size.cx;                                // 图形数据长度
     struct {
         BITMAPINFOHEADER bih;
         RGBQUAD col[2];

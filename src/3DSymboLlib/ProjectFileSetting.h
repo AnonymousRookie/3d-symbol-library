@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "afxwin.h"
-
+#include "define.h"
 
 
 
@@ -30,7 +30,7 @@ class CProjectFileSetting : public CDialog {
     afx_msg void OnBnClickedRadioOpenProject();
     CListBox m_recentlyOpenedProjectList;
 
-    unsigned int new_project_flag;
+    uint32 new_project_flag;
 
 
     virtual BOOL OnInitDialog();

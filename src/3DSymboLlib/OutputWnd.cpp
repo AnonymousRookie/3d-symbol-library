@@ -25,7 +25,7 @@ BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
     ON_WM_SIZE()
 END_MESSAGE_MAP()
 
-int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+int32 COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     if (CDockablePane::OnCreate(lpCreateStruct) == -1)
         return -1;
     CRect rectDummy;
@@ -63,7 +63,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     return 0;
 }
 
-void COutputWnd::OnSize(UINT nType, int cx, int cy) {
+void COutputWnd::OnSize(UINT nType, int32 cx, int32 cy) {
     CDockablePane::OnSize(nType, cx, cy);
     // 选项卡控件应覆盖整个工作区:
     m_wndTabs.SetWindowPos(NULL, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
@@ -72,8 +72,8 @@ void COutputWnd::OnSize(UINT nType, int cx, int cy) {
 void COutputWnd::AdjustHorzScroll(CListBox& wndListBox) {
     CClientDC dc(this);
     CFont* pOldFont = dc.SelectObject(&afxGlobalData.fontRegular);
-    int cxExtentMax = 0;
-    for (int i = 0; i < wndListBox.GetCount(); i ++) {
+    int32 cxExtentMax = 0;
+    for (int32 i = 0; i < wndListBox.GetCount(); i ++) {
         CString strItem;
         wndListBox.GetText(i, strItem);
         cxExtentMax = max(cxExtentMax, dc.GetTextExtent(strItem).cx);
