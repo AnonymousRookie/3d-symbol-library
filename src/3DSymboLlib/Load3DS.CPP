@@ -45,7 +45,9 @@ void CLoad3DS::Init(char* _3DSFilename, int j, char* _3DSTexture) { //
             texName.Format("%s", g_3DModel[j].pMaterials[i].strFile);
             CString finalTexPath = _3DSTexture;
             char* cc = new char[finalTexPath.GetLength()];
-            sprintf(cc, "%s", finalTexPath);
+            // sprintf(cc, "%s", finalTexPath);
+            _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, "%s", finalTexPath);
+
             CreateTexture(g_Texture[j],  cc, i);        // 使用纹理文件名称来装入位图
         }
         g_3DModel[j].pMaterials[i].texureId = i;        // 设置材质的纹理ID
@@ -169,7 +171,9 @@ bool CLoad3DS::Import3DS(t3DModel* pModel, char* strFileName) {
     m_FilePointer = fopen(strFileName, "rb");
     // 确保所获得的文件指针合法
     if (!m_FilePointer) {
-        sprintf(strMessage, "Unable to find the file: %s!", strFileName);
+        // sprintf(strMessage, "Unable to find the file: %s!", strFileName);
+        _snprintf_s(strMessage, sizeof(strMessage), sizeof(strMessage)-1, "Unable to find the file: %s!", strFileName);
+
         MessageBox(NULL, strMessage, "Error", MB_OK);
         return false;
     }
@@ -179,7 +183,9 @@ bool CLoad3DS::Import3DS(t3DModel* pModel, char* strFileName) {
     ReadChunk(m_CurrentChunk);
     // 确保是3ds文件
     if (m_CurrentChunk->ID != PRIMARY) {
-        sprintf(strMessage, "Unable to load PRIMARY chuck from file: %s!", strFileName);
+        // sprintf(strMessage, "Unable to load PRIMARY chuck from file: %s!", strFileName);
+        _snprintf_s(strMessage, sizeof(strMessage), sizeof(strMessage)-1, "Unable to load PRIMARY chuck from file: %s!", strFileName);
+
         MessageBox(NULL, strMessage, "Error", MB_OK);
         return false;
     }

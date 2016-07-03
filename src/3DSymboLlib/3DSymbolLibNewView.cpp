@@ -3,6 +3,7 @@
 #include "3DSymbolLibNew.h"
 #endif
 
+#include <sstream>
 #include "3DSymbolLibNewDoc.h"
 #include "3DSymbolLibNewView.h"
 #include "Bitmap.h"
@@ -2146,7 +2147,10 @@ void CMy3DSymbolLibNewView::OnFlypathSave() {
     CString tt[3];
     if (FileDialogBoxFile.DoModal() == IDOK) {  // 如果对话框成果打开
         NeededFile = FileDialogBoxFile.GetPathName();  // 得到文件名
-        sprintf(FileName, "%s", NeededFile);
+
+        // sprintf(FileName, "%s", NeededFile);
+        _snprintf_s(FileName, sizeof(FileName), sizeof(FileName)-1, "%s", NeededFile);
+
         if (strcmp(FileDialogBoxFile.GetFileExt(), "pth") != 0)
             strcat(FileName, ".pth");  // 添加飞行路径文件扩展名
         if (FlyPathSave(FileName))  // 如果飞行路径保存成功
@@ -2163,7 +2167,10 @@ int CMy3DSymbolLibNewView::FlyPathSave(char* pathfile) {
     FILE*    fpw;
     char    message[200];
     if ((fpw = fopen(pathfile, "w")) == NULL) {         // 如果写入文件失败
-        sprintf(message, "文件 %s 创建无效", pathfile);
+
+        // sprintf(message, "文件 %s 创建无效", pathfile);
+        _snprintf_s(message, sizeof(message), sizeof(message)-1, "文件 %s 创建无效", pathfile);
+
         MessageBox(message, "保存飞行路径坐标到文件", MB_ICONWARNING);
         return 0;                                       // 返回失败
     }
@@ -2192,7 +2199,10 @@ void CMy3DSymbolLibNewView::OnFlyOpenpath() {
     CString tt[3];
     if (FileDialogBoxFile.DoModal() == IDOK) {           // 如果对话框成果打开
         NeededFile = FileDialogBoxFile.GetPathName();   // 得到文件名
-        sprintf(FileName, "%s", NeededFile);
+
+        // sprintf(FileName, "%s", NeededFile);
+        _snprintf_s(FileName, sizeof(FileName), sizeof(FileName)-1, "%s", NeededFile);
+
         if (strcmp(FileDialogBoxFile.GetFileExt(), "pth") != 0)
             strcat(FileName, ".pth");                   // 添加飞行路径文件扩展名
         if (FlyPathRead(FileName))  // 读取飞行路径文件数据动态数组中
@@ -2535,25 +2545,23 @@ void CMy3DSymbolLibNewView::OnFlySpeedDown() {
 /* Function: 三维漫游调整热键帮助                                   */
 /****************************************************************/
 void CMy3DSymbolLibNewView::DisplayHelp() {
-    char str[20][50], strdis[2000];
-    strdis[0] = '\0';
-    strcpy(str[0], " 向↑键   往前方向移动\n");
-    strcpy(str[1], " 向↓键   往后方向移动\n");
-    strcpy(str[2], " 向→键   往左方向移动\n");
-    strcpy(str[3], " 向←键   往右方向移动\n");
-    strcpy(str[4], "  J 键    飞行加速\n");
-    strcpy(str[5], "  M 键    飞行减速\n");
-    strcpy(str[6], "  I 键    飞行视野增大\n");
-    strcpy(str[7], "  O 键    飞行视野减小\n");
-    strcpy(str[8], "  G 键     升高飞行高度\n");
-    strcpy(str[9], "  B 键     降低飞行高度\n");
-    strcpy(str[10], "  H 键    飞行观察上倾\n");
-    strcpy(str[11], "  N 键    飞行观察下倾\n");
-    strcpy(str[12], "  P 键    开始/暂停漫游\n");
-    strcpy(str[13], "  S 键    停止漫游");
-    for (int i = 0; i < 14; i++)
-        strcat(strdis, str[i]);
-    MessageBox(strdis, "三维漫游热键说明", MB_OK);
+    std::ostringstream help_info_str;
+    help_info_str << " 向↑键   往前方向移动\n";
+    help_info_str << " 向↓键   往后方向移动\n";
+    help_info_str << " 向→键   往左方向移动\n";
+    help_info_str << " 向←键   往右方向移动\n";
+    help_info_str << "  J 键    飞行加速\n";
+    help_info_str << "  M 键    飞行减速\n";
+    help_info_str << "  I 键    飞行视野增大\n";
+    help_info_str << "  O 键    飞行视野减小\n";
+    help_info_str << "  G 键     升高飞行高度\n";
+    help_info_str << "  B 键     降低飞行高度\n";
+    help_info_str << "  H 键    飞行观察上倾\n";
+    help_info_str << "  N 键    飞行观察下倾\n";
+    help_info_str << "  P 键    开始/暂停漫游\n";
+    help_info_str << "  S 键    停止漫游";
+
+    MessageBox(help_info_str.str().c_str(), "三维漫游热键说明", MB_OK);
     // TextFlyHelp();
 }
 
@@ -3370,7 +3378,10 @@ void CMy3DSymbolLibNewView::OnWeatherLoad() {
             exit(-1);
         }
         char cc[256];
-        sprintf(cc, weatherSymbolTexPath);
+
+        // sprintf(cc, weatherSymbolTexPath);
+        _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, weatherSymbolTexPath);
+
         LoadT8(cc, g_weatherTex);
         bIsWeatherLoad = true;
     }
@@ -3498,7 +3509,10 @@ LRESULT CMy3DSymbolLibNewView::OnGoodBye(WPARAM wParam, LPARAM lParam) {
             C3DModelParamSetTOPModelStruct(paramSet_modeless_dlg, p3dtree);
             m_3DTreeModel.Add(p3dtree);
             char cc[256];
-            sprintf(cc, p3dtree->strModelPath);
+
+            // sprintf(cc, p3dtree->strModelPath);
+            _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, p3dtree->strModelPath);
+
             LoadT16(cc, g_cactus3DTree[m_i3DTreeModelNum]);
             m_i3DTreeModelNum ++;
             paramSet_modeless_dlg->DestroyWindow();
@@ -3507,7 +3521,10 @@ LRESULT CMy3DSymbolLibNewView::OnGoodBye(WPARAM wParam, LPARAM lParam) {
             C3DModelParamSetTOPModelStruct(paramSet_modeless_dlg, ptree);
             m_TreeModel.Add(ptree);
             char cc[256];
-            sprintf(cc, ptree->strModelPath);
+
+            // sprintf(cc, ptree->strModelPath);
+            _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, ptree->strModelPath);
+
             LoadT16(cc, g_cactus[m_iTreeModelNum]);
             m_iTreeModelNum ++;
             paramSet_modeless_dlg->DestroyWindow();
@@ -3516,7 +3533,10 @@ LRESULT CMy3DSymbolLibNewView::OnGoodBye(WPARAM wParam, LPARAM lParam) {
             C3DModelParamSetTOPModelStruct(paramSet_modeless_dlg, pCitySymbol);
             m_CitySymbolModel.Add(pCitySymbol);
             char cc[256];
-            sprintf(cc, pCitySymbol->strModelPath);
+
+            // sprintf(cc, pCitySymbol->strModelPath);
+            _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, pCitySymbol->strModelPath);
+
             LoadPNG(cc, g_citySymbolTex[m_iCitySymbolModelNum]);
             m_iCitySymbolModelNum ++;
             paramSet_modeless_dlg->DestroyWindow();
@@ -3949,7 +3969,7 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         file.ReadString(m_WeatherTex);
         CString weatherSymbolTexPath = m_AllDataPath + "\\" + m_WeatherFolder + "\\" + m_WeatherTex;
         char cc[256];
-        sprintf(cc, weatherSymbolTexPath);
+        _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, weatherSymbolTexPath);
         LoadT8(cc, g_weatherTex);
         bIsWeatherLoad = true;
         // ----------------------------------------------------
@@ -4180,7 +4200,10 @@ void CMy3DSymbolLibNewView::LoadPointSymbolFile(CString filename) {
             p3d->iRotateZ = 0;
             m_CitySymbolModel.Add(p3d);
             char cc[256];
-            sprintf(cc, p3d->strModelPath);
+
+            // sprintf(cc, p3d->strModelPath);
+            _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, p3d->strModelPath);
+
             LoadPNG(cc, g_citySymbolTex[i]);
         }
         // ----------------------------------------------------
@@ -4229,7 +4252,10 @@ void CMy3DSymbolLibNewView::LoadPointSymbolFile(CString filename) {
             p3d->iRotateZ = 0;
             m_TreeModel.Add(p3d);
             char cc[256];
-            sprintf(cc, p3d->strModelPath);
+
+            // sprintf(cc, p3d->strModelPath);
+            _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, p3d->strModelPath);
+
             LoadT16(cc, g_cactus[p3d->iModelNum]);
         }
         // ----------------------------------------------------
@@ -4270,7 +4296,10 @@ void CMy3DSymbolLibNewView::LoadPointSymbolFile(CString filename) {
             p3d->iRotateZ = 0;
             m_3DTreeModel.Add(p3d);
             char cc[256];
-            sprintf(cc, p3d->strModelPath);
+
+            // sprintf(cc, p3d->strModelPath);
+            _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, p3d->strModelPath);
+
             LoadT16(cc, g_cactus3DTree[p3d->iModelNum]);
         }
     }
@@ -4386,15 +4415,20 @@ void CMy3DSymbolLibNewView::OnSceneLoad() {
 /****************************************************************************/
 void CMy3DSymbolLibNewView::LoadSkyBoxTex(CString skyTP, CString skyLF, CString skyBK, CString skyRT, CString skyFR) {
     char cc[256];
-    sprintf(cc, skyTP);
+    // sprintf(cc, skyTP);
+    _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, skyTP);
     LoadT8(cc, g_texSkyBox[TP]);
-    sprintf(cc, skyLF);
+    // sprintf(cc, skyLF);
+    _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, skyLF);
     LoadT8(cc, g_texSkyBox[LF]);
-    sprintf(cc, skyBK);
+    // sprintf(cc, skyBK);
+    _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, skyBK);
     LoadT8(cc, g_texSkyBox[BK]);
-    sprintf(cc, skyRT);
+    // sprintf(cc, skyRT);
+    _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, skyRT);
     LoadT8(cc, g_texSkyBox[RT]);
-    sprintf(cc, skyFR);
+    // sprintf(cc, skyFR);
+    _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, skyFR);
     LoadT8(cc, g_texSkyBox[FR]);
     MakeSkykList();
     iSkyBoxLoaded = true;
@@ -4426,10 +4460,13 @@ void CMy3DSymbolLibNewView::Load3DModel(PModelParamStruct p3d, int iLoadModelTyp
         m_3DModel.Add(p3d);
     }
     char _3DSFile[256];
-    sprintf(_3DSFile, p3d->modelPath);  // "...\\3DModel\\XXX.3DS"
+    // sprintf(_3DSFile, p3d->modelPath);  // "...\\3DModel\\XXX.3DS"
+    _snprintf_s(_3DSFile, sizeof(_3DSFile), sizeof(_3DSFile)-1, p3d->modelPath);
     // [ADD]
     char _3DSTextureFile[256];
-    sprintf(_3DSTextureFile, p3d->m_3DS_Mode_Texture_PATH_NAME);
+    // sprintf(_3DSTextureFile, p3d->m_3DS_Mode_Texture_PATH_NAME);
+    _snprintf_s(_3DSTextureFile, sizeof(_3DSTextureFile), sizeof(_3DSTextureFile)-1, p3d->m_3DS_Mode_Texture_PATH_NAME);
+
     m_3ds->Init(_3DSFile, p3d->modelID, _3DSTextureFile);   // 调用模型调入函数
     t3DBox t3dBox;
     t3dBox.l = g_3DModel[p3d->modelID].t3DModelBox.l * p3d->scale;
@@ -4473,7 +4510,9 @@ void CMy3DSymbolLibNewView::OnSceneSaveAs() {
     CString tt[3];
     if (FileDialogBoxFile.DoModal() == IDOK) {           // 如果对话框成果打开
         NeededFile = FileDialogBoxFile.GetPathName();   // 得到文件名
-        sprintf(FileName, "%s", NeededFile);
+        // sprintf(FileName, "%s", NeededFile);
+        _snprintf_s(FileName, sizeof(FileName), sizeof(FileName)-1, "%s", NeededFile);
+
         if (strcmp(FileDialogBoxFile.GetFileExt(), "prj") != 0)
             strcat(FileName, ".prj");
         if (ScenSave(FileName))
@@ -5575,7 +5614,9 @@ void CMy3DSymbolLibNewView::OnSceneNew() {
     CString tt[3];
     if (FileDialogBoxFile.DoModal() == IDOK) {           // 如果对话框成果打开
         NeededFile = FileDialogBoxFile.GetPathName();   // 得到文件名
-        sprintf(FileName, "%s", NeededFile);
+        // sprintf(FileName, "%s", NeededFile);
+        _snprintf_s(FileName, sizeof(FileName), sizeof(FileName)-1, "%s", NeededFile);
+
         if (strcmp(FileDialogBoxFile.GetFileExt(), "prj") != 0)
             strcat(FileName, ".prj");
         {
@@ -5674,7 +5715,9 @@ int CMy3DSymbolLibNewView::new_symbol_file(unsigned int type, char* _fileName) {
     CString tt[3];
     if (FileDialogBoxFile.DoModal() == IDOK) {           // 如果对话框成果打开
         NeededFile = FileDialogBoxFile.GetPathName();   // 得到文件名
-        sprintf(FileName, "%s", NeededFile);
+        // sprintf(FileName, "%s", NeededFile);
+        _snprintf_s(FileName, sizeof(FileName), sizeof(FileName)-1, "%s", NeededFile);
+
         if (strcmp(FileDialogBoxFile.GetFileExt(), tmpAgrs[type][2]) != 0)
             strcat(FileName, tmpAgrs[type][3]);
         {
