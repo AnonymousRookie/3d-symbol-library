@@ -165,7 +165,7 @@ class CDesingScheme {
 
 
     // 计算填补面边上的点
-    void CalculateFillFacePoints(vector<Railway3DCordinate>& rcVector2, vector<Railway3DCordinate>& rcVector1);
+    void CalculateFillFacePoints(vector<Railway3DCordinate>& rcVector2, vector<Railway3DCordinate>& rcVector1);  // NOLINT
 
   public:
     // 铁路中线

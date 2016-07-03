@@ -86,8 +86,9 @@ BOOL CSpaceSearchSet::PreTranslateMessage(MSG* pMsg) {
         CDialog* pWnd = (CDialog*)GetParent();
         pWnd->NextDlgCtrl();
         return FALSE;
-    } else
+    } else {
         return CDialog::PreTranslateMessage(pMsg);
+    }
 }
 
 

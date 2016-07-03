@@ -208,8 +208,9 @@ void ModelListConfigureDialog::OnEditDeleteSymbol() {
                     for (tmpIter = g_addList[i].begin(); tmpIter != g_addList[i].end();) {
                         if ((*tmpIter).c_str() == selectItemText) {
                             tmpIter = g_addList[i].erase(tmpIter);
-                        } else
+                        } else {
                             ++tmpIter;
+                        }
                     }
                     if (tmpIter == g_addList[i].end()) {
                         g_delList[i].push_back(LPCSTR(selectItemText));
@@ -289,8 +290,9 @@ void ModelListConfigureDialog::OnEditAddSymbol() {
             for (tmpIter = g_delList[l_symbolType].begin(); tmpIter != g_delList[l_symbolType].end();) {
                 if ((*tmpIter).c_str() == ret) {
                     tmpIter = g_delList[l_symbolType].erase(tmpIter);
-                } else
+                } else {
                     ++tmpIter;
+                }
             }
             if (tmpIter == g_delList[l_symbolType].end()) {
                 g_addList[l_symbolType].push_back(LPCSTR(ret));

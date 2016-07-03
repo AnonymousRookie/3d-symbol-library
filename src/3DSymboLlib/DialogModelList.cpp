@@ -98,7 +98,7 @@ BOOL CDialogModelList::OnInitDialog() {
         // 获取文件夹下所有指定类型文件
         _finddata_t fileDir;
         char* dir = new char[m_Dir.GetLength() + strlen("\\*") + m_format.GetLength()];  // "d:\\temp\\*.*";
-        sprintf(dir, m_Dir + "\\*" + m_format);
+        sprintf(dir, m_Dir + "\\*" + m_format);  // NOLINT
         long lfDir;
         int fileNum = 0;
         // vector<CString> fileName;

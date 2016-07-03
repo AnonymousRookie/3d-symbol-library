@@ -43,7 +43,7 @@ void CSystemSetting::OnBnClickedOk() {
     g_sceneDataPath = m_SceneDataPATH;
     char sceneDir[256];
     GetCurrentDirectoryA(256, sceneDir);
-    g_systemConfigureFile = strcat(sceneDir, "\\system.ini");
+    g_systemConfigureFile = strcat(sceneDir, "\\system.ini");  // NOLINT
     CFileFind finder;
     BOOL isFind = finder.FindFile(g_systemConfigureFile.c_str());
     if (!isFind) {

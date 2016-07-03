@@ -45,9 +45,8 @@ void CLoad3DS::Init(char* _3DSFilename, int j, char* _3DSTexture) { //
             texName.Format("%s", g_3DModel[j].pMaterials[i].strFile);
             CString finalTexPath = _3DSTexture;
             char* cc = new char[finalTexPath.GetLength()];
-            // sprintf(cc, "%s", finalTexPath);
-            _snprintf_s(cc, sizeof(cc), sizeof(cc)-1, "%s", finalTexPath);
-
+            sprintf(cc, "%s", finalTexPath);
+            
             CreateTexture(g_Texture[j],  cc, i);        // 使用纹理文件名称来装入位图
         }
         g_3DModel[j].pMaterials[i].texureId = i;        // 设置材质的纹理ID
@@ -125,8 +124,9 @@ void CLoad3DS::Show3ds(int j0, float tx, float ty, float tz, float size) {  // �
         if (pObject->bHasTexture) {  // 判断该对象是否有纹理映射
             glEnable(GL_TEXTURE_2D);  // 打开纹理映射
             glBindTexture(GL_TEXTURE_2D, g_Texture[j0][pObject->materialID]);
-        } else
+        } else {
             glDisable(GL_TEXTURE_2D);  // 关闭纹理映射
+        }
         // 这里原来有错，不行正确调用模型的贴图，g_Texture应该为2维数组
         glColor3ub(255, 255, 255);
         glBegin(g_ViewMode);  // 开始以g_ViewMode模式绘制

@@ -115,7 +115,7 @@ int ClassifySphere(CVector3& vCenter,
 bool EdgeSphereCollision(const CVector3& vCenter, CVector3 vPolygon[], int vertexCount, float radius);
 
 
-bool SpherePolygonCollision(CVector3 vPolygon[], CVector3& vCenter, int vertexCount, float radius);
+bool SpherePolygonCollision(CVector3 vPolygon[], const CVector3& vCenter, int vertexCount, float radius);
 
 
 

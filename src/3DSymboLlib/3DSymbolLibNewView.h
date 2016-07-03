@@ -186,7 +186,7 @@ class CMy3DSymbolLibNewView : public CView {
     // 重写
   public:
     virtual void OnDraw(CDC* pDC);  // 重写以绘制该视图
-    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);  // NOLINT
 
   protected:
     virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
@@ -198,7 +198,7 @@ class CMy3DSymbolLibNewView : public CView {
     virtual ~CMy3DSymbolLibNewView();
 #ifdef _DEBUG
     virtual void AssertValid() const;
-    virtual void Dump(CDumpContext& dc) const;
+    virtual void Dump(CDumpContext& dc) const;  // NOLINT
 #endif
 
 
@@ -245,7 +245,7 @@ class CMy3DSymbolLibNewView : public CView {
     BITMAPINFOHEADER    g_bit;                              // 定义位图结构，在ModelObj中使用灰度等高线图生成地形
     unsigned char*       g_imageData;                       // 定义图形缓存区，在ModelObj中使用灰度等高线图生成地形
     UINT                texTerrain;                         // 贴图
-    bool                LoadT8(char* filename, GLuint& texture);
+    bool                LoadT8(char* filename, GLuint& texture);  // NOLINT
     unsigned char*      LoadBit(char* filename, BITMAPINFOHEADER* bitmap);
 
 
@@ -500,7 +500,7 @@ class CMy3DSymbolLibNewView : public CView {
     // 景观树控制
     afx_msg void OnTreeLoad();
     CArray<PModelStruct, PModelStruct> m_TreeModel;  // 存储所有景观树信息
-    void LoadT16(char* filename, GLuint& texture);
+    void LoadT16(char* filename, GLuint& texture);  // NOLINT
     int m_iTreeModelNum;
     UINT g_cactus[50];                              // 贴图,纹理
 
@@ -523,7 +523,7 @@ class CMy3DSymbolLibNewView : public CView {
     UINT g_citySymbolTex[50];                            // 贴图,纹理
     void ShowCitySymbol0(int i);
     void ShowCitySymbol(int i);
-    void LoadPNG(const char* fileName, GLuint& texture);
+    void LoadPNG(const char* fileName, GLuint& texture);  // NOLINT
 
     // 导入天气纹理 只有一个纹理
 
@@ -537,11 +537,11 @@ class CMy3DSymbolLibNewView : public CView {
     bool IsSearchPoint;
 
     // 将对话框变量赋值给结构体
-    void C3DModelParamSetTOPModelStruct(C3DModelParamSet& model, PModelStruct& pStruct);
+    void C3DModelParamSetTOPModelStruct(const C3DModelParamSet& model, const PModelStruct& pStruct);
     // 将对话框变量赋值给结构体
-    void ModelParamDlgToPModelParamStruct(ModelParam& model, PModelParamStruct pStruct);
+    void ModelParamDlgToPModelParamStruct(const ModelParam& model, PModelParamStruct pStruct);
     // 将结构体内容赋值给变量
-    void PModelParamStructToModelParamDlg(ModelParam& model, PModelParamStruct pStruct);
+    void PModelParamStructToModelParamDlg(ModelParam& model, PModelParamStruct pStruct);  // NOLINT
 
     // 滚轮控制视景窗体的大小（缩小，放大）
     afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
@@ -769,11 +769,11 @@ class CMy3DSymbolLibNewView : public CView {
 
     BOOL fuse_Flag;
 
-    void DrawJDLine(vector<Point3>& _pv1,  vector<Point3>& _pv2);
+    void DrawJDLine(const vector<Point3>& _pv1,  const vector<Point3>& _pv2);
 
 
     // 所有三角形顶点坐标最小最大值
-    void GetMinXY(vector<Point3>& _pv1,  vector<Point3>& _pv2, double* _minX, double* _minY, double* _maxX, double* _maxY);
+    void GetMinXY(const vector<Point3>& _pv1,  const vector<Point3>& _pv2, double* _minX, double* _minY, double* _maxX, double* _maxY);
 
     // 线符号纹理坐标
     void GetUV(double _x, double _y, double _minX, double _minY, double _maxX, double _maxY, double* _u, double* _v);
@@ -800,10 +800,10 @@ class CMy3DSymbolLibNewView : public CView {
 
     BOOL Area_fuse_Flag;
     // 多边形三角化
-    void Area_Triangled(PArea_4& _area4);
+    void Area_Triangled(const PArea_4& _area4);
 
     UINT m_area_texture;
-    void LoadAreaTexture(CString _areaTexture_str, UINT& texture_id);  // 加载面符号纹理
+    void LoadAreaTexture(CString _areaTexture_str, UINT& texture_id);  // 加载面符号纹理  // NOLINT
 
 
     // 更换选中的面符号的纹理
@@ -819,26 +819,26 @@ class CMy3DSymbolLibNewView : public CView {
     vector<Point3> index_pointsInPolygonVector;
 
     // 计算出所有包含在多边形内的点
-    int FindAllPointsInPolygon(Area_4& m_area4);
+    int FindAllPointsInPolygon(const Area_4& m_area4);
 
     // (MAP_W * MAP_W)方阵 1:在多边形内, 0:不在
     int inPolygonArrayFlag[MAP_W][MAP_W];
 
 
     // 找出所有包含在多边形内的三角形(包括完整三角形和经过局部三角化的三角形)
-    int FindAllTrianglesInPolygon(Area_4& m_area4);
+    int FindAllTrianglesInPolygon(Area_4& m_area4);  // NOLINT
 
     // 只有1个点在多边形形内的三角形(需重新三角化)
-    int FindTriangles_1_point_inPolygon(Area_4& m_area4);
+    int FindTriangles_1_point_inPolygon(Area_4& m_area4);  // NOLINT
 
     // 只有2个点在多边形形内的三角形(需重新三角化)
-    int FindTriangles_2_point_inPolygon(Area_4& m_area4);
+    int FindTriangles_2_point_inPolygon(Area_4& m_area4);  // NOLINT
 
     // 有3个点在多边形形内的三角形
-    int FindTriangles_3_point_inPolygon(Area_4& _area4);
+    int FindTriangles_3_point_inPolygon(Area_4& _area4);  // NOLINT
 
     // 多边形的一条边  与  三角形  有2个交点, 找出符合条件的三角形
-    void Find_triangles_1_line_2_JD(Area_4& m_area4, Triangle& tmp_triangle, CPointPolygonRelationship& tmp_PPR, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22);
+    void Find_triangles_1_line_2_JD(Area_4& m_area4, Triangle& tmp_triangle, CPointPolygonRelationship& tmp_PPR, PPR_Point& tmp_point1, PPR_Point& tmp_point21, PPR_Point& tmp_point22);  // NOLINT
 
 
     // 保存所有局部三角化了的三角形
@@ -864,10 +864,10 @@ class CMy3DSymbolLibNewView : public CView {
     // ---------------------------------------------
 
     // 多边形顶点处的三角形
-    void FindTriangles_polygon_has_vertex_in_triangle(Area_4& m_area4);
+    void FindTriangles_polygon_has_vertex_in_triangle(Area_4& m_area4);  // NOLINT
 
-    void FindTriangles_polygon_has_vertex_in_triangle_1_1(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22);
-    void FindTriangles_polygon_has_vertex_in_triangle_2_1(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, Triangle& tmp_triangle3, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22);
+    void FindTriangles_polygon_has_vertex_in_triangle_1_1(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, PPR_Point& tmp_point1, PPR_Point& tmp_point21, PPR_Point& tmp_point22);  // NOLINT
+    void FindTriangles_polygon_has_vertex_in_triangle_2_1(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, Triangle& tmp_triangle3, PPR_Point& tmp_point1, PPR_Point& tmp_point21, PPR_Point& tmp_point22);  // NOLINT
 
 
     // 保存所有局部三角化了的三角形(三角形只有1个点在多边形内, 且多边形的1个端点在三角形中)
@@ -878,7 +878,7 @@ class CMy3DSymbolLibNewView : public CView {
 
 
 
-    void FindTriangles_polygon_has_vertex_in_triangle_last(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, Triangle& tmp_triangle3, Triangle& tmp_triangle4, const PPR_Point& tmp_point0, const PPR_Point& tmp_point1, const PPR_Point& tmp_point21, const PPR_Point& tmp_point22);
+    void FindTriangles_polygon_has_vertex_in_triangle_last(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, Triangle& tmp_triangle3, Triangle& tmp_triangle4, PPR_Point& tmp_point0, PPR_Point& tmp_point1, PPR_Point& tmp_point21, PPR_Point& tmp_point22);  // NOLINT
     // 保存所有局部三角化了的三角形(某三角形没有点在多边形内, 但多边形的1个端点在三角形中)
     // vector<Triangle> LocalTrianglesVecotr_last;
 

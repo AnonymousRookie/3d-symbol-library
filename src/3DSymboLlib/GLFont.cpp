@@ -58,8 +58,9 @@ void CGLFont::Printfc3d(CString strText, HFONT hFont, float z) {    // 主要原
         if (IsDBCSLeadByte((BYTE)pChar[i])) {                       // 是否双字节（汉字）
             dwChar = (DWORD)((pChar[i] << 8) | pChar[i + 1]);       // 取当前字符，双字节转换
             i++;
-        } else
+        } else {
             dwChar = pChar[i];                                      // 取当前字符
+        }
         nListNum = glGenLists(1);                                   // 创建列表
         wglUseFontOutlines(hdc,                                  // 拥有字体的HDC
                            dwChar,                                   // 转化为显示列表的第一个字符

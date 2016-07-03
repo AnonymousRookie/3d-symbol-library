@@ -1288,7 +1288,7 @@ int CDesingScheme::GetTW(double x, double z, float H) {
 /************************************************************************/
 /* Function: 计算2端横断面上的点坐标                                        */
 /************************************************************************/
-void CDesingScheme::CalculateFillFacePoints(vector<Railway3DCordinate>& rcVector2, vector<Railway3DCordinate>& rcVector1) {
+void CDesingScheme::CalculateFillFacePoints(vector<Railway3DCordinate>& rcVector2, vector<Railway3DCordinate>& rcVector1) {  // NOLINT
     Railway3DCordinate rc2;  // 面2
     Railway3DCordinate rc1;  // 面1
     //1------------------------------------------------------------

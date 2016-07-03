@@ -133,7 +133,7 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     // ==============================================================
     char systemConfigureDir[256];
     GetCurrentDirectoryA(256, systemConfigureDir);
-    g_systemConfigureFile = strcat(systemConfigureDir, "\\system.ini");
+    g_systemConfigureFile = strcat(systemConfigureDir, "\\system.ini");  // NOLINT
     // CString msg;
     // msg.Format("%s",g_systemConfigureFile.c_str());
     // AfxMessageBox(msg);
@@ -162,11 +162,11 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     }*/
     char symbolsConfigureDir[256];
     // GetCurrentDirectoryA(256,symbolsConfigureDir);
-    strcpy(symbolsConfigureDir, g_sceneDataPath.c_str());
+    strcpy(symbolsConfigureDir, g_sceneDataPath.c_str());  // NOLINT
     // g_symbolConfigureFile = strcat(symbolsConfigureDir,"\\SymbolLibrary\\symbols.xml");
-    g_point_symbolConfigureFile = strcat(symbolsConfigureDir, "\\SymbolLibrary\\point.plib");
-    g_line_symbolConfigureFile = strcat(symbolsConfigureDir, "\\SymbolLibrary\\line.llib");
-    g_area_symbolConfigureFile = strcat(symbolsConfigureDir, "\\SymbolLibrary\\area.alib");
+    g_point_symbolConfigureFile = strcat(symbolsConfigureDir, "\\SymbolLibrary\\point.plib");  // NOLINT
+    g_line_symbolConfigureFile = strcat(symbolsConfigureDir, "\\SymbolLibrary\\line.llib");  // NOLINT
+    g_area_symbolConfigureFile = strcat(symbolsConfigureDir, "\\SymbolLibrary\\area.alib");  // NOLINT
     CFileFind symbolConfigureFinder;
     BOOL isSymbolConfigureFind = symbolConfigureFinder.FindFile(g_point_symbolConfigureFile.c_str());
     if (!isSymbolConfigureFind) {
@@ -175,8 +175,7 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     // ==============================================================
     // 将XML文件中的信息读入全局list中
     // ==============================================================
-    CoInitialize(NULL);  // 初始化COM。
-    
+    CoInitialize(NULL);  // 初始化COM
     CComPtr<IXMLDOMDocument> spDoc;  // DOM
     spDoc.CoCreateInstance(CLSID_DOMDocument);
     VARIANT_BOOL vb;

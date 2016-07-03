@@ -49,9 +49,8 @@ BOOL CRockClassification::OnInitDialog() {
             // 获取文件夹下所有指定类型文件
             _finddata_t fileDir;
             char* dir = new char[m_Dir.GetLength() + strlen("\\*.BMP")];
-            // sprintf(dir, m_Dir + "\\*.BMP");
-            _snprintf_s(dir, sizeof(dir), sizeof(dir)-1, m_Dir + "\\*.BMP");
-
+            sprintf(dir, m_Dir + "\\*.BMP");  // NOLINT
+            
             long lfDir;
             int fileNum = 0;
             // 搜索与指定的文件名称匹配的第一个实例，若成功则返回第一个实例的句柄，否则返回-1L

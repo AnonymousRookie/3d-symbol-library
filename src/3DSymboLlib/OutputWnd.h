@@ -42,7 +42,7 @@ class COutputWnd : public CDockablePane {
     void FillDebugWindow();
     void FillFindWindow();
 
-    void AdjustHorzScroll(CListBox& wndListBox);
+    void AdjustHorzScroll(CListBox& wndListBox);  // NOLINT
 
     // 实现
   public:
