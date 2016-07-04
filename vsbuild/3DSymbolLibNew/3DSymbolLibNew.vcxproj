@@ -45,6 +45,8 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\temp\</IntDir>
+    <IncludePath>$(SolutionDir)..\include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\lib\opengl\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
