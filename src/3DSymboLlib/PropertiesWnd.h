@@ -5,7 +5,7 @@
 class CPropertiesToolBar : public CMFCToolBar {
   public:
     virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) {
-        CMFCToolBar::OnUpdateCmdUI((CFrameWnd*) GetOwner(), bDisableIfNoHndler);
+        CMFCToolBar::OnUpdateCmdUI(reinterpret_cast<CFrameWnd*>(GetOwner()), bDisableIfNoHndler);
     }
 
     virtual BOOL AllowShowOnList() const {

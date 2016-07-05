@@ -9,7 +9,7 @@ class ModelListConfigureDialog : public CDialog {
     DECLARE_DYNAMIC(ModelListConfigureDialog)
 
   public:
-    ModelListConfigureDialog(CWnd* pParent = NULL);   // 标准构造函数
+    explicit ModelListConfigureDialog(CWnd* pParent = NULL);   // 标准构造函数
     virtual ~ModelListConfigureDialog();
 
     // 对话框数据

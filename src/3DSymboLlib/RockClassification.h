@@ -11,7 +11,7 @@ class CRockClassification : public CDialog {
     DECLARE_DYNAMIC(CRockClassification)
 
   public:
-    CRockClassification(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CRockClassification(CWnd* pParent = NULL);   // 标准构造函数
     virtual ~CRockClassification();
 
     // 对话框数据

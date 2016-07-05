@@ -649,7 +649,7 @@ class CMy3DSymbolLibNewView : public CView {
     /************************************************************************/
   public:
     C3DModelParamSet* paramSet_modeless_dlg;
-    void C3DModelParamSetTOPModelStruct(C3DModelParamSet* model, PModelStruct& pStruct);
+    void C3DModelParamSetTOPModelStruct(C3DModelParamSet* model, PModelStruct& pStruct);  // NOLINT
     PModelStruct p3dtree;           // 3dtree
     PModelStruct ptree;             // tree
     PModelStruct pCitySymbol;       // CitySymbol
@@ -754,7 +754,7 @@ class CMy3DSymbolLibNewView : public CView {
 
     // 计算平面交点坐标,并计算出交点出的高程值
     void CalcuateJD(int32 rowNum, int32 row_index_begin, int32 row_index_end,
-                    int32 colNum, int32 col_index_begin, int32 col_index_end, Line3 _line, vector<Point3>& _pv);
+                    int32 colNum, int32 col_index_begin, int32 col_index_end, Line3 _line, vector<Point3>& _pv);  // NOLINT
 
     // 计算2条直线的交点y=x+b, Ax+By+C=0, 返回-1表示无交点
     BOOL GetJDFrom2Line(PPoint3 p/*out*/, double b, double A, double B, double C);
@@ -808,7 +808,7 @@ class CMy3DSymbolLibNewView : public CView {
 
     // 更换选中的面符号的纹理
     void UpdateAreaTexture(PPR_Point _mp, CPoint point);
-    void ScreenToGL2(CPoint point, GLdouble& wx , GLdouble& wz);
+    void ScreenToGL2(CPoint point, GLdouble& wx , GLdouble& wz);  // NOLINT
 
 
     uint16 area_id;

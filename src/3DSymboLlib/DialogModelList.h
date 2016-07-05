@@ -13,7 +13,7 @@ class CDialogModelList : public CDialog {
     DECLARE_DYNAMIC(CDialogModelList)
 
   public:
-    CDialogModelList(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CDialogModelList(CWnd* pParent = NULL);   // 标准构造函数
     virtual ~CDialogModelList();
 
     // 对话框数据

@@ -11,7 +11,7 @@ class CProjectFileSetting : public CDialog {
     DECLARE_DYNAMIC(CProjectFileSetting)
 
   public:
-    CProjectFileSetting(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CProjectFileSetting(CWnd* pParent = NULL);   // 标准构造函数
     virtual ~CProjectFileSetting();
 
     // 对话框数据

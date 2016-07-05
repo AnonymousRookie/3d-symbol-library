@@ -83,7 +83,7 @@ BOOL CSpaceSearchSet::OnInitDialog() {
 
 BOOL CSpaceSearchSet::PreTranslateMessage(MSG* pMsg) {
     if (pMsg->wParam == VK_RETURN) {  // 如果按钮是回车键
-        CDialog* pWnd = (CDialog*)GetParent();
+        CDialog* pWnd = reinterpret_cast<CDialog*>(GetParent());
         pWnd->NextDlgCtrl();
         return FALSE;
     } else {

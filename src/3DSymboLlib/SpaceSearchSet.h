@@ -18,7 +18,7 @@
 class CSpaceSearchSet : public CDialog {
     // Construction
   public:
-    CSpaceSearchSet(CWnd* pParent = NULL);
+    explicit CSpaceSearchSet(CWnd* pParent = NULL);
 
     int32 m_QueryColorR, m_QueryColorG, m_QueryColorB;
     int32 m_QueryLineWidth;

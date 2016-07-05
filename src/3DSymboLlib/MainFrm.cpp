@@ -258,7 +258,7 @@ LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
     if (lres == 0) {
         return 0;
     }
-    CMFCToolBar* pUserToolbar = (CMFCToolBar*)lres;
+    CMFCToolBar* pUserToolbar = reinterpret_cast<CMFCToolBar*>(lres);
     ASSERT_VALID(pUserToolbar);
     BOOL bNameValid;
     CString strCustomize;

@@ -9,7 +9,7 @@ class CAreaClassification : public CDialog {
     DECLARE_DYNAMIC(CAreaClassification)
 
   public:
-    CAreaClassification(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CAreaClassification(CWnd* pParent = NULL);   // 标准构造函数
     virtual ~CAreaClassification();
 
     // 对话框数据

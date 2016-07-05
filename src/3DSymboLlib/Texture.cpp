@@ -220,9 +220,9 @@ bool  CTexture::MakeScreenTextureBind() {
                 sy = static_cast<int32>(static_cast<float>(y * Viewport[3]) / newWidth);
                 glReadPixels(sx, sy, 1, 1,
                              GL_RGB, GL_UNSIGNED_BYTE, temp);
-                pData[y * newWidth * 3 + x * 3 + 0] = unsigned char(temp[0] * 0.8f);
-                pData[y * newWidth * 3 + x * 3 + 1] = unsigned char(temp[1] * 0.8f);
-                pData[y * newWidth * 3 + x * 3 + 2] = unsigned char(temp[2] * 0.8f);
+                pData[y * newWidth * 3 + x * 3 + 0] = static_cast<uint8>(temp[0] * 0.8f);
+                pData[y * newWidth * 3 + x * 3 + 1] = static_cast<uint8>(temp[1] * 0.8f);
+                pData[y * newWidth * 3 + x * 3 + 2] = static_cast<uint8>(temp[2] * 0.8f);
             }
         glGenTextures(1, &m_nTxt);
         glBindTexture(GL_TEXTURE_2D, m_nTxt);
@@ -274,7 +274,7 @@ bool CTexture::LoadTGA(char* filename) {
     texture->bpp    = header[4];
     bytesPerPixel   = texture->bpp / 8;
     imageSize       = texture->width * texture->height * bytesPerPixel;
-    texture->imageData = (GLubyte*)malloc(imageSize);
+    texture->imageData = reinterpret_cast<GLubyte*>(malloc(imageSize));
     if (texture->imageData == NULL ||
             fread(texture->imageData, 1, imageSize, file) != imageSize) {
         if (texture->imageData != NULL)

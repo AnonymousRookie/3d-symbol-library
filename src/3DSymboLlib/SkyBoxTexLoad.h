@@ -7,7 +7,7 @@ class CSkyBoxTexLoad : public CDialog {
     DECLARE_DYNAMIC(CSkyBoxTexLoad)
 
   public:
-    CSkyBoxTexLoad(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CSkyBoxTexLoad(CWnd* pParent = NULL);   // 标准构造函数
     virtual ~CSkyBoxTexLoad();
 
     // 对话框数据

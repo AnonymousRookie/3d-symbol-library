@@ -43,7 +43,7 @@ END_MESSAGE_MAP()
 void CProjectFileSetting::OnBnClickedOk() {
     // TODO(jason): 在此添加控件通知处理程序代码
     CDialog::OnOK();
-    CMainFrame* pMF = (CMainFrame*)AfxGetApp()->m_pMainWnd;  // 先通过获取当前框架指针
+    CMainFrame* pMF = reinterpret_cast<CMainFrame*>(AfxGetApp()->m_pMainWnd);  // 先通过获取当前框架指针
     CView* active = pMF->GetActiveView();  // 才能获取当前视类指针
     if (active != NULL)  // 获取了当前视类指针才能发送消息
         active->PostMessage(WM_PROJECT_SET_OK, new_project_flag, 0);  // 使用PostMessage发送消息

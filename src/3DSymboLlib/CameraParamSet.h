@@ -7,7 +7,7 @@ class CCameraParamSet : public CDialog {
     DECLARE_DYNAMIC(CCameraParamSet)
 
   public:
-    CCameraParamSet(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CCameraParamSet(CWnd* pParent = NULL);   // 标准构造函数
     virtual ~CCameraParamSet();
 
     // 对话框数据

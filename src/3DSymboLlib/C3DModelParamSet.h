@@ -21,8 +21,8 @@ class C3DModelParamSet : public CDialog {
     DECLARE_DYNAMIC(C3DModelParamSet)
 
   public:
-    C3DModelParamSet(CWnd* pParent = NULL);   // 标准构造函数(模态对话框)
-    C3DModelParamSet(CView* pView);           // 非模态对话框构造函数
+    explicit C3DModelParamSet(CWnd* pParent = NULL);   // 标准构造函数(模态对话框)
+    explicit C3DModelParamSet(CView* pView);           // 非模态对话框构造函数
 
     virtual ~C3DModelParamSet();
 

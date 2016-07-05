@@ -197,7 +197,7 @@ void CMy3DSymbolLibNewView::Dump(CDumpContext& dc) const {  // NOLINT
 
 CMy3DSymbolLibNewDoc* CMy3DSymbolLibNewView::GetDocument() const {  // 非调试版本是内联的
     ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CMy3DSymbolLibNewDoc)));
-    return (CMy3DSymbolLibNewDoc*)m_pDocument;
+    return reinterpret_cast<CMy3DSymbolLibNewDoc*>(m_pDocument);
 }
 #endif  // _DEBUG
 
@@ -416,7 +416,7 @@ BOOL CMy3DSymbolLibNewView::SetupPixelFormat() {
 int32 CMy3DSymbolLibNewView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     if (CView::OnCreate(lpCreateStruct) == -1)
         return -1;
-    pMain = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    pMain = reinterpret_cast<CMainFrame*>(AfxGetApp()->m_pMainWnd);
     // 获取客户区的设备描述表
     m_pDC = new CClientDC(this);
     // 初始化OpenGL
@@ -1019,7 +1019,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
     if (wz > -MAP_SCALE) {
         wz = -MAP_SCALE;         // Z边
     }
-    CMainFrame* pMainFrame = (CMainFrame*)GetParent();
+    CMainFrame* pMainFrame = reinterpret_cast<CMainFrame*>(GetParent());
     CString strText;
     // 在状态栏指示器上显示相关信息(鼠标所点击处在三维场景中的坐标)
     strText.Format("鼠标坐标:x=%.3f , y=%.3f , z=%.3f" , wx  , wy , wz);
@@ -1895,7 +1895,7 @@ void CMy3DSymbolLibNewView::SetCamra() {
     gluLookAt(m_vEyePosition.x, m_vEyePosition.y, m_vEyePosition.z,     // 视点
               m_vLook.x, m_vLook.y, m_vLook.z,                                // 目标点
               m_vUp.x, m_vUp.y, m_vUp.z);                                     // 视点方向
-    CMainFrame* pMainFrame = (CMainFrame*)GetParent();
+    CMainFrame* pMainFrame = reinterpret_cast<CMainFrame*>(GetParent());
     CString strText;
     float dy = m_vEyePosition.y - m_vLook.y;
     float dz = fabs(m_vEyePosition.z - m_vLook.z);
@@ -2335,9 +2335,7 @@ void CMy3DSymbolLibNewView::GetCameraCorrdinate(double x1, double y1, double z1,
         m_vEyePosition.x = x1;  // 视点x坐标
         m_vEyePosition.y = m_vLook.y;  // 视点y坐标=观察点y坐标
         m_vEyePosition.z = z1;  // 视点z坐标
-    }
-    // 按相对高度(即沿路径)漫游时，需计算一个基本高度
-    else if (m_FlyHeightType == GIS_FLY_PATHHEIGHT) {
+    } else if (m_FlyHeightType == GIS_FLY_PATHHEIGHT) {  // 按相对高度(即沿路径)漫游时，需计算一个基本高度
         // 沿相对高度漫游
         m_vLook.x = x2;                                     // 观察点x坐标
         m_vLook.y = y2 + m_StaticHeight + 1;                    // 观察点y坐标=y2+m_StaticHeight固定高度值
@@ -3525,18 +3523,12 @@ LRESULT CMy3DSymbolLibNewView::OnGoodBye(WPARAM wParam, LPARAM lParam) {
             paramSet_modeless_dlg->DestroyWindow();
             m_isSetXYByMouse = 0;
         }
-    }
-    // 取消
-    else if (wParam == IDCANCEL) {
+    } else if (wParam == IDCANCEL) {  // 取消
         paramSet_modeless_dlg->DestroyWindow();
         m_isSetXYByMouse = 0;
-    }
-    // checkbox选中状态
-    else if (wParam == SET_XY_BY_MOUSE_TRUE) {
+    } else if (wParam == SET_XY_BY_MOUSE_TRUE) {  // checkbox选中状态
         m_isSetXYByMouse = paramSet_modeless_dlg->isSetXYByMouse;
-    }
-    // checkbox非选中状态
-    else if (wParam == SET_XY_BY_MOUSE_FALSE) {
+    } else if (wParam == SET_XY_BY_MOUSE_FALSE) {  // checkbox非选中状态
         m_isSetXYByMouse = paramSet_modeless_dlg->isSetXYByMouse;
     }
     return 0L;
@@ -3817,8 +3809,9 @@ void CMy3DSymbolLibNewView::JudgeRayIntersect(
                     // 如果鼠标位置拾取了当前的选中模型，鼠标改变形态
                     m_mouseShape = MOUSE_SHAPE_EDIT;
                     m_selectedModelID = j;
-                } else
+                } else {
                     m_mouseShape = MOUSE_SHAPE_SLECT;
+                }
             }
         }
     }
@@ -4871,7 +4864,7 @@ void CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle() {
     myDesingScheme.PtS_HuPo.RemoveAll();
     if (myDesingScheme.PtS_3DLineZX.GetSize() < 2)
         return;
-    CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    CMainFrame* pMainFrame = reinterpret_cast<CMainFrame*>(AfxGetApp()->m_pMainWnd);
     double EndLC = 10000;
     for (int64 i = 0; i < myDesingScheme.PtS_3DLineZX.GetSize() - 1; i++) {
         if (myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->Lc <= EndLC) {
@@ -5870,7 +5863,7 @@ bool comp2(Point3& p1, Point3& p2) {
 
 // 计算平面交点坐标,并计算出交点出的高程值
 void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int32 row_index_end,
-                                       int32 colNum, int32 col_index_begin, int32 col_index_end, Line3 _line, vector<Point3>& _pv) {
+                                       int32 colNum, int32 col_index_begin, int32 col_index_end, Line3 _line, vector<Point3>& _pv) {  // NOLINT
     // 直线方程系数ABC, Ax+By+C=0
     double A, B, C;
     getLine2ABC(&A, &B, &C, _line.pt1, _line.pt2);

@@ -8,7 +8,7 @@ class CSystemSetting : public CDialog {
     DECLARE_DYNAMIC(CSystemSetting)
 
   public:
-    CSystemSetting(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CSystemSetting(CWnd* pParent = NULL);   // 标准构造函数
     virtual ~CSystemSetting();
 
     // 对话框数据

@@ -11,7 +11,7 @@ class CClassViewMenuButton : public CMFCToolBarMenuButton {
     DECLARE_SERIAL(CClassViewMenuButton)
 
   public:
-    CClassViewMenuButton(HMENU hMenu = NULL) : CMFCToolBarMenuButton((UINT) - 1, hMenu, -1) {
+    explicit CClassViewMenuButton(HMENU hMenu = NULL) : CMFCToolBarMenuButton((UINT) - 1, hMenu, -1) {
     }
 
     virtual void OnDraw(CDC* pDC, const CRect& rect, CMFCToolBarImages* pImages, BOOL bHorz = TRUE,
@@ -126,7 +126,7 @@ void CClassView::FillClassView() {
 }
 
 void CClassView::OnContextMenu(CWnd* pWnd, CPoint point) {
-    CTreeCtrl* pWndTree = (CTreeCtrl*)&m_wndClassView;
+    CTreeCtrl* pWndTree = reinterpret_cast<CTreeCtrl*>(&m_wndClassView);
     ASSERT_VALID(pWndTree);
     if (pWnd != pWndTree) {
         CDockablePane::OnContextMenu(pWnd, point);
@@ -150,7 +150,7 @@ void CClassView::OnContextMenu(CWnd* pWnd, CPoint point) {
         CMFCPopupMenu* pPopupMenu = new CMFCPopupMenu;
         if (!pPopupMenu->Create(this, point.x, point.y, (HMENU)pSumMenu->m_hMenu, FALSE, TRUE))
             return;
-        ((CMDIFrameWndEx*)AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
+        (reinterpret_cast<CMDIFrameWndEx*>(AfxGetMainWnd()))->OnShowPopupMenu(pPopupMenu);
         UpdateDialogControls(this, FALSE);
     }
 }

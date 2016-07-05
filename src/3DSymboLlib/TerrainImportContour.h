@@ -7,7 +7,7 @@ class TerrainImportContour : public CDialog {
     DECLARE_DYNAMIC(TerrainImportContour)
 
   public:
-    TerrainImportContour(CWnd* pParent = NULL);   // 标准构造函数
+    explicit TerrainImportContour(CWnd* pParent = NULL);   // 标准构造函数
     virtual ~TerrainImportContour();
 
     // 对话框数据

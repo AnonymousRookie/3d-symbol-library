@@ -34,7 +34,7 @@ void CSetColorButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState) {
     point[2] = CPoint(rcArrow.Width() / 2 + rcArrow.left, rcArrow.bottom);
     CBrush br;
     br.CreateSolidBrush(RGB(0, 0, 0));
-    CBrush* obr = (CBrush*)pDC->SelectObject(br);
+    CBrush* obr = reinterpret_cast<CBrush*>(pDC->SelectObject(br));
     pDC->Polygon(point, 3);
     pDC->SelectObject(&obr);
     // ----------------

@@ -99,7 +99,7 @@ void CFileView::FillFileView() {
 }
 
 void CFileView::OnContextMenu(CWnd* pWnd, CPoint point) {
-    CTreeCtrl* pWndTree = (CTreeCtrl*) &m_wndFileView;
+    CTreeCtrl* pWndTree = reinterpret_cast<CTreeCtrl*>(&m_wndFileView);
     ASSERT_VALID(pWndTree);
     if (pWnd != pWndTree) {
         CDockablePane::OnContextMenu(pWnd, point);

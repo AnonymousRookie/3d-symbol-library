@@ -890,7 +890,9 @@ void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y
         ptt->HuPo_L[0].Hp[2].y = y11 - m_Lj_Dh - Lt_h1;
         ptt->HuPo_L[0].Hp[2].z = z11;
         // 一级护坡的高度、边坡坡率、边坡类型
-        ptt->HuPo_L[0].h = Lt_h1; /**/ ptt->HuPo_L[0].m = Lt_m1; /**/ ptt->HuPo_L[0].style = 0;
+        ptt->HuPo_L[0].h = Lt_h1;
+        ptt->HuPo_L[0].m = Lt_m1;
+        ptt->HuPo_L[0].style = 0;
         /************************************************************************/
         /*                              二级边坡                                 */
         /************************************************************************/

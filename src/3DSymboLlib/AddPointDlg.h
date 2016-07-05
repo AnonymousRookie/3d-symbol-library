@@ -7,7 +7,7 @@ class CAddPointDlg : public CDialog {
     DECLARE_DYNAMIC(CAddPointDlg)
 
   public:
-    CAddPointDlg(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CAddPointDlg(CWnd* pParent = NULL);   // 标准构造函数
     virtual ~CAddPointDlg();
 
     // 对话框数据

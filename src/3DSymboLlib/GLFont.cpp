@@ -49,7 +49,7 @@ void CGLFont::C3dtext(LPCTSTR str, HFONT hFont, float z) {          // 3D文字�
 void CGLFont::Printfc3d(CString strText, HFONT hFont, float z) {    // 主要原理是获取文字的轮廓线，用线和弧线将文字转化成3D对象
     HDC hdc = wglGetCurrentDC();                                    // 设备场景
     HFONT hOldFont = (HFONT)::SelectObject(hdc, hFont);             // 将字体选入场景，返回之前的字体
-    UCHAR* pChar = (UCHAR*)strText.GetBuffer(strText.GetLength());  // 设置字符串长度
+    UCHAR* pChar = reinterpret_cast<UCHAR*>(strText.GetBuffer(strText.GetLength()));  // 设置字符串长度
     int32   nListNum;                                                 // 定义列表变量
     DWORD dwChar;                                                   // 定义字符指针
     GLYPHMETRICSFLOAT pgmf[1];                                      // 轮廓字体字符集的信息
@@ -114,7 +114,7 @@ void CGLFont:: Printftext(int32 x, int32 y, LPCTSTR lpszText, HFONT hFont) {
         BITMAPINFOHEADER bih;
         RGBQUAD col[2];
     } bic;                                                          // 定义单色位图结构
-    BITMAPINFO* binf = (BITMAPINFO*)&bic;                           // 获取位图结构信息
+    BITMAPINFO* binf = reinterpret_cast<BITMAPINFO*>(&bic);                           // 获取位图结构信息
     binf->bmiHeader.biSize     = sizeof(binf->bmiHeader);           // 获取结构信息长度
     binf->bmiHeader.biWidth    = bm.bmWidth;
     binf->bmiHeader.biHeight   = bm.bmHeight;
