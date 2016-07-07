@@ -41,25 +41,25 @@ float   g_texcoord  [MAP_W * MAP_W][2];     // 索引数组
 
 
 // 场景数据目录
-string g_sceneDataPath = "";
+string g_sceneDataPath = "";  // NOLINT
 
 
 // 系统设置配置文件名
-string g_systemConfigureFile = "";
+string g_systemConfigureFile = "";  // NOLINT
 
 
 // 符号库配置文件(路径+文件名)
 // string g_symbolConfigureFile = "";
 
-string g_point_symbolConfigureFile  = "";
-string g_line_symbolConfigureFile   = "";
-string g_area_symbolConfigureFile   = "";
+string g_point_symbolConfigureFile  = "";  // NOLINT
+string g_line_symbolConfigureFile   = "";  // NOLINT
+string g_area_symbolConfigureFile   = "";  // NOLINT
 
 
 float g_max_height = 0;  // 最大高程
 
 
-string g_recentlyOpenedProjectName = "";    // 选中的最近打开的工程文件名
+string g_recentlyOpenedProjectName = "";    // 选中的最近打开的工程文件名  // NOLINT
 
 // 最近打开的工程文件列表
 CStringArray g_strRecentOpenedFileArray;

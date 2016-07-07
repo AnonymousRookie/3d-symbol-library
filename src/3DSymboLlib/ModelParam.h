@@ -9,7 +9,7 @@ class ModelParam : public CDialog {
     DECLARE_DYNAMIC(ModelParam)
 
   public:
-    ModelParam(CWnd* pParent = NULL);   // 标准构造函数
+    explicit ModelParam(CWnd* pParent = NULL);   // 标准构造函数
     virtual ~ModelParam();
 
     // 对话框数据

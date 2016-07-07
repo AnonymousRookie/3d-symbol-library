@@ -2208,7 +2208,7 @@ int32 CMy3DSymbolLibNewView::FlyPathRead(char* pathfile) {
     while (m_inFile.ReadString(m_strszLine)) {
         ppt = new Cordinate;
         m_strszLine.TrimLeft(" ");
-        m_strszLine.TrimRight("	");
+        m_strszLine.TrimRight("	");  // NOLINT
         int32 nPos = m_strszLine.Find(",");
         tt = m_strszLine.Left(nPos);
         ppt->x = atof(tt);
@@ -4764,7 +4764,7 @@ void CMy3DSymbolLibNewView::OnModelScale() {
 /**************************************/
 void CMy3DSymbolLibNewView::OnConfigureSymbolList() {
     // TODO(jason): 在此添加命令处理程序代码
-    ModelListConfigureDialog mlcDlg;;
+    ModelListConfigureDialog mlcDlg;
     if (mlcDlg.DoModal() == IDOK) {
         // null
     }
@@ -5852,11 +5852,11 @@ void CMy3DSymbolLibNewView::CalcuateGridNum(int32* rowNum, int32* row_index_begi
 
 
 // sort(_pv.begin(),_pv.end(),comp);
-bool comp(Point3& p1, Point3& p2) {
+bool comp(const Point3& p1, const Point3& p2) {
     return p1._x < p2._x;
 }
 
-bool comp2(Point3& p1, Point3& p2) {
+bool comp2(const Point3& p1, const Point3& p2) {
     return p1._z < p2._z;
 }
 
@@ -5933,7 +5933,7 @@ void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int3
     // double line_pos_b = MAP_SCALE * (row_index_begin < row_index_end ? row_index_begin : row_index_end);
     // double line_pos_e = MAP_SCALE * (row_index_begin > row_index_end ? row_index_begin : row_index_end);
     double line_pos_b = (_line.pt1._x < _line.pt2._x) ? _line.pt1._x : _line.pt2._x;
-    double line_pos_e = (_line.pt1._x >= _line.pt2._x) ? _line.pt1._x : _line.pt2._x;;
+    double line_pos_e = (_line.pt1._x >= _line.pt2._x) ? _line.pt1._x : _line.pt2._x;
     for (int32 r = 0; r < MAP_W; ++r) {
         double b = static_cast<float>(-r) * MAP_SCALE;
         if (GetJDFrom2Line(&tmp_point, b, A, B, C)) {
@@ -6111,7 +6111,6 @@ void CMy3DSymbolLibNewView::OnMenuAreaFuse() {
     if (m_Area4_Array.GetSize() <= 0) {
         return;
     }
-    
     // =========================================================================================
     uint32 tmp_size = m_Area4_Array.GetSize();
     for (uint32 i = 0; i < tmp_size; ++i) {
@@ -6637,7 +6636,7 @@ int32 CMy3DSymbolLibNewView::FindTriangles_1_point_inPolygon(Area_4& m_area4) { 
 
 
 // 只有2个点在多边形形内的三角形(需重新三角化)
-int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) {
+int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) {  // NOLINT
     {
         int32 Vertex;
         for (int32 z = 0; z < MAP_W - 1; z++) {

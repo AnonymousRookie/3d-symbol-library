@@ -39,8 +39,7 @@ void TerrainImportContour::OnBnClickedButtonTerrainTexBroswer() {
     // TODO(jason): 在此添加控件通知处理程序代码
     CString tt, stt;
     FILE* fp;
-    CFileDialog FileDialog(TRUE, "地表纹理", NULL, OFN_HIDEREADONLY 
-                           | OFN_OVERWRITEPROMPT, 
+    CFileDialog FileDialog(TRUE, "地表纹理", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
                            "地表纹理sand(*.bmp)|*.bmp|文本格式(*.txt)|*.txt||", NULL);
     FileDialog.m_ofn.lpstrTitle = "选择地表纹理文件";
     if (FileDialog.DoModal() == IDOK)
@@ -58,10 +57,7 @@ void TerrainImportContour::OnBnClickedButtonContoureBroswer() {
     // TODO(jason): 在此添加控件通知处理程序代码
     CString tt, stt;
     FILE* fp;
-    CFileDialog FileDialog(TRUE, "等高势图", NULL, OFN_HIDEREADONLY \
-                           | OFN_OVERWRITEPROMPT, \
-                           "等高势图terrain(*.bmp)|*.bmp|\
-		文本格式(*.txt)|*.txt||", NULL);
+    CFileDialog FileDialog(TRUE, "等高势图", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, "等高势图terrain(*.bmp)|*.bmp|文本格式(*.txt)|*.txt||", NULL);
     FileDialog.m_ofn.lpstrTitle = "选择等高势图文件";
     if (FileDialog.DoModal() == IDOK)
         m_TerrainContour = FileDialog.GetPathName();

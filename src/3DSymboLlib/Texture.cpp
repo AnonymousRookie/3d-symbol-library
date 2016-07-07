@@ -23,7 +23,6 @@ int32 CTexture::LoadGLTextures(char* Filename) {
                       pImage->sizeY, GL_RGB, GL_UNSIGNED_BYTE, pImage->data);
     // pImage->data:告诉OpenGL纹理数据的来源。这里指向存放在pImage->data中的数据。
     // gluBuild2DMipmaps()代替glTexImage2D(),这样可以载入任意大小的图片
-    
     // 设置纹理模式
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);  // 双线过滤
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);  // 双线过滤
@@ -90,8 +89,8 @@ bool CTexture::MakeSkinTextureBind(char* TextureFileName,
         return state;
     }
     char id[10], version;
-    fread(id,     sizeof(char), 10,  file);
-    fread(&version, sizeof(char), 1,  file);
+    fread(id, sizeof(char), 10, file);  // NOLINT
+    fread(&version, sizeof(char), 1, file);  // NOLINT
     if (strncmp(id, "Hunter3D00", 10) != 0) {
         fclose(file);
         return false;
@@ -256,9 +255,9 @@ bool CTexture::LoadTGA(char* filename) {
             fread(TGAcompare, 1, sizeof(TGAcompare), file) != sizeof(TGAcompare) ||
             memcmp(TGAheader, TGAcompare, sizeof(TGAheader)) != 0               ||
             fread(header, 1, sizeof(header), file) != sizeof(header)) {
-        if (file == NULL)
+        if (file == NULL) {
             return FALSE;
-        else {
+        } else {
             fclose(file);
             return FALSE;
         }

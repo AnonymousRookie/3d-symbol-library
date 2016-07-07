@@ -108,8 +108,8 @@ bool InsidePolygon(CVector3 vIntersection, CVector3 Poly[], int64 verticeCount);
 bool IntersectedPolygon(CVector3 vPoly[], CVector3 vLine[], int32 verticeCount);
 
 
-int32 ClassifySphere(CVector3& vCenter,
-                   CVector3& vNormal, CVector3& vPoint, float radius, float& distance);
+int32 ClassifySphere(const CVector3& vCenter,
+                   const CVector3& vNormal, const CVector3& vPoint, float radius, const float& distance);
 
 
 

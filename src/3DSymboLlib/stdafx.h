@@ -75,7 +75,7 @@ extern CDesingScheme myDesingScheme;
 
 
 
-#define MAP_W       32         // size of map aint64 x-axis 32， 32*32地面方阵 
+#define MAP_W       32         // size of map aint64 x-axis 32， 32*32地面方阵
 #define MAP_SCALE   24.0f      // the scale of the terrain map，边长为24
 #define MAP         MAP_W*MAP_SCALE/2
 #define PAI         3.1415926       // 定义π常量

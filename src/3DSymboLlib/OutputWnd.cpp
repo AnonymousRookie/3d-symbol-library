@@ -69,7 +69,7 @@ void COutputWnd::OnSize(UINT nType, int32 cx, int32 cy) {
     m_wndTabs.SetWindowPos(NULL, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-void COutputWnd::AdjustHorzScroll(CListBox& wndListBox) {
+void COutputWnd::AdjustHorzScroll(CListBox& wndListBox) {  // NOLINT
     CClientDC dc(this);
     CFont* pOldFont = dc.SelectObject(&afxGlobalData.fontRegular);
     int32 cxExtentMax = 0;

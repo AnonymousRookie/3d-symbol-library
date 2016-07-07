@@ -945,8 +945,7 @@ void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y
         PtS_HuPo.GetAt(MN)->TW_left = TW;
         PtS_HuPo.GetAt(MN)->Lc = mLC;
         PtS_HuPo.GetAt(MN)->strJDStyle = strJDstyle;
-    }  // End 左侧边坡
-    else if (LeftRight == 1) {  // 右侧边坡
+    } else if (LeftRight == 1) {  // 右侧边坡
         ptt = PtS_HuPo.GetAt(PtS_HuPo.GetSize() - 1);
         ptt->Huponums_R = 3;
         /************************************************************************/
@@ -967,7 +966,9 @@ void CDesingScheme::GetDMJD(double x1, double y1, double z1, double x2, double y
         ptt->HuPo_R[0].Hp[2].y = y12 - m_Lj_Dh - Lt_h1;
         ptt->HuPo_R[0].Hp[2].z = z12;
         // 一级护坡的高度、边坡坡率、边坡类型
-        ptt->HuPo_R[0].h = Lt_h1; /**/ ptt->HuPo_R[0].m = Lt_m1; /**/ ptt->HuPo_R[0].style = 0;
+        ptt->HuPo_R[0].h = Lt_h1;
+        ptt->HuPo_R[0].m = Lt_m1;
+        ptt->HuPo_R[0].style = 0;
         /************************************************************************/
         /*                              二级边坡                                 */
         /************************************************************************/
@@ -1052,9 +1053,13 @@ void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, doub
         /*                              一级边坡                                 */
         /************************************************************************/
         // 点1
-        ptt->HuPo_L[0].Hp[0].x = tx0; /**/ ptt->HuPo_L[0].Hp[0].y = ty0;  /**/ ptt->HuPo_L[0].Hp[0].z = tz0;
+        ptt->HuPo_L[0].Hp[0].x = tx0;
+        ptt->HuPo_L[0].Hp[0].y = ty0;
+        ptt->HuPo_L[0].Hp[0].z = tz0;
         // 点2
-        ptt->HuPo_L[0].Hp[1].x = tx1; /**/ ptt->HuPo_L[0].Hp[1].y = ty1;  /**/ ptt->HuPo_L[0].Hp[1].z = tz1;
+        ptt->HuPo_L[0].Hp[1].x = tx1;
+        ptt->HuPo_L[0].Hp[1].y = ty1;
+        ptt->HuPo_L[0].Hp[1].z = tz1;
         // 点3
         L1 = L + Lt_h1 * Lt_m1;
         Get3DCorrdinate(x1, y1, z1, x2, y2, z2, dx, dz, L1, &x11, &y11, &z11, &x12, &y12, &z12, &x21, &y21, &z21, &x22, &y22, &z22, &mangle);
@@ -1117,8 +1122,7 @@ void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, doub
         PtS_HuPo.GetAt(MN)->TW_left = TW;
         PtS_HuPo.GetAt(MN)->Lc = mLC;
         PtS_HuPo.GetAt(MN)->strJDStyle = strJDstyle;
-    }  // End 左侧边坡
-    else if (LeftRight == 1) {  // 右侧边坡
+    } else if (LeftRight == 1) {  // 右侧边坡
         ptt = PtS_HuPo.GetAt(PtS_HuPo.GetSize() - 1);
         ptt->Huponums_R = 3;
         /************************************************************************/
@@ -1139,7 +1143,9 @@ void CDesingScheme::GetDMJDLast(double x1, double y1, double z1, double x2, doub
         ptt->HuPo_R[0].Hp[2].y = y22 - m_Lj_Dh - Lt_h1;
         ptt->HuPo_R[0].Hp[2].z = z22;
         // 一级护坡的高度、边坡坡率、边坡类型
-        ptt->HuPo_R[0].h = Lt_h1; /**/ ptt->HuPo_R[0].m = Lt_m1; /**/ ptt->HuPo_R[0].style = 0;
+        ptt->HuPo_R[0].h = Lt_h1;
+        ptt->HuPo_R[0].m = Lt_m1;
+        ptt->HuPo_R[0].style = 0;
         /************************************************************************/
         /*                              二级边坡                                 */
         /************************************************************************/

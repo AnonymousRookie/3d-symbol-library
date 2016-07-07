@@ -23,7 +23,7 @@
         bool MakeAlphaTextureBind(char* TextureFileName, char* AlphaFileName);
         bool MakeAlphaTextureBind(char* TextureFileName);
         bool MakeSkinTextureBind(char* TextureFileName, bool bLinear, bool bMip);
-        bool LoadTGA(char* filename)    ;
+        bool LoadTGA(char* filename);
 
 
 

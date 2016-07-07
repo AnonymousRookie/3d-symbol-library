@@ -101,9 +101,9 @@ BOOL CDialogModelList::OnInitDialog() {
         int32 fileNum = 0;
         // vector<CString> fileName;
         // 搜索与指定的文件名称匹配的第一个实例，若成功则返回第一个实例的句柄，否则返回-1L
-        if ((lfDir = _findfirst(dir, &fileDir)) == -1l)
+        if ((lfDir = _findfirst(dir, &fileDir)) == -1l) {
             printf("No file is found\n");
-        else {
+        } else {
             printf("file list:\n");
             do {
                 printf("%s\n", fileDir.name);  // XXX.format

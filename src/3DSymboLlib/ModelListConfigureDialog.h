@@ -34,7 +34,7 @@ class ModelListConfigureDialog : public CDialog {
     afx_msg void OnBnClickedCancel();
     CTreeCtrl m_configureModeListTree;
     virtual BOOL OnInitDialog();
-    afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
+    afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);  // NOLINT
     afx_msg void OnEditDeleteSymbol();
     afx_msg void OnTvnSelchangedTreeCongigureModellist(NMHDR* pNMHDR, LRESULT* pResult);
     CStatic m_image;

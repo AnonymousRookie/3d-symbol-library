@@ -321,9 +321,7 @@ void ModelListConfigureDialog::OnTvnSelchangedTreeCongigureModellist(NMHDR* pNMH
             if (0 == i) {
                 imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._3DSFolder.c_str() + tmp + selectItemText + ".bmp";
                 // MessageBox(imgPathAndName,"");
-            }
-            // PNG
-            else if (1 == i) {
+            } else if (1 == i) {  // PNG
                 imgPathAndName = g_sceneDataPath.c_str() + tmp + g_symbolFolder._CityFolder.c_str() + tmp + selectItemText + ".png";
                 // MessageBox(imgPathAndName,"");
                 GetDlgItem(IDC_STATIC_IMAGE)->GetParent()->RedrawWindow();

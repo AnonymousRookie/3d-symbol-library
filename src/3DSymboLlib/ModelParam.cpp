@@ -84,8 +84,9 @@ void ModelParam::OnBnClickedButtonChangeModelPath() {
         m_TextureName = selectItem + ".bmp";
         modelChanged = true;
         scale = 1;   // 变换成新的模型，模型的缩放比例要为1
-    } else
+    } else {
         return;
+    }
     this->UpdateData(FALSE);
 }
 
@@ -103,8 +104,9 @@ void ModelParam::OnBnClickedButtonChangeModelTexture() {
         isModelTextureUpdated = TRUE;
         m_TexturePathAndName = m_StoneTexturePath;
         scale = 1;
-    } else
+    } else {
         return;
+    }
     // 在Edit控件中显示纹理图片名
     m_TextureName = selectItem;
     UpdateData(FALSE);
