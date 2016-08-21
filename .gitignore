@@ -3,8 +3,13 @@
 ipch
 /temp/*
 /bin/*
+/bin/Log/*
+!/bin/Log
 *.vcxproj.user
-!nothing.txt
 astyle.exe
 *.opensdf
 !*.dll
+/lib/glog/Debug/*
+/lib/glog/Release/*
+/lib/glog/vsprojects/libglog_static/Release/*
+!nothing.txt

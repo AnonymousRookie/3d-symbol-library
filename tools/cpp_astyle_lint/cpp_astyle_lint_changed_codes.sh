@@ -10,7 +10,9 @@ fi
 
 # We should pass only added or modified C/C++ source files to cppcheck.
 changed_files=$(git diff-index --cached $against | \
-	grep -E '[MA]	.*\.(c|cpp|h)$' | cut -d'	' -f 2)
+	grep -E '[MA]	.*\.(c|cpp|h)$' | \
+	grep -v 'glog' | \
+	cut -d'	' -f 2)
 
 astyle_args="--style=google --delete-empty-lines --suffix=none --indent=spaces=4 --min-conditional-indent=2 --align-pointer=type --align-reference=type --indent-switches --indent-cases --indent-col1-comments --pad-oper --pad-header --unpad-paren --close-templates --convert-tabs --mode=c"
 ignore_lists="-legal/copyright,-whitespace/line_length,-build/include_what_you_use,-whitespace/braces,-build/include,-whitespace/blank_line,-whitespace/ending_newline,-build/header_guard,-readability/streams,-whitespace/parens,-whitespace/operators,-build/storage_class,-whitespace/labels"
