@@ -7186,7 +7186,7 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
         }
     }
     return 0;
-}
+}  // NOLINT
 
 
 

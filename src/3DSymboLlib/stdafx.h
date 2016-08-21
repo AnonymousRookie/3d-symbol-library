@@ -97,4 +97,4 @@ extern CDesingScheme myDesingScheme;
 
 #include <gdiplus.h>             // GDI+声明，可以GDI/GDI+混合使用
 #pragma comment(lib, "gdiplus.lib")
-using namespace Gdiplus;
+using namespace Gdiplus;  // NOLINT

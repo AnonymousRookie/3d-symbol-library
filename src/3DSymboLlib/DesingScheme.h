@@ -4,7 +4,7 @@
 
 #include <math.h>
 #include <iostream>
-using namespace std;
+using namespace std;  // NOLINT
 #include <vector>
 #include "define.h"
 
