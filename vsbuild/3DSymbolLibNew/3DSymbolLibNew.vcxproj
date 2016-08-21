@@ -45,13 +45,15 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\temp\</IntDir>
-    <IncludePath>$(SolutionDir)..\include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\lib\opengl\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\include\;$(SolutionDir)..\lib\glog\src\windows\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\lib\opengl\;$(SolutionDir)..\lib\glog\Debug\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\temp\</IntDir>
+    <LibraryPath>$(SolutionDir)..\lib\opengl\;$(SolutionDir)..\lib\glog\Release\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\include\;$(SolutionDir)..\lib\glog\src\windows\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

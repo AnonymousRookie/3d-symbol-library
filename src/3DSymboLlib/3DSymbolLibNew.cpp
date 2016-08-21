@@ -127,6 +127,20 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     // 初始化GID+
     GdiplusStartupInput gdiplusStartupInput;
     GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
+    // Init google log lib
+    FLAGS_log_dir = ".\\Log";  // 设置日志文件保存目录,这个目录必须是已经存在的,否则不能生成日志文件.
+    CString strLogFolderPath = ".\\Log";
+    // 判断路径是否存在
+    if (!PathIsDirectory(strLogFolderPath)) {
+        if (!CreateDirectory(strLogFolderPath, NULL)) {
+            CString strMsg;
+            strMsg.Format("创建路径\"%s\"失败！是否继续?", strLogFolderPath);
+            AfxMessageBox(strMsg, MB_YESNO);
+        }
+    }
+    // GLog生成的文件名格式是[文件名].[计算机名].[Windows用户名].[log].[等级].[年月日时分秒].[PID]例如:GOOGLE.ZHANGJIE-PC.zhangjie.log.INFO.20160821-194510.4532
+    // 每个进程中至少要执行1次InitGoogleLogging(),否则不产生日志文件.例如:只在xxApp::InitInstance()中调用一次InitGoogleLogging(),xxDlg中不必调用也会把日志输出到指定文件.
+    google::InitGoogleLogging("LOG-3DLIB");  // 设置日志文件名中的"文件名"字段.
     // [ADD]
     // ==============================================================
     // 读取系统设置配置文件
@@ -213,8 +227,9 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
 }
 
 int32 CMy3DSymbolLibNewApp::ExitInstance() {
-
     GdiplusShutdown(m_gdiplusToken);
+    // 停止GLog, 与InitGoogleLogging()成对使用, 没有这句会造成内存泄漏
+    google::ShutdownGoogleLogging();
     AfxOleTerm(FALSE);
     return CWinAppEx::ExitInstance();
 }

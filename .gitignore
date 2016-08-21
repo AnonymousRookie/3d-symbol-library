@@ -5,6 +5,8 @@ ipch
 /bin/*
 /bin/Log/*
 !/bin/Log
+/vsbuild/3DSymbolLibNew/Log/*
+!/vsbuild/3DSymbolLibNew/Log
 *.vcxproj.user
 astyle.exe
 *.opensdf
@@ -12,4 +14,5 @@ astyle.exe
 /lib/glog/Debug/*
 /lib/glog/Release/*
 /lib/glog/vsprojects/libglog_static/Release/*
+/lib/glog/vsprojects/libglog_static/Debug/*
 !nothing.txt
