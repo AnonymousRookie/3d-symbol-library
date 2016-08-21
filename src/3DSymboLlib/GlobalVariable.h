@@ -12,7 +12,7 @@
 #include <algorithm>
 #include "define.h"
 
-using namespace std;
+using namespace std;  // NOLINT
 
 
 // XML 与 tree control
