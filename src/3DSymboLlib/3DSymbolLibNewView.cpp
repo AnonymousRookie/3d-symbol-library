@@ -2936,6 +2936,7 @@ void CMy3DSymbolLibNewView::On3dsModelLoad() {
         }
         if ((fp = fopen(m_3DModelPath, "r")) == NULL) {
             MessageBox("3D模型文件不存在!", "初始化3D模型", MB_ICONINFORMATION + MB_OK);
+            LOGGER_ERROR << "3D模型文件不存在!";
             exit(-1);
         }
         p3d = new CModelParamStruct;
@@ -3310,6 +3311,7 @@ void CMy3DSymbolLibNewView::LoadPNG(const char* fileName, GLuint& texture) {  //
     HRESULT hr = img.Load(fileName);
     if (!SUCCEEDED(hr)) {                            // 文件加载失败
         MessageBox(NULL, "文件加载失败", MB_OK);
+        LOGGER_ERROR << "文件加载失败!";
     }
     HBITMAP hbmp = img;
     GetObject(hbmp, sizeof(bm), &bm);
@@ -3345,6 +3347,7 @@ void CMy3DSymbolLibNewView::OnWeatherLoad() {
         }
         if ((fp = fopen(weatherSymbolTexPath, "r")) == NULL) {
             MessageBox("天气符号文件不存在!", "初始化天气符号", MB_ICONINFORMATION + MB_OK);
+            LOGGER_ERROR << "天气符号文件不存在!";
             exit(-1);
         }
         char cc[256];
@@ -3450,6 +3453,7 @@ void CMy3DSymbolLibNewView::On3dTreeLoad() {
         }
         if ((fp = fopen(treeTexPath, "r")) == NULL) {
             MessageBox("景观树文件不存在!", "初始化景观树模型", MB_ICONINFORMATION + MB_OK);
+            LOGGER_ERROR << "景观树文件不存在!";
             exit(-1);
         }
         p3dtree = new CModelStruct;
@@ -3464,6 +3468,7 @@ void CMy3DSymbolLibNewView::On3dTreeLoad() {
         paramSet_modeless_dlg->ShowWindow(SW_SHOW);
     } else {
         MessageBox("树木的大小超出了50!");
+        LOGGER_WARNING << "树木的大小超出了50!";
     }
 }
 
@@ -3870,6 +3875,7 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
     BOOL b_open = file.Open(filename, CStdioFile::modeRead);
     if ((!b_open) || (file == NULL)) {
         MessageBox(_T("工程不存在!\n") + filename, _T("打开工程文件"), MB_ICONWARNING + MB_OK);
+        LOGGER_ERROR << "工程不存在!";
         return;
     } else {
         CString tmpStr = filename.Right(4);
@@ -3970,62 +3976,7 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         CString txtureFF = tmpPath + "\\边坡平台\\边坡平台2.bmp";
         m_cFillFaceTxture.LoadGLTextures(txtureFF.GetBuffer(0));
         //==========================================================
-        // ----------------------------------------------------
-        /*
-        // 线路
-        CString strLine;
-        CString strJDNumber;
-        int32 intJDNumber;
-        CString strJDPositions;
 
-        file.ReadString(strLine);
-        file.ReadString(strJDNumber);
-        intJDNumber = atoi(strJDNumber);
-
-        PCordinate tmpJD = new Cordinate;
-        PCurve_R_L0_Struct tmpCurveRL0 = new Curve_R_L0_Struct;
-
-        file.ReadString(strJDPositions);
-
-        {
-            curPos = 0; tokenID = 0;
-            CString temp = "0.000";
-            while (temp != _T(""))
-            {
-                tokenID += 1;
-                temp = strJDPositions.Tokenize(" ", curPos);
-
-                if(temp != _T(""))
-                {
-                    if(tokenID%5 == 1)
-                    tmpJD->x = atof(temp);
-                    else if(tokenID%5 == 2)
-                        tmpJD->y = atof(temp);
-                    else if(tokenID%5 == 3)
-                        tmpJD->z = atof(temp);
-                    else if(tokenID%5 == 4)
-                        tmpCurveRL0->curve_R = atoi(temp);
-                    else if(tokenID%5 == 0)
-                    {
-                        tmpCurveRL0->curve_L0 = atoi(temp);
-                        fun(tmpJD, tmpCurveRL0);
-                        tmpJD = new Cordinate;
-                        tmpCurveRL0 = new Curve_R_L0_Struct;
-                    }
-                }
-            }
-        }
-
-        int32 s1 = myDesingScheme.PtS_JD.GetSize();
-        float a;
-        for(int32 i=0;i<s1;++i)
-        {
-            a = myDesingScheme.PtS_JD[i]->x;
-        }
-        int32 s2 = myDesingScheme.JDCurveElements.GetSize();
-
-        file.Close();
-        */
         // ----------------------------------------------------
         // 开始场景渲染 配置天空盒
         CString skyBoxPathPre = m_AllDataPath + "\\" + m_SkyBoxFolder + "\\" + m_SkyBoxKindFolder + "\\";
@@ -4477,6 +4428,7 @@ bool CMy3DSymbolLibNewView::ScenSave(CString scenePth) {
     BOOL openFlag = file.Open(scenePth, CStdioFile::modeCreate | CStdioFile::modeWrite);
     if (file == NULL || openFlag == FALSE) {
         MessageBox("无效的工程文件名!", "保存工程", MB_ICONINFORMATION + MB_OK);
+        LOGGER_WARNING << "无效的工程文件名!";
         return FALSE;
     } else {
         /************************************************************************/
@@ -4529,6 +4481,7 @@ int32 CMy3DSymbolLibNewView::savePointSymbolFile(CString filename) {
     file.Open(filename, CStdioFile::modeCreate | CStdioFile::modeWrite);
     if (file == NULL) {
         MessageBox("点文件不存在!", "保存点文件", MB_ICONINFORMATION + MB_OK);
+        LOGGER_ERROR << "点文件不存在!";
         return FALSE;
     } else {
         file.WriteString("POINT\n");
@@ -4627,6 +4580,7 @@ int32 CMy3DSymbolLibNewView::saveAreaSymbolFile(CString filename) {
     file.Open(filename, CStdioFile::modeCreate | CStdioFile::modeWrite);
     if (file == NULL) {
         MessageBox("面文件不存在!", "保存面文件", MB_ICONINFORMATION + MB_OK);
+        LOGGER_ERROR << "面文件不存在!";
         return FALSE;
     } else {
         file.WriteString("AREA\n");
@@ -5574,6 +5528,7 @@ void CMy3DSymbolLibNewView::OnSceneNew() {
             file.Open(FileName, CStdioFile::modeCreate | CStdioFile::modeWrite);
             if (file == NULL) {
                 MessageBox("ERROR!", "ERROR", MB_ICONINFORMATION + MB_OK);
+                LOGGER_ERROR << "ERROR!";
                 return;
             } else {
                 CString tmpSceneConfig = "SceneConfig";
