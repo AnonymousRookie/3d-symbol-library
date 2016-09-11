@@ -127,7 +127,7 @@ void CGLFont:: Printftext(int32 x, int32 y, LPCTSTR lpszText, HFONT hFont) {
     glPixelStorei(GL_UNPACK_ALIGNMENT , 1);                         // 控制像素存储
     glRasterPos2i(x, y);                                            // 平面定位
     glBitmap(size.cx, size.cy, 0, 0, 0, 0, Bits);                   // 平面位图显示
-    delete Bits;                                                    // 删除Bits
+    delete[] Bits;                                                    // 删除Bits
     SelectObject(MDC, oldBmp);                                      // 恢复位图特性
     ::DeleteDC(MDC);                                                // 删除设备场景
 }

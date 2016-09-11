@@ -509,10 +509,6 @@ unsigned char* CMy3DSymbolLibNewView::LoadBit(char* filename, BITMAPINFOHEADER* 
         return NULL;                                            // 返回空
     }
     fread(Image, 1, bitmap->biSizeImage, filePtr);              // 将图形数据读入
-    if (Image == NULL) {                                        // 数据读入为空
-        fclose(filePtr);                                        // 关闭文件
-        return NULL;                                            // 返回空
-    }
     for (imageIdx = 0; imageIdx < bitmap->biSizeImage; imageIdx += 3) {
         tempRGB = Image[imageIdx];
         Image[imageIdx] = Image[imageIdx + 2];
@@ -1118,6 +1114,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             CString warningMsg;                     // 提示信息
             if ((ppt == NULL)) {
                 AfxMessageBox("Failed to add a new ppt");
+                delete pDegree;
                 return;
             }
             if (1) {
@@ -1243,10 +1240,10 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             m_bMouseMove3DModelPtNums++;               // 选择点数 + 1
             if (m_bMouseMove3DModelPtNums == 1) {       // 如果只选择了1个点
                 // JudgeRayIntersect(nearPoint, n_vector, resultP);
-                PCordinate ppt = new Cordinate;
+                /*PCordinate ppt = new Cordinate;
                 ppt->x = wx;
                 ppt->y = wy;
-                ppt->z = wz;          // 三维坐标
+                ppt->z = wz;     */     // 三维坐标
                 // 遍历所有的3D模型,判断是否在范围内
                 // 在移动模型时，保障初始鼠标位置在模型范围内，这样有利于控制模型位置
                 // 射线选择功能
@@ -1370,8 +1367,8 @@ void CMy3DSymbolLibNewView::ScreenToGL2(CPoint point, GLdouble& wx , GLdouble& w
 /********************************************************/
 /* Function: 计算2个向量之间的夹角                      */
 /********************************************************/
-void CMy3DSymbolLibNewView::getDegreeBetween2Vectors(CVector3 v1_Begin, CVector3 v1_End,
-        CVector3 v2_Begin, CVector3 v2_End, float* pDegreeRet/*返回结果*/) {
+void CMy3DSymbolLibNewView::getDegreeBetween2Vectors(CVector3& v1_Begin, CVector3& v1_End,  /* NOLINT */
+        CVector3& v2_Begin, CVector3& v2_End, float* pDegreeRet/*返回结果*/) {  // NOLINT
     CVector3 v1 = v1_End - v1_Begin;
     CVector3 v2 = v2_End - v2_Begin;
     float dotProductRet = DotProduct(v1, v2);  // 点积
@@ -2115,7 +2112,6 @@ void CMy3DSymbolLibNewView::OnFlypathSave() {
     CFileDialog FileDialogBoxFile(FALSE, NULL, 0, FileDialogFlag, FileFilter, this);
     FileDialogBoxFile.m_ofn.lpstrTitle = "保存飞行路径文件";
     char        FileName[200];
-    CString tt[3];
     if (FileDialogBoxFile.DoModal() == IDOK) {  // 如果对话框成果打开
         NeededFile = FileDialogBoxFile.GetPathName();  // 得到文件名
         // sprintf(FileName, "%s", NeededFile);
@@ -2163,7 +2159,6 @@ void CMy3DSymbolLibNewView::OnFlyOpenpath() {
     FileDialogBoxFile.m_ofn.lpstrTitle = "打开飞行路径文件";
     FileDialogBoxFile.m_ofn.lpstrInitialDir = m_AllDataPath;
     char        FileName[200];
-    CString tt[3];
     if (FileDialogBoxFile.DoModal() == IDOK) {           // 如果对话框成果打开
         NeededFile = FileDialogBoxFile.GetPathName();   // 得到文件名
         // sprintf(FileName, "%s", NeededFile);
@@ -2692,11 +2687,10 @@ void CMy3DSymbolLibNewView::SetClockProjectionNavigate() {
 void CMy3DSymbolLibNewView::DrawNorthPt() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);      // 以填充方式绘制
     glDisable(GL_TEXTURE_2D);                       // 关闭纹理
-    float R = 0.5;
     float x1, y1, x2, y2, x3, y3;
     float mPtangle = 25;
     float tempangle;
-    float L, L1, L2;
+    float L1, L2;
     L1 = 0.3;
     L2 = 0.2;
     x1 = 0.5;
@@ -2706,7 +2700,6 @@ void CMy3DSymbolLibNewView::DrawNorthPt() {
     // 如果指北针指向角位于第1象限
     if (m_NorthPtangle >= 0 && m_NorthPtangle <= 90) {
         tempangle = m_NorthPtangle - mPtangle;
-        L = 0.1 / cos(mPtangle * PAI_D180);
         x2 = x1 - L2 * cos(tempangle * PAI_D180);
         y2 = y1 - L2 * sin(tempangle * PAI_D180);
         glColor3f(1.0, 1.0, 0.0);                       // 设置颜色
@@ -2961,6 +2954,7 @@ void CMy3DSymbolLibNewView::On3dsModelLoad() {
             Load3DModel(p3d, MODEL_NEW);
             m_i3DModelNum++;
         }
+        fclose(fp);
     }
 }
 
@@ -3123,6 +3117,7 @@ void CMy3DSymbolLibNewView::OnTreeLoad() {
         paramSet_modeless_dlg->m_strTitle = "景观树模型  参数初始化";
         paramSet_modeless_dlg->m_modeParam.type = "tree";
         paramSet_modeless_dlg->ShowWindow(SW_SHOW);
+        fclose(fp);
     } else {
         MessageBox("树木的大小超出了50!");
     }
@@ -3213,6 +3208,7 @@ void CMy3DSymbolLibNewView::OnCitySymbolLoad() {
         }
         if ((fp = fopen(citySymbolTexPath, "r")) == NULL) {
             MessageBox("城市标识符号文件不存在!", "初始化城市标识符号", MB_ICONINFORMATION + MB_OK);
+            LOGGER_ERROR << "城市标识符号文件不存在!";
             exit(-1);
         }
         pCitySymbol = new CModelStruct;
@@ -3225,6 +3221,7 @@ void CMy3DSymbolLibNewView::OnCitySymbolLoad() {
         paramSet_modeless_dlg->m_strTitle = "城市标识  参数初始化";
         paramSet_modeless_dlg->m_modeParam.type = "CitySymbol";
         paramSet_modeless_dlg->ShowWindow(SW_SHOW);
+        fclose(fp);
     }
 }
 
@@ -3355,6 +3352,7 @@ void CMy3DSymbolLibNewView::OnWeatherLoad() {
         _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, weatherSymbolTexPath);
         LoadT8(cc, g_weatherTex);
         bIsWeatherLoad = true;
+        fclose(fp);
     }
 }
 
@@ -3466,6 +3464,7 @@ void CMy3DSymbolLibNewView::On3dTreeLoad() {
         paramSet_modeless_dlg->m_strTitle = "景观树模型  参数初始化";
         paramSet_modeless_dlg->m_modeParam.type = "3dtree";
         paramSet_modeless_dlg->ShowWindow(SW_SHOW);
+        fclose(fp);
     } else {
         MessageBox("树木的大小超出了50!");
         LOGGER_WARNING << "树木的大小超出了50!";
@@ -3613,11 +3612,11 @@ BOOL CMy3DSymbolLibNewView::OnMouseWheel(UINT nFlags, int16 zDelta, CPoint pt) {
 // 如果相交，返回相交时间t
 // t为0-1之间的值
 float CMy3DSymbolLibNewView::RayIntersect(
-    CVector3 rayStart,                  // 射线起点
-    CVector3 rayDir,                    // 射线长度和方向
-    CVector3 returnNormal,              // 可选的，相交点处法向量
-    CVector3 min,
-    CVector3 max
+    CVector3& rayStart,                  // 射线起点
+    CVector3& rayDir,                    // 射线长度和方向
+    CVector3& returnNormal,              // 可选的，相交点处法向量
+    CVector3& min,
+    CVector3& max
 ) {
     // 如果未相交则返回这个大数
     /*final*/const float kNoIntersection = 1e30f;
@@ -3760,9 +3759,9 @@ float CMy3DSymbolLibNewView::RayIntersect(
 }
 
 void CMy3DSymbolLibNewView::JudgeRayIntersect(
-    CVector3 rayStart,                  // 射线起点
-    CVector3 rayDir,                    // 射线长度和方向
-    CVector3 returnNormal               // 可选的，相交点处法向量
+    CVector3& rayStart,                  // 射线起点
+    CVector3& rayDir,                    // 射线长度和方向
+    CVector3& returnNormal               // 可选的，相交点处法向量
 ) {
     // 获取模型中三维点极值
     int32 minx, maxx, miny, maxy, minz, maxz;
@@ -3976,7 +3975,6 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         CString txtureFF = tmpPath + "\\边坡平台\\边坡平台2.bmp";
         m_cFillFaceTxture.LoadGLTextures(txtureFF.GetBuffer(0));
         //==========================================================
-
         // ----------------------------------------------------
         // 开始场景渲染 配置天空盒
         CString skyBoxPathPre = m_AllDataPath + "\\" + m_SkyBoxFolder + "\\" + m_SkyBoxKindFolder + "\\";
@@ -5057,7 +5055,8 @@ void CMy3DSymbolLibNewView::drawFillFace(vector<Railway3DCordinate> fillFacePoin
 /**************************************/
 void CMy3DSymbolLibNewView::DrawCenterLine(int64 index, BOOL ifSelectLine) {
     CString tt;
-    double x1, y1, z1, x2, y2, z2;
+    double x1 = 0.0, y1 = 0.0, z1 = 0.0;
+    double x2 = 0.0, y2 = 0.0, z2 = 0.0;
     double x0, y0, z0;
     float DerDistence = 2.0;
     float Dh;

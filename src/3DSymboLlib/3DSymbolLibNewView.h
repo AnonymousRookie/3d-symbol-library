@@ -403,8 +403,8 @@ class CMy3DSymbolLibNewView : public CView {
     void DisplayHelp();
     CGLFont* Font;          // 显示飞行时快捷键文字提示
     int32 m_Time,             // 开始时间
-        m_Fram,             // 显示次数
-        tim;                // 刷新速度
+          m_Fram,             // 显示次数
+          tim;                // 刷新速度
     HFONT   hFont, hFont0;
     void    TextFlyHelp();  // 显示文字
 
@@ -468,8 +468,8 @@ class CMy3DSymbolLibNewView : public CView {
 
 
     // 计算2个向量之间的夹角,由参数返回
-    void getDegreeBetween2Vectors(CVector3 v1_Begin/*in*/, CVector3 v1_End/*in*/,
-                                  CVector3 v2_Begin/*in*/, CVector3 v2_End/*in*/, float* pDegreeRet/*out*/);
+    void getDegreeBetween2Vectors(CVector3& v1_Begin/*in*/, CVector3& v1_End/*in*/,  /* NOLINT */
+                                  CVector3& v2_Begin/*in*/, CVector3& v2_End/*in*/, float* pDegreeRet/*out*/);  // NOLINT
 
     void drawFillFace(vector<Railway3DCordinate> fillFacePoints);
 
@@ -548,17 +548,17 @@ class CMy3DSymbolLibNewView : public CView {
 
     // 射线拾取物体
     void JudgeRayIntersect(
-        CVector3 rayStart,      // 射线起点
-        CVector3 rayDir,        // 射线长度和方向
-        CVector3 returnNormal   // 可选的，相交点处法向量
+        CVector3& rayStart,      // 射线起点
+        CVector3& rayDir,        // 射线长度和方向
+        CVector3& returnNormal   // 可选的，相交点处法向量
     );
     // 判断射线是否与AABB包围盒，并返回交点
     float RayIntersect(
-        CVector3 rayStart,      // 射线起点
-        CVector3 rayDir,        // 射线长度和方向
-        CVector3 returnNormal,  // 可选的，相交点处法向量
-        CVector3 min,           // 包围盒左下角顶点
-        CVector3 max            // 包围盒右上角顶点
+        CVector3& rayStart,      // 射线起点
+        CVector3& rayDir,        // 射线长度和方向
+        CVector3& returnNormal,  // 可选的，相交点处法向量
+        CVector3& min,           // 包围盒左下角顶点
+        CVector3& max            // 包围盒右上角顶点
     );
 
     // 拾取模型集合

@@ -65,10 +65,17 @@ unsigned char* LoadBitmapFile(char* filename, BITMAPINFOHEADER* bitmapInfoHeader
  blending
 *****************************************************************************/
 unsigned char* LoadBitmapFileWithAlpha(char* filename, BITMAPINFOHEADER* bitmapInfoHeader) {
+    if (nullptr == filename) {
+        LOGGER_ERROR << "nullptr == filename";
+        return nullptr;
+    }
     unsigned char* bitmapImage = LoadBitmapFile(filename, bitmapInfoHeader);
     unsigned char* bitmapWithAlpha = (unsigned char*)malloc(bitmapInfoHeader->biSizeImage * 4 / 3);
-    if (bitmapImage == NULL || bitmapWithAlpha == NULL)
-        return NULL;
+    if (bitmapImage == nullptr) {
+        LOGGER_ERROR << "bitmapImage == nullptr";
+        free(bitmapWithAlpha);
+        return nullptr;
+    }
     // loop through the bitmap data
     for (uint32 src = 0, dst = 0; src < bitmapInfoHeader->biSizeImage; src += 3, dst += 4) {
         // if the pixel is black, set the alpha to 0. Otherwise, set it to 255.

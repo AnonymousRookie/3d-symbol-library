@@ -11,11 +11,15 @@ int32 CTexture::LoadGLTextures(char* Filename) {
     if ((pFile = fopen(Filename, "rb")) == NULL) {  // 尝试打开文件
         MessageBox(NULL, "不能够打开BMP纹理文件!", "打开BMP纹理文件失败", MB_OK);
         MessageBox(NULL, Filename, "Error", MB_OK);
+        LOGGER_ERROR << "打开BMP纹理文件失败!";
         return NULL;  // 打开文件失败,返回 false
     }
     pImage = auxDIBImageLoad(Filename);  // 读取图象数据并将其返回(使用glaux辅助库函数auxDIBImageLoad来载入位图)
-    if (pImage == NULL)  // 如果读取失败,返回
+    if (pImage == NULL) {  // 如果读取失败,返回
+        LOGGER_ERROR << "读取图象数据失败!";
+        fclose(pFile);
         return false;
+    }
     glGenTextures(1, &m_nTxt);  // 创建纹理,告诉OpenGL我们想生成一个纹理名字(如果您想载入多个纹理，加大数字)。
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glBindTexture(GL_TEXTURE_2D, m_nTxt);  // 使用来自位图数据生成 的典型纹理
@@ -86,6 +90,8 @@ bool CTexture::MakeSkinTextureBind(char* TextureFileName,
     FILE* file;
     if ((file = fopen(TextureFileName, "rb")) == NULL) {
         state = false;
+        delete[] Image;
+        LOGGER_ERROR << "TextureFileName failed!!!";
         return state;
     }
     char id[10], version;
@@ -93,10 +99,12 @@ bool CTexture::MakeSkinTextureBind(char* TextureFileName,
     fread(&version, sizeof(char), 1, file);  // NOLINT
     if (strncmp(id, "Hunter3D00", 10) != 0) {
         fclose(file);
+        delete[] Image;
         return false;
     }
     if (version != 1) {
         fclose(file);
+        delete[] Image;
         return false;
     }
     fread(Image, sizeof(unsigned char), 256 * 256 * 3, file);
@@ -171,7 +179,11 @@ bool CTexture::MakeAlphaTextureBind(char* TextureFileName, char* AlphaFileName) 
             alpha[4 * a + 1] = Image->data[a * 3 + 1];
             alpha[4 * a + 2] = Image->data[a * 3 + 2];
         }
-        if (AlphaFileName == NULL)return false;
+        if (nullptr == AlphaFileName) {
+            LOGGER_ERROR << "nullptr == AlphaFileName";
+            delete[] alpha;
+            return false;
+        }
         FILE* file;
         if ((file = fopen(AlphaFileName, "rb")) == NULL)
             return false;

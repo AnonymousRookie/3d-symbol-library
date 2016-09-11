@@ -366,8 +366,8 @@ void CDesingScheme::CalculateCurveData() {
             JDCurveElements.GetAt(i + 1)->HZ_xy    = new  Cordinate;
             JDCurveElements.GetAt(i + 1)->HZ_xy->x = JDCurveElements.GetAt(i + 1)->x + JDCurveElements.GetAt(i + 1)->T * cos(JDCurveElements.GetAt(i + 1)->fwj2);
             JDCurveElements.GetAt(i + 1)->HZ_xy->y = JDCurveElements.GetAt(i + 1)->y + JDCurveElements.GetAt(i + 1)->T * sin(JDCurveElements.GetAt(i + 1)->fwj2);
-            double ptx, pty;
-            float LL;
+            double ptx = 0.0, pty = 0.0;
+            float LL = 0.0f;
             float L0 =  JDCurveElements.GetAt(i + 1)->L0;
             int64 R   =  JDCurveElements.GetAt(i + 1)->R;
             LL       =  JDCurveElements.GetAt(i + 1)->HY - JDCurveElements.GetAt(i + 1)->ZH;
@@ -375,7 +375,7 @@ void CDesingScheme::CalculateCurveData() {
             ptx = LL - LL * LL * LL * LL * LL / (40.0 * R * R * L0 * L0) + LL * LL * LL * LL * LL * LL * LL * LL * LL / (3456.0 * R * R * R * R * L0 * L0 * L0 * L0);
             pty = LL * LL * LL / (6.0 * R * L0) * (1 - LL * LL * LL * LL / (56.0 * R * R * L0 * L0) + LL * LL * LL * LL * LL * LL * LL * LL / (7040.0 * R * R * R * R * L0 * L0 * L0 * L0));
             float xita = PAI / 2.0 - JDCurveElements.GetAt(i)->fwj;
-            double xc, yc;
+            double xc = 0.0, yc = 0.0;
             if (JDCurveElements.GetAt(i + 1)->RoateStyle == -1) {  // 左转
                 xc = cos(xita) * ptx - sin(xita) * pty + JDCurveElements.GetAt(i + 1)->ZH_xy->x;
                 yc = sin(xita) * ptx + cos(xita) * pty + JDCurveElements.GetAt(i + 1)->ZH_xy->y;
@@ -404,8 +404,8 @@ void CDesingScheme::CalculateCurveData() {
             dy = JDCurveElements.GetAt(i + 1)->YH_xy->y - JDCurveElements.GetAt(i + 1)->HY_xy->y;
             float rAngle = atan(dy / dx);
             float peiAngle = (PAI - fabs(JDCurveElements.GetAt(i + 1)->Alfa) + L0 * 1.0 / JDCurveElements.GetAt(i + 1)->R) / 2.0;
-            float thetaAngle;
-            double centerx, centery;
+            float thetaAngle = 0.0f;
+            double centerx = 0.0, centery = 0.0;
             if (JDCurveElements.GetAt(i + 1)->RoateStyle == -1) {
                 if (dx > 0) {
                     thetaAngle = peiAngle + rAngle;
@@ -823,12 +823,12 @@ void CDesingScheme::GetQLXY(float L0, int64 R, int32 RoateStyle, float LL, float
 /* Function: 计算[圆曲线]上点的坐标                                     */
 /************************************************************************/
 void CDesingScheme::GetYQXXY(double centerx, double centery, int64 R, int32 RoateStyle, float LL, float alfa, double HY_xy_x, double HY_xy_y, double YH_xy_x, double YH_xy_y, double* xc, double* yc) {
-    double dx, dy;
+    double dx = 0.0, dy = 0.0;
     dx = HY_xy_x - centerx;
     dy = HY_xy_y - centery;
     float peiAngle = atan(dy / dx);
     float thetaAngle = LL * 1.0 / R;
-    float rAngle;
+    float rAngle = 0.0f;
     if (RoateStyle == -1) {
         if (dx > 0) {
             rAngle = peiAngle + thetaAngle;
@@ -1243,8 +1243,8 @@ void CDesingScheme::GetBpJD(float H0, float Afla, float mangle, double x0, doubl
 }
 
 float CDesingScheme::GetH(float L, float Afla, float mAngle, double x0, double z0, int32 mLeftRight, double* xx, double* zz) {
-    double x, z;
-    float peita;
+    double x = 0.0, z = 0.0;
+    float peita = 0.0f;
     if (mAngle >= 0 && mAngle <= PAI / 2.0) {
         peita = PAI / 2 - mAngle;
         x = mLeftRight * L * cos(Afla) * cos(peita) + x0;
