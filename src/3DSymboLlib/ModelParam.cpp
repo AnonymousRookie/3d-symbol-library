@@ -2,10 +2,8 @@
 #include "3DSymbolLibNew.h"
 #include "ModelParam.h"
 #include "afxdialogex.h"
-
 #include "DialogModelList.h"
 #include "GlobalVariable.h"
-
 #include "RockClassification.h"
 
 // ModelParam 对话框
@@ -30,9 +28,7 @@ ModelParam::ModelParam(CWnd* pParent /*=NULL*/)
     isModelTextureUpdated = FALSE;
 }
 
-ModelParam::~ModelParam() {
-    // Empty
-}
+ModelParam::~ModelParam() {}
 
 void ModelParam::DoDataExchange(CDataExchange* pDX) {
     CDialog::DoDataExchange(pDX);

@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿#ifndef MODEL_PARAM_H
+#define MODEL_PARAM_H
 
 #include "afxcmn.h"
 #include "define.h"
@@ -9,14 +10,14 @@ class ModelParam : public CDialog {
     DECLARE_DYNAMIC(ModelParam)
 
   public:
-    explicit ModelParam(CWnd* pParent = NULL);   // 标准构造函数
+    explicit ModelParam(CWnd* pParent = NULL);
     virtual ~ModelParam();
 
     // 对话框数据
     enum { IDD = IDD_DIALOG_MODEL_PARAM };
 
   protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+    virtual void DoDataExchange(CDataExchange* pDX);
 
     DECLARE_MESSAGE_MAP()
 
@@ -36,7 +37,6 @@ class ModelParam : public CDialog {
     // 纹理的路径及文件名
     CString m_TexturePathAndName;
 
-
     virtual BOOL OnInitDialog();
     CString m_strTitle;  // 设置对话框标题
     CString modelPath;
@@ -45,3 +45,6 @@ class ModelParam : public CDialog {
     afx_msg void OnBnClickedButtonChangeModelTexture();
     CString m_TextureName;
 };
+
+
+#endif  // MODEL_PARAM_H

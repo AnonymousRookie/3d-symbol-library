@@ -1,21 +1,22 @@
 ﻿#include "stdafx.h"
-#include  "texture.h"
+#include "texture.h"
+#include "define.h"
 
 // 从BMP文件创建纹理,并返回纹理ID号
 int32 CTexture::LoadGLTextures(char* Filename) {
     AUX_RGBImageRec* pImage = NULL;
-    FILE* pFile = NULL;  // 文件句柄
-    if (!Filename) {  // 确保文件名已提供。
-        return false;  // 如果没提供，返回 false
+    FILE* pFile = NULL;     // 文件句柄
+    if (!Filename) {        // 确保文件名已提供。
+        return false;       // 如果没提供，返回 false
     }
-    if ((pFile = fopen(Filename, "rb")) == NULL) {  // 尝试打开文件
+    if ((pFile = fopen(Filename, "rb")) == NULL) {
         MessageBox(NULL, "不能够打开BMP纹理文件!", "打开BMP纹理文件失败", MB_OK);
         MessageBox(NULL, Filename, "Error", MB_OK);
         LOGGER_ERROR << "打开BMP纹理文件失败!";
-        return NULL;  // 打开文件失败,返回 false
+        return NULL;
     }
     pImage = auxDIBImageLoad(Filename);  // 读取图象数据并将其返回(使用glaux辅助库函数auxDIBImageLoad来载入位图)
-    if (pImage == NULL) {  // 如果读取失败,返回
+    if (pImage == NULL) {
         LOGGER_ERROR << "读取图象数据失败!";
         fclose(pFile);
         return false;
@@ -33,14 +34,14 @@ int32 CTexture::LoadGLTextures(char* Filename) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);  // 边缘截取,总是忽略边界
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);  // 边缘截取,总是忽略边界
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-    if (pImage) {   // 纹理是否存在
-        if (pImage->data) {  // 纹理图像是否存在
-            free(pImage->data);  // 释放纹理图像占用的内存
+    if (pImage) {                   // 纹理是否存在
+        if (pImage->data) {         // 纹理图像是否存在
+            free(pImage->data);     // 释放纹理图像占用的内存
         }
-        free(pImage);   // 释放图像结构
+        free(pImage);               // 释放图像结构
     }
-    fclose(pFile);  // 关闭文件
-    return m_nTxt;  // 返回纹理ID号
+    fclose(pFile);                  // 关闭文件
+    return m_nTxt;                  // 返回纹理ID号
 }
 bool CTexture::MakeTextureBind(char* TextureFileName, bool bLinear, bool bMip) {
     bool status = true;
@@ -81,12 +82,10 @@ bool CTexture::MakeTextureBind(char* TextureFileName, bool bLinear, bool bMip) {
     return status;
 }
 
-
-
 bool CTexture::MakeSkinTextureBind(char* TextureFileName,
                                    bool bLinear, bool bMip) {
     bool state = true;
-    unsigned char* Image = new unsigned char [256 * 256 * 3];
+    uint8* Image = new uint8[256 * 256 * 3];
     FILE* file;
     if ((file = fopen(TextureFileName, "rb")) == NULL) {
         state = false;
@@ -95,8 +94,8 @@ bool CTexture::MakeSkinTextureBind(char* TextureFileName,
         return state;
     }
     char id[10], version;
-    fread(id, sizeof(char), 10, file);  // NOLINT
-    fread(&version, sizeof(char), 1, file);  // NOLINT
+    fread(id, sizeof(char), 10, file);          // NOLINT
+    fread(&version, sizeof(char), 1, file);     // NOLINT
     if (strncmp(id, "Hunter3D00", 10) != 0) {
         fclose(file);
         delete[] Image;
@@ -107,7 +106,7 @@ bool CTexture::MakeSkinTextureBind(char* TextureFileName,
         delete[] Image;
         return false;
     }
-    fread(Image, sizeof(unsigned char), 256 * 256 * 3, file);
+    fread(Image, sizeof(uint8), 256 * 256 * 3, file);
     fclose(file);
     file = NULL;
     glGenTextures(1, &m_nTxt);
@@ -135,7 +134,7 @@ bool CTexture::MakeSkinTextureBind(char* TextureFileName,
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, Image);
         }
     }
-    delete [] Image;
+    delete[] Image;
     return state;
 }
 
@@ -144,7 +143,7 @@ bool CTexture::MakeAlphaTextureBind(char* TextureFileName) {
     AUX_RGBImageRec* Image = NULL;
     unsigned char* alpha = NULL;
     if (Image = auxDIBImageLoad(TextureFileName)) {
-        alpha = new unsigned char[4 * Image->sizeX * Image->sizeY];
+        alpha = new uint8[4 * Image->sizeX * Image->sizeY];
         for (int32 a = 0; a < Image->sizeX * Image->sizeY; a++) {
             alpha[4 * a] = Image->data[a * 3];
             alpha[4 * a + 1] = Image->data[a * 3 + 1];
@@ -157,7 +156,7 @@ bool CTexture::MakeAlphaTextureBind(char* TextureFileName) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA8, Image->sizeX, Image->sizeY, GL_RGBA, GL_UNSIGNED_BYTE, alpha);
-        delete [] alpha;
+        delete[] alpha;
     } else {
         status = false;
     }
@@ -171,9 +170,9 @@ bool CTexture::MakeAlphaTextureBind(char* TextureFileName) {
 bool CTexture::MakeAlphaTextureBind(char* TextureFileName, char* AlphaFileName) {
     bool status = true;
     AUX_RGBImageRec* Image = NULL;
-    unsigned char* alpha = NULL;
+    uint8* alpha = NULL;
     if (Image = auxDIBImageLoad(TextureFileName)) {
-        alpha = new unsigned char[4 * Image->sizeX * Image->sizeY];
+        alpha = new uint8[4 * Image->sizeX * Image->sizeY];
         for (int32 a = 0; a < Image->sizeX * Image->sizeY; a++) {
             alpha[4 * a] = Image->data[a * 3];
             alpha[4 * a + 1] = Image->data[a * 3 + 1];
@@ -190,7 +189,7 @@ bool CTexture::MakeAlphaTextureBind(char* TextureFileName, char* AlphaFileName) 
         fseek(file, 54, SEEK_SET);
         unsigned char temp[3];
         for (int32 a = 0; a < Image->sizeX * Image->sizeY; a++) {
-            fread(temp, sizeof(unsigned char), 3, file);
+            fread(temp, sizeof(uint8), 3, file);
             alpha[4 * a + 3] = (temp[0] > temp[1]) ? temp[0] : temp[1];
             if (temp[2] > alpha[4 * a + 3])alpha[4 * a + 3] = temp[2];
             if (alpha[4 * a + 3] > 50)alpha[4 * a + 3] = 255;
@@ -201,7 +200,7 @@ bool CTexture::MakeAlphaTextureBind(char* TextureFileName, char* AlphaFileName) 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA8, Image->sizeX, Image->sizeY, GL_RGBA, GL_UNSIGNED_BYTE, alpha);
-        delete [] alpha;
+        delete[] alpha;
     } else {
         status = false;
     }
@@ -222,7 +221,7 @@ bool  CTexture::MakeScreenTextureBind() {
         GLint Viewport[4];
         glGetIntegerv(GL_VIEWPORT, Viewport);
         int32 newWidth = 128;
-        unsigned char* pData = new unsigned char[newWidth * newWidth * 3 + 6];
+        uint8* pData = new uint8[newWidth * newWidth * 3 + 6];
         int32 sx, sy;
         unsigned char temp[6];
         for (int32 y = 0; y < newWidth; y++)
@@ -240,7 +239,7 @@ bool  CTexture::MakeScreenTextureBind() {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, newWidth, newWidth, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
-        delete [] pData;
+        delete[] pData;
     }
     return true;
 }
@@ -252,6 +251,7 @@ typedef struct {
     GLuint  height;
     GLuint  texID;
 } TextureImage;
+
 bool CTexture::LoadTGA(char* filename) {
     TextureImage Texture;
     TextureImage* texture = &Texture;
@@ -265,7 +265,7 @@ bool CTexture::LoadTGA(char* filename) {
     FILE* file = fopen(filename, "rb");
     if (file == NULL ||
             fread(TGAcompare, 1, sizeof(TGAcompare), file) != sizeof(TGAcompare) ||
-            memcmp(TGAheader, TGAcompare, sizeof(TGAheader)) != 0               ||
+            memcmp(TGAheader, TGAcompare, sizeof(TGAheader)) != 0                ||
             fread(header, 1, sizeof(header), file) != sizeof(header)) {
         if (file == NULL) {
             return FALSE;
@@ -276,7 +276,7 @@ bool CTexture::LoadTGA(char* filename) {
     }
     texture->width  = header[1] * 256 + header[0];
     texture->height = header[3] * 256 + header[2];
-    if (texture->width   <= 0 ||
+    if (texture->width <= 0 ||
             texture->height <= 0 ||
             (header[4] != 24 && header[4] != 32)) {
         fclose(file);
@@ -311,5 +311,3 @@ bool CTexture::LoadTGA(char* filename) {
     free(texture[0].imageData);
     return true;
 }
-
-

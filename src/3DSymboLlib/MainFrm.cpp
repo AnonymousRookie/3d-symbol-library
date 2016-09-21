@@ -1,15 +1,12 @@
 ﻿#include "stdafx.h"
 #include "3DSymbolLibNew.h"
-
 #include "MainFrm.h"
-
 #include "SplashWnd.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-// CMainFrame
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
 
@@ -29,10 +26,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 END_MESSAGE_MAP()
 
 static UINT indicators[] = {
-    // ID_SEPARATOR,           // 状态行指示器
-    // ID_INDICATOR_CAPS,
-    // ID_INDICATOR_NUM,
-    // ID_INDICATOR_SCRL,
     ID_INDICATOR_FPS,       // 刷新频率
     ID_INDICATOR_FSANGLE,   // 【俯视角】=
     ID_INDICATOR_EYEPOS,    // 视点坐标
@@ -40,7 +33,6 @@ static UINT indicators[] = {
     ID_INDICATOR_MOUSEPOS,  // 鼠标坐标
 };
 
-// CMainFrame 构造/析构
 
 CMainFrame::CMainFrame() {
     // TODO(jason): 在此添加成员初始化代码
@@ -58,7 +50,7 @@ int32 CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     OnApplicationLook(theApp.m_nAppLook);
     if (!m_wndMenuBar.Create(this)) {
         TRACE0("未能创建菜单栏\n");
-        return -1;      // 未能创建
+        return -1;
     }
     m_wndMenuBar.SetPaneStyle(m_wndMenuBar.GetPaneStyle() | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY);
     // 防止菜单栏在激活时获得焦点
@@ -66,7 +58,7 @@ int32 CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
             !m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAINFRAME_256 : IDR_MAINFRAME)) {
         TRACE0("未能创建工具栏\n");
-        return -1;      // 未能创建
+        return -1;
     }
     CString strToolBarName;
     bNameValid = strToolBarName.LoadString(IDS_TOOLBAR_STANDARD);
@@ -80,7 +72,7 @@ int32 CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     InitUserToolbars(NULL, uiFirstUserToolBarId, uiLastUserToolBarId);
     if (!m_wndStatusBar.Create(this)) {
         TRACE0("未能创建状态栏\n");
-        return -1;      // 未能创建
+        return -1;
     }
     m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
     // 设置各指示器的索引、宽度等信息
@@ -191,7 +183,7 @@ BOOL CMainFrame::CreateDockingWindows() {
     ASSERT(bNameValid);
     if (!m_wndClassView.Create(strClassView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_CLASSVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI)) {
         TRACE0("未能创建“类视图”窗口\n");
-        return FALSE;  // 未能创建
+        return FALSE;
     }
     // 创建文件视图
     CString strFileView;
@@ -199,7 +191,7 @@ BOOL CMainFrame::CreateDockingWindows() {
     ASSERT(bNameValid);
     if (!m_wndFileView.Create(strFileView, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_FILEVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI)) {
         TRACE0("未能创建“文件视图”窗口\n");
-        return FALSE;  // 未能创建
+        return FALSE;
     }
     // 创建输出窗口
     CString strOutputWnd;
@@ -207,7 +199,7 @@ BOOL CMainFrame::CreateDockingWindows() {
     ASSERT(bNameValid);
     if (!m_wndOutput.Create(strOutputWnd, this, CRect(0, 0, 100, 100), TRUE, ID_VIEW_OUTPUTWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI)) {
         TRACE0("未能创建输出窗口\n");
-        return FALSE;  // 未能创建
+        return FALSE;
     }
     // 创建属性窗口
     CString strPropertiesWnd;
@@ -215,7 +207,7 @@ BOOL CMainFrame::CreateDockingWindows() {
     ASSERT(bNameValid);
     if (!m_wndProperties.Create(strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTIESWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI)) {
         TRACE0("未能创建“属性”窗口\n");
-        return FALSE;  // 未能创建
+        return FALSE;
     }
     SetDockingWindowIcons(theApp.m_bHiColorIcons);
     return TRUE;

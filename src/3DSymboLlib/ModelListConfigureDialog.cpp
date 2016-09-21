@@ -6,23 +6,13 @@
 
 // ModelListConfigureDialog 对话框
 
-// 仿函数,用于比较字符串大小,对List进行排序
-class MyCompare {
-  public:
-    bool operator()(const string str1, const string str2) {
-        return (str1 < str2);
-    }
-};
-
 IMPLEMENT_DYNAMIC(ModelListConfigureDialog, CDialog)
 
 ModelListConfigureDialog::ModelListConfigureDialog(CWnd* pParent /*=NULL*/)
     : CDialog(ModelListConfigureDialog::IDD, pParent) {
-    // Empty
 }
 
 ModelListConfigureDialog::~ModelListConfigureDialog() {
-    // Empty
 }
 
 void ModelListConfigureDialog::DoDataExchange(CDataExchange* pDX) {
@@ -128,7 +118,7 @@ BOOL ModelListConfigureDialog::OnInitDialog() {
     for (int32 i = 0; i < g_modelKindNumber; ++i) {
         g_modelTree[i].isChanged = 0;
         // 排序
-        g_modelList[i].sort(MyCompare());
+        g_modelList[i].sort([](const string & str1, const string & str2)->bool {return str1 < str2;});  // NOLINT
     }
     hRoot = m_configureModeListTree.InsertItem("符号列表配置", 0, 0);
     LPCTSTR item[5];    // {"3DS Model","City Symbol","Tree Model","3D Tree Model","Weather Symbol"};
@@ -364,15 +354,15 @@ void ModelListConfigureDialog::OnTvnSelchangedTreeCongigureModellist(NMHDR* pNMH
 /* Function: 将选中的bmp纹理影像在控件上绘制                                */
 /************************************************************************/
 void ModelListConfigureDialog::drawBitmapFromFile(CString bitmapFilePath, CDC* pDC, CRect rect) {
-    HANDLE   filehandle =::LoadImage(NULL, bitmapFilePath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);  // 加载影像文件
-    if (filehandle != NULL) {  // 如果加载成功
-        CBitmap   bmp;
+    HANDLE filehandle =::LoadImage(NULL, bitmapFilePath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);  // 加载影像文件
+    if (filehandle != NULL) {
+        CBitmap bmp;
         if (bmp.Attach(filehandle)) {
-            BITMAP   bmpInfo;
-            bmp.GetBitmap(&bmpInfo);   // 获取资源位图信息
-            CDC   dcMemory;
+            BITMAP bmpInfo;
+            bmp.GetBitmap(&bmpInfo);            // 获取资源位图信息
+            CDC dcMemory;
             dcMemory.CreateCompatibleDC(pDC);   // 创建一个与特定设备场景一致的内存设备场景
-            dcMemory.SelectObject(&bmp);   // 选择bmp对象到指定的设备上下文环境中,该新对象替换先前的相同类型的对象
+            dcMemory.SelectObject(&bmp);        // 选择bmp对象到指定的设备上下文环境中,该新对象替换先前的相同类型的对象
             // 设置指定设备环境中的位图拉伸模式. HALFTONE：将源矩形区中的像素映射到目标矩形区的像素块中，
             // 覆盖目标像素块的一般颜色与源像素的颜色接近。
             // StretchBlt():源矩形中复制一个位图到目标矩形,必要时按目前目标设备设置的模式进行图像的拉伸或压缩。

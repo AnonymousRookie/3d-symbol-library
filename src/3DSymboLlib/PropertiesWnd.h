@@ -1,5 +1,6 @@
-﻿
-#pragma once
+﻿#ifndef PROPERTIES_WND_H
+#define PROPERTIES_WND_H
+
 #include "define.h"
 
 class CPropertiesToolBar : public CMFCToolBar {
@@ -14,13 +15,11 @@ class CPropertiesToolBar : public CMFCToolBar {
 };
 
 class CPropertiesWnd : public CDockablePane {
-    // 构造
   public:
     CPropertiesWnd();
 
     void AdjustLayout();
 
-    // 特性
   public:
     void SetVSDotNetLook(BOOL bSet) {
         m_wndPropList.SetVSDotNetLook(bSet);
@@ -33,7 +32,6 @@ class CPropertiesWnd : public CDockablePane {
     CPropertiesToolBar m_wndToolBar;
     CMFCPropertyGridCtrl m_wndPropList;
 
-    // 实现
   public:
     virtual ~CPropertiesWnd();
 
@@ -57,3 +55,4 @@ class CPropertiesWnd : public CDockablePane {
     void SetPropListFont();
 };
 
+#endif  // PROPERTIES_WND_H

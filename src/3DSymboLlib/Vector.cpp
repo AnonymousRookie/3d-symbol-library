@@ -2,8 +2,6 @@
 #include <math.h>
 #include "vector.h"
 
-
-
 #define Mag(Normal) (sqrt(Normal.x*Normal.x + Normal.y*Normal.y + Normal.z*Normal.z))
 
 
@@ -28,7 +26,6 @@ float Absolute(float num) {
     return num >= 0 ? num : -num;
 }
 
-
 float Magnitude(CVector3 vNormal) {
     return static_cast<float>(sqrt((vNormal.x * vNormal.x) + (vNormal.y * vNormal.y) + (vNormal.z * vNormal.z)));
 }
@@ -47,7 +44,6 @@ float DotProduct(const CVector3& v1, const CVector3& v2) {  // 点积计算
     return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
 };
 
-
 CVector3 CrossProduct(const CVector3& v1, const CVector3& v2) {  // 叉积计算
     CVector3 result(0.0f, 0.0f, 0.0f);
     result.x = (v1.y * v2.z) - (v1.z * v2.y);
@@ -55,9 +51,6 @@ CVector3 CrossProduct(const CVector3& v1, const CVector3& v2) {  // 叉积计算
     result.z = (v1.x * v2.y) - (v1.y * v2.x);
     return result;
 };
-
-
-
 
 bool SameSign(float f1, float f2) {
     return f1 < 0 && f2 < 0 || f1 > 0 && f2 > 0 || f1 == 0 && f2 == 0 ? true : false;

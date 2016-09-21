@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿#ifndef TERRAIN_IMPORT_CONTOUR_H
+#define TERRAIN_IMPORT_CONTOUR_H
+
 #include "define.h"
 
 // TerrainImportContour 对话框
@@ -7,14 +9,14 @@ class TerrainImportContour : public CDialog {
     DECLARE_DYNAMIC(TerrainImportContour)
 
   public:
-    explicit TerrainImportContour(CWnd* pParent = NULL);   // 标准构造函数
+    explicit TerrainImportContour(CWnd* pParent = NULL);
     virtual ~TerrainImportContour();
 
     // 对话框数据
     enum { IDD = IDD_DIALOG_CONTOUR_TERRAIN_IMPORT };
 
   protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+    virtual void DoDataExchange(CDataExchange* pDX);
 
     DECLARE_MESSAGE_MAP()
   public:
@@ -25,3 +27,5 @@ class TerrainImportContour : public CDialog {
     afx_msg void OnBnClickedButtonTerrainTexBroswer();
     afx_msg void OnBnClickedButtonContoureBroswer();
 };
+
+#endif  // TERRAIN_IMPORT_CONTOUR_H

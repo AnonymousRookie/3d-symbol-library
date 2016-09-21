@@ -1,21 +1,23 @@
-﻿#pragma once
+﻿#ifndef SYSTEM_SETTING_H
+#define SYSTEM_SETTING_H
+
 #include "define.h"
 /************************************************************************/
-/* 系统设置对话框   类                                                      */
+/* 系统设置对话框                                                         */
 /************************************************************************/
 
 class CSystemSetting : public CDialog {
     DECLARE_DYNAMIC(CSystemSetting)
 
   public:
-    explicit CSystemSetting(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CSystemSetting(CWnd* pParent = NULL);
     virtual ~CSystemSetting();
 
     // 对话框数据
     enum { IDD = IDD_SYSTEMSETTING };
 
   protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+    virtual void DoDataExchange(CDataExchange* pDX);
 
     DECLARE_MESSAGE_MAP()
   public:
@@ -25,3 +27,5 @@ class CSystemSetting : public CDialog {
     CString m_SceneDataPATH;
     virtual BOOL OnInitDialog();
 };
+
+#endif  // SYSTEM_SETTING_H

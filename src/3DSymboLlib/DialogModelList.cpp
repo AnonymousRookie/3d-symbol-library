@@ -2,8 +2,6 @@
 #include "3DSymbolLibNew.h"
 #include "DialogModelList.h"
 #include "afxdialogex.h"
-
-
 #include <io.h>
 #include <vector>
 
@@ -12,13 +10,9 @@
 IMPLEMENT_DYNAMIC(CDialogModelList, CDialog)
 
 CDialogModelList::CDialogModelList(CWnd* pParent /*=NULL*/)
-    : CDialog(CDialogModelList::IDD, pParent) {
-    // Empty
-}
+    : CDialog(CDialogModelList::IDD, pParent) {}
 
-CDialogModelList::~CDialogModelList() {
-    // Empty
-}
+CDialogModelList::~CDialogModelList() {}
 
 void CDialogModelList::DoDataExchange(CDataExchange* pDX) {
     CDialog::DoDataExchange(pDX);

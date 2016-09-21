@@ -1,9 +1,8 @@
-﻿#pragma once
+﻿#ifndef PROJECT_FILE_SETTING_H
+#define PROJECT_FILE_SETTING_H
+
 #include "afxwin.h"
 #include "define.h"
-
-
-
 
 // CProjectFileSetting 对话框
 
@@ -11,14 +10,14 @@ class CProjectFileSetting : public CDialog {
     DECLARE_DYNAMIC(CProjectFileSetting)
 
   public:
-    explicit CProjectFileSetting(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CProjectFileSetting(CWnd* pParent = NULL);
     virtual ~CProjectFileSetting();
 
     // 对话框数据
     enum { IDD = IDD_PROJECTFILESETTING };
 
   protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+    virtual void DoDataExchange(CDataExchange* pDX);
 
     DECLARE_MESSAGE_MAP()
 
@@ -36,3 +35,5 @@ class CProjectFileSetting : public CDialog {
     virtual BOOL OnInitDialog();
     afx_msg void OnSelchangeListRecentlyOpenedProject();
 };
+
+#endif  // PROJECT_FILE_SETTING_H

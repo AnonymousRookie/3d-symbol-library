@@ -11,13 +11,9 @@ IMPLEMENT_DYNAMIC(TerrainImportContour, CDialog)
 TerrainImportContour::TerrainImportContour(CWnd* pParent /*=NULL*/)
     : CDialog(TerrainImportContour::IDD, pParent)
     , m_TerrainContoureTex(_T(""))
-    , m_TerrainContour(_T("")) {
-    // Empty
-}
+    , m_TerrainContour(_T("")) {}
 
-TerrainImportContour::~TerrainImportContour() {
-    // Empty
-}
+TerrainImportContour::~TerrainImportContour() {}
 
 void TerrainImportContour::DoDataExchange(CDataExchange* pDX) {
     CDialog::DoDataExchange(pDX);
@@ -49,6 +45,7 @@ void TerrainImportContour::OnBnClickedButtonTerrainTexBroswer() {
     this->UpdateData(FALSE);
     if ((fp = fopen(m_TerrainContoureTex, "r")) == NULL) {
         MessageBox("地面纹理文件不存在!", "初始化地面模型", MB_ICONINFORMATION + MB_OK);
+        LOGGER_ERROR << "地面纹理文件不存在!";
         exit(-1);
     }
 }
@@ -66,6 +63,7 @@ void TerrainImportContour::OnBnClickedButtonContoureBroswer() {
     this->UpdateData(FALSE);
     if ((fp = fopen(m_TerrainContour, "r")) == NULL) {
         MessageBox("等高势图文件不存在!", "初始化地面模型", MB_ICONINFORMATION + MB_OK);
+        LOGGER_ERROR << "等高势图文件不存在!";
         exit(-1);
     }
 }

@@ -175,6 +175,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\LeastSquares.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Load3DS.H" />
     <ClInclude Include="..\..\src\3DSymboLlib\MainFrm.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\MathUtil.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\ModelListConfigureDialog.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\ModelParam.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\OutputWnd.h" />

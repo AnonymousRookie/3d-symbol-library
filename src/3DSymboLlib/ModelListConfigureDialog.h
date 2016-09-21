@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿#ifndef MODEL_LIST_CONFIGURE_DLG_H
+#define MODEL_LIST_CONFIGURE_DLG_H
+
 #include "afxcmn.h"
 #include "afxwin.h"
 #include "define.h"
@@ -9,7 +11,7 @@ class ModelListConfigureDialog : public CDialog {
     DECLARE_DYNAMIC(ModelListConfigureDialog)
 
   public:
-    explicit ModelListConfigureDialog(CWnd* pParent = NULL);   // 标准构造函数
+    explicit ModelListConfigureDialog(CWnd* pParent = NULL);
     virtual ~ModelListConfigureDialog();
 
     // 对话框数据
@@ -25,7 +27,7 @@ class ModelListConfigureDialog : public CDialog {
 
 
   protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+    virtual void DoDataExchange(CDataExchange* pDX);
 
     DECLARE_MESSAGE_MAP()
 
@@ -40,3 +42,5 @@ class ModelListConfigureDialog : public CDialog {
     CStatic m_image;
     afx_msg void OnEditAddSymbol();
 };
+
+#endif  // MODEL_LIST_CONFIGURE_DLG_H

@@ -1,6 +1,4 @@
-﻿
-#include "stdafx.h"
-
+﻿#include "stdafx.h"
 #include "OutputWnd.h"
 #include "Resource.h"
 #include "MainFrm.h"
@@ -11,14 +9,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-/////////////////////////////////////////////////////////////////////////////
-// COutputBar
+COutputWnd::COutputWnd() {}
 
-COutputWnd::COutputWnd() {
-}
-
-COutputWnd::~COutputWnd() {
-}
+COutputWnd::~COutputWnd() {}
 
 BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
     ON_WM_CREATE()
@@ -33,7 +26,7 @@ int32 COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     // 创建选项卡窗口:
     if (!m_wndTabs.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, 1)) {
         TRACE0("未能创建输出选项卡窗口\n");
-        return -1;      // 未能创建
+        return -1;
     }
     // 创建输出窗格:
     const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
@@ -41,7 +34,7 @@ int32 COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
             !m_wndOutputDebug.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
             !m_wndOutputFind.Create(dwStyle, rectDummy, &m_wndTabs, 4)) {
         TRACE0("未能创建输出窗口\n");
-        return -1;      // 未能创建
+        return -1;
     }
     UpdateFonts();
     CString strTabName;
@@ -106,14 +99,9 @@ void COutputWnd::UpdateFonts() {
     m_wndOutputFind.SetFont(&afxGlobalData.fontRegular);
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// COutputList1
+COutputList::COutputList() {}
 
-COutputList::COutputList() {
-}
-
-COutputList::~COutputList() {
-}
+COutputList::~COutputList() {}
 
 BEGIN_MESSAGE_MAP(COutputList, CListBox)
     ON_WM_CONTEXTMENU()
@@ -122,8 +110,6 @@ BEGIN_MESSAGE_MAP(COutputList, CListBox)
     ON_COMMAND(ID_VIEW_OUTPUTWND, OnViewOutput)
     ON_WM_WINDOWPOSCHANGING()
 END_MESSAGE_MAP()
-/////////////////////////////////////////////////////////////////////////////
-// COutputList 消息处理程序
 
 void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point) {
     CMenu menu;

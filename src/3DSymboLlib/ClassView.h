@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿#ifndef CLASS_VIEW_H
+#define CLASS_VIEW_H
+
 
 #include "ViewTree.h"
 #include "define.h"
@@ -30,7 +32,6 @@ class CClassView : public CDockablePane {
 
     void FillClassView();
 
-    // 重写
   public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
 
@@ -52,3 +53,4 @@ class CClassView : public CDockablePane {
     DECLARE_MESSAGE_MAP()
 };
 
+#endif  // CLASS_VIEW_H

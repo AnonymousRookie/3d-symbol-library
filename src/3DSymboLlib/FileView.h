@@ -15,14 +15,12 @@ class CFileViewToolBar : public CMFCToolBar {
 };
 
 class CFileView : public CDockablePane {
-    // 构造
   public:
     CFileView();
 
     void AdjustLayout();
     void OnChangeVisualStyle();
 
-    // 特性
   protected:
     CViewTree m_wndFileView;
     CImageList m_FileViewImages;

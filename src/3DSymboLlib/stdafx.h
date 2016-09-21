@@ -83,8 +83,8 @@ extern CDesingScheme myDesingScheme;
 
 // CProjectFileSetting 自定义消息宏
 
-#define WM_NEW_PROJECT      WM_USER+104     // 单选按钮 新建工程 选中
-#define WM_OPEN_PROJECT     WM_USER+105     // 单选按钮 打开工程 选中
+#define WM_NEW_PROJECT          WM_USER+104     // 单选按钮 新建工程 选中
+#define WM_OPEN_PROJECT         WM_USER+105     // 单选按钮 打开工程 选中
 
 #define WM_PROJECT_SET_OK       WM_USER+106     // 单选按钮 打开工程 选中
 

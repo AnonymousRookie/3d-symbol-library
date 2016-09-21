@@ -1,24 +1,25 @@
 ﻿/************************************************************************/
-/*      岩石分类对话框类                                                    */
+/*      岩石分类对话框类                                                  */
 /************************************************************************/
-#pragma once
+#ifndef ROCK_CLASSIFICATION_H
+#define ROCK_CLASSIFICATION_H
+
 #include "afxcmn.h"
 #include "afxwin.h"
 #include "define.h"
-// CRockClassification 对话框
 
 class CRockClassification : public CDialog {
     DECLARE_DYNAMIC(CRockClassification)
 
   public:
-    explicit CRockClassification(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CRockClassification(CWnd* pParent = NULL);
     virtual ~CRockClassification();
 
     // 对话框数据
     enum { IDD = IDD_ROCKCLASSIFICATION };
 
   protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+    virtual void DoDataExchange(CDataExchange* pDX);
 
     DECLARE_MESSAGE_MAP()
 
@@ -43,3 +44,5 @@ class CRockClassification : public CDialog {
     CStatic m_image;
     virtual BOOL OnInitDialog();
 };
+
+#endif  // ROCK_CLASSIFICATION_H

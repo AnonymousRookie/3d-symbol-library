@@ -1,19 +1,16 @@
-﻿
-// 3DSymbolLibNewView.h : CMy3DSymbolLibNewView 类的接口
-//
-#pragma once
-#include "MainFrm.h"
+﻿#ifndef SYMBOL_LIB_NEW_VIEW_H
+#define SYMBOL_LIB_NEW_VIEW_H
 
+
+#include "MainFrm.h"
 #include "SpaceSearchSet.h"
 #include "CameraParamSet.h"
-
 #include "TerrainImportContour.h"
 #include "SkyBoxTexLoad.h"
 #include "Texture.h"
 #include "Load3DS.H"
 #include "C3DModelParamSet.h"
 #include "ModelParam.h"
-
 #include "GLFont.h"
 #include <MMSystem.h>
 #include "stdafx.h"
@@ -21,27 +18,20 @@
 #include <math.h>
 #include <atlimage.h>
 #include <algorithm>
-
 #include "PointPolygonRelationship.h"
-
-
 #include "define.h"
-// SkyBox Tex
-enum {TP, LF, BK, RT, FR};
 
+// SkyBox Tex
+enum {TP = 0, LF, BK, RT, FR};
 
 // [160119]LINE_ADD 添加线   [160209]AREA_ADD 添加面
-enum { QUERY_COORDINATE, QUERY_DISTENCE, SELECTLINE, SELECTFLYPATH, LINE_ADD, AREA_ADD}; /*MOUSEMOVE_3DMODEL标识在移动模型，这是select——3dmodel模式下的操作应该暂停*/
-enum { SELECT, MOVE, SCALE };
-
-enum {GIS_FLY_STATICHEIGHT, GIS_FLY_PATHHEIGHT};
-
+enum { QUERY_COORDINATE = 0, QUERY_DISTENCE, SELECTLINE, SELECTFLYPATH, LINE_ADD, AREA_ADD}; /*MOUSEMOVE_3DMODEL标识在移动模型，这是select——3dmodel模式下的操作应该暂停*/
+enum { SELECT = 0, MOVE, SCALE };
+enum {GIS_FLY_STATICHEIGHT = 0, GIS_FLY_PATHHEIGHT};
 // model type
-enum {MODEL_3DS, MODEL_CITY, MODEL_TREE_3D, MODEL_TREE};
-
+enum {MODEL_3DS = 0, MODEL_CITY, MODEL_TREE_3D, MODEL_TREE};
 // mouse shape
-enum {MOUSE_SHAPE_SLECT, MOUSE_SHAPE_EDIT, MOUSE_SHAPE_ARROW};
-
+enum {MOUSE_SHAPE_SLECT = 0, MOUSE_SHAPE_EDIT, MOUSE_SHAPE_ARROW};
 // load model type "change parameter" "add new model"
 // 新增模型，更新模型
 enum {MODEL_NEW, MODEL_CHANGE};
@@ -57,8 +47,6 @@ enum {MODEL_NEW, MODEL_CHANGE};
 #define NOT_EXIST_OPENED_SYMBOLLIB_FILE     0
 
 
-
-
 // model select struct
 typedef struct {
     int32 modelType;
@@ -69,18 +57,18 @@ typedef struct {
 // 模型结构体,存储各类符号状态
 typedef struct {
     CString strModelPath;       // 模型路径
-    int32     iModelNum;          // 模型在种类中ID
-    int32     xPos;               // 平面水平位置
-    int32     zPos;               // 平面Z位置
+    int32   iModelNum;          // 模型在种类中ID
+    int32   xPos;               // 平面水平位置
+    int32   zPos;               // 平面Z位置
     float   hPos;               // 底面距离地面高度
     float   radiu;              // 模型旋转半径，距离中心线
-    int32     angle;              // 模型绕Y轴旋转
+    int32   angle;              // 模型绕Y轴旋转
     float   scale;              // 模型缩放因子
     bool    isSelected;         // 模型是否处于选中状态
-    int32     iRotateX;           // 模型绕X轴旋转角度
-    int32     iRotateY;           // 模型绕Y轴旋转角度
-    int32     iRotateZ;           // 模型绕Z轴旋转角度
-    int32     iDisplayType;       // 纹理映射方式： 重复  拉伸
+    int32   iRotateX;           // 模型绕X轴旋转角度
+    int32   iRotateY;           // 模型绕Y轴旋转角度
+    int32   iRotateZ;           // 模型绕Z轴旋转角度
+    int32   iDisplayType;       // 纹理映射方式： 重复  拉伸
 } CModelStruct, *PModelStruct;
 
 typedef struct {
@@ -107,10 +95,6 @@ typedef struct Curve_R_L0_Struct {
 } Curve_R_L0_Struct, *PCurve_R_L0_Struct;
 
 
-
-
-
-// [160119]
 // 点
 typedef struct _Point3 {
     double _x;
@@ -136,8 +120,6 @@ typedef struct _Triangle {
 } Triangle, *PTriangle;
 
 
-
-
 // 四边形
 typedef struct _Area_4 {
     Point3 pt1;
@@ -159,7 +141,6 @@ typedef struct _Area_4 {
     // 保存所有局部三角化了的三角形(某三角形没有点在多边形内, 但多边形的1个端点在三角形中)
     vector<Triangle> LocalTrianglesVecotr_last;
 
-
     CString area_texture;
     UINT area_texture_rd;
 
@@ -168,22 +149,14 @@ typedef struct _Area_4 {
 
 
 
-
-
-
-
 class CMy3DSymbolLibNewView : public CView {
   protected:  // 仅从序列化创建
     CMy3DSymbolLibNewView();
     DECLARE_DYNCREATE(CMy3DSymbolLibNewView)
 
-    // 特性
   public:
     CMy3DSymbolLibNewDoc* GetDocument() const;
 
-    // 操作
-  public:
-    // 重写
   public:
     virtual void OnDraw(CDC* pDC);  // 重写以绘制该视图
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);  // NOLINT
@@ -193,14 +166,12 @@ class CMy3DSymbolLibNewView : public CView {
     virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
     virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 
-    // 实现
   public:
     virtual ~CMy3DSymbolLibNewView();
 #ifdef _DEBUG
     virtual void AssertValid() const;
     virtual void Dump(CDumpContext& dc) const;  // NOLINT
 #endif
-
 
     // 生成的消息映射函数
   protected:
@@ -216,14 +187,14 @@ class CMy3DSymbolLibNewView : public CView {
     CDC*        m_pDC;
     HGLRC       m_hRC;
 
-    int32 m_SCREEN_WIDTH;     // 屏幕宽度
-    int32 m_SCREEN_HEIGHT;    // 屏幕高度
+    int32 m_SCREEN_WIDTH;       // 屏幕宽度
+    int32 m_SCREEN_HEIGHT;      // 屏幕高度
 
-    int32 WinViewX, WinViewY;  // 存储所定义视口的宽度和高度
-    BOOL bStereoAvailable;  // 显卡是否支持立体显示
+    int32 WinViewX, WinViewY;   // 存储所定义视口的宽度和高度
+    BOOL bStereoAvailable;      // 显卡是否支持立体显示
 
     GLfloat m_ViewWideNarrow;   // 用来调整gluPerspective()函数定义平截头体的视野的角度(增大或减小)
-    double m_near, m_far;   // gluPerspective()函数定义平截头体的近剪裁平面和远剪裁平面的距离
+    double m_near, m_far;       // gluPerspective()函数定义平截头体的近剪裁平面和远剪裁平面的距离
 
     float m_FrustumAngle;
 
@@ -239,14 +210,14 @@ class CMy3DSymbolLibNewView : public CView {
     afx_msg LRESULT OnGoodBye(WPARAM wParam, LPARAM lParam);  // 自定义响应消息,响应模型设置,非模式对话框
 
     // 导入等高线地势图纹理及数据
-    int32                 iTerrainType;                       // 1-等高, 2-随机, 0-没有导入地形
+    int32               iTerrainType;                       // 1-等高, 2-随机, 0-没有导入地形
     CString             terrainTexFileName;
     CString             terrainContourFileName;
     BITMAPINFOHEADER    g_bit;                              // 定义位图结构，在ModelObj中使用灰度等高线图生成地形
-    unsigned char*       g_imageData;                       // 定义图形缓存区，在ModelObj中使用灰度等高线图生成地形
+    uint8*              g_imageData;                        // 定义图形缓存区，在ModelObj中使用灰度等高线图生成地形
     UINT                texTerrain;                         // 贴图
     bool                LoadT8(char* filename, GLuint& texture);  // NOLINT
-    unsigned char*      LoadBit(char* filename, BITMAPINFOHEADER* bitmap);
+    uint8*              LoadBit(char* filename, BITMAPINFOHEADER* bitmap);
 
 
     bool        g_isTerrainInit;
@@ -349,15 +320,15 @@ class CMy3DSymbolLibNewView : public CView {
     afx_msg void OnMouseMove(UINT nFlags, CPoint point);
     void SetViewByMouse();
     void RotateView(float angle, float x, float y, float z);
-    float  derAngleY;   //  鼠标控制时Y方向的敏感系数
-    float  derAngleZ;   //  鼠标控制时Z方向的敏感系数
-    float  derDisScale;  //  鼠标移动模型时敏感系数
+    float  derAngleY;       //  鼠标控制时Y方向的敏感系数
+    float  derAngleZ;       //  鼠标控制时Z方向的敏感系数
+    float  derDisScale;     //  鼠标移动模型时敏感系数
     afx_msg void OnCameraParamSet();
 
     // 三维漫游
-    BOOL m_ShowFlyPath;  //  标识是否显示飞行路径
-    CArray<PCordinate, PCordinate> m_FlayPath;      // 存储进行飞行路径选择时所选择的一系列点坐标
-    CArray<PCordinate, PCordinate> m_FlayPathTempPts;  // 存储临时进行飞行路径选择时所选择的一系列点坐标
+    BOOL m_ShowFlyPath;                                 //  标识是否显示飞行路径
+    CArray<PCordinate, PCordinate> m_FlayPath;          // 存储进行飞行路径选择时所选择的一系列点坐标
+    CArray<PCordinate, PCordinate> m_FlayPathTempPts;   // 存储临时进行飞行路径选择时所选择的一系列点坐标
     afx_msg void OnPathManuinput();
     void DrawFlyPath();
     afx_msg void OnFlppathInterpolation();
@@ -369,12 +340,12 @@ class CMy3DSymbolLibNewView : public CView {
     afx_msg void OnFlyOnoffpath();
     afx_msg void OnUpdateFlyOnoffpath(CCmdUI* pCmdUI);
 
-    BYTE m_FlyHeightType;           // 三维漫游类型(固定高度漫游,固定高差漫游)
-    int32 m_flypathPtIndex;           // 飞行路径坐标索引号
-    int32 m_flyPathCurrentPtIndex;    // 在飞行过程中记录当前路径点的索引号,用于暂停飞行器
-    int32 m_flyspeed;                 // 飞行时的计时器时间间隔
+    BYTE m_FlyHeightType;               // 三维漫游类型(固定高度漫游,固定高差漫游)
+    int32 m_flypathPtIndex;             // 飞行路径坐标索引号
+    int32 m_flyPathCurrentPtIndex;      // 在飞行过程中记录当前路径点的索引号,用于暂停飞行器
+    int32 m_flyspeed;                   // 飞行时的计时器时间间隔
 
-    BOOL m_fly_start_pause_Enable;  // 暂停/开始是否生效
+    BOOL m_fly_start_pause_Enable;      // 暂停/开始是否生效
 
     afx_msg void OnFlyStaticheight();
     afx_msg void OnUpdateFlyStaticheight(CCmdUI* pCmdUI);
@@ -401,12 +372,12 @@ class CMy3DSymbolLibNewView : public CView {
     afx_msg void OnFlySpeedUp();
     afx_msg void OnFlySpeedDown();
     void DisplayHelp();
-    CGLFont* Font;          // 显示飞行时快捷键文字提示
-    int32 m_Time,             // 开始时间
-          m_Fram,             // 显示次数
-          tim;                // 刷新速度
+    CGLFont* Font;              // 显示飞行时快捷键文字提示
+    int32 m_Time,               // 开始时间
+          m_Fram,               // 显示次数
+          tim;                  // 刷新速度
     HFONT   hFont, hFont0;
-    void    TextFlyHelp();  // 显示文字
+    void    TextFlyHelp();      // 显示文字
 
     // 显示列表参数
     GLuint m_ClockList;     // 时钟指北针显示列表
@@ -491,27 +462,27 @@ class CMy3DSymbolLibNewView : public CView {
     bool bIsMouseMove3DModel;
     afx_msg void On3dsModelMouseMove();
     afx_msg void OnUpdate3dsModelMouseMove(CCmdUI* pCmdUI);
-    void JudgeModelSelected(PCordinate ppt);    // 判断模型组中哪些模型被选中,进行状态修改
-    int32 m_bMouseMove3DModelPtNums;              // 左键按下数量加一,左键弹起再加一,到2时就可移动模型位置,移动向量为鼠标变动向量
+    void JudgeModelSelected(PCordinate ppt);        // 判断模型组中哪些模型被选中,进行状态修改
+    int32 m_bMouseMove3DModelPtNums;                // 左键按下数量加一,左键弹起再加一,到2时就可移动模型位置,移动向量为鼠标变动向量
 
 
-    CMainFrame* pMain;                          // 获取MainFrame类指针
+    CMainFrame* pMain;                              // 获取MainFrame类指针
 
     // 景观树控制
     afx_msg void OnTreeLoad();
-    CArray<PModelStruct, PModelStruct> m_TreeModel;  // 存储所有景观树信息
-    void LoadT16(char* filename, GLuint& texture);  // NOLINT
+    CArray<PModelStruct, PModelStruct> m_TreeModel;     // 存储所有景观树信息
+    void LoadT16(char* filename, GLuint& texture);      // NOLINT
     int32 m_iTreeModelNum;
-    UINT g_cactus[50];                              // 贴图,纹理
+    UINT g_cactus[50];                                  // 贴图,纹理
 
     // 显示特殊平面树，场景旋转时树也跟着旋转，始终是正面对着用户，这样就看不出是平面了
     void ShowTree(int32 i);
 
     // 导入3D立体景观树模型
     afx_msg void On3dTreeLoad();
-    CArray<PModelStruct, PModelStruct> m_3DTreeModel;  // 存储所有景观树信息
+    CArray<PModelStruct, PModelStruct> m_3DTreeModel;   // 存储所有景观树信息
     int32 m_i3DTreeModelNum;
-    UINT g_cactus3DTree[50];                                // 贴图,纹理
+    UINT g_cactus3DTree[50];                            // 贴图,纹理
 
     // 显示特殊平面树，场景旋转时树也跟着旋转，始终是正面对着用户，这样就看不出是平面了
     void Show3DTree(int32 i);
@@ -519,8 +490,8 @@ class CMy3DSymbolLibNewView : public CView {
     // 城市符号
     afx_msg void OnCitySymbolLoad();
     int32 m_iCitySymbolModelNum;
-    CArray<PModelStruct, PModelStruct> m_CitySymbolModel;  // 存储所有城市符号信息
-    UINT g_citySymbolTex[50];                            // 贴图,纹理
+    CArray<PModelStruct, PModelStruct> m_CitySymbolModel;   // 存储所有城市符号信息
+    UINT g_citySymbolTex[50];                               // 贴图,纹理
     void ShowCitySymbol0(int32 i);
     void ShowCitySymbol(int32 i);
     void LoadPNG(const char* fileName, GLuint& texture);  // NOLINT
@@ -618,8 +589,6 @@ class CMy3DSymbolLibNewView : public CView {
     void LoadTerrainTex(CString terrainTex, CString terrainContour);
 
     // 3D模型设置
-    // void Load3DModel(PModelStruct p3d, int32 iModelID);
-    // void Load3DModel(PModelParamStruct p3d, int32 iModelID);
     void Load3DModel(PModelParamStruct p3d, int32 iLoadModelType);
 
     bool m_bIsLBtnDown;
@@ -672,20 +641,20 @@ class CMy3DSymbolLibNewView : public CView {
     /* Variables: 曲线要素设定                                              */
     /************************************************************************/
   private:
-    int64 m_Curve_R;  // 曲线半径
-    int32  m_Curve_L0;  // 缓和曲线长
+    int64  m_Curve_R;    // 曲线半径
+    int32  m_Curve_L0;   // 缓和曲线长
 
     float m_distance_between_2_points;  // 当前2点线段间的距离
     float m_pre_distance;               // 前一线段间的距离
 
 
   public:
-    afx_msg void OnMenuClearLines();  // 清除所有线路
+    afx_msg void OnMenuClearLines();    // 清除所有线路
 
   private:
-    void initLines();  // 初始化线路数据
-    void clearLinesData();  // 清除所有线路数据
-    void loadSceneFile(CString filename);  // 加载场景工程文件
+    void initLines();                       // 初始化线路数据
+    void clearLinesData();                  // 清除所有线路数据
+    void loadSceneFile(CString filename);   // 加载场景工程文件
 
     // 加载点文件
     void LoadPointSymbolFile(CString filename);
@@ -732,7 +701,6 @@ class CMy3DSymbolLibNewView : public CView {
     int32 saveAreaSymbolFile(CString filename);
 
 
-    // [160119]线符号
   private:
 
     void drawLine(Line3 line);
@@ -784,19 +752,15 @@ class CMy3DSymbolLibNewView : public CView {
     /************************************************************************/
   private:
 
-    int32 m_Area_pointNum;  // 面符号 选择的点的个数
-    Area_4 m_area4_forScreenRecord;  // 4边形
+    int32 m_Area_pointNum;                      // 面符号 选择的点的个数
+    Area_4 m_area4_forScreenRecord;             // 4边形
 
-    CArray<PArea_4, PArea_4> m_Area4_Array;  // 存放所有的面符号
-
+    CArray<PArea_4, PArea_4> m_Area4_Array;     // 存放所有的面符号
 
     vector<Point3> Line_1_JD_vector;
     vector<Point3> Line_2_JD_vector;
     vector<Point3> Line_3_JD_vector;
     vector<Point3> Line_4_JD_vector;
-
-
-
 
     BOOL Area_fuse_Flag;
     // 多边形三角化
@@ -841,46 +805,12 @@ class CMy3DSymbolLibNewView : public CView {
     void Find_triangles_1_line_2_JD(Area_4& m_area4, Triangle& tmp_triangle, CPointPolygonRelationship& tmp_PPR, PPR_Point& tmp_point1, PPR_Point& tmp_point21, PPR_Point& tmp_point22);  // NOLINT
 
 
-    // 保存所有局部三角化了的三角形
-    // vector<Triangle> LocalTrianglesVecotr;
-
-
-
-    // 保存所有多边形内部完整的三角形
-    // vector<Triangle> TrianglesInPolygonVecotr;
-
-
-
-    // 保存所有局部三角化了的三角形(三角形只有1个点在多边形内, 且多边形的某条边与三角形有2个交点)
-    // vector<Triangle> LocalTrianglesVecotr1;
-
-    // 保存所有局部三角化了的三角形(三角形只有2个点在多边形内, 且多边形的某条边与三角形有2个交点)
-    // vector<Triangle> LocalTrianglesVecotr2;
-
-
-
-
-
-    // ---------------------------------------------
 
     // 多边形顶点处的三角形
     void FindTriangles_polygon_has_vertex_in_triangle(Area_4& m_area4);  // NOLINT
-
     void FindTriangles_polygon_has_vertex_in_triangle_1_1(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, PPR_Point& tmp_point1, PPR_Point& tmp_point21, PPR_Point& tmp_point22);  // NOLINT
     void FindTriangles_polygon_has_vertex_in_triangle_2_1(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, Triangle& tmp_triangle3, PPR_Point& tmp_point1, PPR_Point& tmp_point21, PPR_Point& tmp_point22);  // NOLINT
-
-
-    // 保存所有局部三角化了的三角形(三角形只有1个点在多边形内, 且多边形的1个端点在三角形中)
-    // vector<Triangle> LocalTrianglesVecotr1_1;
-
-    // 保存所有局部三角化了的三角形(三角形只有2个点在多边形内, 且多边形的1个端点在三角形中)
-    // vector<Triangle> LocalTrianglesVecotr2_1;
-
-
-
     void FindTriangles_polygon_has_vertex_in_triangle_last(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, Triangle& tmp_triangle3, Triangle& tmp_triangle4, PPR_Point& tmp_point0, PPR_Point& tmp_point1, PPR_Point& tmp_point21, PPR_Point& tmp_point22);  // NOLINT
-    // 保存所有局部三角化了的三角形(某三角形没有点在多边形内, 但多边形的1个端点在三角形中)
-    // vector<Triangle> LocalTrianglesVecotr_last;
 
 
   public:
@@ -910,3 +840,4 @@ inline CMy3DSymbolLibNewDoc* CMy3DSymbolLibNewView::GetDocument() const {
 }
 #endif
 
+#endif  // SYMBOL_LIB_NEW_VIEW_H

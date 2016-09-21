@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿#ifndef C3D_MODEL_PARAM_SET_H
+#define C3D_MODEL_PARAM_SET_H
+
 #include "afxwin.h"
 #include "define.h"
 
@@ -82,3 +84,5 @@ class C3DModelParamSet : public CDialog {
     // 自定义响应消息,响应模型设置,非模式对话框
     afx_msg LRESULT OnUpdateEditXY(WPARAM wParam, LPARAM lParam);
 };
+
+#endif  // C3D_MODEL_PARAM_SET_H

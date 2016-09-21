@@ -1,8 +1,4 @@
-﻿
-// 3DSymbolLibNew.cpp : 定义应用程序的类行为。
-//
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "afxwinappex.h"
 #include "afxdialogex.h"
 #include "3DSymbolLibNew.h"
@@ -27,8 +23,6 @@ BEGIN_MESSAGE_MAP(CMy3DSymbolLibNewApp, CWinAppEx)
     ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
-
-// CMy3DSymbolLibNewApp 构造
 
 CMy3DSymbolLibNewApp::CMy3DSymbolLibNewApp() {
     m_bHiColorIcons = TRUE;
@@ -118,12 +112,10 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     if (!ProcessShellCommand(cmdInfo))
         return FALSE;
     // 唯一的一个窗口已初始化，因此显示它并对其进行更新
-    // m_pMainWnd->ShowWindow(SW_SHOW);
-    // m_pMainWnd->UpdateWindow();
     m_pMainWnd->ShowWindow(SW_SHOWMAXIMIZED);
     m_pMainWnd->UpdateWindow();
     // 仅当具有后缀时才调用 DragAcceptFiles
-    //  在 SDI 应用程序中，这应在 ProcessShellCommand 之后发生
+    // 在 SDI 应用程序中，这应在 ProcessShellCommand 之后发生
     // 初始化GID+
     GdiplusStartupInput gdiplusStartupInput;
     GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
@@ -138,19 +130,15 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
             AfxMessageBox(strMsg, MB_YESNO);
         }
     }
-    // GLog生成的文件名格式是[文件名].[计算机名].[Windows用户名].[log].[等级].[年月日时分秒].[PID]例如:GOOGLE.ZHANGJIE-PC.zhangjie.log.INFO.20160821-194510.4532
+    // GLog生成的文件名格式是[文件名].[计算机名].[Windows用户名].[log].[等级].[年月日时分秒].[PID]例如:GOOGLE.ZHANGJIE-PC.zhangjie.log.INFO.20160121-194510.4532
     // 每个进程中至少要执行1次InitGoogleLogging(),否则不产生日志文件.例如:只在xxApp::InitInstance()中调用一次InitGoogleLogging(),xxDlg中不必调用也会把日志输出到指定文件.
     google::InitGoogleLogging("LOG-3DLIB");  // 设置日志文件名中的"文件名"字段.
-    // [ADD]
     // ==============================================================
     // 读取系统设置配置文件
     // ==============================================================
     char systemConfigureDir[256];
     GetCurrentDirectoryA(256, systemConfigureDir);
     g_systemConfigureFile = strcat(systemConfigureDir, "\\system.ini");  // NOLINT
-    // CString msg;
-    // msg.Format("%s",g_systemConfigureFile.c_str());
-    // AfxMessageBox(msg);
     CFileFind systemConfigureFinder;
     BOOL isSystemConfigureFind = systemConfigureFinder.FindFile(g_systemConfigureFile.c_str());
     if (!isSystemConfigureFind) {
@@ -160,7 +148,6 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     ::GetPrivateProfileStringA("SceneDataPath", "path", "error", tmpPath.GetBuffer(MAX_SIZE), MAX_SIZE, g_systemConfigureFile.c_str());
     g_sceneDataPath = tmpPath.GetBuffer(0);
     tmpPath.ReleaseBuffer();
-    // ==============================================================
     // ==============================================================
     // 读取符号配置文件
     // ==============================================================
@@ -234,11 +221,6 @@ int32 CMy3DSymbolLibNewApp::ExitInstance() {
     return CWinAppEx::ExitInstance();
 }
 
-// CMy3DSymbolLibNewApp 消息处理程序
-
-
-// 用于应用程序“关于”菜单项的 CAboutDlg 对话框
-
 class CAboutDlg : public CDialogEx {
   public:
     CAboutDlg();
@@ -288,8 +270,3 @@ void CMy3DSymbolLibNewApp::LoadCustomState() {
 
 void CMy3DSymbolLibNewApp::SaveCustomState() {
 }
-
-// CMy3DSymbolLibNewApp 消息处理程序
-
-
-

@@ -9,9 +9,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-// CSpaceSearchSet dialog
-
-
 CSpaceSearchSet::CSpaceSearchSet(CWnd* pParent /*=NULL*/)
     : CDialog(CSpaceSearchSet::IDD, pParent) {
     // {{AFX_DATA_INIT(CSpaceSearchSet)
@@ -50,18 +47,16 @@ void CSpaceSearchSet::OnButtonColor() {
         color = m_ColorPicker.GetAutomaticColor();
     }
     m_QueryColorR = GetRValue(color);  // 得到所选择的颜色的红色
-    m_QueryColorG = GetGValue(color);  // 得到所选择的颜色的绿色
-    m_QueryColorB = GetBValue(color);  // 得到所选择的颜色的蓝色
+    m_QueryColorG = GetGValue(color);  // 绿
+    m_QueryColorB = GetBValue(color);  // 蓝
 }
 
 
 // 信息初始化
 BOOL CSpaceSearchSet::OnInitDialog() {
     CDialog::OnInitDialog();
-    //  myedit[0].SubclassDlgItem(IDC_EDIT_SHIZXLENGTH,this);
-    //  myedit[1].SubclassDlgItem(IDC_EDIT_SHUZXHEIGHT,this);
-    m_combolWidth.ResetContent();  // 存储标志线宽度的下拉框清空
-    for (int32 i = 1; i <= 20; i++) {  // 线宽最大宽度为20
+    m_combolWidth.ResetContent();       // 存储标志线宽度的下拉框清空
+    for (int32 i = 1; i <= 20; i++) {   // 线宽最大宽度为20
         CString tt;
         tt.Format("%d", i);
         m_combolWidth.AddString(tt);

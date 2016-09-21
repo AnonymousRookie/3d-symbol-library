@@ -1,5 +1,4 @@
-﻿
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "mainfrm.h"
 #include "FileView.h"
 #include "Resource.h"
@@ -11,8 +10,6 @@ static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif
 
-/////////////////////////////////////////////////////////////////////////////
-// CFileView
 
 CFileView::CFileView() {
 }
@@ -35,8 +32,6 @@ BEGIN_MESSAGE_MAP(CFileView, CDockablePane)
     ON_WM_SETFOCUS()
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
-// CWorkspaceBar 消息处理程序
 
 int32 CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     if (CDockablePane::OnCreate(lpCreateStruct) == -1)
@@ -47,7 +42,7 @@ int32 CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS;
     if (!m_wndFileView.Create(dwViewStyle, rectDummy, this, 4)) {
         TRACE0("未能创建文件视图\n");
-        return -1;      // 未能创建
+        return -1;
     }
     // 加载视图图像:
     m_FileViewImages.Create(IDB_FILE_VIEW, 16, 0, RGB(255, 0, 255));
@@ -191,5 +186,3 @@ void CFileView::OnChangeVisualStyle() {
     m_FileViewImages.Add(&bmp, RGB(255, 0, 255));
     m_wndFileView.SetImageList(&m_FileViewImages, TVSIL_NORMAL);
 }
-
-

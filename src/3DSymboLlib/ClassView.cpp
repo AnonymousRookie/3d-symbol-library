@@ -1,5 +1,4 @@
-﻿
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "MainFrm.h"
 #include "ClassView.h"
 #include "Resource.h"
@@ -26,9 +25,6 @@ class CClassViewMenuButton : public CMFCToolBarMenuButton {
 
 IMPLEMENT_SERIAL(CClassViewMenuButton, CMFCToolBarMenuButton, 1)
 
-//////////////////////////////////////////////////////////////////////
-// 构造/析构
-//////////////////////////////////////////////////////////////////////
 
 CClassView::CClassView() {
     m_nCurrSort = ID_SORTING_GROUPBYTYPE;
@@ -52,8 +48,6 @@ BEGIN_MESSAGE_MAP(CClassView, CDockablePane)
     ON_UPDATE_COMMAND_UI_RANGE(ID_SORTING_GROUPBYTYPE, ID_SORTING_SORTBYACCESS, OnUpdateSort)
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
-// CClassView 消息处理程序
 
 int32 CClassView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     if (CDockablePane::OnCreate(lpCreateStruct) == -1)
@@ -64,7 +58,7 @@ int32 CClassView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
     if (!m_wndClassView.Create(dwViewStyle, rectDummy, this, 2)) {
         TRACE0("未能创建类视图\n");
-        return -1;      // 未能创建
+        return -1;
     }
     // 加载图像:
     m_wndToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_SORT);

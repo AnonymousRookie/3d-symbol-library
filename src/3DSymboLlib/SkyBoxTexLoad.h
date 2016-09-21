@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿#ifndef SKY_BOX_TEX_LOAD_H
+#define SKY_BOX_TEX_LOAD_H
+
 #include "define.h"
 
 // CSkyBoxTexLoad 对话框
@@ -7,14 +9,14 @@ class CSkyBoxTexLoad : public CDialog {
     DECLARE_DYNAMIC(CSkyBoxTexLoad)
 
   public:
-    explicit CSkyBoxTexLoad(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CSkyBoxTexLoad(CWnd* pParent = NULL);
     virtual ~CSkyBoxTexLoad();
 
     // 对话框数据
     enum { IDD = IDD_DIALOG_SKYBOX };
 
   protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+    virtual void DoDataExchange(CDataExchange* pDX);
 
     DECLARE_MESSAGE_MAP()
   public:
@@ -29,3 +31,5 @@ class CSkyBoxTexLoad : public CDialog {
     afx_msg void OnBnClickedButtonSkyRt();
     afx_msg void OnBnClickedButtonSkyFr();
 };
+
+#endif  // SKY_BOX_TEX_LOAD_H

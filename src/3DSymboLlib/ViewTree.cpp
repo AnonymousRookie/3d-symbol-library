@@ -1,5 +1,4 @@
-﻿
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "ViewTree.h"
 
 #ifdef _DEBUG
@@ -8,8 +7,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-/////////////////////////////////////////////////////////////////////////////
-// CViewTree
 
 CViewTree::CViewTree() {
 }
@@ -20,8 +17,6 @@ CViewTree::~CViewTree() {
 BEGIN_MESSAGE_MAP(CViewTree, CTreeCtrl)
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
-// CViewTree 消息处理程序
 
 BOOL CViewTree::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) {
     BOOL bRes = CTreeCtrl::OnNotify(wParam, lParam, pResult);

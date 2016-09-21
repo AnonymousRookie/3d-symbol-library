@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿#ifndef CAMERA_PARAM_SET_H
+#define CAMERA_PARAM_SET_H
+
 #include "define.h"
 
 // CCameraParamSet 对话框
@@ -7,14 +9,14 @@ class CCameraParamSet : public CDialog {
     DECLARE_DYNAMIC(CCameraParamSet)
 
   public:
-    explicit CCameraParamSet(CWnd* pParent = NULL);   // 标准构造函数
+    explicit CCameraParamSet(CWnd* pParent = NULL);
     virtual ~CCameraParamSet();
 
     // 对话框数据
     enum { IDD = IDD_DIALOG_CAMERA_PARAM_SET };
 
   protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+    virtual void DoDataExchange(CDataExchange* pDX);
 
     DECLARE_MESSAGE_MAP()
   public:
@@ -24,3 +26,5 @@ class CCameraParamSet : public CDialog {
     afx_msg void OnBnClickedButtonRecoverY();
     afx_msg void OnBnClickedButtonRecoverZ();
 };
+
+#endif  // CAMERA_PARAM_SET_H

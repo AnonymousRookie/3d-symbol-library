@@ -1,22 +1,20 @@
-﻿#include "afxwin.h"
+﻿#ifndef SPACE_SEARCH_SET_H
+#define SPACE_SEARCH_SET_H
+
+
+#include "afxwin.h"
 #include "afxcolorbutton.h"
 #include "SetColorButton.h"
 #include "define.h"
 
 #if !defined(AFX_SPACESEARCHSET_H__EBD6DD48_1D05_44B1_BA52_C02F76596DE1__INCLUDED_)
 #define AFX_SPACESEARCHSET_H__EBD6DD48_1D05_44B1_BA52_C02F76596DE1__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif  // _MSC_VER > 1000
-// SpaceSearchSet.h : header file
-
+#endif  // !defined(AFX_SPACESEARCHSET_H__EBD6DD48_1D05_44B1_BA52_C02F76596DE1__INCLUDED_)
 
 
 // CSpaceSearchSet dialog
 
 class CSpaceSearchSet : public CDialog {
-    // Construction
   public:
     explicit CSpaceSearchSet(CWnd* pParent = NULL);
 
@@ -44,7 +42,7 @@ class CSpaceSearchSet : public CDialog {
     // Implementation
   protected:
     // CBrush pbrush;
-    //  CMyEdit myedit[2];
+    // CMyEdit myedit[2];
     // Generated message map functions
     // {{AFX_MSG(CSpaceSearchSet)
     afx_msg void OnButtonColor();
@@ -55,12 +53,11 @@ class CSpaceSearchSet : public CDialog {
     DECLARE_MESSAGE_MAP()
 
   public:
-    // CMFCButton *SetColorBtn;
-    // CMFCButton *button;
     CSetColorButton m_ColorPicker;
 };
 
 // {{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif  // !defined(AFX_SPACESEARCHSET_H__EBD6DD48_1D05_44B1_BA52_C02F76596DE1__INCLUDED_)
+
+#endif  // SPACE_SEARCH_SET_H

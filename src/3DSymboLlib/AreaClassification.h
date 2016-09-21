@@ -29,7 +29,7 @@ class CAreaClassification : public CDialog {
     CString m_selectItem;
     CString m_Dir;
     // 将选中的bmp纹理影像在控件上绘制
-    void drawBitmapFromFile(CString bitmapFilePath, CDC* pDC, CRect rect);
+    void drawBitmapFromFile(const CString& bitmapFilePath, CDC* pDC, CRect rect);
 
 
   public:
@@ -39,6 +39,4 @@ class CAreaClassification : public CDialog {
     afx_msg void OnBnClickedCancel();
     afx_msg void OnSelchangedTreeAreaList(NMHDR* pNMHDR, LRESULT* pResult);
     virtual BOOL OnInitDialog();
-    //  afx_msg void OnMenuUpdateAreaTexture();
-    //  afx_msg void OnMenuAreaDelete();
 };
