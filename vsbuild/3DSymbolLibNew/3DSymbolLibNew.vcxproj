@@ -173,15 +173,16 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\FileView.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\GLFont.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\GlobalVariable.h" />
-    <ClInclude Include="..\..\src\3DSymboLlib\LeastSquares.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Load3DS.H" />
     <ClInclude Include="..\..\src\3DSymboLlib\MainFrm.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\LeastSquares.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\MathUtil.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\PointPolygonRelationship.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\Vec3.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\Vector.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\ModelListConfigureDialog.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\ModelParam.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\OutputWnd.h" />
-    <ClInclude Include="..\..\src\3DSymboLlib\PointPolygonRelationship.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\ProjectFileSetting.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\PropertiesWnd.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\resource.h" />
@@ -195,7 +196,6 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\targetver.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\TerrainImportContour.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Texture.h" />
-    <ClInclude Include="..\..\src\3DSymboLlib\Vector.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\ViewTree.h" />
   </ItemGroup>
   <ItemGroup>
@@ -212,14 +212,15 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClCompile Include="..\..\src\3DSymboLlib\FileView.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\GLFont.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\GlobalVariable.cpp" />
-    <ClCompile Include="..\..\src\3DSymboLlib\LeastSquares.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\Load3DS.CPP" />
     <ClCompile Include="..\..\src\3DSymboLlib\MainFrm.cpp" />
+    <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\LeastSquares.cpp" />
+    <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\PointPolygonRelationship.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\Vec3.cpp" />
+    <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\Vector.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\ModelListConfigureDialog.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\ModelParam.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\OutputWnd.cpp" />
-    <ClCompile Include="..\..\src\3DSymboLlib\PointPolygonRelationship.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\ProjectFileSetting.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\PropertiesWnd.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\RockClassification.cpp" />
@@ -234,7 +235,6 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClCompile Include="..\..\src\3DSymboLlib\SystemSetting.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\TerrainImportContour.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\Texture.cpp" />
-    <ClCompile Include="..\..\src\3DSymboLlib\Vector.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\ViewTree.cpp" />
   </ItemGroup>
   <ItemGroup>

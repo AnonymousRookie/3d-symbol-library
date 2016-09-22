@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
 #include "DesingScheme.h"
 #include "GlobalVariable.h"
-#include "LeastSquares.h"
+#include "MathUtils/LeastSquares.h"
 
 
 CDesingScheme::CDesingScheme(void) {}

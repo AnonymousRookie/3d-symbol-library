@@ -2,12 +2,7 @@
 #define MATH_VEC3_H
 
 #include <cmath>
-/**
- * Util macro for const float such as epsilon, small float and float precision tolerance.
- */
-#define MATH_FLOAT_SMALL            1.0e-37f
-#define MATH_TOLERANCE              2e-37f
-#define MATH_EPSILON                0.000001f
+#include "MathUtil.h"
 
 class Vec3 {
   public:

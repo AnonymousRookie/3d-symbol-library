@@ -678,7 +678,6 @@ void CMy3DSymbolLibNewView::DrawScene() {
            ) {
             DrawSearchPoint();  // 绘制空间查询标志
         }
-        // [160120]
         if (fuse_Flag) {
             DrawJDLine(Line_a_JD_vector, Line_b_JD_vector);
         }
@@ -1046,7 +1045,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             }
             Invalidate(FALSE);
             MessageBox(tt, "三维距离查询", MB_ICONINFORMATION);       // 给出距离查询信息
-        } else if (m_QueryType == LINE_ADD) {                        // [160119] 线编辑  添加线
+        } else if (m_QueryType == LINE_ADD) {                        // 线编辑  添加线
             ++m_LineEdit_pointNum;                                   // 选择点数 + 1
             if (m_LineEdit_pointNum == 1) {                          // 如果只选择了1个点
                 m_line.pt1._x = wx;
@@ -1064,7 +1063,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
                 line->pt2 = m_line.pt2;
                 m_LinesArray.Add(line);
             }
-        } else if (m_QueryType == AREA_ADD) {   // [160209]选取面符号上的点
+        } else if (m_QueryType == AREA_ADD) {   // 选取面符号上的点
             m_Area_pointNum++;                  // 选择点数 + 1
             if (m_Area_pointNum == 1) {
                 m_area4_forScreenRecord.pt1._x = wx;

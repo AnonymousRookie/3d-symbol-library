@@ -1,7 +1,7 @@
 ﻿#ifndef _3DMATH_H
 #define _3DMATH_H
 
-#include "define.h"
+#include "../define.h"
 
 #define PI 3.1415926535897932
 
@@ -109,7 +109,7 @@ bool IntersectedPolygon(CVector3 vPoly[], CVector3 vLine[], int32 verticeCount);
 
 
 int32 ClassifySphere(const CVector3& vCenter,
-                   const CVector3& vNormal, const CVector3& vPoint, float radius, const float& distance);
+                     const CVector3& vNormal, const CVector3& vPoint, float radius, const float& distance);
 
 
 

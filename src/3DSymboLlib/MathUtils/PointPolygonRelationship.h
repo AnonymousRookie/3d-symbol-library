@@ -1,21 +1,19 @@
 ﻿
-// 判断点与多边形的关系
-// 点在多边形内、上、外
-
-
-/* 射线法判断点q与多边形polygon的位置关系，要求polygon为简单多边形，顶点逆时针排列
- 如果点在多边形内：     返回0
- 如果点在多边形边上：       返回1
- 如果点在多边形外：     返回2
-*/
-
-
+/************************************************************************
+ * 判断点与多边形的关系(点在多边形内、上、外)
+ *
+ * 射线法判断点q与多边形polygon的位置关系，要求polygon为简单多边形，顶点逆时针排列
+ * 如果点在多边形内：     返回0
+ * 如果点在多边形边上：   返回1
+ * 如果点在多边形外：     返回2
+ ************************************************************************/
 
 
 
+#ifndef POINT_POLYGON_RELATION_SHIP_H
+#define POINT_POLYGON_RELATION_SHIP_H
 
-#pragma once
-#include "define.h"
+#include "../define.h"
 
 
 const double INFINITY = 1e10;
@@ -56,10 +54,6 @@ class CPointPolygonRelationship {
 
 
 
-
-
-
-
     // 求2线段的交点 ========================================================
     int32 sgn(double x) {
         return x < -ESP ? -1 : (x > ESP);
@@ -91,3 +85,4 @@ class CPointPolygonRelationship {
 
 };
 
+#endif  // POINT_POLYGON_RELATION_SHIP_H

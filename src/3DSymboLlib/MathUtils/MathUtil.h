@@ -20,4 +20,12 @@
 /**Util macro for conversion from radians to degrees.*/
 #define MATH_RAD_TO_DEG(x)        ((x) * 57.29577951f)
 
+
+/**
+ * Util macro for const float such as epsilon, small float and float precision tolerance.
+ */
+#define MATH_FLOAT_SMALL            1.0e-37f
+#define MATH_TOLERANCE              2e-37f
+#define MATH_EPSILON                0.000001f
+
 #endif  // MATH_UTIL_H
