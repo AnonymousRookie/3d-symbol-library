@@ -22,6 +22,13 @@ float Vec3::distance(const Vec3& v) const {
     return std::sqrt(dx * dx + dy * dy + dz * dz);
 }
 
+float Vec3::distance(const Vec3& v1, const Vec3& v2){
+    float dx = v1.x - v2.x;
+    float dy = v1.y - v2.y;
+    float dz = v1.z - v2.z;
+    return std::sqrt(dx * dx + dy * dy + dz * dz);
+}
+
 float Vec3::distanceSquared(const Vec3& v) const {
     float dx = v.x - x;
     float dy = v.y - y;
@@ -55,5 +62,14 @@ void Vec3::normalize() {
 Vec3 Vec3::getNormalized() const {
     Vec3 v(*this);
     v.normalize();
+    return v;
+}
+
+
+Vec3 Vec3::CrossProduct(const Vec3& v1, const Vec3& v2) {
+    Vec3 v(0.0f, 0.0f, 0.0f);
+    v.x = (v1.y * v2.z) - (v1.z * v2.y);
+    v.y = (v1.z * v2.x) - (v1.x * v2.z);
+    v.z = (v1.x * v2.y) - (v1.y * v2.x);
     return v;
 }

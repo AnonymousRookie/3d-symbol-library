@@ -98,6 +98,7 @@ class Vec3 {
      */
     float distance(const Vec3& v) const;
 
+    static float distance(const Vec3& v1, const Vec3& v2);
     /**
      * Returns the squared distance between this vector and v.
      *
@@ -272,11 +273,15 @@ class Vec3 {
      */
     Vec3 getNormalized() const;
 
-  private:
+    static Vec3 CrossProduct(const Vec3& v1, const Vec3& v2);
+
+  public:
     float x;
     float y;
     float z;
 };
+
+typedef Vec3 CVector3;
 
 #include "Vec3.inl"
 

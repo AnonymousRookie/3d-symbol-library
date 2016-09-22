@@ -14,12 +14,14 @@
 #include "GLFont.h"
 #include <MMSystem.h>
 #include "stdafx.h"
-#include "MathUtils/Vector.h"
-#include <math.h>
+#include <cmath>
 #include <atlimage.h>
 #include <algorithm>
-#include "MathUtils/PointPolygonRelationship.h"
 #include "define.h"
+#include "MathUtils/PointPolygonRelationship.h"
+#include "MathUtils/Vec3.h"
+
+
 
 // SkyBox Tex
 enum {TP = 0, LF, BK, RT, FR};
@@ -246,7 +248,7 @@ class CMy3DSymbolLibNewView : public CView {
     float       gao;
 
     // 用于计算相机事参数的CVector3类型变量
-    CVector3    m_vStrafe;
+    Vec3    m_vStrafe;
     CVector3    View;
 
     void DrawScene();

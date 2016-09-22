@@ -28,4 +28,8 @@
 #define MATH_TOLERANCE              2e-37f
 #define MATH_EPSILON                0.000001f
 
+
+#define PI 3.1415926535897932
+
+
 #endif  // MATH_UTIL_H

@@ -179,7 +179,6 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\MathUtil.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\PointPolygonRelationship.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\Vec3.h" />
-    <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\Vector.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\ModelListConfigureDialog.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\ModelParam.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\OutputWnd.h" />
@@ -217,7 +216,6 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\LeastSquares.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\PointPolygonRelationship.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\Vec3.cpp" />
-    <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\Vector.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\ModelListConfigureDialog.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\ModelParam.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\OutputWnd.cpp" />

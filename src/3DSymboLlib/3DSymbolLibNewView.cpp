@@ -310,10 +310,10 @@ void CMy3DSymbolLibNewView::initLines() {
     last_x = 0, last_y = 0, last_z = 0;
     pre_x  = 0, pre_y  = 0, pre_z = 0;
     // 用于计算2线段间夹角
-    v1_begin.Set(0, 0, 0);
-    v1_end.Set(0, 0, 0);
-    v2_begin.Set(0, 0, 0);
-    v2_end.Set(0, 0, 0);
+    v1_begin.setZero();
+    v1_end.setZero();
+    v2_begin.setZero();
+    v2_end.setZero();
     // 记录点的个数
     p_count = 0;
     m_distance_between_2_points = 0.0;
@@ -1365,9 +1365,9 @@ void CMy3DSymbolLibNewView::getDegreeBetween2Vectors(CVector3& v1_Begin, CVector
         CVector3& v2_Begin, CVector3& v2_End, float* pDegreeRet/*返回结果*/) {  // NOLINT
     CVector3 v1 = v1_End - v1_Begin;
     CVector3 v2 = v2_End - v2_Begin;
-    float dotProductRet = DotProduct(v1, v2);   // 点积
-    float magnitudeV1 = Magnitude(v1);          // v1的模
-    float magnitudeV2 = Magnitude(v2);          // v2的模
+    float dotProductRet = CVector3::dot(v1, v2);   // 点积
+    float magnitudeV1 = v1.length();          // v1的模
+    float magnitudeV2 = v2.length();          // v2的模
     float cosM = dotProductRet / (magnitudeV1 * magnitudeV2);
     float angleAMB = acos(cosM) * 180 / PI;
     *pDegreeRet = angleAMB;
@@ -1779,15 +1779,15 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
             break;
         case 'H':
         case VK_PRIOR:  // PgUp   俯仰角
-            vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // 叉积计算
-            vAxis = Normalize(vAxis);                                   // vAxis归一化
+            vAxis = CVector3::CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // 叉积计算
+            vAxis = vAxis.getNormalized();                                   // vAxis归一化
             RotateView(20 / derAngleZ, vAxis.x, vAxis.y, vAxis.z);      // 通过鼠标控制相机的旋转(旋转视角)
             OnDraw(GetDC());
             break;
         case 'N':
         case VK_NEXT:  // PgDn   俯仰角
-            vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // 叉积计算
-            vAxis = Normalize(vAxis);                                   // vAxis归一化
+            vAxis = CVector3::CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // 叉积计算
+            vAxis = vAxis.getNormalized();                                      // vAxis归一化
             RotateView(-20 / derAngleZ, vAxis.x, vAxis.y, vAxis.z);     // 通过鼠标控制相机的旋转(旋转视角)
             OnDraw(GetDC());
             break;
@@ -1801,14 +1801,14 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
             OnDraw(GetDC());
             break;
         case VK_HOME:  // 顺时针旋转
-            vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // 叉积计算
-            vAxis = Normalize(vAxis);                                   // vAxis归一化
+            vAxis = CVector3::CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // 叉积计算
+            vAxis = vAxis.getNormalized();                                   // vAxis归一化
             RotateView(-50 / derAngleZ,  0, 1, 0);      // 通过鼠标控制相机的旋转(旋转视角)
             OnDraw(GetDC());
             break;
         case VK_END:  // 逆时针旋转
-            vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // 叉积计算
-            vAxis = Normalize(vAxis);                                   // vAxis归一化
+            vAxis = CVector3::CrossProduct(m_vLook - m_vEyePosition, m_vUp);      // 叉积计算
+            vAxis = vAxis.getNormalized();                                   // vAxis归一化
             RotateView(50 / derAngleZ,  0, 1, 0);   // 通过鼠标控制相机的旋转(旋转视角)
             OnDraw(GetDC());
             break;
@@ -1823,8 +1823,8 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 /* Function: 根据鼠标和键盘实现三维场景相机的移动和旋转控制         */
 /****************************************************************/
 void CMy3DSymbolLibNewView::CamraUpdate() {
-    CVector3 vCross = CrossProduct(m_vLook - m_vEyePosition, m_vUp);  // 叉积计算
-    m_vStrafe = Normalize(vCross);                                  // vCross归一化
+    CVector3 vCross = CVector3::CrossProduct(m_vLook - m_vEyePosition, m_vUp);  // 叉积计算
+    m_vStrafe = vCross.getNormalized();                                  // vCross归一化
     SetViewByMouse();                                               // 通过鼠标实现相机控制
     CheckForMovement();                                             // 通过键盘实现相机控制
     m_vEyePosition.y += (m_viewHeight - m_oldviewHeight);           // 新的相机视点y坐标
@@ -1848,7 +1848,7 @@ void CMy3DSymbolLibNewView::MoveCameraX(float speed) {
 /****************************************************************/
 void CMy3DSymbolLibNewView::MoveCameraZ(float speed) {
     CVector3 vVector = m_vLook - m_vEyePosition;                        // 相机视点与观察点三维坐标差值
-    vVector = Normalize(vVector);                                   // 相机视点与观察点三维坐标差值归一化
+    vVector = vVector.getNormalized();                              // 相机视点与观察点三维坐标差值归一化
     m_vEyePosition.x += vVector.x * speed;                          // 相机视点x新坐标
     m_vEyePosition.z += vVector.z * speed;                          // 相机视点z新坐标
     m_vLook.x += vVector.x * speed;                                 // 相机观察点x新坐标
@@ -1958,8 +1958,8 @@ void CMy3DSymbolLibNewView::SetViewByMouse() {
     angleZ = static_cast<float>((m_oldMousePos.y - mousePos.y)) / derAngleZ;
     currentRotX -= angleZ;
     if (angleY >= -360 && angleY <= 360 && angleZ >= -360 && angleY <= 360) {
-        CVector3 vAxis = CrossProduct(m_vLook - m_vEyePosition, m_vUp);     // 叉积计算
-        vAxis = Normalize(vAxis);                                           // vAxis归一化
+        CVector3 vAxis = CVector3::CrossProduct(m_vLook - m_vEyePosition, m_vUp);     // 叉积计算
+        vAxis = vAxis.getNormalized();                                           // vAxis归一化
         RotateView(angleZ, vAxis.x, vAxis.y, vAxis.z);      // 通过鼠标控制相机的旋转(旋转视角)
         RotateView(angleY, 0, 1, 0);                        // 通过鼠标控制相机的旋转(旋转视角)
     }
@@ -2060,7 +2060,7 @@ void CMy3DSymbolLibNewView::OnFlppathInterpolation() {
             m_FlayPathTempPts.Add(ppt);
         }
         // 计算飞行路径当前点与下一点的距离
-        double L = Dist(CVector3(x1, y1, z1), CVector3(x2, y2, z2));
+        double L = Vec3::distance(Vec3(x1, y1, z1), Vec3(x2, y2, z2));
         int32 M = L / m_InsertDdis;       // 计算应内插的坐标点数
         for (int32 j = 1; j <= M; j++) {
             // 线性内插计算出新的内插点的三维坐标
@@ -3676,7 +3676,7 @@ float CMy3DSymbolLibNewView::RayIntersect(
         // returnNormal = rayDir.multiK(-1);
         // returnNormal.normalize();
         returnNormal = CVector3(0, 0, 0) - rayDir;
-        Normalize(returnNormal);
+        returnNormal.getNormalized();
         /*  }  */
         return 0.0f;  // 起点在矩形边界框内，确定相交时间最短？
     }
