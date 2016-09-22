@@ -12,7 +12,7 @@
 #include "ModelListConfigureDialog.h"
 #include "SystemSetting.h"
 #include "AreaClassification.h"
-#include "MathUtil.h"
+#include "MathUtils/MathUtil.h"
 
 
 extern t3DModel g_3DModel[MODEL_NUM_MAX];
