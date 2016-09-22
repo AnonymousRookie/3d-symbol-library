@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "define.h"
+#include "Base/ZTypes.h"
 
 // CSplashWnd
 

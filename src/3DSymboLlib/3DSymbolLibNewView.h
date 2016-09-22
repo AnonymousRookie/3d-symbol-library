@@ -17,7 +17,7 @@
 #include <cmath>
 #include <atlimage.h>
 #include <algorithm>
-#include "define.h"
+#include "Base/ZTypes.h"
 #include "MathUtils/PointPolygonRelationship.h"
 #include "MathUtils/Vec3.h"
 

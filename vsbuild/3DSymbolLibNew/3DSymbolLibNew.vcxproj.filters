@@ -12,6 +12,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="SymbolLib\Base">
+      <UniqueIdentifier>{7ba4ab17-b612-4a35-800c-25439efbb8f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -176,9 +179,6 @@
     <ClInclude Include="..\..\src\3DSymboLlib\ClassView.h">
       <Filter>SymbolLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\define.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\3DSymboLlib\DesingScheme.h">
       <Filter>SymbolLib</Filter>
     </ClInclude>
@@ -256,6 +256,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\LeastSquares.h">
       <Filter>SymbolLib\MathUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\Base\ZTypes.h">
+      <Filter>SymbolLib\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\Base\ZMacros.h">
+      <Filter>SymbolLib\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

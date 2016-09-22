@@ -1,6 +1,6 @@
 ﻿#include "stdafx.h"
 #include "texture.h"
-#include "define.h"
+#include "Base/ZTypes.h"
 
 // 从BMP文件创建纹理,并返回纹理ID号
 int32 CTexture::LoadGLTextures(char* Filename) {

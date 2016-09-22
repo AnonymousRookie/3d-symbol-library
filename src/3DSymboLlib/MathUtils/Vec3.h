@@ -3,6 +3,8 @@
 
 #include <cmath>
 #include "MathUtil.h"
+#include "../Base/ZMacros.h"
+
 
 class Vec3 {
   public:

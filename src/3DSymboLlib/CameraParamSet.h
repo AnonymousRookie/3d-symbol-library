@@ -1,7 +1,7 @@
 ﻿#ifndef CAMERA_PARAM_SET_H
 #define CAMERA_PARAM_SET_H
 
-#include "define.h"
+#include "Base/ZTypes.h"
 
 // CCameraParamSet 对话框
 

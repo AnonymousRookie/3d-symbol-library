@@ -1,7 +1,7 @@
 ﻿#ifndef ADD_POINT_DLG_H
 #define ADD_POINT_DLG_H
 
-#include "define.h"
+#include "Base/ZTypes.h"
 
 // CAddPointDlg 对话框
 

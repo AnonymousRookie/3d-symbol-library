@@ -9,7 +9,7 @@
 #include <conio.h>
 #include <math.h>
 #include <process.h>
-#include "../define.h"
+#include "../Base/ZTypes.h"
 
 
 #define L_N 3   // N个点

@@ -3,7 +3,7 @@
 
 #include "afxcmn.h"
 #include "afxwin.h"
-#include "define.h"
+#include "Base/ZTypes.h"
 
 //  ModelListConfigureDialog 对话框
 

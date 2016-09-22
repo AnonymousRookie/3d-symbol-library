@@ -1,7 +1,7 @@
 ﻿#ifndef TERRAIN_IMPORT_CONTOUR_H
 #define TERRAIN_IMPORT_CONTOUR_H
 
-#include "define.h"
+#include "Base/ZTypes.h"
 
 // TerrainImportContour 对话框
 

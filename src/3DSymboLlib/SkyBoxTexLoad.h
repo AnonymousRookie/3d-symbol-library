@@ -1,7 +1,7 @@
 ﻿#ifndef SKY_BOX_TEX_LOAD_H
 #define SKY_BOX_TEX_LOAD_H
 
-#include "define.h"
+#include "Base/ZTypes.h"
 
 // CSkyBoxTexLoad 对话框
 

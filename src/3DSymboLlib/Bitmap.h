@@ -1,7 +1,7 @@
 ﻿#include <stdlib.h>
 #include <windows.h>
 #include <stdio.h>
-#include "define.h"
+#include "Base/ZTypes.h"
 
 #define BITMAP_ID   0x4D42    // the universal bitmap ID
 /*****************************************************************************

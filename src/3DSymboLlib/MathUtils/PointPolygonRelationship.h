@@ -13,7 +13,7 @@
 #ifndef POINT_POLYGON_RELATION_SHIP_H
 #define POINT_POLYGON_RELATION_SHIP_H
 
-#include "../define.h"
+#include "../Base/ZTypes.h"
 
 
 const double INFINITY = 1e10;

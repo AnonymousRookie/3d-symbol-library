@@ -13,7 +13,7 @@
 #include "GlobalVariable.h"
 
 #include "ProjectFileSetting.h"
-#include "define.h"
+#include "Base/ZTypes.h"
 
 // 读写配置文件Buffer大小
 #define MAX_SIZE 256

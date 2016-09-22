@@ -1,7 +1,7 @@
 ﻿#ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include "define.h"
+#include "Base/ZTypes.h"
 
 #if !defined(AFX_CTexture_H__A7C41EA3_DB80_49DA_9A84_72E6251F9A21__INCLUDED_)
 # define AFX_CTexture_H__A7C41EA3_DB80_49DA_9A84_72E6251F9A21__INCLUDED_

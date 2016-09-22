@@ -8,7 +8,7 @@
 #pragma once
 #endif  // _MSC_VER > 1000
 
-#include "define.h"
+#include "Base/ZTypes.h"
 
 class CGLFont {
   public:

@@ -2,7 +2,7 @@
 #define PROJECT_FILE_SETTING_H
 
 #include "afxwin.h"
-#include "define.h"
+#include "Base/ZTypes.h"
 
 // CProjectFileSetting 对话框
 

@@ -2,7 +2,7 @@
 #define C3D_MODEL_PARAM_SET_H
 
 #include "afxwin.h"
-#include "define.h"
+#include "Base/ZTypes.h"
 
 // C3DModelParamSet 对话框
 

@@ -6,7 +6,7 @@
 #include <iostream>
 using namespace std;  // NOLINT
 #include <vector>
-#include "define.h"
+#include "Base/ZTypes.h"
 
 // 三维点坐标结构
 typedef struct {

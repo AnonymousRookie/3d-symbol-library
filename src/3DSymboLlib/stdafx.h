@@ -49,7 +49,7 @@
 
 #include <atlimage.h>
 
-#include "define.h"
+#include "Base/ZTypes.h"
 
 #include "DesingScheme.h"
 extern CDesingScheme myDesingScheme;

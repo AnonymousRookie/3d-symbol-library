@@ -10,7 +10,7 @@
 #include <list>
 #include <string>
 #include <algorithm>
-#include "define.h"
+#include "Base/ZTypes.h"
 
 
 // XML 与 tree control

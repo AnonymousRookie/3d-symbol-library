@@ -6,7 +6,7 @@
 
 #include "afxcmn.h"
 #include "afxwin.h"
-#include "define.h"
+#include "Base/ZTypes.h"
 
 class CRockClassification : public CDialog {
     DECLARE_DYNAMIC(CRockClassification)

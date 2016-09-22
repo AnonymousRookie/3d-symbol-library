@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "afxwin.h"
 #include "afxcmn.h"
-#include "define.h"
+#include "Base/ZTypes.h"
 
 // CAreaClassification 对话框
 

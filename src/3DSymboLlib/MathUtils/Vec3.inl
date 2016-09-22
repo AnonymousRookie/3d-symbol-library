@@ -8,7 +8,7 @@ inline void Vec3::set(float xx, float yy, float zz) {
 }
 
 inline void Vec3::set(const float* array) {
-    // MY_ASSERT(array);
+    Z_ASSERT(array);
     x = array[0];
     y = array[1];
     z = array[2];

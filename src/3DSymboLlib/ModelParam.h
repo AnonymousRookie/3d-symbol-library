@@ -2,7 +2,7 @@
 #define MODEL_PARAM_H
 
 #include "afxcmn.h"
-#include "define.h"
+#include "Base/ZTypes.h"
 
 // ModelParam 对话框
 

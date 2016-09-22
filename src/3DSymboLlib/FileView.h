@@ -2,7 +2,7 @@
 #define FILE_VIEW_H
 
 #include "ViewTree.h"
-#include "define.h"
+#include "Base/ZTypes.h"
 
 class CFileViewToolBar : public CMFCToolBar {
     virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler) {

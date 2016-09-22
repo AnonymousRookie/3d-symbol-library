@@ -9,7 +9,7 @@ float Vec3::angle(const Vec3& v1, const Vec3& v2) {
 }
 
 void Vec3::add(const Vec3& v1, const Vec3& v2, Vec3* dst) {
-    // MY_ASSERT(dst);
+    Z_ASSERT(dst);
     dst->x = v1.x + v2.x;
     dst->y = v1.y + v2.y;
     dst->z = v1.z + v2.z;

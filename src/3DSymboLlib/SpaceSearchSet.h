@@ -5,7 +5,7 @@
 #include "afxwin.h"
 #include "afxcolorbutton.h"
 #include "SetColorButton.h"
-#include "define.h"
+#include "Base/ZTypes.h"
 
 #if !defined(AFX_SPACESEARCHSET_H__EBD6DD48_1D05_44B1_BA52_C02F76596DE1__INCLUDED_)
 #define AFX_SPACESEARCHSET_H__EBD6DD48_1D05_44B1_BA52_C02F76596DE1__INCLUDED_
