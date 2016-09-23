@@ -889,6 +889,8 @@ void CMy3DSymbolLibNewView::SkyBoxTexture(UINT textur) {
 
 void CMy3DSymbolLibNewView::OnDrawmodeLine() {
     m_Drawmode = 1;
+    // just for test -----------------------------
+    // end test -----------------------------
     Invalidate(FALSE);
 }
 

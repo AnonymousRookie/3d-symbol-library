@@ -163,6 +163,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\3DSymbolLibNewView.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\AddPointDlg.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\AreaClassification.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\Base\ZStackDumper.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZMacros.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZTypes.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Bitmap.h" />
@@ -204,6 +205,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNewView.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\AddPointDlg.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\AreaClassification.cpp" />
+    <ClCompile Include="..\..\src\3DSymboLlib\Base\ZStackDumper.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\C3DModelParamSet.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\CameraParamSet.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\ClassView.cpp" />

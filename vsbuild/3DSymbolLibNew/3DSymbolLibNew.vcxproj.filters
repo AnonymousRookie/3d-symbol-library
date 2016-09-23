@@ -263,6 +263,9 @@
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZMacros.h">
       <Filter>SymbolLib\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\Base\ZStackDumper.h">
+      <Filter>SymbolLib\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNew.cpp">
@@ -363,6 +366,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\LeastSquares.cpp">
       <Filter>SymbolLib\MathUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\Base\ZStackDumper.cpp">
+      <Filter>SymbolLib\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
