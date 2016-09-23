@@ -2,15 +2,6 @@
 #include "PointPolygonRelationship.h"
 
 
-CPointPolygonRelationship::CPointPolygonRelationship(void) {
-}
-
-
-CPointPolygonRelationship::~CPointPolygonRelationship(void) {
-}
-
-
-
 // 计算叉乘 |P0P1| × |P0P2|
 double CPointPolygonRelationship::Multiply(PPR_Point p1, PPR_Point p2, PPR_Point p0) {
     return ((p1.x - p0.x) * (p2.y - p0.y) - (p2.x - p0.x) * (p1.y - p0.y));

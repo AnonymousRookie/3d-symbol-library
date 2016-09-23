@@ -30,17 +30,14 @@ struct LineSegment {
 };
 
 
-
-
-
 typedef vector<PPR_Point> PPR_Polygon;
 
 class CPointPolygonRelationship {
   public:
-    CPointPolygonRelationship(void);
-    ~CPointPolygonRelationship(void);
+    CPointPolygonRelationship(void) {}
+    ~CPointPolygonRelationship(void) {}
 
-
+  public:
     // 判断点与多边形的关系 ========================================================
 
     // 计算叉乘 |P0P1| × |P0P2|

@@ -1,5 +1,5 @@
 ﻿/************************************************************************/
-/*  最小二乘曲线拟合                                                        */
+/*  最小二乘曲线拟合                                                      */
 /************************************************************************/
 
 #ifndef LEAST_SQUARES_H
@@ -19,8 +19,8 @@
 
 class CLeastSquares {
   public:
-    CLeastSquares(void);
-    ~CLeastSquares(void);
+    CLeastSquares(void) {}
+    ~CLeastSquares(void) {}
 
 
   public:
