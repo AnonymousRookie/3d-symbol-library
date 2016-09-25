@@ -1050,13 +1050,9 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
         } else if (m_QueryType == LINE_ADD) {                        // 线编辑  添加线
             ++m_LineEdit_pointNum;                                   // 选择点数 + 1
             if (m_LineEdit_pointNum == 1) {                          // 如果只选择了1个点
-                m_line.pt1._x = wx;
-                m_line.pt1._y = wy;
-                m_line.pt1._z = wz;
+                m_line.pt1 = Point3(wx, wy, wz);
             } else if (m_LineEdit_pointNum == 2) {
-                m_line.pt2._x = wx;
-                m_line.pt2._y = wy;
-                m_line.pt2._z = wz;
+                m_line.pt2 = Point3(wx, wy, wz);
             }
             if (m_LineEdit_pointNum >= 2) {     // 如果选择点数2个，归零
                 m_LineEdit_pointNum = 0;
@@ -1068,21 +1064,13 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
         } else if (m_QueryType == AREA_ADD) {   // 选取面符号上的点
             m_Area_pointNum++;                  // 选择点数 + 1
             if (m_Area_pointNum == 1) {
-                m_area4_forScreenRecord.pt1._x = wx;
-                m_area4_forScreenRecord.pt1._y = wy;
-                m_area4_forScreenRecord.pt1._z = wz;
+                m_area4_forScreenRecord.pt1 = Point3(wx, wy, wz);
             } else if (m_Area_pointNum == 2) {
-                m_area4_forScreenRecord.pt2._x = wx;
-                m_area4_forScreenRecord.pt2._y = wy;
-                m_area4_forScreenRecord.pt2._z = wz;
+                m_area4_forScreenRecord.pt2 = Point3(wx, wy, wz);
             } else if (m_Area_pointNum == 3) {
-                m_area4_forScreenRecord.pt3._x = wx;
-                m_area4_forScreenRecord.pt3._y = wy;
-                m_area4_forScreenRecord.pt3._z = wz;
+                m_area4_forScreenRecord.pt3 = Point3(wx, wy, wz);
             } else if (m_Area_pointNum == 4) {
-                m_area4_forScreenRecord.pt4._x = wx;
-                m_area4_forScreenRecord.pt4._y = wy;
-                m_area4_forScreenRecord.pt4._z = wz;
+                m_area4_forScreenRecord.pt4 = Point3(wx, wy, wz);
             }
             if (m_Area_pointNum >= 4) {  // 如果选择点数4个，归零
                 m_Area_pointNum = 0;
@@ -1594,8 +1582,8 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0);  // 设置查询标志线颜色
         for (int32 i = 0; i < m_LinesArray.GetSize(); ++i) {
             glBegin(GL_LINES);
-            glVertex3f(m_LinesArray[i]->pt1._x, m_LinesArray[i]->pt1._y, m_LinesArray[i]->pt1._z);
-            glVertex3f(m_LinesArray[i]->pt2._x, m_LinesArray[i]->pt2._y, m_LinesArray[i]->pt2._z);
+            glVertex3f(m_LinesArray[i]->pt1.x, m_LinesArray[i]->pt1.y, m_LinesArray[i]->pt1.z);
+            glVertex3f(m_LinesArray[i]->pt2.x, m_LinesArray[i]->pt2.y, m_LinesArray[i]->pt2.z);
             glEnd();
         }
         glLineWidth(1.0);
@@ -1605,10 +1593,10 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         for (int32 i = 0; i < m_Area4_Array.GetSize(); ++i) {
             if (m_Area4_Array[i]->deleted != 1) {
                 glBegin(GL_QUADS);
-                glVertex3f(m_Area4_Array[i]->pt1._x, m_Area4_Array[i]->pt1._y, m_Area4_Array[i]->pt1._z);
-                glVertex3f(m_Area4_Array[i]->pt2._x, m_Area4_Array[i]->pt2._y, m_Area4_Array[i]->pt2._z);
-                glVertex3f(m_Area4_Array[i]->pt3._x, m_Area4_Array[i]->pt3._y, m_Area4_Array[i]->pt3._z);
-                glVertex3f(m_Area4_Array[i]->pt4._x, m_Area4_Array[i]->pt4._y, m_Area4_Array[i]->pt4._z);
+                glVertex3f(m_Area4_Array[i]->pt1.x, m_Area4_Array[i]->pt1.y, m_Area4_Array[i]->pt1.z);
+                glVertex3f(m_Area4_Array[i]->pt2.x, m_Area4_Array[i]->pt2.y, m_Area4_Array[i]->pt2.z);
+                glVertex3f(m_Area4_Array[i]->pt3.x, m_Area4_Array[i]->pt3.y, m_Area4_Array[i]->pt3.z);
+                glVertex3f(m_Area4_Array[i]->pt4.x, m_Area4_Array[i]->pt4.y, m_Area4_Array[i]->pt4.z);
                 glEnd();
             }
         }
@@ -4231,32 +4219,32 @@ void CMy3DSymbolLibNewView::LoadAreaSymbolFile(CString filename) {
                 temp = area_info_str.Tokenize(" ", curPos);
                 // pt1
                 if (tokenID == 1)
-                    tmp_area4.pt1._x = atof(temp);
+                    tmp_area4.pt1.x = atof(temp);
                 else if (tokenID == 2)
-                    tmp_area4.pt1._y = atof(temp);
+                    tmp_area4.pt1.y = atof(temp);
                 else if (tokenID == 3)
-                    tmp_area4.pt1._z = atof(temp);
+                    tmp_area4.pt1.z = atof(temp);
                 // pt2
                 else if (tokenID == 4)
-                    tmp_area4.pt2._x = atof(temp);
+                    tmp_area4.pt2.x = atof(temp);
                 else if (tokenID == 5)
-                    tmp_area4.pt2._y = atof(temp);
+                    tmp_area4.pt2.y = atof(temp);
                 else if (tokenID == 6)
-                    tmp_area4.pt2._z = atof(temp);
+                    tmp_area4.pt2.z = atof(temp);
                 // pt3
                 else if (tokenID == 7)
-                    tmp_area4.pt3._x = atof(temp);
+                    tmp_area4.pt3.x = atof(temp);
                 else if (tokenID == 8)
-                    tmp_area4.pt3._y = atof(temp);
+                    tmp_area4.pt3.y = atof(temp);
                 else if (tokenID == 9)
-                    tmp_area4.pt3._z = atof(temp);
+                    tmp_area4.pt3.z = atof(temp);
                 // pt4
                 else if (tokenID == 10)
-                    tmp_area4.pt4._x = atof(temp);
+                    tmp_area4.pt4.x = atof(temp);
                 else if (tokenID == 11)
-                    tmp_area4.pt4._y = atof(temp);
+                    tmp_area4.pt4.y = atof(temp);
                 else if (tokenID == 12)
-                    tmp_area4.pt4._z = atof(temp);
+                    tmp_area4.pt4.z = atof(temp);
                 else if (tokenID == 13)
                     tmp_area4.area_texture = temp;
             }
@@ -4584,10 +4572,10 @@ int32 CMy3DSymbolLibNewView::saveAreaSymbolFile(CString filename) {
                 CString point_str;
                 point_str.Format("%d %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %s\n",
                                  polygon4_edges,
-                                 m_Area4_Array[i]->pt1._x, m_Area4_Array[i]->pt1._y, m_Area4_Array[i]->pt1._z,
-                                 m_Area4_Array[i]->pt2._x, m_Area4_Array[i]->pt2._y, m_Area4_Array[i]->pt2._z,
-                                 m_Area4_Array[i]->pt3._x, m_Area4_Array[i]->pt3._y, m_Area4_Array[i]->pt3._z,
-                                 m_Area4_Array[i]->pt4._x, m_Area4_Array[i]->pt4._y, m_Area4_Array[i]->pt4._z,
+                                 m_Area4_Array[i]->pt1.x, m_Area4_Array[i]->pt1.y, m_Area4_Array[i]->pt1.z,
+                                 m_Area4_Array[i]->pt2.x, m_Area4_Array[i]->pt2.y, m_Area4_Array[i]->pt2.z,
+                                 m_Area4_Array[i]->pt3.x, m_Area4_Array[i]->pt3.y, m_Area4_Array[i]->pt3.z,
+                                 m_Area4_Array[i]->pt4.x, m_Area4_Array[i]->pt4.y, m_Area4_Array[i]->pt4.z,
                                  m_Area4_Array[i]->area_texture
                                 );
                 file.WriteString(point_str);
@@ -5688,8 +5676,8 @@ void CMy3DSymbolLibNewView::OnMenuLineFuse() {
     tmp_line.pt2 = m_LinesArray[0]->pt2;
     // if(abs(tmp_line.pt1._x - tmp_line.pt2._x) < MAP_SCALE)
     {
-        tmp_line.pt1._x -= 1;
-        tmp_line.pt2._x -= 1;
+        tmp_line.pt1.x -= 1;
+        tmp_line.pt2.x -= 1;
     }
     // else
     // {
@@ -5704,8 +5692,8 @@ void CMy3DSymbolLibNewView::OnMenuLineFuse() {
     tmp_line.pt2 = m_LinesArray[0]->pt2;
     // if(abs(tmp_line.pt1._x - tmp_line.pt2._x) < MAP_SCALE)
     {
-        tmp_line.pt1._x += 1;
-        tmp_line.pt2._x += 1;
+        tmp_line.pt1.x += 1;
+        tmp_line.pt2.x += 1;
     }
     /*else
     {
@@ -5732,9 +5720,9 @@ void CMy3DSymbolLibNewView::getLine2ABC(double* A, double* B, double* C, Point3 
     //  A = Y2 - Y1
     //  B = X1 - X2
     //  C = X2*Y1 - X1*Y2
-    *A = p2._z - p1._z;
-    *B = p1._x - p2._x;
-    *C = p2._x * p1._z - p1._x * p2._z;
+    *A = p2.z - p1.z;
+    *B = p1.x - p2.x;
+    *C = p2.x * p1.z - p1.x * p2.z;
 }
 
 
@@ -5747,10 +5735,10 @@ void CMy3DSymbolLibNewView::CalcuateGridNum(int32* rowNum, int32* row_index_begi
     int32 tmp_colNum = 0;
     int32 tmp_col_index_begin = 0;
     int32 tmp_col_index_end = 0;
-    double r1 = abs(_line.pt1._x);
-    double c1 = abs(_line.pt1._z);
-    double r2 = abs(_line.pt2._x);
-    double c2 = abs(_line.pt2._z);
+    double r1 = abs(_line.pt1.x);
+    double c1 = abs(_line.pt1.z);
+    double r2 = abs(_line.pt2.x);
+    double c2 = abs(_line.pt2.z);
     tmp_row_index_begin = static_cast<int32>(r1) / static_cast<int32>(MAP_SCALE);
     tmp_row_index_end = static_cast<int32>(r2) / static_cast<int32>(MAP_SCALE);
     tmp_col_index_begin = static_cast<int32>(c1) / static_cast<int32>(MAP_SCALE);
@@ -5766,11 +5754,11 @@ void CMy3DSymbolLibNewView::CalcuateGridNum(int32* rowNum, int32* row_index_begi
 
 // sort(_pv.begin(),_pv.end(),comp);
 bool comp(const Point3& p1, const Point3& p2) {
-    return p1._x < p2._x;
+    return p1.x < p2.x;
 }
 
 bool comp2(const Point3& p1, const Point3& p2) {
-    return p1._z < p2._z;
+    return p1.z < p2.z;
 }
 
 
@@ -5789,26 +5777,26 @@ void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int3
     // 通过格网横坐标 求与线段交点
     if (row_index_begin < row_index_end) {
         for (int32 r = row_index_begin + 1; r < row_index_end; ++r) {
-            tmp_point._x = static_cast<float>(r) * MAP_SCALE;  // 平面横坐标
+            tmp_point.x = static_cast<float>(r) * MAP_SCALE;  // 平面横坐标
             // 平面纵坐标
             if (DOUBLE_NUMBER_IS_ZERO(B)) {
                 break;
             } else {
-                tmp_point._z = ((-A) * tmp_point._x - C) / B;
+                tmp_point.z = ((-A) * tmp_point.x - C) / B;
             }
-            tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
+            tmp_point.y = GetHeight(tmp_point.x, tmp_point.z);
             JD_vector1.push_back(tmp_point);
         }
     } else if (row_index_begin > row_index_end) {
         for (int32 r = row_index_begin - 1; r > row_index_end; --r) {
-            tmp_point._x = static_cast<float>(r) * MAP_SCALE;  // 平面横坐标
+            tmp_point.x = static_cast<float>(r) * MAP_SCALE;  // 平面横坐标
             // 平面纵坐标
             if (DOUBLE_NUMBER_IS_ZERO(B)) {
                 break;
             } else {
-                tmp_point._z = ((-A) * tmp_point._x - C) / B;
+                tmp_point.z = ((-A) * tmp_point.x - C) / B;
             }
-            tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
+            tmp_point.y = GetHeight(tmp_point.x, tmp_point.z);
             JD_vector1.push_back(tmp_point);
         }
     }
@@ -5816,41 +5804,41 @@ void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int3
     if (col_index_begin < col_index_end) {
         // 通过格网纵坐标 求与线段交点
         for (int32 c = col_index_begin + 1; c < col_index_end; ++c) {
-            tmp_point._z = static_cast<float>(-c) * MAP_SCALE;  // 平面纵坐标
+            tmp_point.z = static_cast<float>(-c) * MAP_SCALE;  // 平面纵坐标
             // 平面横坐标
             if (DOUBLE_NUMBER_IS_ZERO(A)) {
                 break;
             } else {
                 // Ax+By+C=0
-                tmp_point._x = ((-B) * tmp_point._z - C) / A;
+                tmp_point.x = ((-B) * tmp_point.z - C) / A;
             }
-            tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
+            tmp_point.y = GetHeight(tmp_point.x, tmp_point.z);
             JD_vector2.push_back(tmp_point);
         }
     } else if (col_index_begin > col_index_end) {
         // 通过格网纵坐标 求与线段交点
         for (int32 c = col_index_begin - 1; c > col_index_end; --c) {
-            tmp_point._z = static_cast<float>(-c) * MAP_SCALE;  // 平面纵坐标
+            tmp_point.z = static_cast<float>(-c) * MAP_SCALE;  // 平面纵坐标
             // 平面横坐标
             if (DOUBLE_NUMBER_IS_ZERO(A)) {
                 break;
             } else {
                 // Ax+By+C=0
-                tmp_point._x = ((-B) * tmp_point._z - C) / A;
+                tmp_point.x = ((-B) * tmp_point.z - C) / A;
             }
-            tmp_point._y = GetHeight(tmp_point._x, tmp_point._z);
+            tmp_point.y = GetHeight(tmp_point.x, tmp_point.z);
             JD_vector2.push_back(tmp_point);
         }
     }
     // 交点3 ---------------------------------------------------------------------
     // double line_pos_b = MAP_SCALE * (row_index_begin < row_index_end ? row_index_begin : row_index_end);
     // double line_pos_e = MAP_SCALE * (row_index_begin > row_index_end ? row_index_begin : row_index_end);
-    double line_pos_b = (_line.pt1._x < _line.pt2._x) ? _line.pt1._x : _line.pt2._x;
-    double line_pos_e = (_line.pt1._x >= _line.pt2._x) ? _line.pt1._x : _line.pt2._x;
+    float line_pos_b = MATH_MIN(_line.pt1.x, _line.pt2.x);
+    float line_pos_e = MATH_MAX(_line.pt1.x, _line.pt2.x);
     for (int32 r = 0; r < MAP_W; ++r) {
         double b = static_cast<float>(-r) * MAP_SCALE;
         if (GetJDFrom2Line(&tmp_point, b, A, B, C)) {
-            if ((line_pos_b < tmp_point._x) && (tmp_point._x < line_pos_e)) {
+            if ((line_pos_b < tmp_point.x) && (tmp_point.x < line_pos_e)) {
                 JD_vector3.push_back(tmp_point);
             }
         }
@@ -5875,24 +5863,24 @@ void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int3
 
 
 // 计算2条直线的交点y=x+b, Ax+By+C=0, 返回0表示无交点
-BOOL CMy3DSymbolLibNewView::GetJDFrom2Line(PPoint3 p/*out*/, double b, double A, double B, double C) {
+BOOL CMy3DSymbolLibNewView::GetJDFrom2Line(Point3* p/*out*/, double b, double A, double B, double C) {
     if (DOUBLE_NUMBER_IS_ZERO(A)) {  // A == 0
-        p->_z = -C / B;
-        p->_x = p->_z - b;
-        p->_y = GetHeight(p->_x, p->_z);
+        p->z = -C / B;
+        p->x = p->z - b;
+        p->y = GetHeight(p->x, p->z);
     } else {
         if (!(DOUBLE_NUMBER_IS_ZERO(B))) {
             if (DOUBLE_NUMBER_IS_ZERO(-A / B - 1)) {
                 return 0;  // 2直线平行无交点
             } else {
-                p->_x = (-1) * (B * b + C) / (A + B);
-                p->_z = p->_x + b;
-                p->_y = GetHeight(p->_x, p->_z);
+                p->x = (-1) * (B * b + C) / (A + B);
+                p->z = p->x + b;
+                p->y = GetHeight(p->x, p->z);
             }
         } else {  // B == 0
-            p->_x = -C / A;
-            p->_z = p->_x + b;
-            p->_y = GetHeight(p->_x, p->_z);
+            p->x = -C / A;
+            p->z = p->x + b;
+            p->y = GetHeight(p->x, p->z);
         }
     }
     return 1;
@@ -5911,11 +5899,11 @@ void CMy3DSymbolLibNewView::GetMinXY(const vector<Point3>& _pv1,  const vector<P
         tmpPV.push_back(_pv2[i]);
     }
     sort(tmpPV.begin(), tmpPV.end(), comp);
-    *_minX = abs(tmpPV[0]._x);
-    *_maxX = abs(tmpPV[tmpPV.size() - 1]._x);
+    *_minX = abs(tmpPV[0].x);
+    *_maxX = abs(tmpPV[tmpPV.size() - 1].x);
     sort(tmpPV.begin(), tmpPV.end(), comp2);
-    *_maxY = abs(tmpPV[0]._z);
-    *_minY = abs(tmpPV[tmpPV.size() - 1]._z);
+    *_maxY = abs(tmpPV[0].z);
+    *_minY = abs(tmpPV[tmpPV.size() - 1].z);
 }
 
 // 线符号纹理坐标
@@ -5931,7 +5919,8 @@ void CMy3DSymbolLibNewView::DrawJDLine(const vector<Point3>& _pv1, const vector<
     double tmpMinX = 0.0, tmpMinY = 0.0, tmpMaxX = 0.0, tmpMaxY = 0.0, tmpU = 0.0, tmpV = 0.0;
     GetMinXY(_pv1, _pv2, &tmpMinX, &tmpMinY, &tmpMaxX, &tmpMaxY);
     // 配置地形
-    double tmpX = 0.0, tmpY = 0.0, tmpZ = 0.0;
+    // double tmpX = 0.0, tmpY = 0.0, tmpZ = 0.0;
+    Point3 tmpPoint;
     // 三角网
     glEnable(GL_TEXTURE_2D);    // 开启纹理
     // glBindTexture(GL_TEXTURE_2D, m_cTxtureRailway.GetTxtID());
@@ -5950,18 +5939,14 @@ void CMy3DSymbolLibNewView::DrawJDLine(const vector<Point3>& _pv1, const vector<
         glBegin(GL_TRIANGLE_STRIP);
         for (uint32 i = 0, j = 0, k = 0; i < _pv1.size(), j < _pv2.size(); ++i, ++j, ++k) {
             if (k % 2 == 0) {
-                tmpX = _pv1[i]._x;
-                tmpY = _pv1[i]._y + DD;
-                tmpZ = _pv1[i]._z;
+                tmpPoint = Point3(_pv1[i].x, _pv1[i].y + DD, _pv1[i].z);
             } else {
-                tmpX = _pv2[j]._x;
-                tmpY = _pv2[j]._y + DD;
-                tmpZ = _pv2[j]._z;
+                tmpPoint = Point3(_pv2[j].x, _pv2[j].y + DD, _pv2[j].z);
             }
             tmpMinX = 0.0, tmpMinY = 0.0, tmpMaxX = 10.0, tmpMaxY = 10.0;
-            GetUV(tmpX, tmpZ, tmpMinX, tmpMinY, tmpMaxX, tmpMaxY, &tmpU, &tmpV);
+            GetUV(tmpPoint.x, tmpPoint.z, tmpMinX, tmpMinY, tmpMaxX, tmpMaxY, &tmpU, &tmpV);
             glTexCoord2f(tmpU, tmpV);
-            glVertex3f(tmpX, tmpY, tmpZ);
+            glVertex3f(tmpPoint.x, tmpPoint.y, tmpPoint.z);
         }
         glEnd();
         glLineWidth(1.0);           // 恢复线宽
@@ -6094,11 +6079,11 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glBegin(GL_TRIANGLES);
                 {
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1._x, _area4->TrianglesInPolygonVecotr[i].pt1._y + deta, _area4->TrianglesInPolygonVecotr[i].pt1._z);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1.x, _area4->TrianglesInPolygonVecotr[i].pt1.y + deta, _area4->TrianglesInPolygonVecotr[i].pt1.z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2._x, _area4->TrianglesInPolygonVecotr[i].pt2._y + deta, _area4->TrianglesInPolygonVecotr[i].pt2._z);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2.x, _area4->TrianglesInPolygonVecotr[i].pt2.y + deta, _area4->TrianglesInPolygonVecotr[i].pt2.z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3._x, _area4->TrianglesInPolygonVecotr[i].pt3._y + deta, _area4->TrianglesInPolygonVecotr[i].pt3._z);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3.x, _area4->TrianglesInPolygonVecotr[i].pt3.y + deta, _area4->TrianglesInPolygonVecotr[i].pt3.z);
                 }
                 glEnd();
             }
@@ -6108,11 +6093,11 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glBegin(GL_TRIANGLES);
                 {
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1._x, _area4->LocalTrianglesVecotr1[i].pt1._y + deta, _area4->LocalTrianglesVecotr1[i].pt1._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1.x, _area4->LocalTrianglesVecotr1[i].pt1.y + deta, _area4->LocalTrianglesVecotr1[i].pt1.z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2._x, _area4->LocalTrianglesVecotr1[i].pt2._y + deta, _area4->LocalTrianglesVecotr1[i].pt2._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2.x, _area4->LocalTrianglesVecotr1[i].pt2.y + deta, _area4->LocalTrianglesVecotr1[i].pt2.z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3._x, _area4->LocalTrianglesVecotr1[i].pt3._y + deta, _area4->LocalTrianglesVecotr1[i].pt3._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3.x, _area4->LocalTrianglesVecotr1[i].pt3.y + deta, _area4->LocalTrianglesVecotr1[i].pt3.z);
                 }
                 glEnd();
             }
@@ -6121,11 +6106,11 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glBegin(GL_TRIANGLES);
                 {
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1._x, _area4->LocalTrianglesVecotr2[i].pt1._y + deta, _area4->LocalTrianglesVecotr2[i].pt1._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1.x, _area4->LocalTrianglesVecotr2[i].pt1.y + deta, _area4->LocalTrianglesVecotr2[i].pt1.z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2._x, _area4->LocalTrianglesVecotr2[i].pt2._y + deta, _area4->LocalTrianglesVecotr2[i].pt2._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2.x, _area4->LocalTrianglesVecotr2[i].pt2.y + deta, _area4->LocalTrianglesVecotr2[i].pt2.z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3._x, _area4->LocalTrianglesVecotr2[i].pt3._y + deta, _area4->LocalTrianglesVecotr2[i].pt3._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3.x, _area4->LocalTrianglesVecotr2[i].pt3.y + deta, _area4->LocalTrianglesVecotr2[i].pt3.z);
                 }
                 glEnd();
             }
@@ -6135,11 +6120,11 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glBegin(GL_TRIANGLES);
                 {
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1._x, _area4->LocalTrianglesVecotr1_1[i].pt1._y + deta, _area4->LocalTrianglesVecotr1_1[i].pt1._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1.x, _area4->LocalTrianglesVecotr1_1[i].pt1.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt1.z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2._x, _area4->LocalTrianglesVecotr1_1[i].pt2._y + deta, _area4->LocalTrianglesVecotr1_1[i].pt2._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2.x, _area4->LocalTrianglesVecotr1_1[i].pt2.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt2.z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3._x, _area4->LocalTrianglesVecotr1_1[i].pt3._y + deta, _area4->LocalTrianglesVecotr1_1[i].pt3._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3.x, _area4->LocalTrianglesVecotr1_1[i].pt3.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt3.z);
                 }
                 glEnd();
             }
@@ -6148,11 +6133,11 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glBegin(GL_TRIANGLES);
                 {
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1._x, _area4->LocalTrianglesVecotr2_1[i].pt1._y + deta, _area4->LocalTrianglesVecotr2_1[i].pt1._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1.x, _area4->LocalTrianglesVecotr2_1[i].pt1.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt1.z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2._x, _area4->LocalTrianglesVecotr2_1[i].pt2._y + deta, _area4->LocalTrianglesVecotr2_1[i].pt2._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2.x, _area4->LocalTrianglesVecotr2_1[i].pt2.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt2.z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3._x, _area4->LocalTrianglesVecotr2_1[i].pt3._y + deta, _area4->LocalTrianglesVecotr2_1[i].pt3._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3.x, _area4->LocalTrianglesVecotr2_1[i].pt3.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt3.z);
                 }
                 glEnd();
             }
@@ -6161,11 +6146,11 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glBegin(GL_TRIANGLES);
                 {
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1._x, _area4->LocalTrianglesVecotr_last[i].pt1._y + deta, _area4->LocalTrianglesVecotr_last[i].pt1._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1.x, _area4->LocalTrianglesVecotr_last[i].pt1.y + deta, _area4->LocalTrianglesVecotr_last[i].pt1.z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2._x, _area4->LocalTrianglesVecotr_last[i].pt2._y + deta, _area4->LocalTrianglesVecotr_last[i].pt2._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2.x, _area4->LocalTrianglesVecotr_last[i].pt2.y + deta, _area4->LocalTrianglesVecotr_last[i].pt2.z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3._x, _area4->LocalTrianglesVecotr_last[i].pt3._y + deta, _area4->LocalTrianglesVecotr_last[i].pt3._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3.x, _area4->LocalTrianglesVecotr_last[i].pt3.y + deta, _area4->LocalTrianglesVecotr_last[i].pt3.z);
                 }
                 glEnd();
             }
@@ -6186,9 +6171,9 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glColor3f(1.0000, 0.9804, 0.9804);
                 glBegin(GL_TRIANGLES);
                 {
-                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1._x, _area4->TrianglesInPolygonVecotr[i].pt1._y , _area4->TrianglesInPolygonVecotr[i].pt1._z);
-                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2._x, _area4->TrianglesInPolygonVecotr[i].pt2._y , _area4->TrianglesInPolygonVecotr[i].pt2._z);
-                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3._x, _area4->TrianglesInPolygonVecotr[i].pt3._y , _area4->TrianglesInPolygonVecotr[i].pt3._z);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1.x, _area4->TrianglesInPolygonVecotr[i].pt1.y , _area4->TrianglesInPolygonVecotr[i].pt1.z);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2.x, _area4->TrianglesInPolygonVecotr[i].pt2.y , _area4->TrianglesInPolygonVecotr[i].pt2.z);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3.x, _area4->TrianglesInPolygonVecotr[i].pt3.y , _area4->TrianglesInPolygonVecotr[i].pt3.z);
                 }
                 glEnd();
             }
@@ -6197,9 +6182,9 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glColor3f(1.0, 1.0, 0.1);
                 glBegin(GL_TRIANGLES);
                 {
-                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1._x, _area4->LocalTrianglesVecotr1[i].pt1._y , _area4->LocalTrianglesVecotr1[i].pt1._z);
-                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2._x, _area4->LocalTrianglesVecotr1[i].pt2._y , _area4->LocalTrianglesVecotr1[i].pt2._z);
-                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3._x, _area4->LocalTrianglesVecotr1[i].pt3._y , _area4->LocalTrianglesVecotr1[i].pt3._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1.x, _area4->LocalTrianglesVecotr1[i].pt1.y , _area4->LocalTrianglesVecotr1[i].pt1.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2.x, _area4->LocalTrianglesVecotr1[i].pt2.y , _area4->LocalTrianglesVecotr1[i].pt2.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3.x, _area4->LocalTrianglesVecotr1[i].pt3.y , _area4->LocalTrianglesVecotr1[i].pt3.z);
                 }
                 glEnd();
             }
@@ -6207,9 +6192,9 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glColor3f(0.611, 0.400, 0.121);
                 glBegin(GL_TRIANGLES);
                 {
-                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1._x, _area4->LocalTrianglesVecotr2[i].pt1._y , _area4->LocalTrianglesVecotr2[i].pt1._z);
-                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2._x, _area4->LocalTrianglesVecotr2[i].pt2._y , _area4->LocalTrianglesVecotr2[i].pt2._z);
-                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3._x, _area4->LocalTrianglesVecotr2[i].pt3._y , _area4->LocalTrianglesVecotr2[i].pt3._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1.x, _area4->LocalTrianglesVecotr2[i].pt1.y , _area4->LocalTrianglesVecotr2[i].pt1.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2.x, _area4->LocalTrianglesVecotr2[i].pt2.y , _area4->LocalTrianglesVecotr2[i].pt2.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3.x, _area4->LocalTrianglesVecotr2[i].pt3.y , _area4->LocalTrianglesVecotr2[i].pt3.z);
                 }
                 glEnd();
             }
@@ -6218,9 +6203,9 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glColor3f(1.0000, 0.3882, 0.2784);
                 glBegin(GL_TRIANGLES);
                 {
-                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1._x, _area4->LocalTrianglesVecotr1_1[i].pt1._y , _area4->LocalTrianglesVecotr1_1[i].pt1._z);
-                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2._x, _area4->LocalTrianglesVecotr1_1[i].pt2._y , _area4->LocalTrianglesVecotr1_1[i].pt2._z);
-                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3._x, _area4->LocalTrianglesVecotr1_1[i].pt3._y , _area4->LocalTrianglesVecotr1_1[i].pt3._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1.x, _area4->LocalTrianglesVecotr1_1[i].pt1.y , _area4->LocalTrianglesVecotr1_1[i].pt1.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2.x, _area4->LocalTrianglesVecotr1_1[i].pt2.y , _area4->LocalTrianglesVecotr1_1[i].pt2.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3.x, _area4->LocalTrianglesVecotr1_1[i].pt3.y , _area4->LocalTrianglesVecotr1_1[i].pt3.z);
                 }
                 glEnd();
             }
@@ -6228,9 +6213,9 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glColor3f(0.6980, 0.1333, 0.1333);
                 glBegin(GL_TRIANGLES);
                 {
-                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1._x, _area4->LocalTrianglesVecotr2_1[i].pt1._y, _area4->LocalTrianglesVecotr2_1[i].pt1._z);
-                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2._x, _area4->LocalTrianglesVecotr2_1[i].pt2._y, _area4->LocalTrianglesVecotr2_1[i].pt2._z);
-                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3._x, _area4->LocalTrianglesVecotr2_1[i].pt3._y, _area4->LocalTrianglesVecotr2_1[i].pt3._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1.x, _area4->LocalTrianglesVecotr2_1[i].pt1.y, _area4->LocalTrianglesVecotr2_1[i].pt1.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2.x, _area4->LocalTrianglesVecotr2_1[i].pt2.y, _area4->LocalTrianglesVecotr2_1[i].pt2.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3.x, _area4->LocalTrianglesVecotr2_1[i].pt3.y, _area4->LocalTrianglesVecotr2_1[i].pt3.z);
                 }
                 glEnd();
             }
@@ -6238,9 +6223,9 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glColor3f(0.6275, 0.1255, 0.9412);
                 glBegin(GL_TRIANGLES);
                 {
-                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1._x, _area4->LocalTrianglesVecotr_last[i].pt1._y, _area4->LocalTrianglesVecotr_last[i].pt1._z);
-                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2._x, _area4->LocalTrianglesVecotr_last[i].pt2._y, _area4->LocalTrianglesVecotr_last[i].pt2._z);
-                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3._x, _area4->LocalTrianglesVecotr_last[i].pt3._y, _area4->LocalTrianglesVecotr_last[i].pt3._z);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1.x, _area4->LocalTrianglesVecotr_last[i].pt1.y, _area4->LocalTrianglesVecotr_last[i].pt1.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2.x, _area4->LocalTrianglesVecotr_last[i].pt2.y, _area4->LocalTrianglesVecotr_last[i].pt2.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3.x, _area4->LocalTrianglesVecotr_last[i].pt3.y, _area4->LocalTrianglesVecotr_last[i].pt3.z);
                 }
                 glEnd();
             }
@@ -6265,17 +6250,17 @@ int32 CMy3DSymbolLibNewView::FindAllPointsInPolygon(const Area_4& m_area4) {
     CPointPolygonRelationship tmp_ppr;
     PPR_Polygon tmp_polygon;
     PPR_Point tmp_point;
-    tmp_point.x = m_area4.pt1._x;
-    tmp_point.y = m_area4.pt1._z;
+    tmp_point.x = m_area4.pt1.x;
+    tmp_point.y = m_area4.pt1.z;
     tmp_polygon.push_back(tmp_point);
-    tmp_point.x = m_area4.pt2._x;
-    tmp_point.y = m_area4.pt2._z;
+    tmp_point.x = m_area4.pt2.x;
+    tmp_point.y = m_area4.pt2.z;
     tmp_polygon.push_back(tmp_point);
-    tmp_point.x = m_area4.pt3._x;
-    tmp_point.y = m_area4.pt3._z;
+    tmp_point.x = m_area4.pt3.x;
+    tmp_point.y = m_area4.pt3.z;
     tmp_polygon.push_back(tmp_point);
-    tmp_point.x = m_area4.pt4._x;
-    tmp_point.y = m_area4.pt4._z;
+    tmp_point.x = m_area4.pt4.x;
+    tmp_point.y = m_area4.pt4.z;
     tmp_polygon.push_back(tmp_point);
     PPR_Point tmp_dem_point;
     pointsInPolygonVector.clear();
@@ -6287,10 +6272,7 @@ int32 CMy3DSymbolLibNewView::FindAllPointsInPolygon(const Area_4& m_area4) {
             tmp_dem_point.y = g_terrain [Vertex][2];
             int32 inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, tmp_dem_point);
             if (inPolygonFlag == 0) {  // 点在多边形内
-                Point3 tmp_point3;
-                tmp_point3._x = g_terrain [Vertex][0];
-                tmp_point3._y = g_terrain [Vertex][1];
-                tmp_point3._z = g_terrain [Vertex][2];
+                Point3 tmp_point3 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                 pointsInPolygonVector.push_back(tmp_point3);
                 inPolygonArrayFlag[x][z] = 1;
             } else {
@@ -6333,33 +6315,21 @@ int32 CMy3DSymbolLibNewView::FindTriangles_3_point_inPolygon(Area_4& _area4) {  
             // 3个点都在多边形内
             if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 1) {
                 Vertex = z * MAP_W + x;
-                tmp_triangle.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                 Vertex = (z + 1) * MAP_W + x;
-                tmp_triangle.pt2._x = g_terrain [Vertex][0];
-                tmp_triangle.pt2._y = g_terrain [Vertex][1];
-                tmp_triangle.pt2._z = g_terrain [Vertex][2];
+                tmp_triangle.pt2 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                 Vertex = z * MAP_W + (x + 1);
-                tmp_triangle.pt3._x = g_terrain [Vertex][0];
-                tmp_triangle.pt3._y = g_terrain [Vertex][1];
-                tmp_triangle.pt3._z = g_terrain [Vertex][2];
+                tmp_triangle.pt3 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                 _area4.TrianglesInPolygonVecotr.push_back(tmp_triangle);
             }
             // 3个点都在多边形内
             if (inPolygonArrayFlag[x + 1][z] == 1 && inPolygonArrayFlag[x + 1][z + 1] == 1  && inPolygonArrayFlag[x][z + 1] == 1) {
                 Vertex = z * MAP_W + (x + 1);
-                tmp_triangle.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                 Vertex = (z + 1) * MAP_W + (x + 1);
-                tmp_triangle.pt2._x = g_terrain [Vertex][0];
-                tmp_triangle.pt2._y = g_terrain [Vertex][1];
-                tmp_triangle.pt2._z = g_terrain [Vertex][2];
+                tmp_triangle.pt2 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                 Vertex = (z + 1) * MAP_W + x;
-                tmp_triangle.pt3._x = g_terrain [Vertex][0];
-                tmp_triangle.pt3._y = g_terrain [Vertex][1];
-                tmp_triangle.pt3._z = g_terrain [Vertex][2];
+                tmp_triangle.pt3 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                 _area4.TrianglesInPolygonVecotr.push_back(tmp_triangle);
             }
         }
@@ -6379,9 +6349,7 @@ int32 CMy3DSymbolLibNewView::FindTriangles_1_point_inPolygon(Area_4& m_area4) { 
                 // 三角形只有1个点在多边形内
                 if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 0) {
                     Vertex = (z) * MAP_W + (x);
-                    tmp_triangle.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
                     PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
@@ -6397,9 +6365,7 @@ int32 CMy3DSymbolLibNewView::FindTriangles_1_point_inPolygon(Area_4& m_area4) { 
                 }
                 if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
                     Vertex = (z + 1) * MAP_W + (x);
-                    tmp_triangle.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
                     PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
@@ -6416,9 +6382,7 @@ int32 CMy3DSymbolLibNewView::FindTriangles_1_point_inPolygon(Area_4& m_area4) { 
                 // 三角形只有1个点在多边形内
                 if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
                     Vertex = (z) * MAP_W + (x + 1);
-                    tmp_triangle.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
                     PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
@@ -6436,9 +6400,7 @@ int32 CMy3DSymbolLibNewView::FindTriangles_1_point_inPolygon(Area_4& m_area4) { 
                 // 三角形只有1个点在多边形内
                 if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 0) {
                     Vertex = (z + 1) * MAP_W + (x + 1);
-                    tmp_triangle.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
                     PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
@@ -6454,9 +6416,7 @@ int32 CMy3DSymbolLibNewView::FindTriangles_1_point_inPolygon(Area_4& m_area4) { 
                 }
                 if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
                     Vertex = (z + 1) * MAP_W + (x);
-                    tmp_triangle.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
                     PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
@@ -6473,9 +6433,7 @@ int32 CMy3DSymbolLibNewView::FindTriangles_1_point_inPolygon(Area_4& m_area4) { 
                 // 三角形只有1个点在多边形内
                 if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
                     Vertex = (z) * MAP_W + (x + 1);
-                    tmp_triangle.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
                     PPR_Point tmp_point1, tmp_point21, tmp_point22;
@@ -6508,16 +6466,10 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
                 // ok1
                 if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
                     Vertex = (z) * MAP_W + (x);
-                    tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                    tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                    tmp_triangle2.pt1 = tmp_triangle1.pt1;
                     Vertex = (z + 1) * MAP_W + (x);
-                    tmp_triangle1.pt2._x = g_terrain [Vertex][0];
-                    tmp_triangle1.pt2._y = g_terrain [Vertex][1];
-                    tmp_triangle1.pt2._z = g_terrain [Vertex][2];
+                    tmp_triangle1.pt2 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
                     PPR_Point tmp_point1, tmp_point21, tmp_point22;
@@ -6539,56 +6491,48 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
                     int16 tmp_cout = 4;
                     while (tmp_cout > 0) {
                         if (4 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt1._x;
-                            tmp_point3.y = m_area4.pt1._z;
-                            tmp_point4.x = m_area4.pt2._x;
-                            tmp_point4.y = m_area4.pt2._z;
+                            tmp_point3.x = m_area4.pt1.x;
+                            tmp_point3.y = m_area4.pt1.z;
+                            tmp_point4.x = m_area4.pt2.x;
+                            tmp_point4.y = m_area4.pt2.z;
                         } else if (3 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt2._x;
-                            tmp_point3.y = m_area4.pt2._z;
-                            tmp_point4.x = m_area4.pt3._x;
-                            tmp_point4.y = m_area4.pt3._z;
+                            tmp_point3.x = m_area4.pt2.x;
+                            tmp_point3.y = m_area4.pt2.z;
+                            tmp_point4.x = m_area4.pt3.x;
+                            tmp_point4.y = m_area4.pt3.z;
                         } else if (2 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt3._x;
-                            tmp_point3.y = m_area4.pt3._z;
-                            tmp_point4.x = m_area4.pt4._x;
-                            tmp_point4.y = m_area4.pt4._z;
+                            tmp_point3.x = m_area4.pt3.x;
+                            tmp_point3.y = m_area4.pt3.z;
+                            tmp_point4.x = m_area4.pt4.x;
+                            tmp_point4.y = m_area4.pt4.z;
                         } else if (1 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt4._x;
-                            tmp_point3.y = m_area4.pt4._z;
-                            tmp_point4.x = m_area4.pt1._x;
-                            tmp_point4.y = m_area4.pt1._z;
+                            tmp_point3.x = m_area4.pt4.x;
+                            tmp_point3.y = m_area4.pt4.z;
+                            tmp_point4.x = m_area4.pt1.x;
+                            tmp_point4.y = m_area4.pt1.z;
                         }
                         intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
                         intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
                         if (intersectFlag1 && intersectFlag2) {
                             JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
                             JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
-                            double tmp_min_y = (tmp_triangle1.pt1._z < tmp_triangle1.pt2._z) ? tmp_triangle1.pt1._z : tmp_triangle1.pt2._z;
-                            double tmp_max_y = (tmp_triangle1.pt1._z > tmp_triangle1.pt2._z) ? tmp_triangle1.pt1._z : tmp_triangle1.pt2._z;
-                            double tmp_min_x = (tmp_triangle1.pt1._x < tmp_point1.x) ? tmp_triangle1.pt1._z : tmp_point1.x;
-                            double tmp_max_x = (tmp_triangle1.pt1._x > tmp_point1.x) ? tmp_triangle1.pt1._z : tmp_point1.x;
+                            float tmp_min_y = MATH_MIN(tmp_triangle1.pt1.z, tmp_triangle1.pt2.z);
+                            float tmp_max_y = MATH_MAX(tmp_triangle1.pt1.z, tmp_triangle1.pt2.z);
+                            float tmp_min_x = MATH_MIN(tmp_triangle1.pt1.x, tmp_point1.x);
+                            float tmp_max_x = MATH_MAX(tmp_triangle1.pt1.x, tmp_point1.x);
                             bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
                             bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
                             bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
                             bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
                             if (b11 && b12) {
-                                tmp_triangle1.pt3._x = JD1.x;
-                                tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y);
-                                tmp_triangle1.pt3._z = JD1.y;
+                                tmp_triangle1.pt3 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
                             } else if (b21 && b22) {
-                                tmp_triangle1.pt3._x = JD2.x;
-                                tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y);
-                                tmp_triangle1.pt3._z = JD2.y;
+                                tmp_triangle1.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                             } else {
-                                AfxMessageBox("warning: ");
+                                AfxMessageBox("warning1: ");
                             }
-                            tmp_triangle2.pt2._x = JD1.x;
-                            tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y);
-                            tmp_triangle2.pt2._z = JD1.y;
-                            tmp_triangle2.pt3._x = JD2.x;
-                            tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
-                            tmp_triangle2.pt3._z = JD2.y;
+                            tmp_triangle2.pt2 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
+                            tmp_triangle2.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                             // AfxMessageBox("1");
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
@@ -6599,16 +6543,10 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
                 // ok2
                 if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
                     Vertex = (z) * MAP_W + (x);
-                    tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                    tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                    tmp_triangle2.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     Vertex = (z) * MAP_W + (x + 1);
-                    tmp_triangle1.pt2._x = g_terrain [Vertex][0];
-                    tmp_triangle1.pt2._y = g_terrain [Vertex][1];
-                    tmp_triangle1.pt2._z = g_terrain [Vertex][2];
+                    tmp_triangle1.pt2 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
                     PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
@@ -6630,57 +6568,49 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
                     int32 tmp_cout = 4;
                     while (tmp_cout > 0) {
                         if (4 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt1._x;
-                            tmp_point3.y = m_area4.pt1._z;
-                            tmp_point4.x = m_area4.pt2._x;
-                            tmp_point4.y = m_area4.pt2._z;
+                            tmp_point3.x = m_area4.pt1.x;
+                            tmp_point3.y = m_area4.pt1.z;
+                            tmp_point4.x = m_area4.pt2.x;
+                            tmp_point4.y = m_area4.pt2.z;
                         } else if (3 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt2._x;
-                            tmp_point3.y = m_area4.pt2._z;
-                            tmp_point4.x = m_area4.pt3._x;
-                            tmp_point4.y = m_area4.pt3._z;
+                            tmp_point3.x = m_area4.pt2.x;
+                            tmp_point3.y = m_area4.pt2.z;
+                            tmp_point4.x = m_area4.pt3.x;
+                            tmp_point4.y = m_area4.pt3.z;
                         } else if (2 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt3._x;
-                            tmp_point3.y = m_area4.pt3._z;
-                            tmp_point4.x = m_area4.pt4._x;
-                            tmp_point4.y = m_area4.pt4._z;
+                            tmp_point3.x = m_area4.pt3.x;
+                            tmp_point3.y = m_area4.pt3.z;
+                            tmp_point4.x = m_area4.pt4.x;
+                            tmp_point4.y = m_area4.pt4.z;
                         } else if (1 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt4._x;
-                            tmp_point3.y = m_area4.pt4._z;
-                            tmp_point4.x = m_area4.pt1._x;
-                            tmp_point4.y = m_area4.pt1._z;
+                            tmp_point3.x = m_area4.pt4.x;
+                            tmp_point3.y = m_area4.pt4.z;
+                            tmp_point4.x = m_area4.pt1.x;
+                            tmp_point4.y = m_area4.pt1.z;
                         }
                         intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
                         intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
                         if (intersectFlag1 && intersectFlag2) {
                             JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
                             JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
-                            double tmp_min_y = (tmp_triangle1.pt1._z < tmp_point1.y) ? tmp_triangle1.pt1._z : tmp_point1.y;
-                            double tmp_max_y = (tmp_triangle1.pt1._z > tmp_point1.y) ? tmp_triangle1.pt1._z : tmp_point1.y;
-                            double tmp_min_x = (tmp_triangle1.pt1._x < tmp_triangle1.pt2._x) ? tmp_triangle1.pt1._x : tmp_triangle1.pt2._x;
-                            double tmp_max_x = (tmp_triangle1.pt1._x > tmp_triangle1.pt2._x) ? tmp_triangle1.pt1._x : tmp_triangle1.pt2._x;
+                            float tmp_min_y = MATH_MIN(tmp_triangle1.pt1.z, tmp_point1.y);
+                            float tmp_max_y = MATH_MAX(tmp_triangle1.pt1.z, tmp_point1.y);
+                            float tmp_min_x = MATH_MIN(tmp_triangle1.pt1.x, tmp_triangle1.pt2.x);
+                            float tmp_max_x = MATH_MAX(tmp_triangle1.pt1.x, tmp_triangle1.pt2.x);
                             bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
                             bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
                             bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
                             bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
                             if (b11 && b12) {
-                                tmp_triangle1.pt3._x = JD1.x;
-                                tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y);
-                                tmp_triangle1.pt3._z = JD1.y;
+                                tmp_triangle1.pt3 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
                             } else if (b21 && b22) {
-                                tmp_triangle1.pt3._x = JD2.x;
-                                tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y);
-                                tmp_triangle1.pt3._z = JD2.y;
+                                tmp_triangle1.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                             } else {
-                                AfxMessageBox("warning: ");
+                                AfxMessageBox("warning2: ");
                                 // AfxMessageBox(__LINE__);
                             }
-                            tmp_triangle2.pt2._x = JD1.x;
-                            tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y);
-                            tmp_triangle2.pt2._z = JD1.y;
-                            tmp_triangle2.pt3._x = JD2.x;
-                            tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
-                            tmp_triangle2.pt3._z = JD2.y;
+                            tmp_triangle2.pt2 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
+                            tmp_triangle2.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                             // AfxMessageBox("2");
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
@@ -6691,16 +6621,10 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
                 // ok3
                 if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 1) {
                     Vertex = (z) * MAP_W + (x + 1);
-                    tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle1.pt1 = Point3(g_terrain [Vertex][0], g_terrain [Vertex][1], g_terrain [Vertex][2]);
                     Vertex = (z + 1) * MAP_W + (x);
-                    tmp_triangle1.pt2._x = g_terrain [Vertex][0];
-                    tmp_triangle1.pt2._y = g_terrain [Vertex][1];
-                    tmp_triangle1.pt2._z = g_terrain [Vertex][2];
-                    tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle1.pt2 = Point3(g_terrain [Vertex][0], g_terrain [Vertex][1], g_terrain [Vertex][2]);
+                    tmp_triangle2.pt1 = Point3(g_terrain [Vertex][0], g_terrain [Vertex][1], g_terrain [Vertex][2]);
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
                     PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
@@ -6722,50 +6646,42 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
                     int32 tmp_cout = 4;
                     while (tmp_cout > 0) {
                         if (4 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt1._x;
-                            tmp_point3.y = m_area4.pt1._z;
-                            tmp_point4.x = m_area4.pt2._x;
-                            tmp_point4.y = m_area4.pt2._z;
+                            tmp_point3.x = m_area4.pt1.x;
+                            tmp_point3.y = m_area4.pt1.z;
+                            tmp_point4.x = m_area4.pt2.x;
+                            tmp_point4.y = m_area4.pt2.z;
                         } else if (3 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt2._x;
-                            tmp_point3.y = m_area4.pt2._z;
-                            tmp_point4.x = m_area4.pt3._x;
-                            tmp_point4.y = m_area4.pt3._z;
+                            tmp_point3.x = m_area4.pt2.x;
+                            tmp_point3.y = m_area4.pt2.z;
+                            tmp_point4.x = m_area4.pt3.x;
+                            tmp_point4.y = m_area4.pt3.z;
                         } else if (2 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt3._x;
-                            tmp_point3.y = m_area4.pt3._z;
-                            tmp_point4.x = m_area4.pt4._x;
-                            tmp_point4.y = m_area4.pt4._z;
+                            tmp_point3.x = m_area4.pt3.x;
+                            tmp_point3.y = m_area4.pt3.z;
+                            tmp_point4.x = m_area4.pt4.x;
+                            tmp_point4.y = m_area4.pt4.z;
                         } else if (1 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt4._x;
-                            tmp_point3.y = m_area4.pt4._z;
-                            tmp_point4.x = m_area4.pt1._x;
-                            tmp_point4.y = m_area4.pt1._z;
+                            tmp_point3.x = m_area4.pt4.x;
+                            tmp_point3.y = m_area4.pt4.z;
+                            tmp_point4.x = m_area4.pt1.x;
+                            tmp_point4.y = m_area4.pt1.z;
                         }
                         intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
                         intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
                         if (intersectFlag1 && intersectFlag2) {
                             JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
                             JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
-                            double len1 = (tmp_triangle1.pt1._x - JD1.x) * (tmp_triangle1.pt1._x - JD1.x) + (tmp_triangle1.pt1._z - JD1.y) * (tmp_triangle1.pt1._z - JD1.y);
-                            double len2 = (tmp_triangle1.pt1._x - JD2.x) * (tmp_triangle1.pt1._x - JD2.x) + (tmp_triangle1.pt1._z - JD2.y) * (tmp_triangle1.pt1._z - JD2.y);
+                            double len1 = (tmp_triangle1.pt1.x - JD1.x) * (tmp_triangle1.pt1.x - JD1.x) + (tmp_triangle1.pt1.z - JD1.y) * (tmp_triangle1.pt1.z - JD1.y);
+                            double len2 = (tmp_triangle1.pt1.x - JD2.x) * (tmp_triangle1.pt1.x - JD2.x) + (tmp_triangle1.pt1.z - JD2.y) * (tmp_triangle1.pt1.z - JD2.y);
                             if (len1 < len2) {
-                                tmp_triangle1.pt3._x = JD1.x;
-                                tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y);
-                                tmp_triangle1.pt3._z = JD1.y;
+                                tmp_triangle1.pt3 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
                             } else if (len1 > len2) {
-                                tmp_triangle1.pt3._x = JD2.x;
-                                tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y);
-                                tmp_triangle1.pt3._z = JD2.y;
+                                tmp_triangle1.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                             } else {
-                                AfxMessageBox("warning");
+                                AfxMessageBox("warning3");
                             }
-                            tmp_triangle2.pt2._x = JD1.x;
-                            tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y);
-                            tmp_triangle2.pt2._z = JD1.y;
-                            tmp_triangle2.pt3._x = JD2.x;
-                            tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
-                            tmp_triangle2.pt3._z = JD2.y;
+                            tmp_triangle2.pt2 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
+                            tmp_triangle2.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                             // AfxMessageBox("3");
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
@@ -6777,16 +6693,10 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
                 // ok - 1
                 if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
                     Vertex = (z + 1) * MAP_W + (x + 1);
-                    tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                    tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                    tmp_triangle2.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     Vertex = (z + 1) * MAP_W + (x);
-                    tmp_triangle1.pt2._x = g_terrain [Vertex][0];
-                    tmp_triangle1.pt2._y = g_terrain [Vertex][1];
-                    tmp_triangle1.pt2._z = g_terrain [Vertex][2];
+                    tmp_triangle1.pt2 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
                     PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
@@ -6808,57 +6718,49 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
                     int32 tmp_cout = 4;
                     while (tmp_cout > 0) {
                         if (4 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt1._x;
-                            tmp_point3.y = m_area4.pt1._z;
-                            tmp_point4.x = m_area4.pt2._x;
-                            tmp_point4.y = m_area4.pt2._z;
+                            tmp_point3.x = m_area4.pt1.x;
+                            tmp_point3.y = m_area4.pt1.z;
+                            tmp_point4.x = m_area4.pt2.x;
+                            tmp_point4.y = m_area4.pt2.z;
                         } else if (3 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt2._x;
-                            tmp_point3.y = m_area4.pt2._z;
-                            tmp_point4.x = m_area4.pt3._x;
-                            tmp_point4.y = m_area4.pt3._z;
+                            tmp_point3.x = m_area4.pt2.x;
+                            tmp_point3.y = m_area4.pt2.z;
+                            tmp_point4.x = m_area4.pt3.x;
+                            tmp_point4.y = m_area4.pt3.z;
                         } else if (2 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt3._x;
-                            tmp_point3.y = m_area4.pt3._z;
-                            tmp_point4.x = m_area4.pt4._x;
-                            tmp_point4.y = m_area4.pt4._z;
+                            tmp_point3.x = m_area4.pt3.x;
+                            tmp_point3.y = m_area4.pt3.z;
+                            tmp_point4.x = m_area4.pt4.x;
+                            tmp_point4.y = m_area4.pt4.z;
                         } else if (1 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt4._x;
-                            tmp_point3.y = m_area4.pt4._z;
-                            tmp_point4.x = m_area4.pt1._x;
-                            tmp_point4.y = m_area4.pt1._z;
+                            tmp_point3.x = m_area4.pt4.x;
+                            tmp_point3.y = m_area4.pt4.z;
+                            tmp_point4.x = m_area4.pt1.x;
+                            tmp_point4.y = m_area4.pt1.z;
                         }
                         intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
                         intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
                         if (intersectFlag1 && intersectFlag2) {
                             JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
                             JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
-                            double tmp_min_x = (tmp_triangle1.pt1._x < tmp_triangle1.pt2._x) ? tmp_triangle1.pt1._x : tmp_triangle1.pt2._x;
-                            double tmp_max_x = (tmp_triangle1.pt1._x > tmp_triangle1.pt2._x) ? tmp_triangle1.pt1._x : tmp_triangle1.pt2._x;
-                            double tmp_min_y = (tmp_triangle1.pt1._z < tmp_point1.y) ? tmp_triangle1.pt1._z : tmp_point1.y;
-                            double tmp_max_y = (tmp_triangle1.pt1._z > tmp_point1.y) ? tmp_triangle1.pt1._z : tmp_point1.y;
+                            float tmp_min_x = MATH_MIN(tmp_triangle1.pt1.x, tmp_triangle1.pt2.x);
+                            float tmp_max_x = MATH_MAX(tmp_triangle1.pt1.x, tmp_triangle1.pt2.x);
+                            float tmp_min_y = MATH_MIN(tmp_triangle1.pt1.z, tmp_point1.y);
+                            float tmp_max_y = MATH_MAX(tmp_triangle1.pt1.z, tmp_point1.y);
                             bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
                             bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
                             bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
                             bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
                             if (b11 && b12) {
-                                tmp_triangle1.pt3._x = JD1.x;
-                                tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y);
-                                tmp_triangle1.pt3._z = JD1.y;
+                                tmp_triangle1.pt3 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
                             } else if (b21 && b22) {
-                                tmp_triangle1.pt3._x = JD2.x;
-                                tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y);
-                                tmp_triangle1.pt3._z = JD2.y;
+                                tmp_triangle1.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                             } else {
-                                AfxMessageBox("warning... ");
+                                AfxMessageBox("warning4... ");
                                 // AfxMessageBox(__LINE__);
                             }
-                            tmp_triangle2.pt2._x = JD1.x;
-                            tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y);
-                            tmp_triangle2.pt2._z = JD1.y;
-                            tmp_triangle2.pt3._x = JD2.x;
-                            tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
-                            tmp_triangle2.pt3._z = JD2.y;
+                            tmp_triangle2.pt2 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
+                            tmp_triangle2.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                             // AfxMessageBox(" - 1");
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
@@ -6869,16 +6771,10 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
                 // ok - 2
                 if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
                     Vertex = (z + 1) * MAP_W + (x + 1);
-                    tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                    tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                    tmp_triangle2.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     Vertex = (z) * MAP_W + (x + 1);
-                    tmp_triangle1.pt2._x = g_terrain [Vertex][0];
-                    tmp_triangle1.pt2._y = g_terrain [Vertex][1];
-                    tmp_triangle1.pt2._z = g_terrain [Vertex][2];
+                    tmp_triangle1.pt2 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
                     PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
@@ -6900,57 +6796,49 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
                     int32 tmp_cout = 4;
                     while (tmp_cout > 0) {
                         if (4 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt1._x;
-                            tmp_point3.y = m_area4.pt1._z;
-                            tmp_point4.x = m_area4.pt2._x;
-                            tmp_point4.y = m_area4.pt2._z;
+                            tmp_point3.x = m_area4.pt1.x;
+                            tmp_point3.y = m_area4.pt1.z;
+                            tmp_point4.x = m_area4.pt2.x;
+                            tmp_point4.y = m_area4.pt2.z;
                         } else if (3 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt2._x;
-                            tmp_point3.y = m_area4.pt2._z;
-                            tmp_point4.x = m_area4.pt3._x;
-                            tmp_point4.y = m_area4.pt3._z;
+                            tmp_point3.x = m_area4.pt2.x;
+                            tmp_point3.y = m_area4.pt2.z;
+                            tmp_point4.x = m_area4.pt3.x;
+                            tmp_point4.y = m_area4.pt3.z;
                         } else if (2 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt3._x;
-                            tmp_point3.y = m_area4.pt3._z;
-                            tmp_point4.x = m_area4.pt4._x;
-                            tmp_point4.y = m_area4.pt4._z;
+                            tmp_point3.x = m_area4.pt3.x;
+                            tmp_point3.y = m_area4.pt3.z;
+                            tmp_point4.x = m_area4.pt4.x;
+                            tmp_point4.y = m_area4.pt4.z;
                         } else if (1 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt4._x;
-                            tmp_point3.y = m_area4.pt4._z;
-                            tmp_point4.x = m_area4.pt1._x;
-                            tmp_point4.y = m_area4.pt1._z;
+                            tmp_point3.x = m_area4.pt4.x;
+                            tmp_point3.y = m_area4.pt4.z;
+                            tmp_point4.x = m_area4.pt1.x;
+                            tmp_point4.y = m_area4.pt1.z;
                         }
                         intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
                         intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
                         if (intersectFlag1 && intersectFlag2) {
                             JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
                             JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
-                            double tmp_min_x = (tmp_triangle1.pt1._x < tmp_point1.x) ? tmp_triangle1.pt1._x : tmp_point1.x;
-                            double tmp_max_x = (tmp_triangle1.pt1._x > tmp_point1.x) ? tmp_triangle1.pt1._x : tmp_point1.x;
-                            double tmp_min_y = (tmp_triangle1.pt1._z < tmp_triangle1.pt2._z) ? tmp_triangle1.pt1._z : tmp_triangle1.pt2._z;
-                            double tmp_max_y = (tmp_triangle1.pt1._z > tmp_triangle1.pt2._z) ? tmp_triangle1.pt1._z : tmp_triangle1.pt2._z;
+                            float tmp_min_x = MATH_MIN(tmp_triangle1.pt1.x, tmp_point1.x);
+                            float tmp_max_x = MATH_MAX(tmp_triangle1.pt1.x, tmp_point1.x);
+                            float tmp_min_y = MATH_MIN(tmp_triangle1.pt1.z, tmp_triangle1.pt2.z);
+                            float tmp_max_y = MATH_MAX(tmp_triangle1.pt1.z, tmp_triangle1.pt2.z);
                             bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
                             bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
                             bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
                             bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
                             if (b11 && b12) {
-                                tmp_triangle1.pt3._x = JD1.x;
-                                tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y);
-                                tmp_triangle1.pt3._z = JD1.y;
+                                tmp_triangle1.pt3 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
                             } else if (b21 && b22) {
-                                tmp_triangle1.pt3._x = JD2.x;
-                                tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y);
-                                tmp_triangle1.pt3._z = JD2.y;
+                                tmp_triangle1.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                             } else {
-                                AfxMessageBox("warning... ");
+                                AfxMessageBox("warning5... ");
                                 // AfxMessageBox(__LINE__);
                             }
-                            tmp_triangle2.pt2._x = JD1.x;
-                            tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y);
-                            tmp_triangle2.pt2._z = JD1.y;
-                            tmp_triangle2.pt3._x = JD2.x;
-                            tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
-                            tmp_triangle2.pt3._z = JD2.y;
+                            tmp_triangle2.pt2 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
+                            tmp_triangle2.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                             // AfxMessageBox(" - 2");
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
@@ -6961,16 +6849,10 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
                 // ok - 3
                 if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 1) {
                     Vertex = (z) * MAP_W + (x + 1);
-                    tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle1.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     Vertex = (z + 1) * MAP_W + (x);
-                    tmp_triangle1.pt2._x = g_terrain [Vertex][0];
-                    tmp_triangle1.pt2._y = g_terrain [Vertex][1];
-                    tmp_triangle1.pt2._z = g_terrain [Vertex][2];
-                    tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                    tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                    tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                    tmp_triangle1.pt2 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                    tmp_triangle2.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
                     // 求多边形边界与三角形边的交点
                     CPointPolygonRelationship tmp_PPR;
                     PPR_Point tmp_point1, tmp_point21, tmp_point22;  // 三角形三点
@@ -6992,50 +6874,42 @@ int32 CMy3DSymbolLibNewView::FindTriangles_2_point_inPolygon(Area_4& m_area4) { 
                     int32 tmp_cout = 4;
                     while (tmp_cout > 0) {
                         if (4 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt1._x;
-                            tmp_point3.y = m_area4.pt1._z;
-                            tmp_point4.x = m_area4.pt2._x;
-                            tmp_point4.y = m_area4.pt2._z;
+                            tmp_point3.x = m_area4.pt1.x;
+                            tmp_point3.y = m_area4.pt1.z;
+                            tmp_point4.x = m_area4.pt2.x;
+                            tmp_point4.y = m_area4.pt2.z;
                         } else if (3 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt2._x;
-                            tmp_point3.y = m_area4.pt2._z;
-                            tmp_point4.x = m_area4.pt3._x;
-                            tmp_point4.y = m_area4.pt3._z;
+                            tmp_point3.x = m_area4.pt2.x;
+                            tmp_point3.y = m_area4.pt2.z;
+                            tmp_point4.x = m_area4.pt3.x;
+                            tmp_point4.y = m_area4.pt3.z;
                         } else if (2 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt3._x;
-                            tmp_point3.y = m_area4.pt3._z;
-                            tmp_point4.x = m_area4.pt4._x;
-                            tmp_point4.y = m_area4.pt4._z;
+                            tmp_point3.x = m_area4.pt3.x;
+                            tmp_point3.y = m_area4.pt3.z;
+                            tmp_point4.x = m_area4.pt4.x;
+                            tmp_point4.y = m_area4.pt4.z;
                         } else if (1 == tmp_cout) {
-                            tmp_point3.x = m_area4.pt4._x;
-                            tmp_point3.y = m_area4.pt4._z;
-                            tmp_point4.x = m_area4.pt1._x;
-                            tmp_point4.y = m_area4.pt1._z;
+                            tmp_point3.x = m_area4.pt4.x;
+                            tmp_point3.y = m_area4.pt4.z;
+                            tmp_point4.x = m_area4.pt1.x;
+                            tmp_point4.y = m_area4.pt1.z;
                         }
                         intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
                         intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
                         if (intersectFlag1 && intersectFlag2) {
                             JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
                             JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
-                            double len1 = (tmp_triangle1.pt1._x - JD1.x) * (tmp_triangle1.pt1._x - JD1.x) + (tmp_triangle1.pt1._z - JD1.y) * (tmp_triangle1.pt1._z - JD1.y);
-                            double len2 = (tmp_triangle1.pt1._x - JD2.x) * (tmp_triangle1.pt1._x - JD2.x) + (tmp_triangle1.pt1._z - JD2.y) * (tmp_triangle1.pt1._z - JD2.y);
+                            double len1 = (tmp_triangle1.pt1.x - JD1.x) * (tmp_triangle1.pt1.x - JD1.x) + (tmp_triangle1.pt1.z - JD1.y) * (tmp_triangle1.pt1.z - JD1.y);
+                            double len2 = (tmp_triangle1.pt1.x - JD2.x) * (tmp_triangle1.pt1.x - JD2.x) + (tmp_triangle1.pt1.z - JD2.y) * (tmp_triangle1.pt1.z - JD2.y);
                             if (len1 < len2) {
-                                tmp_triangle1.pt3._x = JD1.x;
-                                tmp_triangle1.pt3._y = GetHeight(JD1.x, JD1.y);
-                                tmp_triangle1.pt3._z = JD1.y;
+                                tmp_triangle1.pt3 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
                             } else if (len1 > len2) {
-                                tmp_triangle1.pt3._x = JD2.x;
-                                tmp_triangle1.pt3._y = GetHeight(JD2.x, JD2.y);
-                                tmp_triangle1.pt3._z = JD2.y;
+                                tmp_triangle1.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                             } else {
                                 AfxMessageBox("...warning!");
                             }
-                            tmp_triangle2.pt2._x = JD1.x;
-                            tmp_triangle2.pt2._y = GetHeight(JD1.x, JD1.y);
-                            tmp_triangle2.pt2._z = JD1.y;
-                            tmp_triangle2.pt3._x = JD2.x;
-                            tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
-                            tmp_triangle2.pt3._z = JD2.y;
+                            tmp_triangle2.pt2 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
+                            tmp_triangle2.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                             // AfxMessageBox(" - 3");
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle1);
                             m_area4.LocalTrianglesVecotr2.push_back(tmp_triangle2);
@@ -7061,37 +6935,33 @@ void CMy3DSymbolLibNewView::Find_triangles_1_line_2_JD(Area_4& m_area4, Triangle
     int16 tmp_cout = 4;
     while (tmp_cout > 0) {
         if (4 == tmp_cout) {
-            tmp_point3.x = m_area4.pt1._x;
-            tmp_point3.y = m_area4.pt1._z;
-            tmp_point4.x = m_area4.pt2._x;
-            tmp_point4.y = m_area4.pt2._z;
+            tmp_point3.x = m_area4.pt1.x;
+            tmp_point3.y = m_area4.pt1.z;
+            tmp_point4.x = m_area4.pt2.x;
+            tmp_point4.y = m_area4.pt2.z;
         } else if (3 == tmp_cout) {
-            tmp_point3.x = m_area4.pt2._x;
-            tmp_point3.y = m_area4.pt2._z;
-            tmp_point4.x = m_area4.pt3._x;
-            tmp_point4.y = m_area4.pt3._z;
+            tmp_point3.x = m_area4.pt2.x;
+            tmp_point3.y = m_area4.pt2.z;
+            tmp_point4.x = m_area4.pt3.x;
+            tmp_point4.y = m_area4.pt3.z;
         } else if (2 == tmp_cout) {
-            tmp_point3.x = m_area4.pt3._x;
-            tmp_point3.y = m_area4.pt3._z;
-            tmp_point4.x = m_area4.pt4._x;
-            tmp_point4.y = m_area4.pt4._z;
+            tmp_point3.x = m_area4.pt3.x;
+            tmp_point3.y = m_area4.pt3.z;
+            tmp_point4.x = m_area4.pt4.x;
+            tmp_point4.y = m_area4.pt4.z;
         } else if (1 == tmp_cout) {
-            tmp_point3.x = m_area4.pt4._x;
-            tmp_point3.y = m_area4.pt4._z;
-            tmp_point4.x = m_area4.pt1._x;
-            tmp_point4.y = m_area4.pt1._z;
+            tmp_point3.x = m_area4.pt4.x;
+            tmp_point3.y = m_area4.pt4.z;
+            tmp_point4.x = m_area4.pt1.x;
+            tmp_point4.y = m_area4.pt1.z;
         }
         intersectFlag1 = tmp_PPR.Meet(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
         intersectFlag2 = tmp_PPR.Meet(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
         if (intersectFlag1 && intersectFlag2) {
             JD1 = tmp_PPR.getJD(tmp_point1, tmp_point21, tmp_point3, tmp_point4);
             JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_point3, tmp_point4);
-            tmp_triangle.pt2._x = JD1.x;
-            tmp_triangle.pt2._y = GetHeight(JD1.x, JD1.y);
-            tmp_triangle.pt2._z = JD1.y;
-            tmp_triangle.pt3._x = JD2.x;
-            tmp_triangle.pt3._y = GetHeight(JD2.x, JD2.y);
-            tmp_triangle.pt3._z = JD2.y;
+            tmp_triangle.pt2 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
+            tmp_triangle.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
             m_area4.LocalTrianglesVecotr1.push_back(tmp_triangle);
         }
         tmp_cout--;
@@ -7115,12 +6985,8 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // ------------------------------------
             if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
                 Vertex = (z) * MAP_W + (x + 1);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle2.pt1 = tmp_triangle1.pt1;
                 Vertex = (z) * MAP_W + (x + 1);
                 tmp_point1.x = g_terrain [Vertex][0];
                 tmp_point1.y = g_terrain [Vertex][2];
@@ -7135,12 +7001,8 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 三角形只有1个点在多边形内
             if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
                 Vertex = (z + 1) * MAP_W + (x);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle2.pt1 = tmp_triangle1.pt1;
                 Vertex = (z + 1) * MAP_W + (x);
                 tmp_point1.x = g_terrain [Vertex][0];
                 tmp_point1.y = g_terrain [Vertex][2];
@@ -7155,12 +7017,8 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 三角形只有1个点在多边形内
             if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 0) {
                 Vertex = (z) * MAP_W + (x);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle2.pt1 = tmp_triangle1.pt1;
                 // 求多边形边界与三角形边的交点
                 Vertex = (z) * MAP_W + (x);
                 tmp_point1.x = g_terrain [Vertex][0];
@@ -7177,12 +7035,8 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 三角形只有1个点在多边形内
             if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
                 Vertex = (z) * MAP_W + (x + 1);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle2.pt1 = tmp_triangle1.pt1;
                 Vertex = (z) * MAP_W + (x + 1);
                 tmp_point1.x = g_terrain [Vertex][0];
                 tmp_point1.y = g_terrain [Vertex][2];
@@ -7197,12 +7051,8 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 三角形只有1个点在多边形内
             if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
                 Vertex = (z + 1) * MAP_W + (x);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle2.pt1 = tmp_triangle1.pt1;
                 Vertex = (z + 1) * MAP_W + (x);
                 tmp_point1.x = g_terrain [Vertex][0];
                 tmp_point1.y = g_terrain [Vertex][2];
@@ -7217,12 +7067,8 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 三角形只有1个点在多边形内
             if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 0) {
                 Vertex = (z + 1) * MAP_W + (x + 1);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle2.pt1 = tmp_triangle1.pt1;
                 // 求多边形边界与三角形边的交点
                 Vertex = (z + 1) * MAP_W + (x + 1);
                 tmp_point1.x = g_terrain [Vertex][0];
@@ -7244,19 +7090,11 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 1-1
             if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
                 Vertex = (z + 1) * MAP_W + (x);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle3.pt1 = tmp_triangle1.pt1;
                 Vertex = (z) * MAP_W + (x);
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt2._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt2._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt2._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle3.pt2 = tmp_triangle2.pt1;
                 // 此时 tmp_point1应为在多边形外的一点
                 Vertex = (z) * MAP_W + (x + 1);
                 tmp_point1.x = g_terrain [Vertex][0];
@@ -7272,19 +7110,11 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 1-2
             if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
                 Vertex = (z) * MAP_W + (x + 1);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle3.pt1 = tmp_triangle1.pt1;
                 Vertex = (z) * MAP_W + (x);
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt2._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt2._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt2._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle3.pt2 = tmp_triangle2.pt1;
                 // 此时 tmp_point1应为在多边形外的一点
                 Vertex = (z + 1) * MAP_W + (x);
                 tmp_point1.x = g_terrain [Vertex][0];
@@ -7300,19 +7130,11 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 1-3
             if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 1) {
                 Vertex = (z) * MAP_W + (x + 1);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle3.pt1 = tmp_triangle1.pt1;
                 Vertex = (z + 1) * MAP_W + (x);
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt2._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt2._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt2._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle3.pt2 = tmp_triangle2.pt1;
                 // 此时 tmp_point1应为在多边形外的一点
                 Vertex = (z) * MAP_W + (x);
                 tmp_point1.x = g_terrain [Vertex][0];
@@ -7328,19 +7150,11 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 2-1
             if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
                 Vertex = (z + 1) * MAP_W + (x);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle3.pt1 = tmp_triangle1.pt1;
                 Vertex = (z + 1) * MAP_W + (x + 1);
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt2._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt2._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt2._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle3.pt2 = tmp_triangle2.pt1;
                 // 此时 tmp_point1应为在多边形外的一点
                 Vertex = (z) * MAP_W + (x + 1);
                 tmp_point1.x = g_terrain [Vertex][0];
@@ -7356,19 +7170,11 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 2-2
             if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
                 Vertex = (z) * MAP_W + (x + 1);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle3.pt1 = tmp_triangle1.pt1;
                 Vertex = (z + 1) * MAP_W + (x + 1);
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt2._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt2._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt2._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle3.pt2 = tmp_triangle2.pt1;
                 // 此时 tmp_point1应为在多边形外的一点
                 Vertex = (z + 1) * MAP_W + (x);
                 tmp_point1.x = g_terrain [Vertex][0];
@@ -7384,19 +7190,11 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 2-3
             if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 1) {
                 Vertex = (z) * MAP_W + (x + 1);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle3.pt1 = tmp_triangle1.pt1;
                 Vertex = (z + 1) * MAP_W + (x);
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt2._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt2._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt2._z = g_terrain [Vertex][2];
+                tmp_triangle2.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle3.pt2 = tmp_triangle2.pt1;
                 // 此时 tmp_point1应为在多边形外的一点
                 Vertex = (z + 1) * MAP_W + (x + 1);
                 tmp_point1.x = g_terrain [Vertex][0];
@@ -7417,15 +7215,9 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 1- 1
             if (inPolygonArrayFlag[x][z] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 0) {
                 Vertex = (z) * MAP_W + (x);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle2.pt1 = tmp_triangle1.pt1;
+                tmp_triangle3.pt1 = tmp_triangle1.pt1;
                 // 三角形共斜边的对角三角形
                 PPR_Point tmp_point0;
                 Vertex = (z + 1) * MAP_W + (x + 1);
@@ -7445,15 +7237,9 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 1-2
             if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
                 Vertex = (z + 1) * MAP_W + (x);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle2.pt1 = tmp_triangle1.pt1;
+                tmp_triangle3.pt1 = tmp_triangle1.pt1;
                 // 对角三角形
                 if (z >= 1) {
                     PPR_Point tmp_point0;
@@ -7475,15 +7261,9 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 1-3
             if (inPolygonArrayFlag[x][z] == 0 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
                 Vertex = (z) * MAP_W + (x + 1);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle2.pt1 = tmp_triangle1.pt1;
+                tmp_triangle3.pt1 = tmp_triangle1.pt1;
                 // 对角三角形
                 if (x >= 1) {
                     PPR_Point tmp_point0;
@@ -7505,15 +7285,9 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 2-1
             if (inPolygonArrayFlag[x + 1][z + 1] == 1 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 0) {
                 Vertex = (z + 1) * MAP_W + (x + 1);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle2.pt1 = tmp_triangle1.pt1;
+                tmp_triangle3.pt1 = tmp_triangle1.pt1;
                 // 三角形共斜边的对角三角形
                 PPR_Point tmp_point0;
                 Vertex = (z) * MAP_W + (x);
@@ -7533,15 +7307,9 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 2-2
             if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 1  && inPolygonArrayFlag[x + 1][z] == 0) {
                 Vertex = (z + 1) * MAP_W + (x);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle2.pt1 = tmp_triangle1.pt1;
+                tmp_triangle3.pt1 = tmp_triangle1.pt1;
                 // 对角三角形
                 if (x < MAP_W - 2) {
                     PPR_Point tmp_point0;
@@ -7563,15 +7331,9 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle(Area_4&
             // 2-3
             if (inPolygonArrayFlag[x + 1][z + 1] == 0 && inPolygonArrayFlag[x][z + 1] == 0  && inPolygonArrayFlag[x + 1][z] == 1) {
                 Vertex = (z) * MAP_W + (x + 1);
-                tmp_triangle1.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle1.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle1.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle2.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle2.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle2.pt1._z = g_terrain [Vertex][2];
-                tmp_triangle3.pt1._x = g_terrain [Vertex][0];
-                tmp_triangle3.pt1._y = g_terrain [Vertex][1];
-                tmp_triangle3.pt1._z = g_terrain [Vertex][2];
+                tmp_triangle1.pt1 = Point3(g_terrain[Vertex][0], g_terrain[Vertex][1], g_terrain[Vertex][2]);
+                tmp_triangle2.pt1 = tmp_triangle1.pt1;
+                tmp_triangle3.pt1 = tmp_triangle1.pt1;
                 // 对角三角形
                 if (z < MAP_W - 2) {
                     PPR_Point tmp_point0;
@@ -7614,33 +7376,33 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_1_1(Are
     int16 tmp_cout = 4;
     while (tmp_cout > 0) {
         if (4 == tmp_cout) {
-            tmp_polygon_point.x = m_area4.pt1._x;
-            tmp_polygon_point.y = m_area4.pt1._z;
-            tmp_polygon_point_ra.x = m_area4.pt2._x;
-            tmp_polygon_point_ra.y = m_area4.pt2._z;
-            tmp_polygon_point_rb.x = m_area4.pt4._x;
-            tmp_polygon_point_rb.y = m_area4.pt4._z;
+            tmp_polygon_point.x = m_area4.pt1.x;
+            tmp_polygon_point.y = m_area4.pt1.z;
+            tmp_polygon_point_ra.x = m_area4.pt2.x;
+            tmp_polygon_point_ra.y = m_area4.pt2.z;
+            tmp_polygon_point_rb.x = m_area4.pt4.x;
+            tmp_polygon_point_rb.y = m_area4.pt4.z;
         } else if (3 == tmp_cout) {
-            tmp_polygon_point.x = m_area4.pt2._x;
-            tmp_polygon_point.y = m_area4.pt2._z;
-            tmp_polygon_point_ra.x = m_area4.pt1._x;
-            tmp_polygon_point_ra.y = m_area4.pt1._z;
-            tmp_polygon_point_rb.x = m_area4.pt3._x;
-            tmp_polygon_point_rb.y = m_area4.pt3._z;
+            tmp_polygon_point.x = m_area4.pt2.x;
+            tmp_polygon_point.y = m_area4.pt2.z;
+            tmp_polygon_point_ra.x = m_area4.pt1.x;
+            tmp_polygon_point_ra.y = m_area4.pt1.z;
+            tmp_polygon_point_rb.x = m_area4.pt3.x;
+            tmp_polygon_point_rb.y = m_area4.pt3.z;
         } else if (2 == tmp_cout) {
-            tmp_polygon_point.x = m_area4.pt3._x;
-            tmp_polygon_point.y = m_area4.pt3._z;
-            tmp_polygon_point_ra.x = m_area4.pt2._x;
-            tmp_polygon_point_ra.y = m_area4.pt2._z;
-            tmp_polygon_point_rb.x = m_area4.pt4._x;
-            tmp_polygon_point_rb.y = m_area4.pt4._z;
+            tmp_polygon_point.x = m_area4.pt3.x;
+            tmp_polygon_point.y = m_area4.pt3.z;
+            tmp_polygon_point_ra.x = m_area4.pt2.x;
+            tmp_polygon_point_ra.y = m_area4.pt2.z;
+            tmp_polygon_point_rb.x = m_area4.pt4.x;
+            tmp_polygon_point_rb.y = m_area4.pt4.z;
         } else if (1 == tmp_cout) {
-            tmp_polygon_point.x = m_area4.pt4._x;
-            tmp_polygon_point.y = m_area4.pt4._z;
-            tmp_polygon_point_ra.x = m_area4.pt1._x;
-            tmp_polygon_point_ra.y = m_area4.pt1._z;
-            tmp_polygon_point_rb.x = m_area4.pt3._x;
-            tmp_polygon_point_rb.y = m_area4.pt3._z;
+            tmp_polygon_point.x = m_area4.pt4.x;
+            tmp_polygon_point.y = m_area4.pt4.z;
+            tmp_polygon_point_ra.x = m_area4.pt1.x;
+            tmp_polygon_point_ra.y = m_area4.pt1.z;
+            tmp_polygon_point_rb.x = m_area4.pt3.x;
+            tmp_polygon_point_rb.y = m_area4.pt3.z;
         }
         int32 inTriangleFlag = -1;
         inTriangleFlag = tmp_PPR.InPolygon(tmp_polygon_tri, tmp_polygon_point);
@@ -7659,18 +7421,10 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_1_1(Are
                     JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
                 if (intersectFlag22)
                     JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
-                tmp_triangle1.pt2._x = JD1.x;
-                tmp_triangle1.pt2._y = GetHeight(JD1.x, JD1.y);
-                tmp_triangle1.pt2._z = JD1.y;
-                tmp_triangle1.pt3._x = tmp_polygon_point.x;
-                tmp_triangle1.pt3._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
-                tmp_triangle1.pt3._z = tmp_polygon_point.y;
-                tmp_triangle2.pt2._x = tmp_polygon_point.x;
-                tmp_triangle2.pt2._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
-                tmp_triangle2.pt2._z = tmp_polygon_point.y;
-                tmp_triangle2.pt3._x = JD2.x;
-                tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
-                tmp_triangle2.pt3._z = JD2.y;
+                tmp_triangle1.pt2 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
+                tmp_triangle1.pt3 = Point3(tmp_polygon_point.x, GetHeight(tmp_polygon_point.x, tmp_polygon_point.y), tmp_polygon_point.y);
+                tmp_triangle2.pt2 = tmp_triangle1.pt3;
+                tmp_triangle2.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
                 m_area4.LocalTrianglesVecotr1_1.push_back(tmp_triangle1);
                 m_area4.LocalTrianglesVecotr1_1.push_back(tmp_triangle2);
             }
@@ -7700,33 +7454,33 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_2_1(Are
     int16 tmp_cout = 4;
     while (tmp_cout > 0) {
         if (4 == tmp_cout) {
-            tmp_polygon_point.x = m_area4.pt1._x;
-            tmp_polygon_point.y = m_area4.pt1._z;
-            tmp_polygon_point_ra.x = m_area4.pt2._x;
-            tmp_polygon_point_ra.y = m_area4.pt2._z;
-            tmp_polygon_point_rb.x = m_area4.pt4._x;
-            tmp_polygon_point_rb.y = m_area4.pt4._z;
+            tmp_polygon_point.x = m_area4.pt1.x;
+            tmp_polygon_point.y = m_area4.pt1.z;
+            tmp_polygon_point_ra.x = m_area4.pt2.x;
+            tmp_polygon_point_ra.y = m_area4.pt2.z;
+            tmp_polygon_point_rb.x = m_area4.pt4.x;
+            tmp_polygon_point_rb.y = m_area4.pt4.z;
         } else if (3 == tmp_cout) {
-            tmp_polygon_point.x = m_area4.pt2._x;
-            tmp_polygon_point.y = m_area4.pt2._z;
-            tmp_polygon_point_ra.x = m_area4.pt1._x;
-            tmp_polygon_point_ra.y = m_area4.pt1._z;
-            tmp_polygon_point_rb.x = m_area4.pt3._x;
-            tmp_polygon_point_rb.y = m_area4.pt3._z;
+            tmp_polygon_point.x = m_area4.pt2.x;
+            tmp_polygon_point.y = m_area4.pt2.z;
+            tmp_polygon_point_ra.x = m_area4.pt1.x;
+            tmp_polygon_point_ra.y = m_area4.pt1.z;
+            tmp_polygon_point_rb.x = m_area4.pt3.x;
+            tmp_polygon_point_rb.y = m_area4.pt3.z;
         } else if (2 == tmp_cout) {
-            tmp_polygon_point.x = m_area4.pt3._x;
-            tmp_polygon_point.y = m_area4.pt3._z;
-            tmp_polygon_point_ra.x = m_area4.pt2._x;
-            tmp_polygon_point_ra.y = m_area4.pt2._z;
-            tmp_polygon_point_rb.x = m_area4.pt4._x;
-            tmp_polygon_point_rb.y = m_area4.pt4._z;
+            tmp_polygon_point.x = m_area4.pt3.x;
+            tmp_polygon_point.y = m_area4.pt3.z;
+            tmp_polygon_point_ra.x = m_area4.pt2.x;
+            tmp_polygon_point_ra.y = m_area4.pt2.z;
+            tmp_polygon_point_rb.x = m_area4.pt4.x;
+            tmp_polygon_point_rb.y = m_area4.pt4.z;
         } else if (1 == tmp_cout) {
-            tmp_polygon_point.x = m_area4.pt4._x;
-            tmp_polygon_point.y = m_area4.pt4._z;
-            tmp_polygon_point_ra.x = m_area4.pt1._x;
-            tmp_polygon_point_ra.y = m_area4.pt1._z;
-            tmp_polygon_point_rb.x = m_area4.pt3._x;
-            tmp_polygon_point_rb.y = m_area4.pt3._z;
+            tmp_polygon_point.x = m_area4.pt4.x;
+            tmp_polygon_point.y = m_area4.pt4.z;
+            tmp_polygon_point_ra.x = m_area4.pt1.x;
+            tmp_polygon_point_ra.y = m_area4.pt1.z;
+            tmp_polygon_point_rb.x = m_area4.pt3.x;
+            tmp_polygon_point_rb.y = m_area4.pt3.z;
         }
         int32 inTriangleFlag = -1;
         inTriangleFlag = tmp_PPR.InPolygon(tmp_polygon_tri, tmp_polygon_point);
@@ -7745,21 +7499,11 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_2_1(Are
                     JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_ra);
                 if (intersectFlag22)
                     JD2 = tmp_PPR.getJD(tmp_point1, tmp_point22, tmp_polygon_point, tmp_polygon_point_rb);
-                tmp_triangle1.pt2._x = JD1.x;
-                tmp_triangle1.pt2._y = GetHeight(JD1.x, JD1.y);
-                tmp_triangle1.pt2._z = JD1.y;
-                tmp_triangle1.pt3._x = tmp_polygon_point.x;
-                tmp_triangle1.pt3._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
-                tmp_triangle1.pt3._z = tmp_polygon_point.y;
-                tmp_triangle2.pt2._x = tmp_polygon_point.x;
-                tmp_triangle2.pt2._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
-                tmp_triangle2.pt2._z = tmp_polygon_point.y;
-                tmp_triangle2.pt3._x = JD2.x;
-                tmp_triangle2.pt3._y = GetHeight(JD2.x, JD2.y);
-                tmp_triangle2.pt3._z = JD2.y;
-                tmp_triangle3.pt3._x = tmp_polygon_point.x;
-                tmp_triangle3.pt3._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
-                tmp_triangle3.pt3._z = tmp_polygon_point.y;
+                tmp_triangle1.pt2 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
+                tmp_triangle1.pt3 = Point3(tmp_polygon_point.x, GetHeight(tmp_polygon_point.x, tmp_polygon_point.y), tmp_polygon_point.y);
+                tmp_triangle2.pt2 = tmp_triangle1.pt3;
+                tmp_triangle2.pt3 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
+                tmp_triangle3.pt3 = tmp_triangle1.pt3;
                 // AfxMessageBox("21");
                 m_area4.LocalTrianglesVecotr2_1.push_back(tmp_triangle1);
                 m_area4.LocalTrianglesVecotr2_1.push_back(tmp_triangle2);
@@ -7786,33 +7530,33 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_last(Ar
     int16 tmp_cout = 4;
     while (tmp_cout > 0) {
         if (4 == tmp_cout) {
-            tmp_polygon_point.x = m_area4.pt1._x;
-            tmp_polygon_point.y = m_area4.pt1._z;
-            tmp_polygon_point_ra.x = m_area4.pt2._x;
-            tmp_polygon_point_ra.y = m_area4.pt2._z;
-            tmp_polygon_point_rb.x = m_area4.pt4._x;
-            tmp_polygon_point_rb.y = m_area4.pt4._z;
+            tmp_polygon_point.x = m_area4.pt1.x;
+            tmp_polygon_point.y = m_area4.pt1.z;
+            tmp_polygon_point_ra.x = m_area4.pt2.x;
+            tmp_polygon_point_ra.y = m_area4.pt2.z;
+            tmp_polygon_point_rb.x = m_area4.pt4.x;
+            tmp_polygon_point_rb.y = m_area4.pt4.z;
         } else if (3 == tmp_cout) {
-            tmp_polygon_point.x = m_area4.pt2._x;
-            tmp_polygon_point.y = m_area4.pt2._z;
-            tmp_polygon_point_ra.x = m_area4.pt1._x;
-            tmp_polygon_point_ra.y = m_area4.pt1._z;
-            tmp_polygon_point_rb.x = m_area4.pt3._x;
-            tmp_polygon_point_rb.y = m_area4.pt3._z;
+            tmp_polygon_point.x = m_area4.pt2.x;
+            tmp_polygon_point.y = m_area4.pt2.z;
+            tmp_polygon_point_ra.x = m_area4.pt1.x;
+            tmp_polygon_point_ra.y = m_area4.pt1.z;
+            tmp_polygon_point_rb.x = m_area4.pt3.x;
+            tmp_polygon_point_rb.y = m_area4.pt3.z;
         } else if (2 == tmp_cout) {
-            tmp_polygon_point.x = m_area4.pt3._x;
-            tmp_polygon_point.y = m_area4.pt3._z;
-            tmp_polygon_point_ra.x = m_area4.pt2._x;
-            tmp_polygon_point_ra.y = m_area4.pt2._z;
-            tmp_polygon_point_rb.x = m_area4.pt4._x;
-            tmp_polygon_point_rb.y = m_area4.pt4._z;
+            tmp_polygon_point.x = m_area4.pt3.x;
+            tmp_polygon_point.y = m_area4.pt3.z;
+            tmp_polygon_point_ra.x = m_area4.pt2.x;
+            tmp_polygon_point_ra.y = m_area4.pt2.z;
+            tmp_polygon_point_rb.x = m_area4.pt4.x;
+            tmp_polygon_point_rb.y = m_area4.pt4.z;
         } else if (1 == tmp_cout) {
-            tmp_polygon_point.x = m_area4.pt4._x;
-            tmp_polygon_point.y = m_area4.pt4._z;
-            tmp_polygon_point_ra.x = m_area4.pt1._x;
-            tmp_polygon_point_ra.y = m_area4.pt1._z;
-            tmp_polygon_point_rb.x = m_area4.pt3._x;
-            tmp_polygon_point_rb.y = m_area4.pt3._z;
+            tmp_polygon_point.x = m_area4.pt4.x;
+            tmp_polygon_point.y = m_area4.pt4.z;
+            tmp_polygon_point_ra.x = m_area4.pt1.x;
+            tmp_polygon_point_ra.y = m_area4.pt1.z;
+            tmp_polygon_point_rb.x = m_area4.pt3.x;
+            tmp_polygon_point_rb.y = m_area4.pt3.z;
         }
         int32 inTriangleFlag = -1;
         inTriangleFlag = tmp_PPR.InPolygon(tmp_polygon_tri, tmp_polygon_point);
@@ -7850,33 +7594,15 @@ void CMy3DSymbolLibNewView::FindTriangles_polygon_has_vertex_in_triangle_last(Ar
                     JD3 = PPR_Point(JD4.x, JD4.y);
                     JD4 = PPR_Point(tmp.x, tmp.y);
                 }
-                tmp_triangle4.pt1._x = tmp_polygon_point.x;
-                tmp_triangle4.pt1._y = GetHeight(tmp_polygon_point.x, tmp_polygon_point.y);
-                tmp_triangle4.pt1._z = tmp_polygon_point.y;
-                tmp_triangle4.pt2._x = JD3.x;
-                tmp_triangle4.pt2._y = GetHeight(JD3.x, JD3.y);
-                tmp_triangle4.pt2._z = JD3.y;
-                tmp_triangle4.pt3._x = JD4.x;
-                tmp_triangle4.pt3._y = GetHeight(JD4.x, JD4.y);
-                tmp_triangle4.pt3._z = JD4.y;
-                tmp_triangle1.pt2._x = JD1.x;
-                tmp_triangle1.pt2._y = GetHeight(JD1.x, JD1.y);
-                tmp_triangle1.pt2._z = JD1.y;
-                tmp_triangle1.pt3._x = JD3.x;
-                tmp_triangle1.pt3._y = GetHeight(JD3.x, JD3.y);
-                tmp_triangle1.pt3._z = JD3.y;
-                tmp_triangle2.pt2._x = JD2.x;
-                tmp_triangle2.pt2._y = GetHeight(JD2.x, JD2.y);
-                tmp_triangle2.pt2._z = JD2.y;
-                tmp_triangle2.pt3._x = JD4.x;
-                tmp_triangle2.pt3._y = GetHeight(JD4.x, JD4.y);
-                tmp_triangle2.pt3._z = JD4.y;
-                tmp_triangle3.pt2._x = JD3.x;
-                tmp_triangle3.pt2._y = GetHeight(JD3.x, JD3.y);
-                tmp_triangle3.pt2._z = JD3.y;
-                tmp_triangle3.pt3._x = JD4.x;
-                tmp_triangle3.pt3._y = GetHeight(JD4.x, JD4.y);
-                tmp_triangle3.pt3._z = JD4.y;
+                tmp_triangle4.pt1 = Point3(tmp_polygon_point.x, GetHeight(tmp_polygon_point.x, tmp_polygon_point.y), tmp_polygon_point.y);
+                tmp_triangle4.pt2 = Point3(JD3.x, GetHeight(JD3.x, JD3.y), JD3.y);
+                tmp_triangle4.pt3 = Point3(JD4.x, GetHeight(JD4.x, JD4.y), JD4.y);
+                tmp_triangle1.pt2 = Point3(JD1.x, GetHeight(JD1.x, JD1.y), JD1.y);
+                tmp_triangle1.pt3 = tmp_triangle4.pt2;
+                tmp_triangle2.pt2 = Point3(JD2.x, GetHeight(JD2.x, JD2.y), JD2.y);
+                tmp_triangle2.pt3 = tmp_triangle4.pt3;
+                tmp_triangle3.pt2 = tmp_triangle4.pt2;
+                tmp_triangle3.pt3 = tmp_triangle4.pt3;
                 // AfxMessageBox("last2");
                 m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle1);
                 m_area4.LocalTrianglesVecotr_last.push_back(tmp_triangle2);
@@ -7904,17 +7630,17 @@ void CMy3DSymbolLibNewView::UpdateAreaTexture(PPR_Point _mp, CPoint point) {
         CPointPolygonRelationship tmp_ppr;
         PPR_Polygon tmp_polygon;
         PPR_Point tmp_point;
-        tmp_point.x = m_area4.pt1._x;
-        tmp_point.y = m_area4.pt1._z;
+        tmp_point.x = m_area4.pt1.x;
+        tmp_point.y = m_area4.pt1.z;
         tmp_polygon.push_back(tmp_point);
-        tmp_point.x = m_area4.pt2._x;
-        tmp_point.y = m_area4.pt2._z;
+        tmp_point.x = m_area4.pt2.x;
+        tmp_point.y = m_area4.pt2.z;
         tmp_polygon.push_back(tmp_point);
-        tmp_point.x = m_area4.pt3._x;
-        tmp_point.y = m_area4.pt3._z;
+        tmp_point.x = m_area4.pt3.x;
+        tmp_point.y = m_area4.pt3.z;
         tmp_polygon.push_back(tmp_point);
-        tmp_point.x = m_area4.pt4._x;
-        tmp_point.y = m_area4.pt4._z;
+        tmp_point.x = m_area4.pt4.x;
+        tmp_point.y = m_area4.pt4.z;
         tmp_polygon.push_back(tmp_point);
         PPR_Point tmp_dem_point;
         int32 inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, _mp);

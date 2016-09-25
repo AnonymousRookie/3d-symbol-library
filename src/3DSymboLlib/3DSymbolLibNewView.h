@@ -98,11 +98,7 @@ typedef struct Curve_R_L0_Struct {
 
 
 // 点
-typedef struct _Point3 {
-    double _x;
-    double _y;
-    double _z;
-} Point3, *PPoint3;
+typedef Vec3 Point3;
 
 // 线
 typedef struct _Line3 {
@@ -727,7 +723,7 @@ class CMy3DSymbolLibNewView : public CView {
                     int32 colNum, int32 col_index_begin, int32 col_index_end, Line3 _line, vector<Point3>& _pv);  // NOLINT
 
     // 计算2条直线的交点y=x+b, Ax+By+C=0, 返回-1表示无交点
-    BOOL GetJDFrom2Line(PPoint3 p/*out*/, double b, double A, double B, double C);
+    BOOL GetJDFrom2Line(Point3* p/*out*/, double b, double A, double B, double C);
 
     vector<Point3> JD_vector1;
     vector<Point3> JD_vector2;
