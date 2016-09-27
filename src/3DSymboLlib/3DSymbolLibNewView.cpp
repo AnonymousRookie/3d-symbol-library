@@ -219,28 +219,33 @@ void CMy3DSymbolLibNewView::InitData() {
     iSkyBoxLoaded = false;
     g_isTerrainInit = false;
     // 相机参数向上矢量
-    m_vUp.x = 0;
-    m_vUp.y = 1;
-    m_vUp.z = 0;
+    m_vUp = CVector3(0.0f, 1.0f, 0.0f);
+
     m_viewdegree = 0;  // 初始视角增量
     m_viewHeight = m_oldviewHeight = 88;  // 相机初始高度
-    m_vEyePosition.x = 334;
-    m_vEyePosition.z = -384;
-    m_vEyePosition.y = 88;
+
+
+    m_vEyePosition = CVector3(334.0f, 88.0f, -384.0f);
+
+
     g_Angle = 6;                        // 视点方位角初值
     g_elev = 0;                         // 俯仰角初始值
     gao = 1.8;
     rad_xz = float (PAI_D180 * g_Angle);  // 计算左右旋转角度
-    m_vLook.x = m_vEyePosition.x + 100 * cos(rad_xz);
-    m_vLook.z = m_vEyePosition.z + 100 * sin(rad_xz);
-    m_vLook.y = m_vEyePosition.y + g_elev;
+
+
+    m_vLook = CVector3(m_vEyePosition.x + 100 * cos(rad_xz),
+                        m_vEyePosition.y + g_elev,
+                        m_vEyePosition.z + 100 * sin(rad_xz));
+
+
     m_Step_X = 5.0;     // 相机在X方向移动的步长初始值(鼠标控制)
     m_Step_Z = 5.0;     // 相机在Z方向移动的步长初始值(鼠标控制)
     m_xTrans = 0;       // 在X方向上移动的步长(键盘控制)
     m_zTrans = 0;       // 在Z方向上移动的步长(键盘控制)
     derAngleY = 500.0f;
     derAngleZ = 4000.0f;
-    derDisScale = 1.5;
+    derDisScale = 1.5f;
     m_PathFlag = FALSE;
     m_flyspeed = 1000;
     m_maxHeight = -9999;
@@ -316,8 +321,8 @@ void CMy3DSymbolLibNewView::initLines() {
     v2_end.setZero();
     // 记录点的个数
     p_count = 0;
-    m_distance_between_2_points = 0.0;
-    m_pre_distance = 0.0;
+    m_distance_between_2_points = 0.0f;
+    m_pre_distance = 0.0f;
 }
 
 
@@ -684,23 +689,6 @@ void CMy3DSymbolLibNewView::DrawScene() {
         if (Area_fuse_Flag) {
             int32 tmp_size = m_Area4_Array.GetSize();
             for (int32 i = 0; i < tmp_size; ++i) {
-                /*  Area_4 tmp_area4;
-                tmp_area4.pt1 = m_Area4_Array[i]->pt1;
-                tmp_area4.pt2 = m_Area4_Array[i]->pt2;
-                tmp_area4.pt3 = m_Area4_Array[i]->pt3;
-                tmp_area4.pt4 = m_Area4_Array[i]->pt4;
-
-
-                tmp_area4.LocalTrianglesVecotr1 = m_Area4_Array[i]->LocalTrianglesVecotr1;
-                tmp_area4.LocalTrianglesVecotr1_1 = m_Area4_Array[i]->LocalTrianglesVecotr1_1;
-                tmp_area4.LocalTrianglesVecotr2 = m_Area4_Array[i]->LocalTrianglesVecotr2;
-                tmp_area4.LocalTrianglesVecotr2_1 = m_Area4_Array[i]->LocalTrianglesVecotr2_1;
-
-                tmp_area4.LocalTrianglesVecotr_last = m_Area4_Array[i]->LocalTrianglesVecotr_last;
-                tmp_area4.TrianglesInPolygonVecotr = m_Area4_Array[i]->TrianglesInPolygonVecotr;
-
-                Area_Triangled(tmp_area4);
-                */
                 if (m_Area4_Array[i]->deleted != 1) {
                     Area_Triangled(m_Area4_Array[i]);
                 }
@@ -1200,21 +1188,16 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             winY = screenHeight - point.y;
             // 获取像素对应的前裁剪面的点坐标
             int32 bResult = gluUnProject(winX, winY, 0.0, modelview, projection, viewport, &posX, &posY, &posZ);
-            CVector3 nearPoint;
-            nearPoint.x = posX;
-            nearPoint.y = posY;
-            nearPoint.z = posZ;
+            CVector3 nearPoint(posX, posY, posZ);
+
             // 获取像素对应的后裁剪面的点坐标
             bResult = gluUnProject(winX, winY, 1.0, modelview, projection, viewport, &posX, &posY, &posZ);
-            CVector3 farPoint;
-            farPoint.x = posX;
-            farPoint.y = posY;
-            farPoint.z = posZ;
+            CVector3 farPoint(posX, posY, posZ);
+
             CVector3 n_vector, resultP;
             // cal the vector of ray
-            n_vector.x = farPoint.x - nearPoint.x;
-            n_vector.y = farPoint.y - nearPoint.y;
-            n_vector.z = farPoint.z - nearPoint.z;
+            n_vector = farPoint - nearPoint;
+
             JudgeRayIntersect(nearPoint, n_vector, resultP);
             Invalidate(FALSE);
         } else if (m_OperateType == MOVE) {             // 鼠标移动3D模型
@@ -1240,21 +1223,18 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
                 winY = screenHeight - point.y;
                 // 获取像素对应的前裁剪面的点坐标
                 int32 bResult = gluUnProject(winX, winY, 0.0, modelview, projection, viewport, &posX, &posY, &posZ);
-                CVector3 nearPoint;
-                nearPoint.x = posX;
-                nearPoint.y = posY;
-                nearPoint.z = posZ;
+                CVector3 nearPoint(posX, posY, posZ);
+
                 // 获取像素对应的后裁剪面的点坐标
                 bResult = gluUnProject(winX, winY, 1.0, modelview, projection, viewport, &posX, &posY, &posZ);
-                CVector3 farPoint;
-                farPoint.x = posX;
-                farPoint.y = posY;
-                farPoint.z = posZ;
+                CVector3 farPoint(posX, posY, posZ);
+
                 CVector3 n_vector, resultP;
                 // cal the vector of ray
-                n_vector.x = farPoint.x - nearPoint.x;
-                n_vector.y = farPoint.y - nearPoint.y;
-                n_vector.z = farPoint.z - nearPoint.z;
+
+
+                n_vector = farPoint - nearPoint;
+
                 JudgeRayIntersect(nearPoint, n_vector, resultP);
                 if (m_selectedModelID != -1) {
                     pt1[0] = wx;
@@ -1288,21 +1268,18 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             winY = screenHeight - point.y;
             // 获取像素对应的前裁剪面的点坐标
             int32 bResult = gluUnProject(winX, winY, 0.0, modelview, projection, viewport, &posX, &posY, &posZ);
-            CVector3 nearPoint;
-            nearPoint.x = posX;
-            nearPoint.y = posY;
-            nearPoint.z = posZ;
+            CVector3 nearPoint(posX, posY, posZ);
+
             // 获取像素对应的后裁剪面的点坐标
             bResult = gluUnProject(winX, winY, 1.0, modelview, projection, viewport, &posX, &posY, &posZ);
-            CVector3 farPoint;
-            farPoint.x = posX;
-            farPoint.y = posY;
-            farPoint.z = posZ;
+            CVector3 farPoint(posX, posY, posZ);
+
             CVector3 n_vector, resultP;
             // cal the vector of ray
-            n_vector.x = farPoint.x - nearPoint.x;
-            n_vector.y = farPoint.y - nearPoint.y;
-            n_vector.z = farPoint.z - nearPoint.z;
+
+
+            n_vector = farPoint - nearPoint;
+
             JudgeRayIntersect(nearPoint, n_vector, resultP);
         }
     } else if (!m_bMouseMoveSelect) {
