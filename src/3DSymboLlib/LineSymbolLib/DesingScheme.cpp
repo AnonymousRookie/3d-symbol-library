@@ -1,12 +1,9 @@
 ﻿#include "stdafx.h"
 #include "DesingScheme.h"
-#include "GlobalVariable.h"
-#include "MathUtils/LeastSquares.h"
+#include "../GlobalVariable.h"
+#include "../MathUtils/LeastSquares.h"
 
 
-CDesingScheme::CDesingScheme(void) {}
-
-CDesingScheme::~CDesingScheme(void) {}
 
 
 double CDesingScheme::GetDistenceXY(double x1, double y1, double x2, double y2) {

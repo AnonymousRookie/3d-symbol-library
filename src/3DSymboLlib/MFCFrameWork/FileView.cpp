@@ -2,7 +2,7 @@
 #include "mainfrm.h"
 #include "FileView.h"
 #include "Resource.h"
-#include "3DSymbolLibNew.h"
+#include "../3DSymbolLibNew.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

@@ -6,7 +6,7 @@
 #include <iostream>
 using namespace std;  // NOLINT
 #include <vector>
-#include "Base/ZTypes.h"
+#include "../Base/ZTypes.h"
 
 // 三维点坐标结构
 typedef struct {
@@ -120,8 +120,8 @@ typedef struct {
 
 class CDesingScheme {
   public:
-    CDesingScheme(void);
-    ~CDesingScheme(void);
+    CDesingScheme() {}
+    ~CDesingScheme() {}
 
 
   public:

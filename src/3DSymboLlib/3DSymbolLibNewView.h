@@ -2,15 +2,15 @@
 #define SYMBOL_LIB_NEW_VIEW_H
 
 
-#include "MainFrm.h"
+#include "MFCFrameWork/MainFrm.h"
 #include "SpaceSearchSet.h"
 #include "CameraParamSet.h"
 #include "TerrainImportContour.h"
 #include "SkyBoxTexLoad.h"
 #include "Texture.h"
-#include "Load3DS.H"
-#include "C3DModelParamSet.h"
-#include "ModelParam.h"
+#include "PointSymbolLib/Load3DS.H"
+#include "PointSymbolLib/C3DModelParamSet.h"
+#include "PointSymbolLib/ModelParam.h"
 #include "GLFont.h"
 #include <MMSystem.h>
 #include "stdafx.h"

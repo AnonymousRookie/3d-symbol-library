@@ -4,7 +4,7 @@
 
 
 #pragma once
-#include "Base/ZTypes.h"
+#include "../Base/ZTypes.h"
 
 class CMy3DSymbolLibNewDoc : public CDocument {
   protected:  // 仅从序列化创建

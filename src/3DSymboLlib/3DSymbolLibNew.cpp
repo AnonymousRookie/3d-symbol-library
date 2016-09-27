@@ -2,9 +2,9 @@
 #include "afxwinappex.h"
 #include "afxdialogex.h"
 #include "3DSymbolLibNew.h"
-#include "MainFrm.h"
+#include "MFCFrameWork/MainFrm.h"
 
-#include "3DSymbolLibNewDoc.h"
+#include "MFCFrameWork/3DSymbolLibNewDoc.h"
 #include "3DSymbolLibNewView.h"
 
 #ifdef _DEBUG

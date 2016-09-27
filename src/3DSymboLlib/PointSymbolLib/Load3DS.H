@@ -3,7 +3,7 @@
 
 #include <math.h>
 #include <vector>
-#include "Base/ZTypes.h"
+#include "../Base/ZTypes.h"
 
 // 基本块(Primary Chunk)，位于文件的开始
 #define PRIMARY       0x4D4D

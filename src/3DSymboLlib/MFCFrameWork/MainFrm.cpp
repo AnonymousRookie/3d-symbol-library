@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
-#include "3DSymbolLibNew.h"
+#include "../3DSymbolLibNew.h"
 #include "MainFrm.h"
-#include "SplashWnd.h"
+#include "../SplashWnd.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

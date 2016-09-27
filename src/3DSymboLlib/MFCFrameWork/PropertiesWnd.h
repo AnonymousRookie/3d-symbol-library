@@ -1,7 +1,7 @@
 ﻿#ifndef PROPERTIES_WND_H
 #define PROPERTIES_WND_H
 
-#include "Base/ZTypes.h"
+#include "../Base/ZTypes.h"
 
 class CPropertiesToolBar : public CMFCToolBar {
   public:

@@ -7,7 +7,7 @@
 #include "ClassView.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
-#include "Base/ZTypes.h"
+#include "../Base/ZTypes.h"
 
 class CMainFrame : public CFrameWndEx {
 

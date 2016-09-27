@@ -2,7 +2,7 @@
 #include "MainFrm.h"
 #include "ClassView.h"
 #include "Resource.h"
-#include "3DSymbolLibNew.h"
+#include "../3DSymbolLibNew.h"
 
 class CClassViewMenuButton : public CMFCToolBarMenuButton {
     friend class CClassView;

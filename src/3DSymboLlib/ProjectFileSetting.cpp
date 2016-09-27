@@ -2,7 +2,7 @@
 #include "3DSymbolLibNew.h"
 #include "ProjectFileSetting.h"
 #include "afxdialogex.h"
-#include "MainFrm.h"
+#include "MFCFrameWork/MainFrm.h"
 #include "GlobalVariable.h"
 
 IMPLEMENT_DYNAMIC(CProjectFileSetting, CDialog)

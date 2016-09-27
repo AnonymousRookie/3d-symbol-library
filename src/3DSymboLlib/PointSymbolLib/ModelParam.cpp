@@ -1,9 +1,9 @@
 ﻿#include "stdafx.h"
-#include "3DSymbolLibNew.h"
+#include "../3DSymbolLibNew.h"
 #include "ModelParam.h"
 #include "afxdialogex.h"
 #include "DialogModelList.h"
-#include "GlobalVariable.h"
+#include "../GlobalVariable.h"
 #include "RockClassification.h"
 
 // ModelParam 对话框

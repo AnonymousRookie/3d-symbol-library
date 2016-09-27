@@ -15,6 +15,18 @@
     <Filter Include="SymbolLib\Base">
       <UniqueIdentifier>{7ba4ab17-b612-4a35-800c-25439efbb8f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SymbolLib\AreaSymbolLib">
+      <UniqueIdentifier>{e91a7e41-297e-4f9c-945b-54c03a8b1139}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SymbolLib\PointSymbolLib">
+      <UniqueIdentifier>{62a12e5a-3e1a-420a-a822-d22f7b637c0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SymbolLib\LineSymbolLib">
+      <UniqueIdentifier>{3b7cd46d-65c1-448a-b8f6-9aebf1b6149b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SymbolLib\MFCFrameWork">
+      <UniqueIdentifier>{72e7b43e-feb0-4627-94bb-44b79fbd1048}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -155,37 +167,13 @@
     <ClInclude Include="..\..\src\3DSymboLlib\3DSymbolLibNew.h">
       <Filter>SymbolLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\3DSymbolLibNewDoc.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\3DSymboLlib\3DSymbolLibNewView.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\AddPointDlg.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\AreaClassification.h">
       <Filter>SymbolLib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\3DSymboLlib\Bitmap.h">
       <Filter>SymbolLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\C3DModelParamSet.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\3DSymboLlib\CameraParamSet.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\ClassView.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\DesingScheme.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\DialogModelList.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\FileView.h">
       <Filter>SymbolLib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\3DSymboLlib\GLFont.h">
@@ -194,31 +182,10 @@
     <ClInclude Include="..\..\src\3DSymboLlib\GlobalVariable.h">
       <Filter>SymbolLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\Load3DS.H">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\MainFrm.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\3DSymboLlib\ModelListConfigureDialog.h">
       <Filter>SymbolLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\ModelParam.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\OutputWnd.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\3DSymboLlib\ProjectFileSetting.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\PropertiesWnd.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\resource.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\RockClassification.h">
       <Filter>SymbolLib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\3DSymboLlib\SetColorButton.h">
@@ -248,9 +215,6 @@
     <ClInclude Include="..\..\src\3DSymboLlib\Texture.h">
       <Filter>SymbolLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\ViewTree.h">
-      <Filter>SymbolLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\PointPolygonRelationship.h">
       <Filter>SymbolLib\MathUtils</Filter>
     </ClInclude>
@@ -266,39 +230,63 @@
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZStackDumper.h">
       <Filter>SymbolLib\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\AreaSymbolLib\AreaClassification.h">
+      <Filter>SymbolLib\AreaSymbolLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\LineSymbolLib\DesingScheme.h">
+      <Filter>SymbolLib\LineSymbolLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\PointSymbolLib\AddPointDlg.h">
+      <Filter>SymbolLib\PointSymbolLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\PointSymbolLib\RockClassification.h">
+      <Filter>SymbolLib\PointSymbolLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\PointSymbolLib\ModelParam.h">
+      <Filter>SymbolLib\PointSymbolLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\PointSymbolLib\C3DModelParamSet.h">
+      <Filter>SymbolLib\PointSymbolLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\PointSymbolLib\DialogModelList.h">
+      <Filter>SymbolLib\PointSymbolLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\ClassView.h">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\FileView.h">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\MainFrm.h">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\OutputWnd.h">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\PropertiesWnd.h">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\resource.h">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\ViewTree.h">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\PointSymbolLib\Load3DS.H">
+      <Filter>SymbolLib\PointSymbolLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\3DSymbolLibNewDoc.h">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNew.cpp">
       <Filter>SymbolLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNewDoc.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNewView.cpp">
       <Filter>SymbolLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\AddPointDlg.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\AreaClassification.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\C3DModelParamSet.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\CameraParamSet.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\ClassView.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\DesingScheme.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\DialogModelList.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\FileView.cpp">
       <Filter>SymbolLib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\GLFont.cpp">
@@ -307,28 +295,10 @@
     <ClCompile Include="..\..\src\3DSymboLlib\GlobalVariable.cpp">
       <Filter>SymbolLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\Load3DS.CPP">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\MainFrm.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\ModelListConfigureDialog.cpp">
       <Filter>SymbolLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\ModelParam.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\OutputWnd.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\ProjectFileSetting.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\PropertiesWnd.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\RockClassification.cpp">
       <Filter>SymbolLib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\SetColorButton.cpp">
@@ -355,9 +325,6 @@
     <ClCompile Include="..\..\src\3DSymboLlib\Texture.cpp">
       <Filter>SymbolLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\3DSymboLlib\ViewTree.cpp">
-      <Filter>SymbolLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\Vec3.cpp">
       <Filter>SymbolLib\MathUtils</Filter>
     </ClCompile>
@@ -369,6 +336,51 @@
     </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\Base\ZStackDumper.cpp">
       <Filter>SymbolLib\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\AreaSymbolLib\AreaClassification.cpp">
+      <Filter>SymbolLib\AreaSymbolLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\LineSymbolLib\DesingScheme.cpp">
+      <Filter>SymbolLib\LineSymbolLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\PointSymbolLib\AddPointDlg.cpp">
+      <Filter>SymbolLib\PointSymbolLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\PointSymbolLib\RockClassification.cpp">
+      <Filter>SymbolLib\PointSymbolLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\PointSymbolLib\ModelParam.cpp">
+      <Filter>SymbolLib\PointSymbolLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\PointSymbolLib\C3DModelParamSet.cpp">
+      <Filter>SymbolLib\PointSymbolLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\PointSymbolLib\DialogModelList.cpp">
+      <Filter>SymbolLib\PointSymbolLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\MFCFrameWork\ClassView.cpp">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\MFCFrameWork\FileView.cpp">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\MFCFrameWork\MainFrm.cpp">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\MFCFrameWork\OutputWnd.cpp">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\MFCFrameWork\PropertiesWnd.cpp">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\MFCFrameWork\ViewTree.cpp">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\PointSymbolLib\Load3DS.CPP">
+      <Filter>SymbolLib\PointSymbolLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\MFCFrameWork\3DSymbolLibNewDoc.cpp">
+      <Filter>SymbolLib\MFCFrameWork</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

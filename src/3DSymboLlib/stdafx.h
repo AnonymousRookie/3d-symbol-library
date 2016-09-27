@@ -51,7 +51,8 @@
 
 #include "Base/ZTypes.h"
 
-#include "DesingScheme.h"
+#include "LineSymbolLib/DesingScheme.h"
+
 extern CDesingScheme myDesingScheme;
 
 

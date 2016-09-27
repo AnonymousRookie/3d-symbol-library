@@ -1,5 +1,5 @@
 ﻿#include "stdafx.h"
-#include "3DSymbolLibNew.h"
+#include "../3DSymbolLibNew.h"
 #include "C3DModelParamSet.h"
 #include "afxdialogex.h"
 

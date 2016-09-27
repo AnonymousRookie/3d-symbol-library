@@ -4,14 +4,14 @@
 #endif
 
 #include <sstream>
-#include "3DSymbolLibNewDoc.h"
+#include "MFCFrameWork/3DSymbolLibNewDoc.h"
 #include "3DSymbolLibNewView.h"
 #include "Bitmap.h"
-#include "ModelParam.h"
-#include "DialogModelList.h"
+#include "PointSymbolLib/ModelParam.h"
+#include "PointSymbolLib/DialogModelList.h"
 #include "ModelListConfigureDialog.h"
 #include "SystemSetting.h"
-#include "AreaClassification.h"
+#include "AreaSymbolLib/AreaClassification.h"
 #include "MathUtils/MathUtil.h"
 
 

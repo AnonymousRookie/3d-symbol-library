@@ -2,7 +2,7 @@
 /*      岩石分类对话框类                                                    */
 /************************************************************************/
 #include "stdafx.h"
-#include "3DSymbolLibNew.h"
+#include "../3DSymbolLibNew.h"
 #include "RockClassification.h"
 #include "afxdialogex.h"
 #include <io.h>

@@ -2,7 +2,7 @@
 #define DIALOG_MODEL_LIST_H
 
 #include "afxcmn.h"
-#include "Base/ZTypes.h"
+#include "../Base/ZTypes.h"
 
 #define  THUMBNAIL_WIDTH 50
 #define  THUMBNAIL_HEIGHT 50

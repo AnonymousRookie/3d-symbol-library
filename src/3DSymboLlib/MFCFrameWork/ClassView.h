@@ -3,7 +3,7 @@
 
 
 #include "ViewTree.h"
-#include "Base/ZTypes.h"
+#include "../Base/ZTypes.h"
 
 
 class CClassToolBar : public CMFCToolBar {
