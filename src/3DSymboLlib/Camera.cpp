@@ -16,6 +16,8 @@ void Camera::InitCamera() {
     m_vLook = CVector3(m_vEyePosition.x + 100 * cos(rad_xz),
                        m_vEyePosition.y + g_elev,
                        m_vEyePosition.z + 100 * sin(rad_xz));
+    m_Step_X = 5.0;     // 相机在X方向移动的步长初始值(鼠标控制)
+    m_Step_Z = 5.0;     // 相机在Z方向移动的步长初始值(鼠标控制)
+    m_xTrans = 0;       // 在X方向上移动的步长(键盘控制)
+    m_zTrans = 0;       // 在Z方向上移动的步长(键盘控制)
 }
-
-

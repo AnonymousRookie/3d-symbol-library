@@ -220,10 +220,6 @@ void CMy3DSymbolLibNewView::InitData() {
     g_isTerrainInit = false;
     // 初始化相机
     camera_.InitCamera();
-    m_Step_X = 5.0;     // 相机在X方向移动的步长初始值(鼠标控制)
-    m_Step_Z = 5.0;     // 相机在Z方向移动的步长初始值(鼠标控制)
-    m_xTrans = 0;       // 在X方向上移动的步长(键盘控制)
-    m_zTrans = 0;       // 在Z方向上移动的步长(键盘控制)
     derAngleY = 500.0f;
     derAngleZ = 4000.0f;
     derDisScale = 1.5f;
@@ -1640,12 +1636,12 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
     switch (nChar) {            // 根据按键字符来进行相应设置
         case VK_LEFT:
             m_keynumber = 3;
-            m_xTrans -= m_Step_X;   // 在X方向上移动的距离累计
+            camera_.m_xTrans -= camera_.m_Step_X;   // 在X方向上移动的距离累计
             Invalidate(FALSE);      // 刷新三维场景
             break;
         case VK_RIGHT:
             m_keynumber = 4;
-            m_xTrans += m_Step_X;   // 在X方向上移动的距离累计
+            camera_.m_xTrans += camera_.m_Step_X;   // 在X方向上移动的距离累计
             Invalidate(FALSE);      // 刷新三维场景
             break;
         case VK_UP:
@@ -1658,7 +1654,7 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                 }
             } else {
                 // 否则就拉近视线
-                m_zTrans -= m_Step_Z;   // 在Z方向上移动的距离累计
+                camera_.m_zTrans -= camera_.m_Step_Z;   // 在Z方向上移动的距离累计
                 m_keynumber = 1;
             }
             Invalidate(FALSE);          // 刷新三维场景
@@ -1672,7 +1668,7 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                     }
                 }
             } else {
-                m_zTrans += m_Step_Z;   // 在Z方向上移动的距离累计
+                camera_.m_zTrans += camera_.m_Step_Z;   // 在Z方向上移动的距离累计
                 m_keynumber = 2;
             }
             Invalidate(FALSE);          // 刷新三维场景
@@ -1796,13 +1792,13 @@ void CMy3DSymbolLibNewView::MoveCameraZ(float speed) {
 /****************************************************************/
 void CMy3DSymbolLibNewView::CheckForMovement() {
     if (m_keynumber == 1) {                                         // ↑上箭头按键，向场景外移动(Z轴正方向)
-        MoveCameraZ(m_Step_Z);                                      // 在Z轴方向上移动时设置相机观察点和视点坐标
+        MoveCameraZ(camera_.m_Step_Z);                                      // 在Z轴方向上移动时设置相机观察点和视点坐标
     } else if (m_keynumber == 2) {                                  // ↓下箭头按键，向场景外移动(Z轴负方向)
-        MoveCameraZ(-m_Step_Z);                                     // 在Z轴方向上移动时设置相机观察点和视点坐标
+        MoveCameraZ(-camera_.m_Step_Z);                                     // 在Z轴方向上移动时设置相机观察点和视点坐标
     } else if (m_keynumber == 3) {                                  // ←左箭头按键，向左方向移动场景(X轴负方向)
-        MoveCameraX(-m_Step_X);                                     // 在X轴方向上移动时设置相机观察点和视点坐标
+        MoveCameraX(-camera_.m_Step_X);                                     // 在X轴方向上移动时设置相机观察点和视点坐标
     } else if (m_keynumber == 4) {                                  // →右箭头按键，向右方向移动场景(X轴正方向)
-        MoveCameraX(m_Step_X);                                      // 在X轴方向上移动时设置相机观察点和视点坐标
+        MoveCameraX(camera_.m_Step_X);                                      // 在X轴方向上移动时设置相机观察点和视点坐标
     }
 }
 

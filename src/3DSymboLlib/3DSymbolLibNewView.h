@@ -288,14 +288,7 @@ class CMy3DSymbolLibNewView : public CView {
 
     afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 
-    // 摄像机  键盘控制
 
-    // 相机旋转参数
-    float   m_Step_X;   // 相机在X方向移动的步长(鼠标控制)
-    float   m_Step_Z;   // 相机在Z方向移动的步长(鼠标控制)
-
-    float   m_xTrans;   // 在X方向上移动的距离(键盘控制)
-    float   m_zTrans;   // 在Z方向上移动的距离(键盘控制)
     int32     m_keynumber;  // 标识键盘按键值
     afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
