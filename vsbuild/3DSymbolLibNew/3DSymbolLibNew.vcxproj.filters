@@ -278,6 +278,9 @@
     <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\3DSymbolLibNewDoc.h">
       <Filter>SymbolLib\MFCFrameWork</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\Camera.h">
+      <Filter>SymbolLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNew.cpp">
@@ -381,6 +384,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\MFCFrameWork\3DSymbolLibNewDoc.cpp">
       <Filter>SymbolLib\MFCFrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\Camera.cpp">
+      <Filter>SymbolLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

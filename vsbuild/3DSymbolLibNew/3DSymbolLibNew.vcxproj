@@ -165,6 +165,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZMacros.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZTypes.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Bitmap.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\Camera.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\CameraParamSet.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\GLFont.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\GlobalVariable.h" />
@@ -204,6 +205,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNewView.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\AreaSymbolLib\AreaClassification.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\Base\ZStackDumper.cpp" />
+    <ClCompile Include="..\..\src\3DSymboLlib\Camera.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\CameraParamSet.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\GLFont.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\GlobalVariable.cpp" />

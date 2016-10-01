@@ -20,12 +20,11 @@
 #include "Base/ZTypes.h"
 #include "MathUtils/PointPolygonRelationship.h"
 #include "MathUtils/Vec3.h"
-
+#include "Camera.h"
 
 
 // SkyBox Tex
 enum {TP = 0, LF, BK, RT, FR};
-
 // LINE_ADD 添加线   AREA_ADD 添加面
 enum { QUERY_COORDINATE = 0, QUERY_DISTENCE, SELECTLINE, SELECTFLYPATH, LINE_ADD, AREA_ADD}; /*MOUSEMOVE_3DMODEL标识在移动模型，这是select——3dmodel模式下的操作应该暂停*/
 enum { SELECT = 0, MOVE, SCALE };
@@ -224,24 +223,14 @@ class CMy3DSymbolLibNewView : public CView {
     float       GetHeight(float x, float z);        // 获取地面高度
 
 
-    // 相机参数变量
-    CVector3    m_vEyePosition;     // 相机视点坐标
-    CVector3    m_vLook;            // 相机观察点坐标
-    CVector3    m_vUp;              // 相机向中三维矢量
+
+    // 相机
+    Camera camera_;
 
 
-    float       m_viewHeight;       // 视点高度
-    float       m_oldviewHeight;    // 前一视点高度
-
-    CVector3    m_originLook;       // 相机初始视点坐标
-    float       m_viewdegree;       // 观察点与视点之间的俯视角
 
 
-    // 漫游
-    float       rad_xz;             // 角度
-    float       g_Angle;            // 方位角
-    float       g_elev;             // 仰俯角
-    float       gao;
+
 
     // 用于计算相机事参数的CVector3类型变量
     Vec3    m_vStrafe;
