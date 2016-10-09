@@ -123,8 +123,8 @@ END_MESSAGE_MAP()
 
 
 CMy3DSymbolLibNewView::CMy3DSymbolLibNewView() {
-    bIsSelect3DModel = false;
-    bIsMouseMove3DModel = false;
+    bIsSelect3DModel_ = false;
+    bIsMouseMove3DModel_ = false;
 }
 
 CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView() {
@@ -206,17 +206,17 @@ void CMy3DSymbolLibNewView::InitData() {
     m_SCREEN_HEIGHT = pDestDC->GetDeviceCaps(VERTRES);  // 屏幕高度
     m_near = 1;                                         // 观察点与近侧剪裁平面的距离
     m_far = 5000;                                      // 观察点与远侧剪裁平面的距离
-    m_shizxLength = 2;                                 // 查询标志十字线长度
-    m_shuzxHeight = 2;                                 // 查询标志竖直线高度
-    m_QueryLineWidth = 1;                              // 查询标志线的宽度
-    m_QueryColorR = 255;                               // 查询标志线的颜色(红)
-    m_QueryColorG = 0;                                 // 查询标志线的颜色(绿)
-    m_QueryColorB = 0;                                 // 查询标志线的颜色(蓝)
-    m_bSearchDistencePtNums = 0;
+    spaceSearchInfo_.m_shizxLength = 2;                                 // 查询标志十字线长度
+    spaceSearchInfo_.m_shuzxHeight = 2;                                 // 查询标志竖直线高度
+    spaceSearchInfo_.m_QueryLineWidth = 1;                              // 查询标志线的宽度
+    spaceSearchInfo_.m_QueryColorR = 255;                               // 查询标志线的颜色(红)
+    spaceSearchInfo_.m_QueryColorG = 0;                                 // 查询标志线的颜色(绿)
+    spaceSearchInfo_.m_QueryColorB = 0;                                 // 查询标志线的颜色(蓝)
+    spaceSearchInfo_.m_bSearchDistencePtNums = 0;
     // 渲染模式
     m_Drawmode = 3;
     iTerrainType = 0;
-    iSkyBoxLoaded = false;
+    skyBox_.iSkyBoxLoaded_ = false;
     g_isTerrainInit = false;
     // 初始化相机
     camera_.InitCamera();
@@ -239,8 +239,8 @@ void CMy3DSymbolLibNewView::InitData() {
     m_iTreeModelNum = 0;
     m_i3DTreeModelNum = 0;
     m_iCitySymbolModelNum = 0;
-    bIsWeatherLoad = false;
-    IsSearchPoint = false;
+    bIsWeatherLoad_ = false;
+    IsSearchPoint_ = false;
     // 选中模型线框颜色 初始为红，选中时进行 红 白闪烁效果
     wireR = 1;
     wireG = 0;
@@ -252,7 +252,7 @@ void CMy3DSymbolLibNewView::InitData() {
     // 选中的模型的id
     m_selectedModelID = -1;
     m_OperateType = -1;
-    m_QueryType = -1;
+    spaceSearchInfo_.m_QueryType = -1;
     // checkbox,是否通过鼠标设置模型摆放位置
     m_isSetXYByMouse = 0;
     initLines();  // 初始化线路数据
@@ -368,11 +368,11 @@ BOOL CMy3DSymbolLibNewView::SetupPixelFormat() {
         return 1;
     }
     if ((pfd.dwFlags & PFD_STEREO) == 0)
-        bStereoAvailable = FALSE;  // 显卡不支持立体模式
+        bStereoAvailable_ = FALSE;  // 显卡不支持立体模式
     else
-        bStereoAvailable = TRUE;
+        bStereoAvailable_ = TRUE;
     CString stt[5];
-    if (bStereoAvailable == FALSE) {  // 如果显卡不支持立体模式，给出可能的错误原因
+    if (bStereoAvailable_ == FALSE) {  // 如果显卡不支持立体模式，给出可能的错误原因
         stt[0] = "①.图形卡不支持立体缓冲;\n";
         stt[1] = "②.图形卡驱动程序不支持立体缓冲;\n";
         stt[2] = "③.只有在特定的解析度或刷新率设置下 , 才可以支持立体缓冲;\n";
@@ -647,16 +647,16 @@ void CMy3DSymbolLibNewView::DrawScene() {
     }
     SetCamra();
     if (iTerrainType != 0) {
-        if (iSkyBoxLoaded) {
+        if (skyBox_.iSkyBoxLoaded_) {
             DrawSky();
         }
         DrawClock();            // 绘制指北针
         DrawTerrain();
         DrawFlyPath();
         DrawRailwaythesme();    // 绘制铁路
-        if (m_QueryType == QUERY_COORDINATE || m_QueryType == QUERY_DISTENCE || m_QueryType == SELECTLINE
-                || m_QueryType == LINE_ADD  // Line
-                || m_QueryType == AREA_ADD  // Area
+        if (spaceSearchInfo_.m_QueryType == QUERY_COORDINATE || spaceSearchInfo_.m_QueryType == QUERY_DISTENCE || spaceSearchInfo_.m_QueryType == SELECTLINE
+                || spaceSearchInfo_.m_QueryType == LINE_ADD  // Line
+                || spaceSearchInfo_.m_QueryType == AREA_ADD  // Area
            ) {
             DrawSearchPoint();  // 绘制空间查询标志
         }
@@ -700,7 +700,7 @@ void CMy3DSymbolLibNewView::DrawScene() {
         glPopMatrix();
         // ---------------------------------------------------------
         glPushMatrix();
-        if (bIsWeatherLoad) {
+        if (bIsWeatherLoad_) {
             ShowWeather();
         }
         glPopMatrix();
@@ -767,7 +767,7 @@ void CMy3DSymbolLibNewView::CreateSkyBox() {
     int32 z0 = -MAP - length / 2;
     int32 z1 = -MAP + length / 2;
     // 设置BACK纹理参数
-    glBindTexture(GL_TEXTURE_2D, g_texSkyBox[BK]);
+    glBindTexture(GL_TEXTURE_2D, skyBox_.g_texSkyBox[BK]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // 开始绘制
@@ -782,7 +782,7 @@ void CMy3DSymbolLibNewView::CreateSkyBox() {
     glVertex3f(x0, y0, z0);
     glEnd();
     // 设置FRONT部分的纹理参数
-    glBindTexture(GL_TEXTURE_2D, g_texSkyBox[FR]);
+    glBindTexture(GL_TEXTURE_2D, skyBox_.g_texSkyBox[FR]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // 开始绘制
@@ -797,7 +797,7 @@ void CMy3DSymbolLibNewView::CreateSkyBox() {
     glVertex3f(x1, y0, z1);
     glEnd();
     // 设置TOP部分的纹理参数
-    glBindTexture(GL_TEXTURE_2D, g_texSkyBox[TP]);
+    glBindTexture(GL_TEXTURE_2D, skyBox_.g_texSkyBox[TP]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // 开始绘制
@@ -812,7 +812,7 @@ void CMy3DSymbolLibNewView::CreateSkyBox() {
     glVertex3f(x1, y1, z1);
     glEnd();
     // 设置LEFT部分的纹理参数
-    glBindTexture(GL_TEXTURE_2D, g_texSkyBox[LF]);
+    glBindTexture(GL_TEXTURE_2D, skyBox_.g_texSkyBox[LF]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // 开始绘制
@@ -827,7 +827,7 @@ void CMy3DSymbolLibNewView::CreateSkyBox() {
     glVertex3f(x0, y0, z0);
     glEnd();
     // 设置RIGHT部分的纹理参数
-    glBindTexture(GL_TEXTURE_2D, g_texSkyBox[RT]);
+    glBindTexture(GL_TEXTURE_2D, skyBox_.g_texSkyBox[RT]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // 开始绘制
@@ -887,19 +887,19 @@ void CMy3DSymbolLibNewView::OnUpdateDrawmodeTexture(CCmdUI* pCmdUI) {
 /********************************************************/
 void CMy3DSymbolLibNewView::OnSpacequerySet() {
     CSpaceSearchSet dlg;
-    dlg.m_shizxLength = m_shizxLength;      // 查询标志十字线长度
-    dlg.m_shuzxHeight = m_shuzxHeight;      // 查询标志竖直线高度
-    dlg.m_QueryLineWidth = m_QueryLineWidth;  // 查询标志线的宽度
-    dlg.m_QueryColorR = m_QueryColorR;      // 查询标志线的颜色(红)
-    dlg.m_QueryColorG = m_QueryColorG;      // 查询标志线的颜色(绿)
-    dlg.m_QueryColorB = m_QueryColorB;      // 查询标志线的颜色(蓝)
+    dlg.spaceSearchInfo_.m_shizxLength = spaceSearchInfo_.m_shizxLength;      // 查询标志十字线长度
+    dlg.spaceSearchInfo_.m_shuzxHeight = spaceSearchInfo_.m_shuzxHeight;      // 查询标志竖直线高度
+    dlg.spaceSearchInfo_.m_QueryLineWidth = spaceSearchInfo_.m_QueryLineWidth;  // 查询标志线的宽度
+    dlg.spaceSearchInfo_.m_QueryColorR = spaceSearchInfo_.m_QueryColorR;      // 查询标志线的颜色(红)
+    dlg.spaceSearchInfo_.m_QueryColorG = spaceSearchInfo_.m_QueryColorG;      // 查询标志线的颜色(绿)
+    dlg.spaceSearchInfo_.m_QueryColorB = spaceSearchInfo_.m_QueryColorB;      // 查询标志线的颜色(蓝)
     if (dlg.DoModal() == IDOK) {
-        m_shizxLength = dlg.m_shizxLength;              // 得到新设置的查询标志十字线长度
-        m_shuzxHeight = dlg.m_shuzxHeight;              // 得到新设置的查询标志竖直线高度
-        m_QueryLineWidth = dlg.m_QueryLineWidth + 1;    // 得到新设置的查询标志线的宽度，下标从0开始
-        m_QueryColorR = dlg.m_QueryColorR;              // 得到新设置的查询标志线的颜色(红)
-        m_QueryColorG = dlg.m_QueryColorG;              // 得到新设置的查询标志线的颜色(绿)
-        m_QueryColorB = dlg.m_QueryColorB;              // 得到新设置的//查询标志线的颜色(蓝)
+        spaceSearchInfo_.m_shizxLength = dlg.spaceSearchInfo_.m_shizxLength;              // 得到新设置的查询标志十字线长度
+        spaceSearchInfo_.m_shuzxHeight = dlg.spaceSearchInfo_.m_shuzxHeight;              // 得到新设置的查询标志竖直线高度
+        spaceSearchInfo_.m_QueryLineWidth = dlg.spaceSearchInfo_.m_QueryLineWidth + 1;    // 得到新设置的查询标志线的宽度，下标从0开始
+        spaceSearchInfo_.m_QueryColorR = dlg.spaceSearchInfo_.m_QueryColorR;              // 得到新设置的查询标志线的颜色(红)
+        spaceSearchInfo_.m_QueryColorG = dlg.spaceSearchInfo_.m_QueryColorG;              // 得到新设置的查询标志线的颜色(绿)
+        spaceSearchInfo_.m_QueryColorB = dlg.spaceSearchInfo_.m_QueryColorB;              // 得到新设置的//查询标志线的颜色(蓝)
     }
 }
 
@@ -909,7 +909,7 @@ void CMy3DSymbolLibNewView::OnSpacequerySet() {
 /********************************************************/
 void CMy3DSymbolLibNewView::OnQueryCoordinate() {
     // 如果当前已经是查询三维坐标状态，则关闭; 如果当前已经不是查询三维坐标状态，则打开
-    m_QueryType = (QUERY_COORDINATE == m_QueryType) ? -1 : QUERY_COORDINATE;
+    spaceSearchInfo_.m_QueryType = (QUERY_COORDINATE == spaceSearchInfo_.m_QueryType) ? -1 : QUERY_COORDINATE;
     m_OperateType = -1;
 }
 
@@ -918,16 +918,16 @@ void CMy3DSymbolLibNewView::OnQueryCoordinate() {
 /* Function: 设置是否选中状态                             */
 /********************************************************/
 void CMy3DSymbolLibNewView::OnUpdateQueryCoordinate(CCmdUI* pCmdUI) {
-    pCmdUI->SetCheck(m_QueryType == QUERY_COORDINATE);
+    pCmdUI->SetCheck(spaceSearchInfo_.m_QueryType == QUERY_COORDINATE);
 }
 
 void CMy3DSymbolLibNewView::OnQueryDistence() {
     // 如果当前已经是查询空间距离状态，则关闭; 如果当前不是查询空间距离状态，则关闭，则打开
-    m_QueryType = (QUERY_DISTENCE == m_QueryType) ? -1 : QUERY_DISTENCE;
+    spaceSearchInfo_.m_QueryType = (QUERY_DISTENCE == spaceSearchInfo_.m_QueryType) ? -1 : QUERY_DISTENCE;
 }
 
 void CMy3DSymbolLibNewView::OnUpdateQueryDistence(CCmdUI* pCmdUI) {
-    pCmdUI->SetCheck(m_QueryType == QUERY_DISTENCE);
+    pCmdUI->SetCheck(spaceSearchInfo_.m_QueryType == QUERY_DISTENCE);
 }
 
 
@@ -985,20 +985,20 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
                 ::PostMessage(paramSet_modeless_dlg->GetSafeHwnd(), WM_UPDATE_EDIT_XY, 0, 0);
             }
         }
-        if (m_QueryType == QUERY_COORDINATE) {  // 查询三维坐标
+        if (spaceSearchInfo_.m_QueryType == QUERY_COORDINATE) {  // 查询三维坐标
             tt.Format("当前坐标(x,y,z)=(%.3f,%.3f,%.3f)", wx, wy, -wz);
             pt1[0] = wx;
             pt1[1] = wy;
             pt1[2] = wz;                                            // 查询获得的三维大地坐标
             Invalidate(FALSE);
             MessageBox(tt, "三维坐标查询", MB_ICONINFORMATION);      // 给出坐标查询信息
-            IsSearchPoint = true;
-        } else if (m_QueryType == QUERY_DISTENCE) {                 // 查询空间距离
-            if (m_bSearchDistencePtNums >= 2) {                     // 如果选择点数2个，归零
-                m_bSearchDistencePtNums = 0;
+            IsSearchPoint_ = true;
+        } else if (spaceSearchInfo_.m_QueryType == QUERY_DISTENCE) {                 // 查询空间距离
+            if (spaceSearchInfo_.m_bSearchDistencePtNums >= 2) {                     // 如果选择点数2个，归零
+                spaceSearchInfo_.m_bSearchDistencePtNums = 0;
             }
-            m_bSearchDistencePtNums++;                              // 选择点数 + 1
-            if (m_bSearchDistencePtNums == 1) {                     // 如果只选择了1个点
+            spaceSearchInfo_.m_bSearchDistencePtNums++;                              // 选择点数 + 1
+            if (spaceSearchInfo_.m_bSearchDistencePtNums == 1) {                     // 如果只选择了1个点
                 pt1[0] = wx;
                 pt1[1] = wy;
                 pt1[2] = wz;                                        // 将三维点坐标存储到数组 pt1[] 里面
@@ -1012,7 +1012,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             }
             Invalidate(FALSE);
             MessageBox(tt, "三维距离查询", MB_ICONINFORMATION);       // 给出距离查询信息
-        } else if (m_QueryType == LINE_ADD) {                        // 线编辑  添加线
+        } else if (spaceSearchInfo_.m_QueryType == LINE_ADD) {                        // 线编辑  添加线
             ++m_LineEdit_pointNum;                                   // 选择点数 + 1
             if (m_LineEdit_pointNum == 1) {                          // 如果只选择了1个点
                 m_line.pt1 = Point3(wx, wy, wz);
@@ -1026,7 +1026,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
                 line->pt2 = m_line.pt2;
                 m_LinesArray.Add(line);
             }
-        } else if (m_QueryType == AREA_ADD) {   // 选取面符号上的点
+        } else if (spaceSearchInfo_.m_QueryType == AREA_ADD) {   // 选取面符号上的点
             m_Area_pointNum++;                  // 选择点数 + 1
             if (m_Area_pointNum == 1) {
                 m_area4_forScreenRecord.pt1 = Point3(wx, wy, wz);
@@ -1048,7 +1048,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
                 area->deleted = 0;
                 m_Area4_Array.Add(area);
             }
-        } else if (m_QueryType == SELECTLINE) {         // 如果是三维选线设计
+        } else if (spaceSearchInfo_.m_QueryType == SELECTLINE) {         // 如果是三维选线设计
             PCordinate ppt = new Cordinate;
             float tmpH = 0;                             // (x,z)处高程值
             float* pDegree = new float(0);              // 通过函数参数返回夹角的值
@@ -1145,7 +1145,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
                     }
                 }
             }
-        } else if (m_QueryType == SELECTFLYPATH) {  // 如果是设置飞行路径
+        } else if (spaceSearchInfo_.m_QueryType == SELECTFLYPATH) {  // 如果是设置飞行路径
             PCordinate ppt = new Cordinate;
             ppt->x = wx;
             ppt->y = wy;
@@ -1249,7 +1249,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
     } else if (!m_bMouseMoveSelect) {
         MessageBox("鼠标选择点不够精确 , 请精确选择点!");
         LOGGER_INFO << "鼠标选择点不够精确 , 请精确选择点!";
-        m_bSearchDistencePtNums = 0;
+        spaceSearchInfo_.m_bSearchDistencePtNums = 0;
     }
 }
 
@@ -1438,58 +1438,58 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
     glPushAttrib(GL_CURRENT_BIT);                                                       // 保存现有颜色属性
     glDisable(GL_TEXTURE_2D);                                                           // 取消贴图
     glPushMatrix();                                                                     // 压入堆栈
-    if (m_QueryType == QUERY_COORDINATE) {                                              // 三维空间坐标查询
+    if (spaceSearchInfo_.m_QueryType == QUERY_COORDINATE) {                                              // 三维空间坐标查询
         if (pt1[0] != -99999) {
-            glLineWidth(m_QueryLineWidth);                                              // 设置查询标志线宽度
-            glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0);  // 设置查询标志线颜色
+            glLineWidth(spaceSearchInfo_.m_QueryLineWidth);                                              // 设置查询标志线宽度
+            glColor3f(spaceSearchInfo_.m_QueryColorR / 255.0 , spaceSearchInfo_.m_QueryColorG / 255.0 , spaceSearchInfo_.m_QueryColorB / 255.0);  // 设置查询标志线颜色
             // 绘制十字型查询标志线
             glBegin(GL_LINES);
-            glVertex3f(pt1[0] - m_shizxLength , pt1[1] , pt1[2]);
-            glVertex3f(pt1[0] + m_shizxLength , pt1[1] , pt1[2]);
+            glVertex3f(pt1[0] - spaceSearchInfo_.m_shizxLength , pt1[1] , pt1[2]);
+            glVertex3f(pt1[0] + spaceSearchInfo_.m_shizxLength , pt1[1] , pt1[2]);
             glEnd();
             glBegin(GL_LINES);
-            glVertex3f(pt1[0] , pt1[1] , pt1[2] - m_shizxLength);
-            glVertex3f(pt1[0] , pt1[1] , pt1[2] + m_shizxLength);
+            glVertex3f(pt1[0] , pt1[1] , pt1[2] - spaceSearchInfo_.m_shizxLength);
+            glVertex3f(pt1[0] , pt1[1] , pt1[2] + spaceSearchInfo_.m_shizxLength);
             glEnd();
             glBegin(GL_LINES);
             glVertex3f(pt1[0] , pt1[1] , pt1[2]);
-            glVertex3f(pt1[0] , pt1[1] + m_shuzxHeight , pt1[2]);
+            glVertex3f(pt1[0] , pt1[1] + spaceSearchInfo_.m_shuzxHeight , pt1[2]);
             glEnd();
         }
-    } else if (m_QueryType == QUERY_DISTENCE) {     // 三维空间距离查询(在选择两个空间点之后才能够计算空间距离)
-        glLineWidth(m_QueryLineWidth);              // 设置查询标志线宽度
-        glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0);  // 设置查询标志线颜色
+    } else if (spaceSearchInfo_.m_QueryType == QUERY_DISTENCE) {     // 三维空间距离查询(在选择两个空间点之后才能够计算空间距离)
+        glLineWidth(spaceSearchInfo_.m_QueryLineWidth);              // 设置查询标志线宽度
+        glColor3f(spaceSearchInfo_.m_QueryColorR / 255.0 , spaceSearchInfo_.m_QueryColorG / 255.0 , spaceSearchInfo_.m_QueryColorB / 255.0);  // 设置查询标志线颜色
         // 绘制十字型查询标志线
         glBegin(GL_LINES);
-        glVertex3f(pt1[0] - m_shizxLength, pt1[1], pt1[2]);
-        glVertex3f(pt1[0] + m_shizxLength, pt1[1], pt1[2]);
+        glVertex3f(pt1[0] - spaceSearchInfo_.m_shizxLength, pt1[1], pt1[2]);
+        glVertex3f(pt1[0] + spaceSearchInfo_.m_shizxLength, pt1[1], pt1[2]);
         glEnd();
         glBegin(GL_LINES);
-        glVertex3f(pt1[0], pt1[1], pt1[2] - m_shizxLength);
-        glVertex3f(pt1[0], pt1[1], pt1[2] + m_shizxLength);
+        glVertex3f(pt1[0], pt1[1], pt1[2] - spaceSearchInfo_.m_shizxLength);
+        glVertex3f(pt1[0], pt1[1], pt1[2] + spaceSearchInfo_.m_shizxLength);
         glEnd();
         glBegin(GL_LINES);
         glVertex3f(pt1[0], pt1[1] , pt1[2]);
-        glVertex3f(pt1[0], pt1[1] + m_shuzxHeight, pt1[2]);
+        glVertex3f(pt1[0], pt1[1] + spaceSearchInfo_.m_shuzxHeight, pt1[2]);
         glEnd();
         glBegin(GL_LINES);
-        glVertex3f(pt2[0] - m_shizxLength, pt2[1], pt2[2]);
-        glVertex3f(pt2[0] + m_shizxLength, pt2[1], pt2[2]);
+        glVertex3f(pt2[0] - spaceSearchInfo_.m_shizxLength, pt2[1], pt2[2]);
+        glVertex3f(pt2[0] + spaceSearchInfo_.m_shizxLength, pt2[1], pt2[2]);
         glEnd();
         glBegin(GL_LINES);
-        glVertex3f(pt2[0], pt2[1], pt2[2] - m_shizxLength);
-        glVertex3f(pt2[0], pt2[1], pt2[2] + m_shizxLength);
+        glVertex3f(pt2[0], pt2[1], pt2[2] - spaceSearchInfo_.m_shizxLength);
+        glVertex3f(pt2[0], pt2[1], pt2[2] + spaceSearchInfo_.m_shizxLength);
         glEnd();
         glBegin(GL_LINES);
         glVertex3f(pt2[0], pt2[1], pt2[2]);
-        glVertex3f(pt2[0], pt2[1] + m_shuzxHeight, pt2[2]);
+        glVertex3f(pt2[0], pt2[1] + spaceSearchInfo_.m_shuzxHeight, pt2[2]);
         glEnd();
         glBegin(GL_LINES);
         glVertex3f(pt1[0], pt1[1], pt1[2]);
         glVertex3f(pt2[0], pt2[1], pt2[2]);
         glEnd();
         glLineWidth(1.0);
-    } else if (m_QueryType == SELECTLINE || myDesingScheme.PtS_JD.GetSize() > 0) {  // 三维选线状态
+    } else if (spaceSearchInfo_.m_QueryType == SELECTLINE || myDesingScheme.PtS_JD.GetSize() > 0) {  // 三维选线状态
         // 绘制选结过程中的设计交点连线
         m_oldlinePtnums = m_linePtnums;
         glColor3f(0, 0, 1);
@@ -1499,28 +1499,28 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         }
         // 绘制交点标志
         for (int32 j = 0; j <= myDesingScheme.PtS_JD.GetSize() - 1; ++j) {
-            glLineWidth(m_QueryLineWidth + 1);                                                  // 设置标志线宽度
-            glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0);   // 设置标志线颜色
+            glLineWidth(spaceSearchInfo_.m_QueryLineWidth + 1);                                                  // 设置标志线宽度
+            glColor3f(spaceSearchInfo_.m_QueryColorR / 255.0 , spaceSearchInfo_.m_QueryColorG / 255.0 , spaceSearchInfo_.m_QueryColorB / 255.0);   // 设置标志线颜色
             float tmp_x = myDesingScheme.PtS_JD[j]->x;
             float tmp_z = myDesingScheme.PtS_JD[j]->z;
             float tmp_y = GetHeight(tmp_x, tmp_z);
             // 绘制十字型标志线
             glBegin(GL_LINES);
-            glVertex3f(tmp_x - m_shizxLength , tmp_y, tmp_z);
-            glVertex3f(tmp_x + m_shizxLength , tmp_y, tmp_z);
+            glVertex3f(tmp_x - spaceSearchInfo_.m_shizxLength , tmp_y, tmp_z);
+            glVertex3f(tmp_x + spaceSearchInfo_.m_shizxLength , tmp_y, tmp_z);
             glEnd();
             glBegin(GL_LINES);
-            glVertex3f(tmp_x, tmp_y, tmp_z - m_shizxLength);
-            glVertex3f(tmp_x, tmp_y, tmp_z + m_shizxLength);
+            glVertex3f(tmp_x, tmp_y, tmp_z - spaceSearchInfo_.m_shizxLength);
+            glVertex3f(tmp_x, tmp_y, tmp_z + spaceSearchInfo_.m_shizxLength);
             glEnd();
             glBegin(GL_LINES);
             glVertex3f(tmp_x, tmp_y, tmp_z);
-            glVertex3f(tmp_x, tmp_y + m_shuzxHeight, tmp_z);
+            glVertex3f(tmp_x, tmp_y + spaceSearchInfo_.m_shuzxHeight, tmp_z);
             glEnd();
         }
-    } else if (m_QueryType == LINE_ADD) {   // 绘制线段
+    } else if (spaceSearchInfo_.m_QueryType == LINE_ADD) {   // 绘制线段
         glLineWidth(3.0);                   // 设置查询标志线宽度
-        glColor3f(m_QueryColorR / 255.0 , m_QueryColorG / 255.0 , m_QueryColorB / 255.0);  // 设置查询标志线颜色
+        glColor3f(spaceSearchInfo_.m_QueryColorR / 255.0 , spaceSearchInfo_.m_QueryColorG / 255.0 , spaceSearchInfo_.m_QueryColorB / 255.0);  // 设置查询标志线颜色
         for (int32 i = 0; i < m_LinesArray.GetSize(); ++i) {
             glBegin(GL_LINES);
             glVertex3f(m_LinesArray[i]->pt1.x, m_LinesArray[i]->pt1.y, m_LinesArray[i]->pt1.z);
@@ -1528,7 +1528,7 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
             glEnd();
         }
         glLineWidth(1.0);
-    } else if (m_QueryType == AREA_ADD) {   // 绘制4边形
+    } else if (spaceSearchInfo_.m_QueryType == AREA_ADD) {   // 绘制4边形
         glLineWidth(3.0);                   // 设置查询标志线宽度
         glColor3f(0.3, 0.6, 0.5);           // 设置查询标志线颜色
         for (int32 i = 0; i < m_Area4_Array.GetSize(); ++i) {
@@ -1556,27 +1556,27 @@ void CMy3DSymbolLibNewView::OnLButtonDown(UINT nFlags, CPoint point) {
         m_oldMousePos = point;
         ScreenToGL(point);
     }
-    if (m_QueryType == QUERY_COORDINATE) {  // 空间三维坐标查询
+    if (spaceSearchInfo_.m_QueryType == QUERY_COORDINATE) {  // 空间三维坐标查询
         m_bmouseView = false;
         m_oldMousePos = point;
         ScreenToGL(point);
-    } else if (m_QueryType == QUERY_DISTENCE) {     // 空间距离查询
+    } else if (spaceSearchInfo_.m_QueryType == QUERY_DISTENCE) {     // 空间距离查询
         m_bmouseView = false;                       // 关闭鼠标控相机旋转
         m_oldMousePos = point;
         ScreenToGL(point);
-    } else if (m_QueryType == SELECTFLYPATH) {      // 进行飞行路径选择
+    } else if (spaceSearchInfo_.m_QueryType == SELECTFLYPATH) {      // 进行飞行路径选择
         m_bmouseView = false;                       // 关闭鼠标控相机旋转
         m_oldMousePos = point;
         ScreenToGL(point);
-    } else if (m_QueryType == SELECTLINE) {         // 进行三维选线设计
+    } else if (spaceSearchInfo_.m_QueryType == SELECTLINE) {         // 进行三维选线设计
         m_bmouseView = false;                       // 关闭鼠标控相机旋转
         m_oldMousePos = point;
         ScreenToGL(point);
-    } else if (m_QueryType == LINE_ADD) {           // 线编辑   添加线
+    } else if (spaceSearchInfo_.m_QueryType == LINE_ADD) {           // 线编辑   添加线
         m_bmouseView = false;                       // 关闭鼠标控相机旋转
         m_oldMousePos = point;
         ScreenToGL(point);
-    } else if (m_QueryType == AREA_ADD) {           // 添加面符号 4边形
+    } else if (spaceSearchInfo_.m_QueryType == AREA_ADD) {           // 添加面符号 4边形
         m_bmouseView = false;                       // 关闭鼠标控相机旋转
         m_oldMousePos = point;
         ScreenToGL(point);
@@ -1613,8 +1613,8 @@ void CMy3DSymbolLibNewView::OnRButtonDown(UINT nFlags, CPoint point) {
             pPopUp->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
         }
     }
-    if (m_QueryType == QUERY_DISTENCE || m_QueryType == QUERY_COORDINATE) {
-        m_QueryType = -1;  // 关闭三维查询
+    if (spaceSearchInfo_.m_QueryType == QUERY_DISTENCE || spaceSearchInfo_.m_QueryType == QUERY_COORDINATE) {
+        spaceSearchInfo_.m_QueryType = -1;  // 关闭三维查询
     }
     if (m_OperateType == MOVE || m_OperateType == SCALE) {
         // 当在move模式下面进行右键操作，相当于回到移动操作之前的状态进行操作
@@ -1938,7 +1938,7 @@ void CMy3DSymbolLibNewView::OnCameraParamSet() {
 /****************************************************************/
 void CMy3DSymbolLibNewView::OnPathManuinput() {
     m_ShowFlyPath = TRUE;           // 标识是否显示飞行路径
-    m_QueryType = SELECTFLYPATH;    // 进行飞行路径选择
+    spaceSearchInfo_.m_QueryType = SELECTFLYPATH;    // 进行飞行路径选择
     m_FlayPath.RemoveAll();         // 存储进行飞行路径坐标数组清空
 }
 
@@ -2861,7 +2861,7 @@ void CMy3DSymbolLibNewView::On3dsModelLoad() {
         p3d->scale = 1;
         ModelParam dlg;
         dlg.m_strTitle = "3D模型参数初始化";
-        if (m_QueryType == QUERY_COORDINATE && IsSearchPoint) {  // 当前为查询模式,并且已经查询了
+        if (spaceSearchInfo_.m_QueryType == QUERY_COORDINATE && IsSearchPoint_) {  // 当前为查询模式,并且已经查询了
             p3d->posX = pt1[0];
             p3d->posZ = pt1[2];
         }
@@ -2910,11 +2910,11 @@ void CMy3DSymbolLibNewView::Draw3DModel(PModelParamStruct model) {
 /****************************************************************/
 void CMy3DSymbolLibNewView::On3dsModelSelectSet() {
     // TODO(jason): 在此添加命令处理程序代码
-    bIsSelect3DModel = !bIsSelect3DModel;
-    if (bIsSelect3DModel) {
+    bIsSelect3DModel_ = !bIsSelect3DModel_;
+    if (bIsSelect3DModel_) {
         m_OperateType = SELECT;
         m_mouseShape = MOUSE_SHAPE_SLECT;
-        m_QueryType = -1;
+        spaceSearchInfo_.m_QueryType = -1;
     } else {
         m_OperateType = -1;
         // 当不是选择模式时，关闭闪烁定时器
@@ -2953,8 +2953,8 @@ void CMy3DSymbolLibNewView::OnLButtonUp(UINT nFlags, CPoint point) {
 
 void CMy3DSymbolLibNewView::On3dsModelMouseMove() {
     // TODO(jason): 在此添加命令处理程序代码
-    bIsMouseMove3DModel = !bIsMouseMove3DModel;
-    if (bIsMouseMove3DModel) {
+    bIsMouseMove3DModel_ = !bIsMouseMove3DModel_;
+    if (bIsMouseMove3DModel_) {
         m_OperateType = MOVE;
     } else {
         m_OperateType = -1;
@@ -3143,37 +3143,6 @@ void CMy3DSymbolLibNewView::OnCitySymbolLoad() {
 }
 
 
-/****************************************************************/
-/* Function: 显示普通城市符号,不随视线转化而转换角度                */
-/****************************************************************/
-void CMy3DSymbolLibNewView::ShowCitySymbol0(int32 i) {
-    float x, y, z;
-    x = m_CitySymbolModel.GetAt(i)->xPos;
-    z = m_CitySymbolModel.GetAt(i)->zPos;
-    float h = 0.5f;
-    glPushMatrix();
-    y = GetHeight(x, z) + m_CitySymbolModel.GetAt(i)->hPos + h;
-    glTranslatef(x, y, z);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, 0);
-    glBindTexture(GL_TEXTURE_2D, g_citySymbolTex[i]);
-    glBegin(GL_QUADS);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(h, 0, 0.0f);        // 右上点
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(0, 0, 0.0f);        // 右上点
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(0, h, 0.0f);        // 右下点
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(h, h, 0.0f);        // 左下点
-    glEnd();
-    glDisable(GL_ALPHA);
-    glDisable(GL_BLEND);
-    glPopMatrix();
-}
-
 
 /****************************************************************/
 /* Function:显示城市符号                                            */
@@ -3268,7 +3237,7 @@ void CMy3DSymbolLibNewView::OnWeatherLoad() {
         // sprintf(cc, weatherSymbolTexPath);
         _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, weatherSymbolTexPath);
         LoadT8(cc, g_weatherTex);
-        bIsWeatherLoad = true;
+        bIsWeatherLoad_ = true;
         fclose(fp);
     }
 }
@@ -3821,28 +3790,28 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         m_TerrainContourFolder = m_TerrainContourFolder.Left(i);
         // ----------------------------------------------------
         // 天空盒数据SkyBox
-        file.ReadString(m_SkyBoxFolder);
+        file.ReadString(skyBox_.m_SkyBoxFolder);
         // default TOP.BMP LEFT.BMP BACK.BMP RIGHT.BMP FRONT.BMP
-        file.ReadString(m_SkyBoxKindFolder);
+        file.ReadString(skyBox_.m_SkyBoxKindFolder);
         int32 curPos = 0;
         int32 tokenID = 0;
-        CString temp = m_SkyBoxKindFolder.Tokenize(" ", curPos);
+        CString temp = skyBox_.m_SkyBoxKindFolder.Tokenize(" ", curPos);
         CString Skyfolder = temp;
         while (temp != _T("")) {
             tokenID += 1;
-            temp = m_SkyBoxKindFolder.Tokenize(" ", curPos);
+            temp = skyBox_.m_SkyBoxKindFolder.Tokenize(" ", curPos);
             if (tokenID == 1)
-                m_SkyBoxTP = temp;
+                skyBox_.m_SkyBoxTP = temp;
             else if (tokenID == 2)
-                m_SkyBoxLT = temp;
+                skyBox_.m_SkyBoxLT = temp;
             else if (tokenID == 3)
-                m_SkyBoxBK = temp;
+                skyBox_.m_SkyBoxBK = temp;
             else if (tokenID == 4)
-                m_SkyBoxRT = temp;
+                skyBox_.m_SkyBoxRT = temp;
             else if (tokenID == 5)
-                m_SkyBoxFR = temp;
+                skyBox_.m_SkyBoxFR = temp;
         };
-        m_SkyBoxKindFolder = Skyfolder;
+        skyBox_.m_SkyBoxKindFolder = Skyfolder;
         // ----------------------------------------------------
         // 天气数据
         file.ReadString(m_WeatherFolder);
@@ -3851,7 +3820,7 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         char cc[256];
         _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, weatherSymbolTexPath);
         LoadT8(cc, g_weatherTex);
-        bIsWeatherLoad = true;
+        bIsWeatherLoad_ = true;
         // ----------------------------------------------------
         // 符号文件个数
         file.ReadString(m_CurrentSymbolTypeNum);
@@ -3894,12 +3863,12 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         //==========================================================
         // ----------------------------------------------------
         // 开始场景渲染 配置天空盒
-        CString skyBoxPathPre = m_AllDataPath + "\\" + m_SkyBoxFolder + "\\" + m_SkyBoxKindFolder + "\\";
-        g_texSkyBoxFlieNameTP = skyBoxPathPre + m_SkyBoxTP;
-        g_texSkyBoxFlieNameLF = skyBoxPathPre + m_SkyBoxLT;
-        g_texSkyBoxFlieNameBK = skyBoxPathPre + m_SkyBoxBK;
-        g_texSkyBoxFlieNameRT = skyBoxPathPre + m_SkyBoxRT;
-        g_texSkyBoxFlieNameFR = skyBoxPathPre + m_SkyBoxFR;
+        CString skyBoxPathPre = m_AllDataPath + "\\" + skyBox_.m_SkyBoxFolder + "\\" + skyBox_.m_SkyBoxKindFolder + "\\";
+        g_texSkyBoxFlieNameTP = skyBoxPathPre + skyBox_.m_SkyBoxTP;
+        g_texSkyBoxFlieNameLF = skyBoxPathPre + skyBox_.m_SkyBoxLT;
+        g_texSkyBoxFlieNameBK = skyBoxPathPre + skyBox_.m_SkyBoxBK;
+        g_texSkyBoxFlieNameRT = skyBoxPathPre + skyBox_.m_SkyBoxRT;
+        g_texSkyBoxFlieNameFR = skyBoxPathPre + skyBox_.m_SkyBoxFR;
         LoadSkyBoxTex(g_texSkyBoxFlieNameTP, g_texSkyBoxFlieNameLF, g_texSkyBoxFlieNameBK,
                       g_texSkyBoxFlieNameRT, g_texSkyBoxFlieNameFR);
         // 配置地形
@@ -3909,7 +3878,7 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         OnMenuBuild3dlinemodle();
         // 加载区文件
         if (m_AreaSymbolFile != "0") {
-            CString area_Path = /*m_AllDataPath + "\\" + m_SceneConfig + "\\" + */m_AreaSymbolFile;
+            CString area_Path = m_AreaSymbolFile;
             LoadAreaSymbolFile(area_Path);
             exist_area_flag = TRUE;
         }
@@ -4236,21 +4205,21 @@ void CMy3DSymbolLibNewView::LoadSkyBoxTex(CString skyTP, CString skyLF, CString 
     char cc[256];
     // sprintf(cc, skyTP);
     _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, skyTP);
-    LoadT8(cc, g_texSkyBox[TP]);
+    LoadT8(cc, skyBox_.g_texSkyBox[TP]);
     // sprintf(cc, skyLF);
     _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, skyLF);
-    LoadT8(cc, g_texSkyBox[LF]);
+    LoadT8(cc, skyBox_.g_texSkyBox[LF]);
     // sprintf(cc, skyBK);
     _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, skyBK);
-    LoadT8(cc, g_texSkyBox[BK]);
+    LoadT8(cc, skyBox_.g_texSkyBox[BK]);
     // sprintf(cc, skyRT);
     _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, skyRT);
-    LoadT8(cc, g_texSkyBox[RT]);
+    LoadT8(cc, skyBox_.g_texSkyBox[RT]);
     // sprintf(cc, skyFR);
     _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, skyFR);
-    LoadT8(cc, g_texSkyBox[FR]);
+    LoadT8(cc, skyBox_.g_texSkyBox[FR]);
     MakeSkykList();
-    iSkyBoxLoaded = true;
+    skyBox_.iSkyBoxLoaded_ = true;
 }
 
 
@@ -4293,8 +4262,8 @@ void CMy3DSymbolLibNewView::Load3DModel(PModelParamStruct p3d, int32 iLoadModelT
     if (p3d->scale < 0.99) {
         return;
     }
-    float maxtemp = (t3dBox.l > t3dBox.w) ? t3dBox.l : t3dBox.w;
-    float max = (maxtemp > t3dBox.h) ? maxtemp : t3dBox.h;
+    float maxtemp = MATH_MAX(t3dBox.l, t3dBox.w);
+    float max = MATH_MAX(maxtemp, t3dBox.h);
     float scale = 0.0f;
     if (max > 10) {
         scale = 10 / max;
@@ -4360,10 +4329,10 @@ bool CMy3DSymbolLibNewView::ScenSave(CString scenePth) {
         /************************************************************************/
         /*   天空盒数据 SkyBox                                                  */
         /************************************************************************/
-        file.WriteString(m_SkyBoxFolder + "\n");
+        file.WriteString(skyBox_.m_SkyBoxFolder + "\n");
         //    0缺省 TOP.BMP LEFT.BMP BACK.BMP RIGHT.BMP FRONT.BMP
-        file.WriteString(m_SkyBoxKindFolder + " " + m_SkyBoxTP + " " + m_SkyBoxLT + " "\
-                         + m_SkyBoxBK + " " + m_SkyBoxRT + " " + m_SkyBoxFR + "\n");
+        file.WriteString(skyBox_.m_SkyBoxKindFolder + " " + skyBox_.m_SkyBoxTP + " " + skyBox_.m_SkyBoxLT + " "\
+                         + skyBox_.m_SkyBoxBK + " " + skyBox_.m_SkyBoxRT + " " + skyBox_.m_SkyBoxFR + "\n");
         /************************************************************************/
         /*   天气数据                                                           */
         /************************************************************************/
@@ -4749,10 +4718,10 @@ void CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle() {
 /**************************************/
 void CMy3DSymbolLibNewView::OnMenuLinedesign() {
     // TODO(jason): 在此添加命令处理程序代码
-    if (m_QueryType == SELECTLINE)  // 如果当前已经三维选线状态，则关闭
-        m_QueryType = -1;
+    if (spaceSearchInfo_.m_QueryType == SELECTLINE)  // 如果当前已经三维选线状态，则关闭
+        spaceSearchInfo_.m_QueryType = -1;
     else                            // 如果当前不是三维选线状态，则打开
-        m_QueryType = SELECTLINE;
+        spaceSearchInfo_.m_QueryType = SELECTLINE;
 }
 
 /****************************************************/
@@ -4760,7 +4729,7 @@ void CMy3DSymbolLibNewView::OnMenuLinedesign() {
 /****************************************************/
 void CMy3DSymbolLibNewView::OnUpdateMenuLinedesign(CCmdUI* pCmdUI) {
     // TODO(jason): 在此添加命令更新用户界面处理程序代码
-    pCmdUI->SetCheck(m_QueryType == SELECTLINE);
+    pCmdUI->SetCheck(spaceSearchInfo_.m_QueryType == SELECTLINE);
 }
 
 
@@ -5593,10 +5562,10 @@ int32 CMy3DSymbolLibNewView::new_area_file() {
 // 线编辑 ==》 添加线
 void CMy3DSymbolLibNewView::OnMenuLineAdd() {
     // TODO(jason): 在此添加命令处理程序代码
-    if (m_QueryType == LINE_ADD)
-        m_QueryType = -1;
+    if (spaceSearchInfo_.m_QueryType == LINE_ADD)
+        spaceSearchInfo_.m_QueryType = -1;
     else
-        m_QueryType = LINE_ADD;
+        spaceSearchInfo_.m_QueryType = LINE_ADD;
 }
 
 
@@ -5651,12 +5620,12 @@ void CMy3DSymbolLibNewView::OnMenuLineFuse() {
 
 void CMy3DSymbolLibNewView::OnUpdateMenuLineAdd(CCmdUI* pCmdUI) {
     // TODO(jason): 在此添加命令更新用户界面处理程序代码
-    pCmdUI->SetCheck(m_QueryType == LINE_ADD);
+    pCmdUI->SetCheck(spaceSearchInfo_.m_QueryType == LINE_ADD);
 }
 
 
 // 空间点求投影到平面的直线方程系数ABC, Ax+By+C=0
-void CMy3DSymbolLibNewView::getLine2ABC(double* A, double* B, double* C, Point3 p1, Point3 p2) {
+void CMy3DSymbolLibNewView::getLine2ABC(float* A, float* B, float* C, Point3 p1, Point3 p2) {
     // 直线AX+BY+C=0的一般式方程就是：
     //  A = Y2 - Y1
     //  B = X1 - X2
@@ -5707,7 +5676,7 @@ bool comp2(const Point3& p1, const Point3& p2) {
 void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int32 row_index_end,
                                        int32 colNum, int32 col_index_begin, int32 col_index_end, Line3 _line, vector<Point3>& _pv) {  // NOLINT
     // 直线方程系数ABC, Ax+By+C=0
-    double A, B, C;
+    float A, B, C;
     getLine2ABC(&A, &B, &C, _line.pt1, _line.pt2);
     Point3 tmp_point;
     JD_vector1.clear();
@@ -5720,7 +5689,7 @@ void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int3
         for (int32 r = row_index_begin + 1; r < row_index_end; ++r) {
             tmp_point.x = static_cast<float>(r) * MAP_SCALE;  // 平面横坐标
             // 平面纵坐标
-            if (DOUBLE_NUMBER_IS_ZERO(B)) {
+            if (MATH_FLOAT_EQUAL_0(B)) {
                 break;
             } else {
                 tmp_point.z = ((-A) * tmp_point.x - C) / B;
@@ -5732,7 +5701,7 @@ void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int3
         for (int32 r = row_index_begin - 1; r > row_index_end; --r) {
             tmp_point.x = static_cast<float>(r) * MAP_SCALE;  // 平面横坐标
             // 平面纵坐标
-            if (DOUBLE_NUMBER_IS_ZERO(B)) {
+            if (MATH_FLOAT_EQUAL_0(B)) {
                 break;
             } else {
                 tmp_point.z = ((-A) * tmp_point.x - C) / B;
@@ -5747,7 +5716,7 @@ void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int3
         for (int32 c = col_index_begin + 1; c < col_index_end; ++c) {
             tmp_point.z = static_cast<float>(-c) * MAP_SCALE;  // 平面纵坐标
             // 平面横坐标
-            if (DOUBLE_NUMBER_IS_ZERO(A)) {
+            if (MATH_FLOAT_EQUAL_0(A)) {
                 break;
             } else {
                 // Ax+By+C=0
@@ -5761,7 +5730,7 @@ void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int3
         for (int32 c = col_index_begin - 1; c > col_index_end; --c) {
             tmp_point.z = static_cast<float>(-c) * MAP_SCALE;  // 平面纵坐标
             // 平面横坐标
-            if (DOUBLE_NUMBER_IS_ZERO(A)) {
+            if (MATH_FLOAT_EQUAL_0(A)) {
                 break;
             } else {
                 // Ax+By+C=0
@@ -5805,13 +5774,13 @@ void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int3
 
 // 计算2条直线的交点y=x+b, Ax+By+C=0, 返回0表示无交点
 BOOL CMy3DSymbolLibNewView::GetJDFrom2Line(Point3* p/*out*/, double b, double A, double B, double C) {
-    if (DOUBLE_NUMBER_IS_ZERO(A)) {  // A == 0
+    if (MATH_FLOAT_EQUAL_0(A)) {  // A == 0
         p->z = -C / B;
         p->x = p->z - b;
         p->y = GetHeight(p->x, p->z);
     } else {
-        if (!(DOUBLE_NUMBER_IS_ZERO(B))) {
-            if (DOUBLE_NUMBER_IS_ZERO(-A / B - 1)) {
+        if (!(MATH_FLOAT_EQUAL_0(B))) {
+            if (MATH_FLOAT_EQUAL_0(-A / B - 1)) {
                 return 0;  // 2直线平行无交点
             } else {
                 p->x = (-1) * (B * b + C) / (A + B);
@@ -5923,17 +5892,17 @@ void CMy3DSymbolLibNewView::OnMenuAddAreaSlib() {
             }
         }
     } else {
-        if (m_QueryType == AREA_ADD)
-            m_QueryType = -1;
+        if (spaceSearchInfo_.m_QueryType == AREA_ADD)
+            spaceSearchInfo_.m_QueryType = -1;
         else
-            m_QueryType = AREA_ADD;
+            spaceSearchInfo_.m_QueryType = AREA_ADD;
     }
 }
 
 // 更新添加面符号勾选状态
 void CMy3DSymbolLibNewView::OnUpdateMenuAddAreaSlib(CCmdUI* pCmdUI) {
     // TODO(jason): 在此添加命令更新用户界面处理程序代码
-    pCmdUI->SetCheck(m_QueryType == AREA_ADD);
+    pCmdUI->SetCheck(spaceSearchInfo_.m_QueryType == AREA_ADD);
 }
 
 

@@ -12,8 +12,8 @@ static char THIS_FILE[] = __FILE__;
 CSpaceSearchSet::CSpaceSearchSet(CWnd* pParent /*=NULL*/)
     : CDialog(CSpaceSearchSet::IDD, pParent) {
     // {{AFX_DATA_INIT(CSpaceSearchSet)
-    m_shizxLength = 5;
-    m_shuzxHeight = 20;
+    spaceSearchInfo_.m_shizxLength = 5;
+    spaceSearchInfo_.m_shuzxHeight = 20;
     // }}AFX_DATA_INIT
 }
 
@@ -22,8 +22,8 @@ void CSpaceSearchSet::DoDataExchange(CDataExchange* pDX) {
     CDialog::DoDataExchange(pDX);
     // {{AFX_DATA_MAP(CSpaceSearchSet)
     DDX_Control(pDX, IDC_COMBOL_WIDTH, m_combolWidth);
-    DDX_Text(pDX, IDC_EDIT_SHIZXLENGTH, m_shizxLength);
-    DDX_Text(pDX, IDC_EDIT_SHUZXHEIGHT, m_shuzxHeight);
+    DDX_Text(pDX, IDC_EDIT_SHIZXLENGTH, spaceSearchInfo_.m_shizxLength);
+    DDX_Text(pDX, IDC_EDIT_SHUZXHEIGHT, spaceSearchInfo_.m_shuzxHeight);
     // }}AFX_DATA_MAP
     // DDX_Control(pDX, IDC_BUTTON_COLOR, button);
     DDX_Control(pDX, IDC_BUTTON_COLOR, m_ColorPicker);
@@ -46,9 +46,9 @@ void CSpaceSearchSet::OnButtonColor() {
     if (color == -1) {
         color = m_ColorPicker.GetAutomaticColor();
     }
-    m_QueryColorR = GetRValue(color);  // 得到所选择的颜色的红色
-    m_QueryColorG = GetGValue(color);  // 绿
-    m_QueryColorB = GetBValue(color);  // 蓝
+    spaceSearchInfo_.m_QueryColorR = GetRValue(color);  // 得到所选择的颜色的红色
+    spaceSearchInfo_.m_QueryColorG = GetGValue(color);  // 绿
+    spaceSearchInfo_.m_QueryColorB = GetBValue(color);  // 蓝
 }
 
 
@@ -62,17 +62,17 @@ BOOL CSpaceSearchSet::OnInitDialog() {
         m_combolWidth.AddString(tt);
     }
     // 设置下拉框的当前选择项
-    if (m_QueryLineWidth > 0)
-        m_combolWidth.SetCurSel(m_QueryLineWidth - 1);
+    if (spaceSearchInfo_.m_QueryLineWidth > 0)
+        m_combolWidth.SetCurSel(spaceSearchInfo_.m_QueryLineWidth - 1);
     else
         m_combolWidth.SetCurSel(0);
-    m_ColorPicker.EnableAutomaticButton(_T("默认值"), RGB(m_QueryColorR, m_QueryColorG, m_QueryColorB));
+    m_ColorPicker.EnableAutomaticButton(_T("默认值"), RGB(spaceSearchInfo_.m_QueryColorR, spaceSearchInfo_.m_QueryColorG, spaceSearchInfo_.m_QueryColorB));
     m_ColorPicker.EnableOtherButton(_T("其余颜色"));
     m_ColorPicker.SetColor((COLORREF) - 1);
     // m_ColorPicker.SetColumnsNumber(10);
     this->UpdateData(FALSE);  //  数据变量更新
     // 根据标志线颜色创建画刷
-    // pbrush.CreateSolidBrush(RGB(m_QueryColorR,m_QueryColorG,m_QueryColorB));
+    // pbrush.CreateSolidBrush(RGB(spaceSearchInfo_.m_QueryColorR,spaceSearchInfo_.m_QueryColorG,spaceSearchInfo_.m_QueryColorB));
     return TRUE;
 }
 
@@ -92,6 +92,6 @@ void CSpaceSearchSet::OnOK() {
     this->UpdateData();  // 更新数据
     CString tt;
     m_combolWidth.GetLBText(m_combolWidth.GetCurSel(), tt);  // 得到
-    m_QueryLineWidth = m_combolWidth.GetCurSel();  // 得到标志线宽度
+    spaceSearchInfo_.m_QueryLineWidth = m_combolWidth.GetCurSel();  // 得到标志线宽度
     CDialog::OnOK();  // 以IDOK模式关闭退出对话框
 }

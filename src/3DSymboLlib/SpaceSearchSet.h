@@ -14,18 +14,28 @@
 
 // CSpaceSearchSet dialog
 
+typedef struct _SpaceSearchInfo {
+    // 空间查询标志参数
+    int32  m_shizxLength;       // 查询标志的十字线长度
+    int32  m_shuzxHeight;       // 查询标志的竖直线长度
+    int32  m_QueryLineWidth;    // 查询标志线的宽度
+    int32  m_QueryColorR;       // 查询标志线的颜色(红,绿,蓝)
+    int32  m_QueryColorG;
+    int32  m_QueryColorB;
+    BYTE   m_QueryType;        // 标识空间查询类别
+    int32  m_bSearchDistencePtNums;  // 查询时点取的空间点数
+} SpaceSearchInfo;
+
 class CSpaceSearchSet : public CDialog {
   public:
     explicit CSpaceSearchSet(CWnd* pParent = NULL);
 
-    int32 m_QueryColorR, m_QueryColorG, m_QueryColorB;
-    int32 m_QueryLineWidth;
+
     // Dialog Data
     // {{AFX_DATA(CSpaceSearchSet)
     enum { IDD = IDD_DIALOG_SPACESELECTSET };
     CComboBox   m_combolWidth;
-    int32     m_shizxLength;
-    int32     m_shuzxHeight;
+
     // }}AFX_DATA
 
 
@@ -54,6 +64,7 @@ class CSpaceSearchSet : public CDialog {
 
   public:
     CSetColorButton m_ColorPicker;
+    SpaceSearchInfo spaceSearchInfo_;
 };
 
 // {{AFX_INSERT_LOCATION}}

@@ -37,12 +37,6 @@ enum {MOUSE_SHAPE_SLECT = 0, MOUSE_SHAPE_EDIT, MOUSE_SHAPE_ARROW};
 // 新增模型，更新模型
 enum {MODEL_NEW, MODEL_CHANGE};
 
-
-// a 是否为0
-#define DOUBLE_NUMBER_IS_ZERO(a) ( ((a)>-0.000001) && ((a)<0.000001) )
-
-
-
 // 是否存在已经打开的符号文件
 #define EXIST_OPENED_SYMBOLLIB_FILE         1
 #define NOT_EXIST_OPENED_SYMBOLLIB_FILE     0
@@ -95,7 +89,6 @@ typedef struct Curve_R_L0_Struct {
     int32 curve_L0;
 } Curve_R_L0_Struct, *PCurve_R_L0_Struct;
 
-
 // 点
 typedef Vec3 Point3;
 
@@ -124,7 +117,6 @@ typedef struct _Area_4 {
     Point3 pt3;
     Point3 pt4;
 
-
     // 保存所有多边形内部完整的三角形
     vector<Triangle> TrianglesInPolygonVecotr;
     // 保存所有局部三角化了的三角形(三角形只有1个点在多边形内, 且多边形的某条边与三角形有2个交点)
@@ -144,7 +136,19 @@ typedef struct _Area_4 {
     uint16 deleted;
 } Area_4, *PArea_4;
 
+// SkyBox
+typedef struct _SkyBox {
+    CString m_SkyBoxFolder;
+    CString m_SkyBoxKindFolder;
+    CString m_SkyBoxTP;
+    CString m_SkyBoxLT;
+    CString m_SkyBoxRT;
+    CString m_SkyBoxBK;
+    CString m_SkyBoxFR;
 
+    bool iSkyBoxLoaded_;
+    UINT g_texSkyBox[5];
+} SkyBox;
 
 class CMy3DSymbolLibNewView : public CView {
   protected:  // 仅从序列化创建
@@ -188,7 +192,7 @@ class CMy3DSymbolLibNewView : public CView {
     int32 m_SCREEN_HEIGHT;      // 屏幕高度
 
     int32 WinViewX, WinViewY;   // 存储所定义视口的宽度和高度
-    BOOL bStereoAvailable;      // 显卡是否支持立体显示
+    BOOL bStereoAvailable_;      // 显卡是否支持立体显示
 
     GLfloat m_ViewWideNarrow;   // 用来调整gluPerspective()函数定义平截头体的视野的角度(增大或减小)
     double m_near, m_far;       // gluPerspective()函数定义平截头体的近剪裁平面和远剪裁平面的距离
@@ -222,15 +226,8 @@ class CMy3DSymbolLibNewView : public CView {
     void        DrawTerrain();
     float       GetHeight(float x, float z);        // 获取地面高度
 
-
-
     // 相机
     Camera camera_;
-
-
-
-
-
 
     // 用于计算相机事参数的CVector3类型变量
     Vec3    m_vStrafe;
@@ -244,9 +241,11 @@ class CMy3DSymbolLibNewView : public CView {
     void SetDrawMode();
 
     // 天空盒
-    bool         iSkyBoxLoaded;
+    SkyBox skyBox_;
+
+
     afx_msg void OnSkyboxTex();
-    UINT         g_texSkyBox[5];
+
     void         CreateSkyBox();
     void         SkyBoxTexture(UINT textur);
     afx_msg void OnUpdateDrawmodeLine(CCmdUI* pCmdUI);
@@ -258,24 +257,16 @@ class CMy3DSymbolLibNewView : public CView {
     afx_msg void OnSpacequerySet();
 
     // 空间查询标志参数
-    int32     m_shizxLength;      // 查询标志的十字线长度
-    int32     m_shuzxHeight;      // 查询标志的竖直线长度
-    int32     m_QueryLineWidth;   // 查询标志线的宽度
-    int32     m_QueryColorR, m_QueryColorG, m_QueryColorB;  // 查询标志线的颜色(红,绿,蓝)
+    SpaceSearchInfo spaceSearchInfo_;
+    double pt1[3], pt2[3];     // 存储查询的坐标
 
-    BYTE    m_QueryType;        // 标识空间查询类别
     BYTE    m_OperateType;      // 模型操作类型
 
     bool    m_bmouseView;       // 是否起用鼠标控制相机
     POINT   m_oldMousePos;      // 前一鼠标位置
 
-    double  pt1[3], pt2[3];     // 存储查询的坐标
-    int32     m_bSearchDistencePtNums;  // 查询时点取的空间点数
-
-
     int64 m_linePtnums;      // 当前线路方案设计交点总数
     int64 m_oldlinePtnums;   // 原有线路方案设计交点数
-
 
     afx_msg void OnQueryCoordinate();
     afx_msg void OnUpdateQueryCoordinate(CCmdUI* pCmdUI);
@@ -435,11 +426,11 @@ class CMy3DSymbolLibNewView : public CView {
 
     afx_msg void On3dsModelSelectSet();
     afx_msg void OnUpdate3dsModelSelectSet(CCmdUI* pCmdUI);
-    bool bIsSelect3DModel;
+    bool bIsSelect3DModel_;
 
     afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 
-    bool bIsMouseMove3DModel;
+    bool bIsMouseMove3DModel_;
     afx_msg void On3dsModelMouseMove();
     afx_msg void OnUpdate3dsModelMouseMove(CCmdUI* pCmdUI);
     void JudgeModelSelected(PCordinate ppt);        // 判断模型组中哪些模型被选中,进行状态修改
@@ -472,7 +463,6 @@ class CMy3DSymbolLibNewView : public CView {
     int32 m_iCitySymbolModelNum;
     CArray<PModelStruct, PModelStruct> m_CitySymbolModel;   // 存储所有城市符号信息
     UINT g_citySymbolTex[50];                               // 贴图,纹理
-    void ShowCitySymbol0(int32 i);
     void ShowCitySymbol(int32 i);
     void LoadPNG(const char* fileName, GLuint& texture);  // NOLINT
 
@@ -482,10 +472,10 @@ class CMy3DSymbolLibNewView : public CView {
 
     UINT g_weatherTex;          // 贴图,纹理
     void ShowWeather();
-    bool bIsWeatherLoad;
+    bool bIsWeatherLoad_;
 
     // 判断是否进行了坐标查询操作
-    bool IsSearchPoint;
+    bool IsSearchPoint_;
 
     // 将对话框变量赋值给结构体
     void C3DModelParamSetTOPModelStruct(const C3DModelParamSet& model, const PModelStruct& pStruct);
@@ -535,8 +525,7 @@ class CMy3DSymbolLibNewView : public CView {
     CString m_TerrainFolder, m_TerrainTextureFolder, m_TerrainContourFolder;
     // 地形纹理，地形等高图
     CString m_TerrainTexture, m_TerrainContour;
-    // SkyBox
-    CString m_SkyBoxFolder, m_SkyBoxKindFolder, m_SkyBoxTP, m_SkyBoxLT, m_SkyBoxRT, m_SkyBoxBK, m_SkyBoxFR;
+
 
     // 3DS 模型
     CString m_3DModelFolder;
@@ -686,7 +675,7 @@ class CMy3DSymbolLibNewView : public CView {
     void drawLine(Line3 line);
 
     // 空间点求投影到平面的直线方程系数ABC, Ax+By+C=0
-    void getLine2ABC(double* A, double* B, double* C, Point3 p1, Point3 p2);
+    void getLine2ABC(float* A, float* B, float* C, Point3 p1, Point3 p2);
 
 
     int32 m_LineEdit_pointNum;  // 线编辑  选择的点的个数
