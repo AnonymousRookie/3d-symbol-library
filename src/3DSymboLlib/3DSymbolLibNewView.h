@@ -103,7 +103,7 @@ class CMy3DSymbolLibNewView : public CView {
     float       GetHeight(float x, float z);        // 获取地面高度
 
     // 相机
-    Camera camera_;
+    std::shared_ptr<Camera> pCamera_;
 
     // 用于计算相机事参数的CVector3类型变量
     Vec3    m_vStrafe;
@@ -117,8 +117,7 @@ class CMy3DSymbolLibNewView : public CView {
     void SetDrawMode();
 
     // 天空盒
-    SkyBox skyBox_;
-
+    std::shared_ptr<SkyBox> pSkyBox_;
 
     afx_msg void OnSkyboxTex();
 
@@ -579,7 +578,7 @@ class CMy3DSymbolLibNewView : public CView {
 
 
     /************************************************************************/
-    /*        面符号                                                            */
+    /*        面符号                                                        */
     /************************************************************************/
   private:
 

@@ -131,10 +131,11 @@ CMy3DSymbolLibNewView::CMy3DSymbolLibNewView()
       pCitySymbolData_(new CitySymbolData),
       pTreeModelData_(new TreeModelData),
       pT3DModelData_(new T3DModelData),
-      pArea4Symbol_(new Area4Symbol) {}
+      pArea4Symbol_(new Area4Symbol),
+      pCamera_(new Camera),
+      pSkyBox_(new SkyBox) {}
 
-CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView() {
-}
+CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView() {}
 
 BOOL CMy3DSymbolLibNewView::PreCreateWindow(CREATESTRUCT& cs) {  // NOLINT
     //  CREATESTRUCT cs 来修改窗口类或样式
@@ -211,21 +212,25 @@ void CMy3DSymbolLibNewView::InitData() {
     m_SCREEN_WIDTH = pDestDC->GetDeviceCaps(HORZRES);   // 屏幕宽度
     m_SCREEN_HEIGHT = pDestDC->GetDeviceCaps(VERTRES);  // 屏幕高度
     m_near = 1;                                         // 观察点与近侧剪裁平面的距离
-    m_far = 5000;                                      // 观察点与远侧剪裁平面的距离
-    spaceSearchInfo_.m_shizxLength = 2;                                 // 查询标志十字线长度
-    spaceSearchInfo_.m_shuzxHeight = 2;                                 // 查询标志竖直线高度
-    spaceSearchInfo_.m_QueryLineWidth = 1;                              // 查询标志线的宽度
-    spaceSearchInfo_.m_QueryColorR = 255;                               // 查询标志线的颜色(红)
-    spaceSearchInfo_.m_QueryColorG = 0;                                 // 查询标志线的颜色(绿)
-    spaceSearchInfo_.m_QueryColorB = 0;                                 // 查询标志线的颜色(蓝)
-    spaceSearchInfo_.m_bSearchDistencePtNums = 0;
+    m_far = 5000;                                       // 观察点与远侧剪裁平面的距离
+    {
+        spaceSearchInfo_.m_shizxLength = 2;                                 // 查询标志十字线长度
+        spaceSearchInfo_.m_shuzxHeight = 2;                                 // 查询标志竖直线高度
+        spaceSearchInfo_.m_QueryLineWidth = 1;                              // 查询标志线的宽度
+        spaceSearchInfo_.m_QueryColorR = 255;                               // 查询标志线的颜色(红)
+        spaceSearchInfo_.m_QueryColorG = 0;                                 // 查询标志线的颜色(绿)
+        spaceSearchInfo_.m_QueryColorB = 0;                                 // 查询标志线的颜色(蓝)
+        spaceSearchInfo_.m_bSearchDistencePtNums = 0;
+        spaceSearchInfo_.m_QueryType = -1;
+    }
+
     // 渲染模式
     m_Drawmode = 3;
     iTerrainType = 0;
-    skyBox_.iSkyBoxLoaded_ = false;
+    pSkyBox_->iSkyBoxLoaded_ = false;
     g_isTerrainInit = false;
     // 初始化相机
-    camera_.InitCamera();
+    pCamera_->InitCamera();
     derAngleY = 500.0f;
     derAngleZ = 4000.0f;
     derDisScale = 1.5f;
@@ -237,11 +242,13 @@ void CMy3DSymbolLibNewView::InitData() {
     m_FlyPause = FALSE;
     m_fly_start_pause_Enable = FALSE;  // 暂停/开始是否生效
     m_bShowbreviary = TRUE;
-    m_i3DModelNum = 0;
     m_bMouseMove3DModelPtNums = 0;
-    m_iTreeModelNum = 0;
-    m_i3DTreeModelNum = 0;
-    m_iCitySymbolModelNum = 0;
+    {
+        m_i3DModelNum = 0;
+        m_iTreeModelNum = 0;
+        m_i3DTreeModelNum = 0;
+        m_iCitySymbolModelNum = 0;
+    }
     bIsWeatherLoad_ = false;
     IsSearchPoint_ = false;
     // 选中模型线框颜色 初始为红，选中时进行 红 白闪烁效果
@@ -255,26 +262,32 @@ void CMy3DSymbolLibNewView::InitData() {
     // 选中的模型的id
     m_selectedModelID = -1;
     m_OperateType = -1;
-    spaceSearchInfo_.m_QueryType = -1;
     // checkbox,是否通过鼠标设置模型摆放位置
     m_isSetXYByMouse = 0;
     initLines();  // 初始化线路数据
     // 初始化各种点模型所在路径
-    pT3DModelData_->m_3DModelFolder     = "3DModel";
-    pCitySymbolData_->m_CitySymbolFolder  = "CitySymbol";
-    pTreeModelData_->m_TreeModelFolder   = "TreeModel";
+    {
+        pT3DModelData_->m_3DModelFolder      = "3DModel";
+        pCitySymbolData_->m_CitySymbolFolder = "CitySymbol";
+        pTreeModelData_->m_TreeModelFolder   = "TreeModel";
+    }
+
     m_LineEdit_pointNum = 0;
     fuse_Flag = FALSE;
     m_Area_pointNum = 0;
     Area_fuse_Flag = FALSE;
-    // 是否存在已打开的符号文件
-    exist_point_flag = FALSE;
-    exist_line_flag = FALSE;
-    exist_area_flag = FALSE;
+
     m_CurrentProjectName = "";
-    m_PointSymbolFile = "0";
-    m_LineSymbolFile = "0";
-    m_AreaSymbolFile = "0";
+    {
+        // 是否存在已打开的符号文件
+        exist_point_flag = FALSE;
+        exist_line_flag = FALSE;
+        exist_area_flag = FALSE;
+
+        m_PointSymbolFile = "0";
+        m_LineSymbolFile = "0";
+        m_AreaSymbolFile = "0";
+    }
 }
 
 
@@ -636,21 +649,21 @@ void CMy3DSymbolLibNewView::DrawScene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // 刷新背景
     glLoadIdentity();                                    // 重置当前的模型观察矩阵
     SetDrawMode();
-    if (camera_.m_vEyePosition.x <  MAP_SCALE) {
-        camera_.m_vEyePosition.x = MAP_SCALE;
+    if (pCamera_->m_vEyePosition.x <  MAP_SCALE) {
+        pCamera_->m_vEyePosition.x = MAP_SCALE;
     }
-    if (camera_.m_vEyePosition.x > (MAP_W - 2) * MAP_SCALE) {
-        camera_.m_vEyePosition.x = (MAP_W - 2) * MAP_SCALE;
+    if (pCamera_->m_vEyePosition.x > (MAP_W - 2) * MAP_SCALE) {
+        pCamera_->m_vEyePosition.x = (MAP_W - 2) * MAP_SCALE;
     }
-    if (camera_.m_vEyePosition.z < -(MAP_W - 2) * MAP_SCALE) {
-        camera_.m_vEyePosition.z = -(MAP_W - 2) * MAP_SCALE;
+    if (pCamera_->m_vEyePosition.z < -(MAP_W - 2) * MAP_SCALE) {
+        pCamera_->m_vEyePosition.z = -(MAP_W - 2) * MAP_SCALE;
     }
-    if (camera_.m_vEyePosition.z > -MAP_SCALE) {
-        camera_.m_vEyePosition.z = -MAP_SCALE;
+    if (pCamera_->m_vEyePosition.z > -MAP_SCALE) {
+        pCamera_->m_vEyePosition.z = -MAP_SCALE;
     }
     SetCamra();
     if (iTerrainType != 0) {
-        if (skyBox_.iSkyBoxLoaded_) {
+        if (pSkyBox_->iSkyBoxLoaded_) {
             DrawSky();
         }
         DrawClock();            // 绘制指北针
@@ -723,7 +736,7 @@ void CMy3DSymbolLibNewView::DrawScene() {
             TextFlyHelp();
         }
     }
-    GLfloat light_position[] = {camera_.m_vEyePosition.x, 300, camera_.m_vEyePosition.z - 100};
+    GLfloat light_position[] = {pCamera_->m_vEyePosition.x, 300, pCamera_->m_vEyePosition.z - 100};
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     GLfloat lightAmbient[] = {0.5, 0.5, 0.5, 1.0};
     GLfloat lightDiffuse[]   = {1.0, 1.0, 1.0, 1.0};
@@ -770,7 +783,7 @@ void CMy3DSymbolLibNewView::CreateSkyBox() {
     int32 z0 = -MAP - length / 2;
     int32 z1 = -MAP + length / 2;
     // 设置BACK纹理参数
-    glBindTexture(GL_TEXTURE_2D, skyBox_.g_texSkyBox[BK]);
+    glBindTexture(GL_TEXTURE_2D, pSkyBox_->g_texSkyBox[BK]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // 开始绘制
@@ -785,7 +798,7 @@ void CMy3DSymbolLibNewView::CreateSkyBox() {
     glVertex3f(x0, y0, z0);
     glEnd();
     // 设置FRONT部分的纹理参数
-    glBindTexture(GL_TEXTURE_2D, skyBox_.g_texSkyBox[FR]);
+    glBindTexture(GL_TEXTURE_2D, pSkyBox_->g_texSkyBox[FR]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // 开始绘制
@@ -800,7 +813,7 @@ void CMy3DSymbolLibNewView::CreateSkyBox() {
     glVertex3f(x1, y0, z1);
     glEnd();
     // 设置TOP部分的纹理参数
-    glBindTexture(GL_TEXTURE_2D, skyBox_.g_texSkyBox[TP]);
+    glBindTexture(GL_TEXTURE_2D, pSkyBox_->g_texSkyBox[TP]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // 开始绘制
@@ -815,7 +828,7 @@ void CMy3DSymbolLibNewView::CreateSkyBox() {
     glVertex3f(x1, y1, z1);
     glEnd();
     // 设置LEFT部分的纹理参数
-    glBindTexture(GL_TEXTURE_2D, skyBox_.g_texSkyBox[LF]);
+    glBindTexture(GL_TEXTURE_2D, pSkyBox_->g_texSkyBox[LF]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // 开始绘制
@@ -830,7 +843,7 @@ void CMy3DSymbolLibNewView::CreateSkyBox() {
     glVertex3f(x0, y0, z0);
     glEnd();
     // 设置RIGHT部分的纹理参数
-    glBindTexture(GL_TEXTURE_2D, skyBox_.g_texSkyBox[RT]);
+    glBindTexture(GL_TEXTURE_2D, pSkyBox_->g_texSkyBox[RT]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // 开始绘制
@@ -1639,12 +1652,12 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
     switch (nChar) {            // 根据按键字符来进行相应设置
         case VK_LEFT:
             m_keynumber = 3;
-            camera_.m_xTrans -= camera_.m_Step_X;   // 在X方向上移动的距离累计
+            pCamera_->m_xTrans -= pCamera_->m_Step_X;   // 在X方向上移动的距离累计
             Invalidate(FALSE);      // 刷新三维场景
             break;
         case VK_RIGHT:
             m_keynumber = 4;
-            camera_.m_xTrans += camera_.m_Step_X;   // 在X方向上移动的距离累计
+            pCamera_->m_xTrans += pCamera_->m_Step_X;   // 在X方向上移动的距离累计
             Invalidate(FALSE);      // 刷新三维场景
             break;
         case VK_UP:
@@ -1657,7 +1670,7 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                 }
             } else {
                 // 否则就拉近视线
-                camera_.m_zTrans -= camera_.m_Step_Z;   // 在Z方向上移动的距离累计
+                pCamera_->m_zTrans -= pCamera_->m_Step_Z;   // 在Z方向上移动的距离累计
                 m_keynumber = 1;
             }
             Invalidate(FALSE);          // 刷新三维场景
@@ -1671,7 +1684,7 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                     }
                 }
             } else {
-                camera_.m_zTrans += camera_.m_Step_Z;   // 在Z方向上移动的距离累计
+                pCamera_->m_zTrans += pCamera_->m_Step_Z;   // 在Z方向上移动的距离累计
                 m_keynumber = 2;
             }
             Invalidate(FALSE);          // 刷新三维场景
@@ -1713,14 +1726,14 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
             break;
         case 'H':
         case VK_PRIOR:  // PgUp   俯仰角
-            vAxis = CVector3::CrossProduct(camera_.m_vLook - camera_.m_vEyePosition, camera_.m_vUp);      // 叉积计算
+            vAxis = CVector3::CrossProduct(pCamera_->m_vLook - pCamera_->m_vEyePosition, pCamera_->m_vUp);      // 叉积计算
             vAxis = vAxis.getNormalized();                                   // vAxis归一化
             RotateView(20 / derAngleZ, vAxis.x, vAxis.y, vAxis.z);      // 通过鼠标控制相机的旋转(旋转视角)
             OnDraw(GetDC());
             break;
         case 'N':
         case VK_NEXT:  // PgDn   俯仰角
-            vAxis = CVector3::CrossProduct(camera_.m_vLook - camera_.m_vEyePosition, camera_.m_vUp);      // 叉积计算
+            vAxis = CVector3::CrossProduct(pCamera_->m_vLook - pCamera_->m_vEyePosition, pCamera_->m_vUp);      // 叉积计算
             vAxis = vAxis.getNormalized();                                      // vAxis归一化
             RotateView(-20 / derAngleZ, vAxis.x, vAxis.y, vAxis.z);     // 通过鼠标控制相机的旋转(旋转视角)
             OnDraw(GetDC());
@@ -1735,13 +1748,13 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
             OnDraw(GetDC());
             break;
         case VK_HOME:  // 顺时针旋转
-            vAxis = CVector3::CrossProduct(camera_.m_vLook - camera_.m_vEyePosition, camera_.m_vUp);      // 叉积计算
+            vAxis = CVector3::CrossProduct(pCamera_->m_vLook - pCamera_->m_vEyePosition, pCamera_->m_vUp);      // 叉积计算
             vAxis = vAxis.getNormalized();                                   // vAxis归一化
             RotateView(-50 / derAngleZ,  0, 1, 0);      // 通过鼠标控制相机的旋转(旋转视角)
             OnDraw(GetDC());
             break;
         case VK_END:  // 逆时针旋转
-            vAxis = CVector3::CrossProduct(camera_.m_vLook - camera_.m_vEyePosition, camera_.m_vUp);      // 叉积计算
+            vAxis = CVector3::CrossProduct(pCamera_->m_vLook - pCamera_->m_vEyePosition, pCamera_->m_vUp);      // 叉积计算
             vAxis = vAxis.getNormalized();                                   // vAxis归一化
             RotateView(50 / derAngleZ,  0, 1, 0);   // 通过鼠标控制相机的旋转(旋转视角)
             OnDraw(GetDC());
@@ -1757,12 +1770,12 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 /* Function: 根据鼠标和键盘实现三维场景相机的移动和旋转控制         */
 /****************************************************************/
 void CMy3DSymbolLibNewView::CamraUpdate() {
-    CVector3 vCross = CVector3::CrossProduct(camera_.m_vLook - camera_.m_vEyePosition, camera_.m_vUp);  // 叉积计算
+    CVector3 vCross = CVector3::CrossProduct(pCamera_->m_vLook - pCamera_->m_vEyePosition, pCamera_->m_vUp);  // 叉积计算
     m_vStrafe = vCross.getNormalized();                                  // vCross归一化
     SetViewByMouse();                                               // 通过鼠标实现相机控制
     CheckForMovement();                                             // 通过键盘实现相机控制
-    camera_.m_vEyePosition.y += (camera_.m_viewHeight - camera_.m_oldviewHeight);           // 新的相机视点y坐标
-    camera_.m_oldviewHeight = camera_.m_viewHeight;                                 // 记录当前相机视点高度
+    pCamera_->m_vEyePosition.y += (pCamera_->m_viewHeight - pCamera_->m_oldviewHeight);           // 新的相机视点y坐标
+    pCamera_->m_oldviewHeight = pCamera_->m_viewHeight;                                 // 记录当前相机视点高度
 }
 
 
@@ -1770,10 +1783,10 @@ void CMy3DSymbolLibNewView::CamraUpdate() {
 /* Function: 在X轴方向上移动时设置相机观察点和视点坐标              */
 /****************************************************************/
 void CMy3DSymbolLibNewView::MoveCameraX(float speed) {
-    camera_.m_vEyePosition.x += m_vStrafe.x * speed;                        // 相机视点x新坐标
-    camera_.m_vEyePosition.z += m_vStrafe.z * speed;                        // 相机视点z新坐标
-    camera_.m_vLook.x += m_vStrafe.x * speed;                               // 相机观察点x新坐标
-    camera_.m_vLook.z += m_vStrafe.z * speed;                               // 相机观察点z新坐标
+    pCamera_->m_vEyePosition.x += m_vStrafe.x * speed;                        // 相机视点x新坐标
+    pCamera_->m_vEyePosition.z += m_vStrafe.z * speed;                        // 相机视点z新坐标
+    pCamera_->m_vLook.x += m_vStrafe.x * speed;                               // 相机观察点x新坐标
+    pCamera_->m_vLook.z += m_vStrafe.z * speed;                               // 相机观察点z新坐标
 }
 
 
@@ -1781,12 +1794,12 @@ void CMy3DSymbolLibNewView::MoveCameraX(float speed) {
 /* Function: 在Z轴方向上移动时设置相机观察点和视点坐标              */
 /****************************************************************/
 void CMy3DSymbolLibNewView::MoveCameraZ(float speed) {
-    CVector3 vVector = camera_.m_vLook - camera_.m_vEyePosition;                        // 相机视点与观察点三维坐标差值
+    CVector3 vVector = pCamera_->m_vLook - pCamera_->m_vEyePosition;                        // 相机视点与观察点三维坐标差值
     vVector = vVector.getNormalized();                              // 相机视点与观察点三维坐标差值归一化
-    camera_.m_vEyePosition.x += vVector.x * speed;                          // 相机视点x新坐标
-    camera_.m_vEyePosition.z += vVector.z * speed;                          // 相机视点z新坐标
-    camera_.m_vLook.x += vVector.x * speed;                                 // 相机观察点x新坐标
-    camera_.m_vLook.z += vVector.z * speed;                                 // 相机观察点z新坐标
+    pCamera_->m_vEyePosition.x += vVector.x * speed;                          // 相机视点x新坐标
+    pCamera_->m_vEyePosition.z += vVector.z * speed;                          // 相机视点z新坐标
+    pCamera_->m_vLook.x += vVector.x * speed;                                 // 相机观察点x新坐标
+    pCamera_->m_vLook.z += vVector.z * speed;                                 // 相机观察点z新坐标
 }
 
 
@@ -1795,13 +1808,13 @@ void CMy3DSymbolLibNewView::MoveCameraZ(float speed) {
 /****************************************************************/
 void CMy3DSymbolLibNewView::CheckForMovement() {
     if (m_keynumber == 1) {                                         // ↑上箭头按键，向场景外移动(Z轴正方向)
-        MoveCameraZ(camera_.m_Step_Z);                                      // 在Z轴方向上移动时设置相机观察点和视点坐标
+        MoveCameraZ(pCamera_->m_Step_Z);                                      // 在Z轴方向上移动时设置相机观察点和视点坐标
     } else if (m_keynumber == 2) {                                  // ↓下箭头按键，向场景外移动(Z轴负方向)
-        MoveCameraZ(-camera_.m_Step_Z);                                     // 在Z轴方向上移动时设置相机观察点和视点坐标
+        MoveCameraZ(-pCamera_->m_Step_Z);                                     // 在Z轴方向上移动时设置相机观察点和视点坐标
     } else if (m_keynumber == 3) {                                  // ←左箭头按键，向左方向移动场景(X轴负方向)
-        MoveCameraX(-camera_.m_Step_X);                                     // 在X轴方向上移动时设置相机观察点和视点坐标
+        MoveCameraX(-pCamera_->m_Step_X);                                     // 在X轴方向上移动时设置相机观察点和视点坐标
     } else if (m_keynumber == 4) {                                  // →右箭头按键，向右方向移动场景(X轴正方向)
-        MoveCameraX(camera_.m_Step_X);                                      // 在X轴方向上移动时设置相机观察点和视点坐标
+        MoveCameraX(pCamera_->m_Step_X);                                      // 在X轴方向上移动时设置相机观察点和视点坐标
     }
 }
 
@@ -1810,17 +1823,17 @@ void CMy3DSymbolLibNewView::CheckForMovement() {
 /* Function: 设置相机                                           */
 /****************************************************************/
 void CMy3DSymbolLibNewView::SetCamra() {
-    gluLookAt(camera_.m_vEyePosition.x, camera_.m_vEyePosition.y, camera_.m_vEyePosition.z,     // 视点
-              camera_.m_vLook.x, camera_.m_vLook.y, camera_.m_vLook.z,                          // 目标点
-              camera_.m_vUp.x, camera_.m_vUp.y, camera_.m_vUp.z);                               // 视点方向
+    gluLookAt(pCamera_->m_vEyePosition.x, pCamera_->m_vEyePosition.y, pCamera_->m_vEyePosition.z,     // 视点
+              pCamera_->m_vLook.x, pCamera_->m_vLook.y, pCamera_->m_vLook.z,                          // 目标点
+              pCamera_->m_vUp.x, pCamera_->m_vUp.y, pCamera_->m_vUp.z);                               // 视点方向
     CMainFrame* pMainFrame = reinterpret_cast<CMainFrame*>(GetParent());
     CString strText;
-    float dy = camera_.m_vEyePosition.y - camera_.m_vLook.y;
-    float dz = fabs(camera_.m_vEyePosition.z - camera_.m_vLook.z);
+    float dy = pCamera_->m_vEyePosition.y - pCamera_->m_vLook.y;
+    float dz = fabs(pCamera_->m_vEyePosition.z - pCamera_->m_vLook.z);
     if (fabs(dz) <= 0.000001) {
-        camera_.m_viewdegree = 0;
+        pCamera_->m_viewdegree = 0;
     } else {
-        camera_.m_viewdegree = HDANGLE * atan(dy / dz);
+        pCamera_->m_viewdegree = HDANGLE * atan(dy / dz);
     }
     // 在状态栏指示器上显示相关信息
     static DWORD dwStart = 0;
@@ -1833,11 +1846,11 @@ void CMy3DSymbolLibNewView::SetCamra() {
         dwStart = dwNow;
         nCount = 0;
     }
-    strText.Format("【俯视角】A=%.2f" , camera_.m_viewdegree);
+    strText.Format("【俯视角】A=%.2f" , pCamera_->m_viewdegree);
     pMainFrame->Set_BarText(1 , strText);
-    strText.Format("视点坐标: X=%.3f , Y=%.3f , Z=%.3f" , camera_.m_vEyePosition.x  , camera_.m_vEyePosition.y , fabs(camera_.m_vEyePosition.z));
+    strText.Format("视点坐标: X=%.3f , Y=%.3f , Z=%.3f" , pCamera_->m_vEyePosition.x  , pCamera_->m_vEyePosition.y , fabs(pCamera_->m_vEyePosition.z));
     pMainFrame->Set_BarText(2 , strText);
-    strText.Format("观察点坐标: X=%.3f , Y=%.3f , Z=%.3f" , camera_.m_vLook.x  , camera_.m_vLook.y , fabs(camera_.m_vLook.z));
+    strText.Format("观察点坐标: X=%.3f , Y=%.3f , Z=%.3f" , pCamera_->m_vLook.x  , pCamera_->m_vLook.y , fabs(pCamera_->m_vLook.z));
     pMainFrame->Set_BarText(3 , strText);
 }
 
@@ -1892,7 +1905,7 @@ void CMy3DSymbolLibNewView::SetViewByMouse() {
     angleZ = static_cast<float>((m_oldMousePos.y - mousePos.y)) / derAngleZ;
     currentRotX -= angleZ;
     if (angleY >= -360 && angleY <= 360 && angleZ >= -360 && angleY <= 360) {
-        CVector3 vAxis = CVector3::CrossProduct(camera_.m_vLook - camera_.m_vEyePosition, camera_.m_vUp);     // 叉积计算
+        CVector3 vAxis = CVector3::CrossProduct(pCamera_->m_vLook - pCamera_->m_vEyePosition, pCamera_->m_vUp);     // 叉积计算
         vAxis = vAxis.getNormalized();                                           // vAxis归一化
         RotateView(angleZ, vAxis.x, vAxis.y, vAxis.z);      // 通过鼠标控制相机的旋转(旋转视角)
         RotateView(angleY, 0, 1, 0);                        // 通过鼠标控制相机的旋转(旋转视角)
@@ -1907,7 +1920,7 @@ void CMy3DSymbolLibNewView::SetViewByMouse() {
 /****************************************************************/
 void CMy3DSymbolLibNewView::RotateView(float angle, float x, float y, float z) {
     CVector3 vNewView;
-    CVector3 vView = camera_.m_vLook - camera_.m_vEyePosition;          // 相机视点与观察点三维坐标差值
+    CVector3 vView = pCamera_->m_vLook - pCamera_->m_vEyePosition;          // 相机视点与观察点三维坐标差值
     float cosTheta = static_cast<float>(cos(angle));    // 得到旋转视角的cos函数值
     float sinTheta = static_cast<float>(sin(angle));    // 得到旋转视角的sin函数值
     vNewView.x  = (cosTheta + (1 - cosTheta) * x * x)       * vView.x;
@@ -1919,7 +1932,7 @@ void CMy3DSymbolLibNewView::RotateView(float angle, float x, float y, float z) {
     vNewView.z  = ((1 - cosTheta) * x * z - y * sinTheta)   * vView.x;
     vNewView.z += ((1 - cosTheta) * y * z + x * sinTheta)   * vView.y;
     vNewView.z += (cosTheta + (1 - cosTheta) * z * z)       * vView.z;
-    camera_.m_vLook = camera_.m_vEyePosition + vNewView;                // 得到旋转后的相机视点坐标
+    pCamera_->m_vLook = pCamera_->m_vEyePosition + vNewView;                // 得到旋转后的相机视点坐标
     GetNorthPtangle();
 }
 
@@ -2235,24 +2248,24 @@ void CMy3DSymbolLibNewView::GetCameraCorrdinate(double x1, double y1, double z1,
     if (m_FlyHeightType == GIS_FLY_STATICHEIGHT) {          // 固定高度飞行方式
         if (m_StaticHeight < 85)
             m_StaticHeight = 85;
-        camera_.m_vLook.x = x2;  // 观察点x坐标
-        camera_.m_vLook.y = m_StaticHeight;  // 观察点y坐标=y2+m_StaticHeight固定高度值
-        camera_.m_vLook.z = z2;  // 观察点z坐标
-        camera_.m_vEyePosition.x = x1;  // 视点x坐标
-        camera_.m_vEyePosition.y = camera_.m_vLook.y;  // 视点y坐标=观察点y坐标
-        camera_.m_vEyePosition.z = z1;  // 视点z坐标
+        pCamera_->m_vLook.x = x2;  // 观察点x坐标
+        pCamera_->m_vLook.y = m_StaticHeight;  // 观察点y坐标=y2+m_StaticHeight固定高度值
+        pCamera_->m_vLook.z = z2;  // 观察点z坐标
+        pCamera_->m_vEyePosition.x = x1;  // 视点x坐标
+        pCamera_->m_vEyePosition.y = pCamera_->m_vLook.y;  // 视点y坐标=观察点y坐标
+        pCamera_->m_vEyePosition.z = z1;  // 视点z坐标
     } else if (m_FlyHeightType == GIS_FLY_PATHHEIGHT) {  // 按相对高度(即沿路径)漫游时，需计算一个基本高度
         // 沿相对高度漫游
-        camera_.m_vLook.x = x2;                                     // 观察点x坐标
-        camera_.m_vLook.y = y2 + m_StaticHeight + 1;                    // 观察点y坐标=y2+m_StaticHeight固定高度值
-        camera_.m_vLook.z = z2;                                     // 观察点z坐标
+        pCamera_->m_vLook.x = x2;                                     // 观察点x坐标
+        pCamera_->m_vLook.y = y2 + m_StaticHeight + 1;                    // 观察点y坐标=y2+m_StaticHeight固定高度值
+        pCamera_->m_vLook.z = z2;                                     // 观察点z坐标
         // 求二点之间距离
         float distance = sqrt((x2 - x1) * (x2 - x1) + (z2 - z1) * (z2 - z1));
         // 根据倾角计算高度差
         float dh = distance * tan(MATH_DEG_TO_RAD(m_ViewUpDown));
-        camera_.m_vEyePosition.x = x1;                              // 视点x坐标
-        camera_.m_vEyePosition.y = camera_.m_vLook.y + dh;                  // 视点y坐标=观察点y坐标+高差
-        camera_.m_vEyePosition.z = z1;                              // 视点z坐标
+        pCamera_->m_vEyePosition.x = x1;                              // 视点x坐标
+        pCamera_->m_vEyePosition.y = pCamera_->m_vLook.y + dh;                  // 视点y坐标=观察点y坐标+高差
+        pCamera_->m_vEyePosition.z = z1;                              // 视点z坐标
     }
 }
 
@@ -2507,8 +2520,8 @@ void CMy3DSymbolLibNewView::SetClockProjectionNavigate() {
 /****************************************************************/
 void CMy3DSymbolLibNewView::GetNorthPtangle() {
     float dx, dz, ar;
-    dx = camera_.m_vEyePosition.x - camera_.m_vLook.x;              // 相机视点与观察点x坐标之差
-    dz = camera_.m_vEyePosition.z - camera_.m_vLook.z;              // 相机视点与观察点z坐标之差
+    dx = pCamera_->m_vEyePosition.x - pCamera_->m_vLook.x;              // 相机视点与观察点x坐标之差
+    dz = pCamera_->m_vEyePosition.z - pCamera_->m_vLook.z;              // 相机视点与观察点z坐标之差
     if (dx == 0) {                                  // 如果dx==0
         if (dz >= 0)                                // 如果dz>=0
             pNClock_->m_NorthPtangle = 90;                    // 指北针初始指向角度=90，指向屏幕里面（Z轴负方向）
@@ -3567,28 +3580,28 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         pTerrainData_->m_TerrainContourFolder = pTerrainData_->m_TerrainContourFolder.Left(i);
         // ----------------------------------------------------
         // 天空盒数据SkyBox
-        file.ReadString(skyBox_.m_SkyBoxFolder);
+        file.ReadString(pSkyBox_->m_SkyBoxFolder);
         // default TOP.BMP LEFT.BMP BACK.BMP RIGHT.BMP FRONT.BMP
-        file.ReadString(skyBox_.m_SkyBoxKindFolder);
+        file.ReadString(pSkyBox_->m_SkyBoxKindFolder);
         int32 curPos = 0;
         int32 tokenID = 0;
-        CString temp = skyBox_.m_SkyBoxKindFolder.Tokenize(" ", curPos);
+        CString temp = pSkyBox_->m_SkyBoxKindFolder.Tokenize(" ", curPos);
         CString Skyfolder = temp;
         while (temp != _T("")) {
             tokenID += 1;
-            temp = skyBox_.m_SkyBoxKindFolder.Tokenize(" ", curPos);
+            temp = pSkyBox_->m_SkyBoxKindFolder.Tokenize(" ", curPos);
             if (tokenID == 1)
-                skyBox_.m_SkyBoxTP = temp;
+                pSkyBox_->m_SkyBoxTP = temp;
             else if (tokenID == 2)
-                skyBox_.m_SkyBoxLT = temp;
+                pSkyBox_->m_SkyBoxLT = temp;
             else if (tokenID == 3)
-                skyBox_.m_SkyBoxBK = temp;
+                pSkyBox_->m_SkyBoxBK = temp;
             else if (tokenID == 4)
-                skyBox_.m_SkyBoxRT = temp;
+                pSkyBox_->m_SkyBoxRT = temp;
             else if (tokenID == 5)
-                skyBox_.m_SkyBoxFR = temp;
+                pSkyBox_->m_SkyBoxFR = temp;
         };
-        skyBox_.m_SkyBoxKindFolder = Skyfolder;
+        pSkyBox_->m_SkyBoxKindFolder = Skyfolder;
         // ----------------------------------------------------
         // 天气数据
         file.ReadString(m_WeatherFolder);
@@ -3640,12 +3653,12 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         //==========================================================
         // ----------------------------------------------------
         // 开始场景渲染 配置天空盒
-        CString skyBoxPathPre = m_AllDataPath + "\\" + skyBox_.m_SkyBoxFolder + "\\" + skyBox_.m_SkyBoxKindFolder + "\\";
-        g_texSkyBoxFlieNameTP = skyBoxPathPre + skyBox_.m_SkyBoxTP;
-        g_texSkyBoxFlieNameLF = skyBoxPathPre + skyBox_.m_SkyBoxLT;
-        g_texSkyBoxFlieNameBK = skyBoxPathPre + skyBox_.m_SkyBoxBK;
-        g_texSkyBoxFlieNameRT = skyBoxPathPre + skyBox_.m_SkyBoxRT;
-        g_texSkyBoxFlieNameFR = skyBoxPathPre + skyBox_.m_SkyBoxFR;
+        CString skyBoxPathPre = m_AllDataPath + "\\" + pSkyBox_->m_SkyBoxFolder + "\\" + pSkyBox_->m_SkyBoxKindFolder + "\\";
+        g_texSkyBoxFlieNameTP = skyBoxPathPre + pSkyBox_->m_SkyBoxTP;
+        g_texSkyBoxFlieNameLF = skyBoxPathPre + pSkyBox_->m_SkyBoxLT;
+        g_texSkyBoxFlieNameBK = skyBoxPathPre + pSkyBox_->m_SkyBoxBK;
+        g_texSkyBoxFlieNameRT = skyBoxPathPre + pSkyBox_->m_SkyBoxRT;
+        g_texSkyBoxFlieNameFR = skyBoxPathPre + pSkyBox_->m_SkyBoxFR;
         LoadSkyBoxTex(g_texSkyBoxFlieNameTP, g_texSkyBoxFlieNameLF, g_texSkyBoxFlieNameBK,
                       g_texSkyBoxFlieNameRT, g_texSkyBoxFlieNameFR);
         // 配置地形
@@ -3982,21 +3995,21 @@ void CMy3DSymbolLibNewView::LoadSkyBoxTex(CString skyTP, CString skyLF, CString 
     char cc[256];
     // sprintf(cc, skyTP);
     _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, skyTP);
-    LoadT8(cc, skyBox_.g_texSkyBox[TP]);
+    LoadT8(cc, pSkyBox_->g_texSkyBox[TP]);
     // sprintf(cc, skyLF);
     _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, skyLF);
-    LoadT8(cc, skyBox_.g_texSkyBox[LF]);
+    LoadT8(cc, pSkyBox_->g_texSkyBox[LF]);
     // sprintf(cc, skyBK);
     _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, skyBK);
-    LoadT8(cc, skyBox_.g_texSkyBox[BK]);
+    LoadT8(cc, pSkyBox_->g_texSkyBox[BK]);
     // sprintf(cc, skyRT);
     _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, skyRT);
-    LoadT8(cc, skyBox_.g_texSkyBox[RT]);
+    LoadT8(cc, pSkyBox_->g_texSkyBox[RT]);
     // sprintf(cc, skyFR);
     _snprintf_s(cc, sizeof(cc), sizeof(cc) - 1, skyFR);
-    LoadT8(cc, skyBox_.g_texSkyBox[FR]);
+    LoadT8(cc, pSkyBox_->g_texSkyBox[FR]);
     MakeSkykList();
-    skyBox_.iSkyBoxLoaded_ = true;
+    pSkyBox_->iSkyBoxLoaded_ = true;
 }
 
 
@@ -4106,10 +4119,10 @@ bool CMy3DSymbolLibNewView::ScenSave(CString scenePth) {
         /************************************************************************/
         /*   天空盒数据 SkyBox                                                  */
         /************************************************************************/
-        file.WriteString(skyBox_.m_SkyBoxFolder + "\n");
+        file.WriteString(pSkyBox_->m_SkyBoxFolder + "\n");
         //    0缺省 TOP.BMP LEFT.BMP BACK.BMP RIGHT.BMP FRONT.BMP
-        file.WriteString(skyBox_.m_SkyBoxKindFolder + " " + skyBox_.m_SkyBoxTP + " " + skyBox_.m_SkyBoxLT + " "\
-                         + skyBox_.m_SkyBoxBK + " " + skyBox_.m_SkyBoxRT + " " + skyBox_.m_SkyBoxFR + "\n");
+        file.WriteString(pSkyBox_->m_SkyBoxKindFolder + " " + pSkyBox_->m_SkyBoxTP + " " + pSkyBox_->m_SkyBoxLT + " "\
+                         + pSkyBox_->m_SkyBoxBK + " " + pSkyBox_->m_SkyBoxRT + " " + pSkyBox_->m_SkyBoxFR + "\n");
         /************************************************************************/
         /*   天气数据                                                           */
         /************************************************************************/
@@ -5439,15 +5452,6 @@ void CMy3DSymbolLibNewView::CalcuateGridNum(int32* rowNum, int32* row_index_begi
 }
 
 
-// sort(_pv.begin(),_pv.end(),comp);
-bool comp(const Point3& p1, const Point3& p2) {
-    return p1.x < p2.x;
-}
-
-bool comp2(const Point3& p1, const Point3& p2) {
-    return p1.z < p2.z;
-}
-
 
 // 计算平面交点坐标,并计算出交点出的高程值
 void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int32 row_index_end,
@@ -5544,7 +5548,7 @@ void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int3
     for (uint32 i = 0; i < JD_vector3.size(); ++i) {
         _pv.push_back(JD_vector3[i]);
     }
-    sort(_pv.begin(), _pv.end(), comp);
+    sort(_pv.begin(), _pv.end(), [](const Point3& p1, const Point3& p2)->bool {return p1.x < p2.x;});  // NOLINT
 }
 
 
@@ -5585,10 +5589,10 @@ void CMy3DSymbolLibNewView::GetMinXY(const vector<Point3>& _pv1,  const vector<P
     for (i = 0; i < _pv2.size(); ++i) {
         tmpPV.push_back(_pv2[i]);
     }
-    sort(tmpPV.begin(), tmpPV.end(), comp);
+    sort(tmpPV.begin(), tmpPV.end(), [](const Point3& p1, const Point3& p2)->bool {return p1.x < p2.x;});  // NOLINT
     *_minX = abs(tmpPV[0].x);
     *_maxX = abs(tmpPV[tmpPV.size() - 1].x);
-    sort(tmpPV.begin(), tmpPV.end(), comp2);
+    sort(tmpPV.begin(), tmpPV.end(), [](const Point3& p1, const Point3& p2)->bool {return p1.z < p2.z;});  // NOLINT
     *_maxY = abs(tmpPV[0].z);
     *_minY = abs(tmpPV[tmpPV.size() - 1].z);
 }
