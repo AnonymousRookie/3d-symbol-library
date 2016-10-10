@@ -183,6 +183,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\resource.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\ViewTree.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\ModelListConfigureDialog.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\NClock.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\PointSymbolLib\AddPointDlg.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\PointSymbolLib\C3DModelParamSet.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\PointSymbolLib\DialogModelList.h" />
@@ -195,6 +196,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\SpaceSearchSet.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\SplashWnd.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\stdafx.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\SymbolDefines.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\SystemSetting.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\targetver.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\TerrainImportContour.h" />
@@ -221,6 +223,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClCompile Include="..\..\src\3DSymboLlib\MFCFrameWork\PropertiesWnd.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\MFCFrameWork\ViewTree.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\ModelListConfigureDialog.cpp" />
+    <ClCompile Include="..\..\src\3DSymboLlib\NClock.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\PointSymbolLib\AddPointDlg.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\PointSymbolLib\C3DModelParamSet.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\PointSymbolLib\DialogModelList.cpp" />

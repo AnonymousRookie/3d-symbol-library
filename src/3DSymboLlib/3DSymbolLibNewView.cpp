@@ -122,10 +122,10 @@ BEGIN_MESSAGE_MAP(CMy3DSymbolLibNewView, CView)
 END_MESSAGE_MAP()
 
 
-CMy3DSymbolLibNewView::CMy3DSymbolLibNewView() {
-    bIsSelect3DModel_ = false;
-    bIsMouseMove3DModel_ = false;
-}
+CMy3DSymbolLibNewView::CMy3DSymbolLibNewView()
+    : p3ds_(new CLoad3DS()),
+      bIsSelect3DModel_(false),
+      bIsMouseMove3DModel_(false) {}
 
 CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView() {
 }
@@ -234,7 +234,6 @@ void CMy3DSymbolLibNewView::InitData() {
     m_NorthPtangle = 90;
     m_bShowbreviary = TRUE;
     m_i3DModelNum = 0;
-    m_3ds = new CLoad3DS();
     m_bMouseMove3DModelPtNums = 0;
     m_iTreeModelNum = 0;
     m_i3DTreeModelNum = 0;
@@ -2887,7 +2886,7 @@ void CMy3DSymbolLibNewView::Draw3DModel(PModelParamStruct model) {
     glRotatef(model->rotY, 0.0, 1.0, 0.0);                  // 模型旋转
     glRotatef(model->rotX, 1.0, 0.0, 0.0);                  // 模型旋转
     glRotatef(model->rotZ, 0.0, 0.0, 1.0);                  // 模型旋转
-    m_3ds->Show3ds(model->modelID, 0, 0.0f, 0, model->scale);  // 显示3ds模型
+    p3ds_->Show3ds(model->modelID, 0, 0.0f, 0, model->scale);  // 显示3ds模型
     glPushAttrib(GL_CURRENT_BIT);                           // 保存现有颜色属性
     glDisable(GL_TEXTURE_2D);                               // 取消贴图
     glPushMatrix();                                         // 压入堆栈
@@ -4253,7 +4252,7 @@ void CMy3DSymbolLibNewView::Load3DModel(PModelParamStruct p3d, int32 iLoadModelT
     char _3DSTextureFile[256];
     // sprintf(_3DSTextureFile, p3d->m_3DS_Mode_Texture_PATH_NAME);
     _snprintf_s(_3DSTextureFile, sizeof(_3DSTextureFile), sizeof(_3DSTextureFile) - 1, p3d->m_3DS_Mode_Texture_PATH_NAME);
-    m_3ds->Init(_3DSFile, p3d->modelID, _3DSTextureFile);   // 调用模型调入函数
+    p3ds_->Init(_3DSFile, p3d->modelID, _3DSTextureFile);   // 调用模型调入函数
     t3DBox t3dBox;
     t3dBox.l = g_3DModel[p3d->modelID].t3DModelBox.l * p3d->scale;
     t3dBox.w = g_3DModel[p3d->modelID].t3DModelBox.w * p3d->scale;
