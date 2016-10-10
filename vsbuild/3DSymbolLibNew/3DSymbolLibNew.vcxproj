@@ -160,6 +160,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
   <ItemGroup>
     <ClInclude Include="..\..\src\3DSymboLlib\3DSymbolLibNew.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\3DSymbolLibNewView.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\AreaSymbolLib\Area4.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\AreaSymbolLib\AreaClassification.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZStackDumper.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZMacros.h" />
@@ -205,6 +206,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
   <ItemGroup>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNew.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNewView.cpp" />
+    <ClCompile Include="..\..\src\3DSymboLlib\AreaSymbolLib\Area4.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\AreaSymbolLib\AreaClassification.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\Base\ZStackDumper.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\Camera.cpp" />

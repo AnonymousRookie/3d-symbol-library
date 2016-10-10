@@ -287,6 +287,9 @@
     <ClInclude Include="..\..\src\3DSymboLlib\NClock.h">
       <Filter>SymbolLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\AreaSymbolLib\Area4.h">
+      <Filter>SymbolLib\AreaSymbolLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNew.cpp">
@@ -396,6 +399,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\NClock.cpp">
       <Filter>SymbolLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\AreaSymbolLib\Area4.cpp">
+      <Filter>SymbolLib\AreaSymbolLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

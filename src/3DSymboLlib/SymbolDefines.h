@@ -79,42 +79,7 @@ typedef struct _Line3 {
 } Line3, *PLine3;
 
 
-/************************************************************************/
-/* 面符号三角化                                                         */
-/************************************************************************/
 
-typedef struct _Triangle {
-    Point3 pt1;
-    Point3 pt2;
-    Point3 pt3;
-} Triangle, *PTriangle;
-
-
-// 四边形
-typedef struct _Area_4 {
-    Point3 pt1;
-    Point3 pt2;
-    Point3 pt3;
-    Point3 pt4;
-
-    // 保存所有多边形内部完整的三角形
-    vector<Triangle> TrianglesInPolygonVecotr;
-    // 保存所有局部三角化了的三角形(三角形只有1个点在多边形内, 且多边形的某条边与三角形有2个交点)
-    vector<Triangle> LocalTrianglesVecotr1;
-    // 保存所有局部三角化了的三角形(三角形只有2个点在多边形内, 且多边形的某条边与三角形有2个交点)
-    vector<Triangle> LocalTrianglesVecotr2;
-    // 保存所有局部三角化了的三角形(三角形只有1个点在多边形内, 且多边形的1个端点在三角形中)
-    vector<Triangle> LocalTrianglesVecotr1_1;
-    // 保存所有局部三角化了的三角形(三角形只有2个点在多边形内, 且多边形的1个端点在三角形中)
-    vector<Triangle> LocalTrianglesVecotr2_1;
-    // 保存所有局部三角化了的三角形(某三角形没有点在多边形内, 但多边形的1个端点在三角形中)
-    vector<Triangle> LocalTrianglesVecotr_last;
-
-    CString area_texture;
-    UINT area_texture_rd;
-
-    uint16 deleted;
-} Area_4, *PArea_4;
 
 // SkyBox
 typedef struct _SkyBox {

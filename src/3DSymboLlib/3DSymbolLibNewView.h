@@ -23,6 +23,7 @@
 #include "Camera.h"
 #include "SymbolDefines.h"
 #include "NClock.h"
+#include "AreaSymbolLib/Area4.h"
 
 
 class CMy3DSymbolLibNewView : public CView {
@@ -608,39 +609,9 @@ class CMy3DSymbolLibNewView : public CView {
     uint16 area_id;
 
 
-    // 存放多边形内的点
-    vector<Point3> pointsInPolygonVector;
-    vector<Point3> index_pointsInPolygonVector;
+    // 面符号 - 四边形
+    std::shared_ptr<Area4Symbol> pArea4Symbol_;
 
-    // 计算出所有包含在多边形内的点
-    int32 FindAllPointsInPolygon(const Area_4& m_area4);
-
-    // (MAP_W * MAP_W)方阵 1:在多边形内, 0:不在
-    int32 inPolygonArrayFlag[MAP_W][MAP_W];
-
-
-    // 找出所有包含在多边形内的三角形(包括完整三角形和经过局部三角化的三角形)
-    int32 FindAllTrianglesInPolygon(Area_4& m_area4);  // NOLINT
-
-    // 只有1个点在多边形形内的三角形(需重新三角化)
-    int32 FindTriangles_1_point_inPolygon(Area_4& m_area4);  // NOLINT
-
-    // 只有2个点在多边形形内的三角形(需重新三角化)
-    int32 FindTriangles_2_point_inPolygon(Area_4& m_area4);  // NOLINT
-
-    // 有3个点在多边形形内的三角形
-    int32 FindTriangles_3_point_inPolygon(Area_4& _area4);  // NOLINT
-
-    // 多边形的一条边  与  三角形  有2个交点, 找出符合条件的三角形
-    void Find_triangles_1_line_2_JD(Area_4& m_area4, Triangle& tmp_triangle, CPointPolygonRelationship& tmp_PPR, PPR_Point& tmp_point1, PPR_Point& tmp_point21, PPR_Point& tmp_point22);  // NOLINT
-
-
-
-    // 多边形顶点处的三角形
-    void FindTriangles_polygon_has_vertex_in_triangle(Area_4& m_area4);  // NOLINT
-    void FindTriangles_polygon_has_vertex_in_triangle_1_1(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, PPR_Point& tmp_point1, PPR_Point& tmp_point21, PPR_Point& tmp_point22);  // NOLINT
-    void FindTriangles_polygon_has_vertex_in_triangle_2_1(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, Triangle& tmp_triangle3, PPR_Point& tmp_point1, PPR_Point& tmp_point21, PPR_Point& tmp_point22);  // NOLINT
-    void FindTriangles_polygon_has_vertex_in_triangle_last(Area_4& m_area4, Triangle& tmp_triangle1, Triangle& tmp_triangle2, Triangle& tmp_triangle3, Triangle& tmp_triangle4, PPR_Point& tmp_point0, PPR_Point& tmp_point1, PPR_Point& tmp_point21, PPR_Point& tmp_point22);  // NOLINT
 
 
   public:
