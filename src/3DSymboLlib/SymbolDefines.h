@@ -131,4 +131,55 @@ typedef struct _SkyBox {
 } SkyBox;
 
 
+typedef struct _TerrainData {
+    // 地形文件夹，地形纹理文件夹，地形等高文件夹
+    CString m_TerrainFolder;
+    CString m_TerrainTextureFolder;
+    CString m_TerrainContourFolder;
+    // 地形纹理，地形等高图
+    CString m_TerrainTexture;
+    CString m_TerrainContour;
+} TerrainData;
+
+
+// 城市标识数据
+typedef struct _CitySymbolData {
+    CString m_CitySymbolFolder;
+    CString m_CitySymbolTex;
+
+    float m_CitySymbolPosX;
+    float m_CitySymbolPosY;
+    float m_CitySymbolPosZ;
+} CitySymbolData;
+
+
+// 景观树数据
+typedef struct _TreeModelData {
+    CString m_TreeModelFolder;
+    CString m_TreeModelTex;
+
+    float m_TreeModelPosX;
+    float m_TreeModelPosY;
+    float m_TreeModelPosZ;
+} TreeModelData;
+
+// 3DS 模型
+typedef struct _T3DModelData {
+    CString m_3DModelFolder;
+    CString m_3DModelPath;
+
+    float m_3DModelPosX;
+    float m_3DModelPosY;
+    float m_3DModelPosZ;
+
+    float m_3DModelRotX;
+    float m_3DModelRotY;
+    float m_3DModelRotZ;
+
+    float m_3DModelScale;
+
+} T3DModelData;
+
+
+
 #endif  // SYMBOL_DEFINES_H

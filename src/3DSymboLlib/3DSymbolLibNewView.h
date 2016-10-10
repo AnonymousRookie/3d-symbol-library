@@ -395,31 +395,18 @@ class CMy3DSymbolLibNewView : public CView {
     CString m_AllDataPath;  // 所有数据文件路径
     CString m_SceneConfig;  // 场景文件夹
 
-    // 地形文件夹，地形纹理文件夹，地形等高文件夹
-    CString m_TerrainFolder, m_TerrainTextureFolder, m_TerrainContourFolder;
-    // 地形纹理，地形等高图
-    CString m_TerrainTexture, m_TerrainContour;
 
 
-    // 3DS 模型
-    CString m_3DModelFolder;
-    CString m_3DModelPath;
 
-    float m_3DModelPosX, m_3DModelPosY, m_3DModelPosZ;
-
-    float m_3DModelRotX, m_3DModelRotY, m_3DModelRotZ;
-    float m_3DModelScale;
-
-
+    // 地形数据
+    std::shared_ptr<TerrainData> pTerrainData_;
     // 城市标识数据
-    CString m_CitySymbolFolder, m_CitySymbolTex;
-
-    float m_CitySymbolPosX, m_CitySymbolPosY, m_CitySymbolPosZ;
-
+    std::shared_ptr<CitySymbolData> pCitySymbolData_;
     // 景观树数据
-    CString m_TreeModelFolder, m_TreeModelTex;
+    std::shared_ptr<TreeModelData> pTreeModelData_;
+    // 3DS 模型
+    std::shared_ptr<T3DModelData> pT3DModelData_;
 
-    float m_TreeModelPosX, m_TreeModelPosY, m_TreeModelPosZ;
 
     // 天气数据
     CString m_WeatherFolder, m_WeatherTex;

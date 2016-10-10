@@ -126,7 +126,11 @@ CMy3DSymbolLibNewView::CMy3DSymbolLibNewView()
     : p3ds_(new CLoad3DS),
       bIsSelect3DModel_(false),
       bIsMouseMove3DModel_(false),
-      pNClock_(new NClcok) {}
+      pNClock_(new NClcok),
+      pTerrainData_(new TerrainData),
+      pCitySymbolData_(new CitySymbolData),
+      pTreeModelData_(new TreeModelData),
+      pT3DModelData_(new T3DModelData) {}
 
 CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView() {
 }
@@ -255,9 +259,9 @@ void CMy3DSymbolLibNewView::InitData() {
     m_isSetXYByMouse = 0;
     initLines();  // 初始化线路数据
     // 初始化各种点模型所在路径
-    m_3DModelFolder     = "3DModel";
-    m_CitySymbolFolder  = "CitySymbol";
-    m_TreeModelFolder   = "TreeModel";
+    pT3DModelData_->m_3DModelFolder     = "3DModel";
+    pCitySymbolData_->m_CitySymbolFolder  = "CitySymbol";
+    pTreeModelData_->m_TreeModelFolder   = "TreeModel";
     m_LineEdit_pointNum = 0;
     fuse_Flag = FALSE;
     m_Area_pointNum = 0;
@@ -2606,17 +2610,17 @@ void CMy3DSymbolLibNewView::On3dsModelLoad() {
     PModelParamStruct p3d;
     if (m_i3DModelNum < MODEL_NUM_MAX) {
         CDialogModelList dlg1;
-        dlg1.m_Dir = m_AllDataPath + "\\" + m_3DModelFolder;
+        dlg1.m_Dir = m_AllDataPath + "\\" + pT3DModelData_->m_3DModelFolder;
         dlg1.m_format = ".bmp";
         dlg1.m_type = "3DS";
         CString selectItem;
         if (dlg1.DoModal() == IDOK) {
             selectItem = dlg1.m_selectItem;
-            m_3DModelPath = dlg1.m_Dir + "\\" + selectItem + modelFileFormat;
+            pT3DModelData_->m_3DModelPath = dlg1.m_Dir + "\\" + selectItem + modelFileFormat;
         } else {
             return;
         }
-        if ((fp = fopen(m_3DModelPath, "r")) == NULL) {
+        if ((fp = fopen(pT3DModelData_->m_3DModelPath, "r")) == NULL) {
             MessageBox("3D模型文件不存在!", "初始化3D模型", MB_ICONINFORMATION + MB_OK);
             LOGGER_ERROR << "3D模型文件不存在!";
             exit(-1);
@@ -2626,7 +2630,7 @@ void CMy3DSymbolLibNewView::On3dsModelLoad() {
         *p3d = a;
         p3d->modelID = m_i3DModelNum;
         p3d->isDeleted = false;
-        p3d->modelPath = m_3DModelPath;
+        p3d->modelPath = pT3DModelData_->m_3DModelPath;
         p3d->m_3DS_Mode_Texture_PATH_NAME = dlg1.m_Dir + "\\" + selectItem + ".bmp";
         p3d->posX = 389;
         p3d->posZ = -389;
@@ -2783,7 +2787,7 @@ void CMy3DSymbolLibNewView::OnTreeLoad() {
     CString treeFileFormat = ".BMP";
     if (m_iTreeModelNum < 50) {
         CDialogModelList dlg1;
-        dlg1.m_Dir = m_AllDataPath + "\\" + m_TreeModelFolder;
+        dlg1.m_Dir = m_AllDataPath + "\\" + pTreeModelData_->m_TreeModelFolder;
         dlg1.m_format = ".bmp";
         dlg1.m_type = "Tree";
         if (dlg1.DoModal() == IDOK) {
@@ -2886,7 +2890,7 @@ void CMy3DSymbolLibNewView::OnCitySymbolLoad() {
     CString citySymbolFileFormat = ".png";
     if (m_iCitySymbolModelNum < 50) {
         CDialogModelList dlg1;
-        dlg1.m_Dir = m_AllDataPath + "\\" + m_CitySymbolFolder;
+        dlg1.m_Dir = m_AllDataPath + "\\" + pCitySymbolData_->m_CitySymbolFolder;
         dlg1.m_format = ".png";
         dlg1.m_type = "City";
         if (dlg1.DoModal() == IDOK) {
@@ -3098,7 +3102,7 @@ void CMy3DSymbolLibNewView::On3dTreeLoad() {
     CString treeFileFormat = ".BMP";
     if (m_i3DTreeModelNum < 50) {
         CDialogModelList dlg1;
-        dlg1.m_Dir = m_AllDataPath + "\\" + m_TreeModelFolder;
+        dlg1.m_Dir = m_AllDataPath + "\\" + pTreeModelData_->m_TreeModelFolder;
         dlg1.m_format = ".bmp";
         dlg1.m_type = "3DTree";
         if (dlg1.DoModal() == IDOK) {
@@ -3547,19 +3551,19 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         file.ReadString(m_SceneConfig);
         // ----------------------------------------------------
         // 地形数据, Terrain
-        file.ReadString(m_TerrainFolder);
+        file.ReadString(pTerrainData_->m_TerrainFolder);
         // Tex Sand512.BMP
-        file.ReadString(m_TerrainTextureFolder);
-        int32 length = m_TerrainTextureFolder.GetLength();
-        int32 i = m_TerrainTextureFolder.Find(" ");
-        m_TerrainTexture = m_TerrainTextureFolder.Right(length - i - 1);
-        m_TerrainTextureFolder = m_TerrainTextureFolder.Left(i);
+        file.ReadString(pTerrainData_->m_TerrainTextureFolder);
+        int32 length = pTerrainData_->m_TerrainTextureFolder.GetLength();
+        int32 i = pTerrainData_->m_TerrainTextureFolder.Find(" ");
+        pTerrainData_->m_TerrainTexture = pTerrainData_->m_TerrainTextureFolder.Right(length - i - 1);
+        pTerrainData_->m_TerrainTextureFolder = pTerrainData_->m_TerrainTextureFolder.Left(i);
         // Contour Terrain1.bmp
-        file.ReadString(m_TerrainContourFolder);
-        length = m_TerrainContourFolder.GetLength();
-        i = m_TerrainContourFolder.Find(" ");
-        m_TerrainContour = m_TerrainContourFolder.Right(length - i - 1);
-        m_TerrainContourFolder = m_TerrainContourFolder.Left(i);
+        file.ReadString(pTerrainData_->m_TerrainContourFolder);
+        length = pTerrainData_->m_TerrainContourFolder.GetLength();
+        i = pTerrainData_->m_TerrainContourFolder.Find(" ");
+        pTerrainData_->m_TerrainContour = pTerrainData_->m_TerrainContourFolder.Right(length - i - 1);
+        pTerrainData_->m_TerrainContourFolder = pTerrainData_->m_TerrainContourFolder.Left(i);
         // ----------------------------------------------------
         // 天空盒数据SkyBox
         file.ReadString(skyBox_.m_SkyBoxFolder);
@@ -3644,8 +3648,8 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         LoadSkyBoxTex(g_texSkyBoxFlieNameTP, g_texSkyBoxFlieNameLF, g_texSkyBoxFlieNameBK,
                       g_texSkyBoxFlieNameRT, g_texSkyBoxFlieNameFR);
         // 配置地形
-        terrainTexFileName = m_AllDataPath + "\\" + m_TerrainFolder + "\\" + m_TerrainTextureFolder + "\\" + m_TerrainTexture;
-        terrainContourFileName = m_AllDataPath + "\\" + m_TerrainFolder + "\\" + m_TerrainContourFolder + "\\" + m_TerrainContour;
+        terrainTexFileName = m_AllDataPath + "\\" + pTerrainData_->m_TerrainFolder + "\\" + pTerrainData_->m_TerrainTextureFolder + "\\" + pTerrainData_->m_TerrainTexture;
+        terrainContourFileName = m_AllDataPath + "\\" + pTerrainData_->m_TerrainFolder + "\\" + pTerrainData_->m_TerrainContourFolder + "\\" + pTerrainData_->m_TerrainContour;
         LoadTerrainTex(terrainTexFileName, terrainContourFileName);
         OnMenuBuild3dlinemodle();
         // 加载区文件
@@ -3677,48 +3681,48 @@ void CMy3DSymbolLibNewView::LoadPointSymbolFile(CString filename) {
         2
         房子1 399.921 83.990 384.101
         航天发射台 397.700 83.991 373.560*/
-        file.ReadString(m_3DModelFolder);
+        file.ReadString(pT3DModelData_->m_3DModelFolder);
         CString m_3DModelNumStr;
         file.ReadString(m_3DModelNumStr);
         m_i3DModelNum = atoi(m_3DModelNumStr);
         for (int32 i = 0; i < m_i3DModelNum; ++i) {
-            file.ReadString(m_3DModelPath);
+            file.ReadString(pT3DModelData_->m_3DModelPath);
             int32 curPos = 0;
             int32 tokenID = 0;
-            CString temp = m_3DModelPath.Tokenize(" ", curPos);
+            CString temp = pT3DModelData_->m_3DModelPath.Tokenize(" ", curPos);
             CString model3DFolder = temp;
             while (temp != _T("")) {
                 tokenID += 1;
-                temp = m_3DModelPath.Tokenize(" ", curPos);
+                temp = pT3DModelData_->m_3DModelPath.Tokenize(" ", curPos);
                 if (tokenID == 1)
-                    m_3DModelPosX = atof(temp);
+                    pT3DModelData_->m_3DModelPosX = atof(temp);
                 else if (tokenID == 2)
-                    m_3DModelPosY = atof(temp);
+                    pT3DModelData_->m_3DModelPosY = atof(temp);
                 else if (tokenID == 3)
-                    m_3DModelPosZ = atof(temp);
+                    pT3DModelData_->m_3DModelPosZ = atof(temp);
                 else if (tokenID == 4)
-                    m_3DModelRotX = atof(temp);
+                    pT3DModelData_->m_3DModelRotX = atof(temp);
                 else if (tokenID == 5)
-                    m_3DModelRotY = atof(temp);
+                    pT3DModelData_->m_3DModelRotY = atof(temp);
                 else if (tokenID == 6)
-                    m_3DModelRotZ = atof(temp);
+                    pT3DModelData_->m_3DModelRotZ = atof(temp);
                 else if (tokenID == 7)
-                    m_3DModelScale = atof(temp);
+                    pT3DModelData_->m_3DModelScale = atof(temp);
             };
-            m_3DModelPath = model3DFolder;
+            pT3DModelData_->m_3DModelPath = model3DFolder;
             PModelParamStruct p3d = new CModelParamStruct;
-            p3d->modelPath = m_AllDataPath + "\\" + m_3DModelFolder + "\\" + m_3DModelPath;
+            p3d->modelPath = m_AllDataPath + "\\" + pT3DModelData_->m_3DModelFolder + "\\" + pT3DModelData_->m_3DModelPath;
             p3d->modelID = i;
             p3d->modelSelected = false;
-            p3d->m_3DS_Mode_Texture_PATH_NAME = m_AllDataPath + "\\" + m_3DModelFolder + "\\" + m_3DModelPath.Left(m_3DModelPath.Find('.')) + ".bmp";
+            p3d->m_3DS_Mode_Texture_PATH_NAME = m_AllDataPath + "\\" + pT3DModelData_->m_3DModelFolder + "\\" + pT3DModelData_->m_3DModelPath.Left(pT3DModelData_->m_3DModelPath.Find('.')) + ".bmp";
             p3d->isDeleted = false;
-            p3d->posX = m_3DModelPosX;
-            p3d->posY = m_3DModelPosY;
-            p3d->posZ = m_3DModelPosZ;
-            p3d->rotX = m_3DModelRotX;
-            p3d->rotY = m_3DModelRotY;
-            p3d->rotZ = m_3DModelRotZ;
-            p3d->scale = m_3DModelScale;
+            p3d->posX = pT3DModelData_->m_3DModelPosX;
+            p3d->posY = pT3DModelData_->m_3DModelPosY;
+            p3d->posZ = pT3DModelData_->m_3DModelPosZ;
+            p3d->rotX = pT3DModelData_->m_3DModelRotX;
+            p3d->rotY = pT3DModelData_->m_3DModelRotY;
+            p3d->rotZ = pT3DModelData_->m_3DModelRotZ;
+            p3d->scale = pT3DModelData_->m_3DModelScale;
             Load3DModel(p3d, MODEL_NEW);
         }
         // ----------------------------------------------------
@@ -3727,35 +3731,35 @@ void CMy3DSymbolLibNewView::LoadPointSymbolFile(CString filename) {
         2
         25 398.469 83.992 393.427
         1 386.085 83.993 387.031*/
-        file.ReadString(m_CitySymbolFolder);
+        file.ReadString(pCitySymbolData_->m_CitySymbolFolder);
         CString m_CitySymbolNumStr;
         file.ReadString(m_CitySymbolNumStr);
         m_iCitySymbolModelNum = atoi(m_CitySymbolNumStr);
         for (int32 i = 0; i < m_iCitySymbolModelNum; ++i) {
-            file.ReadString(m_CitySymbolTex);
+            file.ReadString(pCitySymbolData_->m_CitySymbolTex);
             int32 curPos = 0;
             int32 tokenID = 0;
             curPos = 0;
             tokenID = 0;
-            CString temp = m_CitySymbolTex.Tokenize(" ", curPos);
+            CString temp = pCitySymbolData_->m_CitySymbolTex.Tokenize(" ", curPos);
             CString citySymbolTex = temp;
             while (temp != _T("")) {
                 tokenID += 1;
-                temp = m_CitySymbolTex.Tokenize(" ", curPos);
+                temp = pCitySymbolData_->m_CitySymbolTex.Tokenize(" ", curPos);
                 if (tokenID == 1)
-                    m_CitySymbolPosX = atof(temp);
+                    pCitySymbolData_->m_CitySymbolPosX = atof(temp);
                 else if (tokenID == 2)
-                    m_CitySymbolPosY = atof(temp);
+                    pCitySymbolData_->m_CitySymbolPosY = atof(temp);
                 else if (tokenID == 3)
-                    m_CitySymbolPosZ = atof(temp);
+                    pCitySymbolData_->m_CitySymbolPosZ = atof(temp);
             };
-            m_CitySymbolTex = citySymbolTex;
+            pCitySymbolData_->m_CitySymbolTex = citySymbolTex;
             PModelStruct p3d = new CModelStruct;
-            p3d->strModelPath = m_AllDataPath + "\\" + m_CitySymbolFolder + "\\" + m_CitySymbolTex;
+            p3d->strModelPath = m_AllDataPath + "\\" + pCitySymbolData_->m_CitySymbolFolder + "\\" + pCitySymbolData_->m_CitySymbolTex;
             p3d->iModelNum = i;
-            p3d->xPos = m_CitySymbolPosX;
-            p3d->hPos = m_CitySymbolPosY;
-            p3d->zPos = m_CitySymbolPosZ;
+            p3d->xPos = pCitySymbolData_->m_CitySymbolPosX;
+            p3d->hPos = pCitySymbolData_->m_CitySymbolPosY;
+            p3d->zPos = pCitySymbolData_->m_CitySymbolPosZ;
             p3d->radiu = 0;
             p3d->angle = 0;
             p3d->scale = 1;
@@ -3777,35 +3781,35 @@ void CMy3DSymbolLibNewView::LoadPointSymbolFile(CString filename) {
         CACTUS5 449.065 76.690 329.477
         1
         CACTUS5 665.527 56.000 315.917*/
-        file.ReadString(m_TreeModelFolder);
+        file.ReadString(pTreeModelData_->m_TreeModelFolder);
         CString m_TreeModelNumStr;
         file.ReadString(m_TreeModelNumStr);
         m_iTreeModelNum = atoi(m_TreeModelNumStr);
         for (int32 i = 0; i < m_iTreeModelNum; ++i) {
-            file.ReadString(m_TreeModelTex);
+            file.ReadString(pTreeModelData_->m_TreeModelTex);
             int32 curPos = 0;
             int32 tokenID = 0;
             curPos = 0;
             tokenID = 0;
-            CString temp = m_TreeModelTex.Tokenize(" ", curPos);
+            CString temp = pTreeModelData_->m_TreeModelTex.Tokenize(" ", curPos);
             CString treeModelTex = temp;
             while (temp != _T("")) {
                 tokenID += 1;
-                temp = m_TreeModelTex.Tokenize(" ", curPos);
+                temp = pTreeModelData_->m_TreeModelTex.Tokenize(" ", curPos);
                 if (tokenID == 1)
-                    m_TreeModelPosX = atof(temp);
+                    pTreeModelData_->m_TreeModelPosX = atof(temp);
                 else if (tokenID == 2)
-                    m_TreeModelPosY = atof(temp);
+                    pTreeModelData_->m_TreeModelPosY = atof(temp);
                 else if (tokenID == 3)
-                    m_TreeModelPosZ = atof(temp);
+                    pTreeModelData_->m_TreeModelPosZ = atof(temp);
             };
-            m_TreeModelTex = treeModelTex;
+            pTreeModelData_->m_TreeModelTex = treeModelTex;
             PModelStruct p3d = new CModelStruct;
-            p3d->strModelPath = m_AllDataPath + "\\" + m_TreeModelFolder + "\\" + m_TreeModelTex;
+            p3d->strModelPath = m_AllDataPath + "\\" + pTreeModelData_->m_TreeModelFolder + "\\" + pTreeModelData_->m_TreeModelTex;
             p3d->iModelNum = i;
-            p3d->xPos = m_TreeModelPosX;
-            p3d->hPos = m_TreeModelPosY;
-            p3d->zPos = m_TreeModelPosZ;
+            p3d->xPos = pTreeModelData_->m_TreeModelPosX;
+            p3d->hPos = pTreeModelData_->m_TreeModelPosY;
+            p3d->zPos = pTreeModelData_->m_TreeModelPosZ;
             p3d->radiu = 0;
             p3d->angle = 0;
             p3d->scale = 1;
@@ -3824,30 +3828,30 @@ void CMy3DSymbolLibNewView::LoadPointSymbolFile(CString filename) {
         file.ReadString(m_TreeModelNumStr);
         m_i3DTreeModelNum = atoi(m_TreeModelNumStr);
         for (int32 i = 0; i < m_i3DTreeModelNum; ++i) {
-            file.ReadString(m_TreeModelTex);
+            file.ReadString(pTreeModelData_->m_TreeModelTex);
             int32 curPos = 0;
             int32 tokenID = 0;
             curPos = 0;
             tokenID = 0;
-            CString temp = m_TreeModelTex.Tokenize(" ", curPos);
+            CString temp = pTreeModelData_->m_TreeModelTex.Tokenize(" ", curPos);
             CString treeModelTex = temp;
             while (temp != _T("")) {
                 tokenID += 1;
-                temp = m_TreeModelTex.Tokenize(" ", curPos);
+                temp = pTreeModelData_->m_TreeModelTex.Tokenize(" ", curPos);
                 if (tokenID == 1)
-                    m_TreeModelPosX = atof(temp);
+                    pTreeModelData_->m_TreeModelPosX = atof(temp);
                 else if (tokenID == 2)
-                    m_TreeModelPosY = atof(temp);
+                    pTreeModelData_->m_TreeModelPosY = atof(temp);
                 else if (tokenID == 3)
-                    m_TreeModelPosZ = atof(temp);
+                    pTreeModelData_->m_TreeModelPosZ = atof(temp);
             };
-            m_TreeModelTex = treeModelTex;
+            pTreeModelData_->m_TreeModelTex = treeModelTex;
             PModelStruct p3d = new CModelStruct;
-            p3d->strModelPath = m_AllDataPath + "\\" + m_TreeModelFolder + "\\" + m_TreeModelTex;
+            p3d->strModelPath = m_AllDataPath + "\\" + pTreeModelData_->m_TreeModelFolder + "\\" + pTreeModelData_->m_TreeModelTex;
             p3d->iModelNum = i;
-            p3d->xPos = m_TreeModelPosX;
-            p3d->hPos = m_TreeModelPosY;
-            p3d->zPos = m_TreeModelPosZ;
+            p3d->xPos = pTreeModelData_->m_TreeModelPosX;
+            p3d->hPos = pTreeModelData_->m_TreeModelPosY;
+            p3d->zPos = pTreeModelData_->m_TreeModelPosZ;
             p3d->radiu = 0;
             p3d->angle = 0;
             p3d->scale = 1;
@@ -4093,11 +4097,11 @@ bool CMy3DSymbolLibNewView::ScenSave(CString scenePth) {
         /************************************************************************/
         /*   地形数据 Terrain                                                   */
         /************************************************************************/
-        file.WriteString(m_TerrainFolder + "\n");
+        file.WriteString(pTerrainData_->m_TerrainFolder + "\n");
         //    Tex Sand512.BMP
-        file.WriteString(m_TerrainTextureFolder + " " + m_TerrainTexture + "\n");
+        file.WriteString(pTerrainData_->m_TerrainTextureFolder + " " + pTerrainData_->m_TerrainTexture + "\n");
         //    Contour Terrain1.bmp
-        file.WriteString(m_TerrainContourFolder + " " + m_TerrainContour + "\n");
+        file.WriteString(pTerrainData_->m_TerrainContourFolder + " " + pTerrainData_->m_TerrainContour + "\n");
         /************************************************************************/
         /*   天空盒数据 SkyBox                                                  */
         /************************************************************************/
@@ -4143,7 +4147,7 @@ int32 CMy3DSymbolLibNewView::savePointSymbolFile(CString filename) {
         /************************************************************************/
         /*   3DS 模型数据 3DModel                                               */
         /************************************************************************/
-        file.WriteString(m_3DModelFolder + "\n");
+        file.WriteString(pT3DModelData_->m_3DModelFolder + "\n");
         int32 count_model_existed = 0;
         for (int32 i = 0; i < m_i3DModelNum; ++i) {
             if (m_3DModel.GetAt(i)->isDeleted == false) {
@@ -4174,7 +4178,7 @@ int32 CMy3DSymbolLibNewView::savePointSymbolFile(CString filename) {
         /************************************************************************/
         /*   城市标识数据 City Symbol                                               */
         /************************************************************************/
-        file.WriteString(m_CitySymbolFolder + "\n");
+        file.WriteString(pCitySymbolData_->m_CitySymbolFolder + "\n");
         CString m_CitySymbolNumStr;
         m_CitySymbolNumStr.Format("%d", m_iCitySymbolModelNum);
         file.WriteString(m_CitySymbolNumStr + "\n");
@@ -4191,7 +4195,7 @@ int32 CMy3DSymbolLibNewView::savePointSymbolFile(CString filename) {
         /************************************************************************/
         /*   景观树数据 TreeModel                                               */
         /************************************************************************/
-        file.WriteString(m_TreeModelFolder + "\n");
+        file.WriteString(pTreeModelData_->m_TreeModelFolder + "\n");
         CString m_TreeModelNumStr;
         m_TreeModelNumStr.Format("%d", m_iTreeModelNum);
         file.WriteString(m_TreeModelNumStr + "\n");
@@ -4282,7 +4286,7 @@ void CMy3DSymbolLibNewView::OnModelMove() {
 /****************************************************************************/
 void CMy3DSymbolLibNewView::OnModelParam() {
     ModelParam dlg;
-    dlg.modelFolder = m_AllDataPath + "\\" + m_3DModelFolder + "\\";
+    dlg.modelFolder = m_AllDataPath + "\\" + pT3DModelData_->m_3DModelFolder + "\\";
     PModelParamStructToModelParamDlg(dlg, m_3DModel.GetAt(m_selectedModelID));
     if (dlg.DoModal()) {
         ModelParamDlgToPModelParamStruct(dlg, m_3DModel.GetAt(m_selectedModelID));
