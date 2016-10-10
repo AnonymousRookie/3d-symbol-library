@@ -225,16 +225,16 @@ class CMy3DSymbolLibNewView : public CView {
     HFONT   hFont, hFont0;
     void    TextFlyHelp();      // 显示文字
 
-    // 显示列表参数
-    GLuint m_ClockList;     // 时钟指北针显示列表
-    float m_NorthPtangle;   // 指北针初始指向角度
+    // 指北针
+    std::shared_ptr<NClcok> pNClock_;
+
     void InitList();
-    void MakeClockList();
+
     void DrawClock();
     void SetClockProjectionNavigate();
-    void PrintText(float x, float y, char* string);
+
     void GetNorthPtangle();
-    void DrawNorthPt();
+
 
     GLuint m_SkyList;       // 时钟指北针显示列表
     bool m_bShowbreviary;   // 是否显示缩略视图
