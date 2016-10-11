@@ -25,6 +25,8 @@
 #include "NClock.h"
 #include "AreaSymbolLib/Area4.h"
 #include "SkyBox.h"
+#include "LineSymbolLib/L3DRoad.h"
+#include "LineSymbolLib/DesingScheme.h"
 
 class CMy3DSymbolLibNewView : public CView {
   protected:  // 仅从序列化创建
@@ -453,10 +455,17 @@ class CMy3DSymbolLibNewView : public CView {
     PModelStruct pCitySymbol;       // CitySymbol
     BOOL m_isSetXYByMouse;
 
+
+
+
+    // 线路设计
+    CDesingScheme myDesingScheme;
+
+
     /************************************************************************/
     /* Variables: 选线阈值设定(距离,夹角)                                       */
     /************************************************************************/
-  private:
+  public:
     // 用于计算2点之间线段长度
     float last_x, last_y, last_z;
     float pre_x,  pre_y,  pre_z;
@@ -465,6 +474,8 @@ class CMy3DSymbolLibNewView : public CView {
     CVector3 v2_begin, v2_end;
     // 记录点的个数
     int32 p_count;
+
+
 
     /************************************************************************/
     /* Variables: 曲线要素设定                                              */
