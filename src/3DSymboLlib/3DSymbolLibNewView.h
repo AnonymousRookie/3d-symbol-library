@@ -257,9 +257,7 @@ class CMy3DSymbolLibNewView : public CView {
     /*                   线路                                               */
     /************************************************************************/
 
-    BOOL b_haveMadeRail3DwayList;   // 是否已经有三维线路显示列表(透视投影模式下)
 
-    Railway m_Railway;              // 线路路基结构
     GLuint m_Rail3DwayList;         // 线路三维模型显示列表(透视投影模式)
 
     CArray<PCordinate, PCordinate> m_TempPts;  // 临时点

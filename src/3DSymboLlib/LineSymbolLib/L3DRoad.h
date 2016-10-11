@@ -1,16 +1,38 @@
 ﻿#ifndef L3D_ROAD_H
 #define L3D_ROAD_H
 
-
+#include <memory>
 #include "../MathUtils/Vec3.h"
 
 
 enum {INIT_CURVE_R = 15, INIT_CURVE_L0 = 1};
 
+// 路基断面结构
+struct Railway {
+    Railway()
+        : m_Railway_width(5.0f),
+          m_Lj_width(0.8f),
+          m_GuiMianToLujianWidth(0.6f),
+          m_Lj_Dh(m_GuiMianToLujianWidth * (1 / 1.75)),
+          m_TieGui_width(1.435f) {}
+
+    float   m_Railway_width;        // 路基断面总宽度
+    float   m_Lj_width;             // 路肩宽度
+    float   m_GuiMianToLujianWidth;  // 铁轨到碴肩的距离
+    float   m_Lj_Dh;                // 碴肩至碴脚的高度
+    float   m_TieGui_width;         // 铁轨间距
+};
+
+
+
 class L3DRoad {
   public:
     L3DRoad();
     ~L3DRoad();
+
+  public:
+    BOOL b_haveMadeRail3DwayList;   // 是否已经有三维线路显示列表(透视投影模式下)
+    std::shared_ptr<Railway> pRailWay_;  // 线路路基结构
 
     /************************************************************************/
     /* Variables: 选线阈值设定(距离,夹角)                                     */

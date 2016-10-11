@@ -293,12 +293,6 @@ void CMy3DSymbolLibNewView::InitData() {
 /************************************************************************/
 void CMy3DSymbolLibNewView::initLines() {
     //==========================================================
-    b_haveMadeRail3DwayList = FALSE;            // 是否已经有三维线路显示列表(透视投影模式下)
-    m_Railway.m_Railway_width = 5.0;            // 路基断面总宽度
-    m_Railway.m_Lj_width = 0.8;                 // 路肩宽度
-    m_Railway.m_GuiMianToLujianWidth = 0.6;     // 碴肩至碴脚的高度
-    m_Railway.m_Lj_Dh = m_Railway.m_GuiMianToLujianWidth * (1 / 1.75);  // 铁轨到碴肩的距离
-    m_Railway.m_TieGui_width = 1.435;           // 铁轨间距
 }
 
 
@@ -4356,8 +4350,8 @@ void CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle() {
                                            pDesingScheme_->PtS_3DLineZX.GetAt(i + 1)->x, \
                                            pDesingScheme_->PtS_3DLineZX.GetAt(i + 1)->y, \
                                            pDesingScheme_->PtS_3DLineZX.GetAt(i + 1)->z, \
-                                           m_Railway.m_Railway_width, m_Railway.m_Lj_width, m_Railway.m_Lj_Dh, \
-                                           m_Railway.m_GuiMianToLujianWidth, 45, \
+                                           pL3DRoad_->pRailWay_->m_Railway_width, pL3DRoad_->pRailWay_->m_Lj_width, pL3DRoad_->pRailWay_->m_Lj_Dh, \
+                                           pL3DRoad_->pRailWay_->m_GuiMianToLujianWidth, 45, \
                                            pDesingScheme_->PtS_3DLineZX.GetAt(i)->strJDStyle, \
                                            pDesingScheme_->PtS_3DLineZX.GetAt(i + 1)->strJDStyle, \
                                            i, \
@@ -4372,15 +4366,15 @@ void CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle() {
                                            pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 1)->x, \
                                            pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 1)->y, \
                                            pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 1)->z, \
-                                           m_Railway.m_Railway_width, m_Railway.m_Lj_width, m_Railway.m_Lj_Dh, \
-                                           m_Railway.m_GuiMianToLujianWidth, 45, \
+                                           pL3DRoad_->pRailWay_->m_Railway_width, pL3DRoad_->pRailWay_->m_Lj_width, pL3DRoad_->pRailWay_->m_Lj_Dh, \
+                                           pL3DRoad_->pRailWay_->m_GuiMianToLujianWidth, 45, \
                                            pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 2)->strJDStyle, \
                                            pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 1)->strJDStyle, \
                                            pDesingScheme_->PtS_3DLineZX.GetSize() - 2, \
                                            pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 2)->Lc\
                                           );
     }
-    b_haveMadeRail3DwayList = FALSE;
+    pL3DRoad_->b_haveMadeRail3DwayList = FALSE;
     OnDraw(GetDC());  // 刷新三维场景
 }
 
@@ -4416,7 +4410,7 @@ void CMy3DSymbolLibNewView::DrawRailwaythesme() {
     SetDrawMode();                          // 设置绘图模式
     glViewport(0, 0, WinViewX, WinViewY);   // 重新设置视口大小
     // 如果还没有构建线路三维模型的显示列表
-    if (b_haveMadeRail3DwayList == FALSE) {
+    if (pL3DRoad_->b_haveMadeRail3DwayList == FALSE) {
         glNewList(m_Rail3DwayList, GL_COMPILE_AND_EXECUTE);  // 创建显示列表
         glColor3f(0.75, 0.75, 0.75);        // 设置颜色
         glLineWidth(2.0);                   // 设置线宽
@@ -4575,7 +4569,7 @@ void CMy3DSymbolLibNewView::DrawRailwaythesme() {
         }
         glLineWidth(1.0);               // 恢复线宽
         glEndList();                    // 结束显示列表
-        b_haveMadeRail3DwayList = TRUE;  // 标识已经创建显示列表
+        pL3DRoad_->b_haveMadeRail3DwayList = TRUE;  // 标识已经创建显示列表
     } else {                            // 如果已经构建线路三维模型的显示列表,则直接调用显示列表
         glCallList(m_Rail3DwayList);    // 调用线路三维模型显示列表
     }

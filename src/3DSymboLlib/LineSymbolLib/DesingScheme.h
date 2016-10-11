@@ -15,14 +15,7 @@ typedef struct {
     double z;   // z坐标
 } Cordinate3D, *PCordinate3D;
 
-// 路基断面结构
-typedef struct {
-    float   m_Railway_width;        // 路基断面总宽度
-    float   m_Lj_width;             // 路肩宽度
-    float   m_Lj_Dh;                // 碴肩至碴脚的高度
-    float   m_GuiMianToLujianWidth;  // 铁轨到碴肩的距离
-    float   m_TieGui_width;         // 铁轨间距
-} Railway;
+
 
 
 // 线路轨道结构
