@@ -1,14 +1,16 @@
 ﻿#ifndef N_CLOCK_H
 #define N_CLOCK_H
 
-class NClcok {
+#include "Base/Uncopyable.h"
+
+class NClcok : Base::Uncopyable {
   public:
     NClcok();
     ~NClcok();
 
-    void MakeClockList();
-    void PrintText(float x, float y, char* str);
-    void DrawNorthPt();
+    void MakeClockList() const;
+    void PrintText(float x, float y, char* str) const;
+    void DrawNorthPt() const;
 
   public:
     // 显示列表参数

@@ -2,8 +2,10 @@
 #define Z_CAMERA_H
 
 #include "MathUtils/vec3.h"
+#include "Base/Uncopyable.h"
 
-class Camera {
+
+class Camera : Base::Uncopyable {
   public:
     Camera(): m_vEyePosition(),
         m_vLook(),

@@ -290,6 +290,9 @@
     <ClInclude Include="..\..\src\3DSymboLlib\AreaSymbolLib\Area4.h">
       <Filter>SymbolLib\AreaSymbolLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\Base\Uncopyable.h">
+      <Filter>SymbolLib\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNew.cpp">

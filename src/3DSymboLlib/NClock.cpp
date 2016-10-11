@@ -11,7 +11,7 @@ NClcok::~NClcok() {}
 /****************************************************************/
 /* Function: 创建时钟指北针显示列表                               */
 /****************************************************************/
-void NClcok::MakeClockList() {
+void NClcok::MakeClockList() const {
     glNewList(m_ClockList, GL_COMPILE);             // 创建显示列表
     float R = 0.5, x, y;                            // 时钟圆盘半径
     int32 i;
@@ -111,7 +111,7 @@ void NClcok::MakeClockList() {
 /****************************************************************/
 /* Function: 在指定位置输出文本                                   */
 /****************************************************************/
-void NClcok::PrintText(float x, float y, char* str) {
+void NClcok::PrintText(float x, float y, char* str) const {
     int32 length = static_cast<int32>(strlen(str));              // 字符串长度
     glRasterPos2f(x, y);                                         // 定位当前光标
     for (int32 m = 0; m < length; ++m) {
@@ -123,7 +123,7 @@ void NClcok::PrintText(float x, float y, char* str) {
 /****************************************************************/
 /* Function: 绘制指北针                                          */
 /****************************************************************/
-void NClcok::DrawNorthPt() {
+void NClcok::DrawNorthPt() const {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);      // 以填充方式绘制
     glDisable(GL_TEXTURE_2D);                       // 关闭纹理
     float x1, y1, x2, y2, x3, y3;

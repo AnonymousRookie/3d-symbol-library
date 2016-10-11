@@ -8,9 +8,8 @@
 IMPLEMENT_DYNAMIC(CProjectFileSetting, CDialog)
 
 CProjectFileSetting::CProjectFileSetting(CWnd* pParent /*=NULL*/)
-    : CDialog(CProjectFileSetting::IDD, pParent) {
-    new_project_flag = 1;
-}
+    : CDialog(CProjectFileSetting::IDD, pParent),
+      new_project_flag(1) {}
 
 CProjectFileSetting::~CProjectFileSetting() {
 }

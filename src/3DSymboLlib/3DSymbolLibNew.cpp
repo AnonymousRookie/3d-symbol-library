@@ -145,7 +145,8 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
         MessageBox(NULL, "Can not find system configure file!", "warning", MB_OK);
     }
     CString tmpPath;
-    ::GetPrivateProfileStringA("SceneDataPath", "path", "error", tmpPath.GetBuffer(MAX_SIZE), MAX_SIZE, g_systemConfigureFile.c_str());
+    enum { MaxBufferSize = 256 };  // 读写配置文件Buffer大小
+    ::GetPrivateProfileStringA("SceneDataPath", "path", "error", tmpPath.GetBuffer(MaxBufferSize), MaxBufferSize, g_systemConfigureFile.c_str());
     g_sceneDataPath = tmpPath.GetBuffer(0);
     tmpPath.ReleaseBuffer();
     // ==============================================================

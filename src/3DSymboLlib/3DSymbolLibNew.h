@@ -15,8 +15,7 @@
 #include "ProjectFileSetting.h"
 #include "Base/ZTypes.h"
 
-// 读写配置文件Buffer大小
-#define MAX_SIZE 256
+
 
 
 // CMy3DSymbolLibNewApp:
