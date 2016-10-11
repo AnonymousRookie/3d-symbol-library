@@ -3,13 +3,12 @@
 
 namespace Base {
 
-class Uncopyable
-{
-protected:
+class Uncopyable {
+  protected:
     Uncopyable() {}
     ~Uncopyable() {}
 
-private:
+  private:
     // declare but not define, prevent compiler-synthesized functions
     Uncopyable(const Uncopyable&);
     Uncopyable& operator=(const Uncopyable&);

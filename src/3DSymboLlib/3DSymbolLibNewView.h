@@ -24,7 +24,7 @@
 #include "SymbolDefines.h"
 #include "NClock.h"
 #include "AreaSymbolLib/Area4.h"
-
+#include "SkyBox.h"
 
 class CMy3DSymbolLibNewView : public CView {
   protected:  // 仅从序列化创建

@@ -81,20 +81,6 @@ typedef struct _Line3 {
 
 
 
-// SkyBox
-typedef struct _SkyBox {
-    CString m_SkyBoxFolder;
-    CString m_SkyBoxKindFolder;
-    CString m_SkyBoxTP;
-    CString m_SkyBoxLT;
-    CString m_SkyBoxRT;
-    CString m_SkyBoxBK;
-    CString m_SkyBoxFR;
-
-    bool iSkyBoxLoaded_;
-    UINT g_texSkyBox[5];
-} SkyBox;
-
 
 typedef struct _TerrainData {
     // 地形文件夹，地形纹理文件夹，地形等高文件夹

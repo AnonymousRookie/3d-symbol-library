@@ -194,6 +194,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\PointSymbolLib\RockClassification.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\ProjectFileSetting.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\SetColorButton.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\SkyBox.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\SkyBoxTexLoad.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\SpaceSearchSet.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\SplashWnd.h" />
@@ -235,6 +236,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClCompile Include="..\..\src\3DSymboLlib\PointSymbolLib\RockClassification.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\ProjectFileSetting.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\SetColorButton.cpp" />
+    <ClCompile Include="..\..\src\3DSymboLlib\SkyBox.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\SkyBoxTexLoad.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\SpaceSearchSet.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\SplashWnd.cpp" />
