@@ -292,7 +292,7 @@ void CMy3DSymbolLibNewView::InitData() {
 /* Function: 初始化线路数据                                             */
 /************************************************************************/
 void CMy3DSymbolLibNewView::initLines() {
-    //==========================================================
+    pL3DRoad_->InitRoad();
 }
 
 

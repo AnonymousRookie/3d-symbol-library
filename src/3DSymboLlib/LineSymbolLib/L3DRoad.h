@@ -16,6 +16,14 @@ struct Railway {
           m_Lj_Dh(m_GuiMianToLujianWidth * (1 / 1.75)),
           m_TieGui_width(1.435f) {}
 
+    void Init() {
+        m_Railway_width = 5.0;            // 路基断面总宽度
+        m_Lj_width = 0.8;                 // 路肩宽度
+        m_GuiMianToLujianWidth = 0.6;     // 碴肩至碴脚的高度
+        m_Lj_Dh = m_GuiMianToLujianWidth * (1 / 1.75);  // 铁轨到碴肩的距离
+        m_TieGui_width = 1.435;           // 铁轨间距
+    }
+
     float   m_Railway_width;        // 路基断面总宽度
     float   m_Lj_width;             // 路肩宽度
     float   m_GuiMianToLujianWidth;  // 铁轨到碴肩的距离
@@ -29,6 +37,9 @@ class L3DRoad {
   public:
     L3DRoad();
     ~L3DRoad();
+
+public:
+    void InitRoad();
 
   public:
     BOOL b_haveMadeRail3DwayList;   // 是否已经有三维线路显示列表(透视投影模式下)
