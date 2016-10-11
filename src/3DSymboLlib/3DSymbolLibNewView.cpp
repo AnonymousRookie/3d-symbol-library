@@ -133,7 +133,9 @@ CMy3DSymbolLibNewView::CMy3DSymbolLibNewView()
       pT3DModelData_(new T3DModelData),
       pArea4Symbol_(new Area4Symbol),
       pCamera_(new Camera),
-      pSkyBox_(new SkyBox) {}
+      pSkyBox_(new SkyBox),
+      pDesingScheme_(new CDesingScheme),
+      pL3DRoad_(new L3DRoad) {}
 
 CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView() {}
 
@@ -297,20 +299,6 @@ void CMy3DSymbolLibNewView::initLines() {
     m_Railway.m_GuiMianToLujianWidth = 0.6;     // 碴肩至碴脚的高度
     m_Railway.m_Lj_Dh = m_Railway.m_GuiMianToLujianWidth * (1 / 1.75);  // 铁轨到碴肩的距离
     m_Railway.m_TieGui_width = 1.435;           // 铁轨间距
-    // ==========================================================
-    // 选线阈值设定(距离,夹角)
-    // 用于计算2点之间线段长度
-    last_x = 0, last_y = 0, last_z = 0;
-    pre_x  = 0, pre_y  = 0, pre_z = 0;
-    // 用于计算2线段间夹角
-    v1_begin.setZero();
-    v1_end.setZero();
-    v2_begin.setZero();
-    v2_end.setZero();
-    // 记录点的个数
-    p_count = 0;
-    m_distance_between_2_points = 0.0f;
-    m_pre_distance = 0.0f;
 }
 
 
@@ -986,61 +974,61 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
                 AfxMessageBox(warningMsg);
             } else {
                 // 设计线路时确保2端点间的距离 > threshold_distance
-                if (p_count == 0) {
-                    pre_x = ppt->x;
-                    pre_y = tmpH;
-                    pre_z = ppt->z;
+                if (pL3DRoad_->p_count == 0) {
+                    pL3DRoad_->pre_x = ppt->x;
+                    pL3DRoad_->pre_y = tmpH;
+                    pL3DRoad_->pre_z = ppt->z;
                     fun(ppt);
-                    ++p_count;
-                } else if (p_count >= 1) {
-                    if (m_distance_between_2_points > threshold_distance) {
-                        m_pre_distance = m_distance_between_2_points;
+                    ++pL3DRoad_->p_count;
+                } else if (pL3DRoad_->p_count >= 1) {
+                    if (pL3DRoad_->m_distance_between_2_points > threshold_distance) {
+                        pL3DRoad_->m_pre_distance = pL3DRoad_->m_distance_between_2_points;
                     }
-                    last_x = ppt->x;
-                    last_y = tmpH;
-                    last_z = ppt->z;
-                    m_distance_between_2_points = static_cast<float>(sqrt((last_x - pre_x) * (last_x - pre_x) + (last_y - pre_y) * (last_y - pre_y) + (last_z - pre_z) * (last_z - pre_z)));
-                    if (m_distance_between_2_points > threshold_distance) {  // 距离阈值
-                        if (p_count == 1) {
+                    pL3DRoad_->last_x = ppt->x;
+                    pL3DRoad_->last_y = tmpH;
+                    pL3DRoad_->last_z = ppt->z;
+                    pL3DRoad_->m_distance_between_2_points = static_cast<float>(sqrt((pL3DRoad_->last_x - pL3DRoad_->pre_x) * (pL3DRoad_->last_x - pL3DRoad_->pre_x) + (pL3DRoad_->last_y - pL3DRoad_->pre_y) * (pL3DRoad_->last_y - pL3DRoad_->pre_y) + (pL3DRoad_->last_z - pL3DRoad_->pre_z) * (pL3DRoad_->last_z - pL3DRoad_->pre_z)));
+                    if (pL3DRoad_->m_distance_between_2_points > threshold_distance) {  // 距离阈值
+                        if (pL3DRoad_->p_count == 1) {
                             fun(ppt);
-                            ++p_count;
-                            v1_end.x = pre_x;
-                            v1_end.y = 0;
-                            v1_end.z = pre_z;
-                            v1_begin.x = last_x;
-                            v1_begin.y = 0;
-                            v1_begin.z = last_z;
-                            pre_x = ppt->x;
-                            pre_y = tmpH;
-                            pre_z = ppt->z;
+                            ++pL3DRoad_->p_count;
+                            pL3DRoad_->v1_end.x = pL3DRoad_->pre_x;
+                            pL3DRoad_->v1_end.y = 0;
+                            pL3DRoad_->v1_end.z = pL3DRoad_->pre_z;
+                            pL3DRoad_->v1_begin.x = pL3DRoad_->last_x;
+                            pL3DRoad_->v1_begin.y = 0;
+                            pL3DRoad_->v1_begin.z = pL3DRoad_->last_z;
+                            pL3DRoad_->pre_x = ppt->x;
+                            pL3DRoad_->pre_y = tmpH;
+                            pL3DRoad_->pre_z = ppt->z;
                         } else {
-                            v2_begin = v1_begin;
-                            v2_end.x = last_x;
-                            v2_end.y = 0;
-                            v2_end.z = last_z;
+                            pL3DRoad_->v2_begin = pL3DRoad_->v1_begin;
+                            pL3DRoad_->v2_end.x = pL3DRoad_->last_x;
+                            pL3DRoad_->v2_end.y = 0;
+                            pL3DRoad_->v2_end.z = pL3DRoad_->last_z;
                             // 计算2个向量之间的夹角, 通过指针作函数参数返回
-                            getDegreeBetween2Vectors(v1_begin, v1_end, v2_begin, v2_end, pDegree);
+                            getDegreeBetween2Vectors(pL3DRoad_->v1_begin, pL3DRoad_->v1_end, pL3DRoad_->v2_begin, pL3DRoad_->v2_end, pDegree);
                             if (*pDegree > threshold_degree) {  // 夹角阈值
-                                v1_end.x = pre_x;
-                                v1_end.y = 0;
-                                v1_end.z = pre_z;
-                                v1_begin.x = last_x;
-                                v1_begin.y = 0;
-                                v1_begin.z = last_z;
-                                float min_distance_between_2_lines = (m_pre_distance < m_distance_between_2_points ? m_pre_distance : m_distance_between_2_points);
+                                pL3DRoad_->v1_end.x = pL3DRoad_->pre_x;
+                                pL3DRoad_->v1_end.y = 0;
+                                pL3DRoad_->v1_end.z = pL3DRoad_->pre_z;
+                                pL3DRoad_->v1_begin.x = pL3DRoad_->last_x;
+                                pL3DRoad_->v1_begin.y = 0;
+                                pL3DRoad_->v1_begin.z = pL3DRoad_->last_z;
+                                float min_distance_between_2_lines = (pL3DRoad_->m_pre_distance < pL3DRoad_->m_distance_between_2_points ? pL3DRoad_->m_pre_distance : pL3DRoad_->m_distance_between_2_points);
                                 if (*pDegree < 30) {
-                                    m_Curve_R = 15;
-                                    m_Curve_L0 = 1;
+                                    pL3DRoad_->m_Curve_R = INIT_CURVE_R;
+                                    pL3DRoad_->m_Curve_L0 = INIT_CURVE_L0;
                                 } else {
-                                    m_Curve_R = min_distance_between_2_lines * tan((*pDegree / 2.13) * PAI / 180);
-                                    m_Curve_L0 = 6 * m_Curve_R / 100;
-                                    if (m_Curve_L0 < 1)
-                                        m_Curve_L0 = 1;
+                                    pL3DRoad_->m_Curve_R = min_distance_between_2_lines * tan((*pDegree / 2.13) * PAI / 180);
+                                    pL3DRoad_->m_Curve_L0 = 6 * pL3DRoad_->m_Curve_R / 100;
+                                    if (pL3DRoad_->m_Curve_L0 < 1)
+                                        pL3DRoad_->m_Curve_L0 = 1;
                                 }
                                 fun(ppt);
-                                pre_x = ppt->x;
-                                pre_y = tmpH;
-                                pre_z = ppt->z;
+                                pL3DRoad_->pre_x = ppt->x;
+                                pL3DRoad_->pre_y = tmpH;
+                                pL3DRoad_->pre_z = ppt->z;
                             } else {  // 夹角阈值
                                 warningMsg.Format(_T("Degree = %f度 > %f度\n线路转角太大,请重新选择!"), 180 - *pDegree, 180 - threshold_degree);
                                 LOGGER_WARNING << "线路转角太大,请重新选择!";
@@ -1048,7 +1036,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
                             }
                         }
                     } else {  // 距离阈值
-                        warningMsg.Format(_T("Distance = %f < %f\n两点之间距离太短,请重新选择!"), m_distance_between_2_points, threshold_distance);
+                        warningMsg.Format(_T("Distance = %f < %f\n两点之间距离太短,请重新选择!"), pL3DRoad_->m_distance_between_2_points, threshold_distance);
                         LOGGER_WARNING << "两点之间距离太短,请重新选择!";
                         AfxMessageBox(warningMsg, MB_OK, MB_ICONEXCLAMATION);
                     }
@@ -1215,10 +1203,10 @@ void CMy3DSymbolLibNewView::getDegreeBetween2Vectors(CVector3& v1_Begin, CVector
 
 
 void CMy3DSymbolLibNewView::fun(PCordinate ppt) {
-    m_oldlinePtnums = myDesingScheme.PtS_JD.GetSize();  // 当前线路方案原有设计交点数
+    m_oldlinePtnums = pDesingScheme_->PtS_JD.GetSize();  // 当前线路方案原有设计交点数
     if (m_oldlinePtnums == 0) {                         // 如果当前线路方案没有设计交点,即还没有进行该方案的设计
-        myDesingScheme.PtS_JD.Add(ppt);                 // 加入设计交点到PtS_JD数组
-        m_linePtnums = myDesingScheme.PtS_JD.GetSize();  // 当前线路方案原有设计交点数
+        pDesingScheme_->PtS_JD.Add(ppt);                 // 加入设计交点到PtS_JD数组
+        m_linePtnums = pDesingScheme_->PtS_JD.GetSize();  // 当前线路方案原有设计交点数
         PLineCurve pTempCurveElements = new LineCurve;  // 定义新的交点变量
         // 第一个设计交点
         pTempCurveElements->fwj = 0.0;
@@ -1237,47 +1225,47 @@ void CMy3DSymbolLibNewView::fun(PCordinate ppt) {
         pTempCurveElements->JDLC = StartLC;
         // 交点ID="JD0";
         pTempCurveElements->ID = "JD0";
-        pTempCurveElements->x = myDesingScheme.PtS_JD.GetAt(0)->x;          // 交点的x坐标
-        pTempCurveElements->y = fabs(myDesingScheme.PtS_JD.GetAt(0)->z);  // 交点的y坐标
-        pTempCurveElements->z = -myDesingScheme.PtS_JD.GetAt(0)->y;     // 交点的z坐标
+        pTempCurveElements->x = pDesingScheme_->PtS_JD.GetAt(0)->x;          // 交点的x坐标
+        pTempCurveElements->y = fabs(pDesingScheme_->PtS_JD.GetAt(0)->z);  // 交点的y坐标
+        pTempCurveElements->z = -pDesingScheme_->PtS_JD.GetAt(0)->y;     // 交点的z坐标
         // 加入交点元素到DCurveElementss模板数组中
-        myDesingScheme.JDCurveElements.Add(pTempCurveElements);
+        pDesingScheme_->JDCurveElements.Add(pTempCurveElements);
     } else {  // 如果当前线路方案设计交点数>0,表示已经进行该方案的设计
         if (m_linePtnums <= 0) {
-            m_linePtnums = myDesingScheme.PtS_JD.GetSize();
+            m_linePtnums = pDesingScheme_->PtS_JD.GetSize();
         }
         CString tt;
         tt.Format("JD%d", m_linePtnums);  // 交点ID自动增加
         if (m_oldlinePtnums == 1) {
             PLineCurve pTempCurveElements = new LineCurve;
-            pTempCurveElements->R = m_Curve_R;      // 曲线半径
-            pTempCurveElements->L0 = m_Curve_L0;    // 缓和曲线长
+            pTempCurveElements->R = pL3DRoad_->m_Curve_R;      // 曲线半径
+            pTempCurveElements->L0 = pL3DRoad_->m_Curve_L0;    // 缓和曲线长
             pTempCurveElements->ID = tt;
             pTempCurveElements->P = (pTempCurveElements->L0 * pTempCurveElements->L0) / (pTempCurveElements->R * 24.0);
             pTempCurveElements->x = ppt->x;
             pTempCurveElements->y = -ppt->z;
             pTempCurveElements->z = ppt->y;
-            myDesingScheme.JDCurveElements.Add(pTempCurveElements);
-            myDesingScheme.PtS_JD.Add(ppt);
-            m_linePtnums = myDesingScheme.PtS_JD.GetSize();
-            if (myDesingScheme.PtS_JD.GetSize() > 1) {
+            pDesingScheme_->JDCurveElements.Add(pTempCurveElements);
+            pDesingScheme_->PtS_JD.Add(ppt);
+            m_linePtnums = pDesingScheme_->PtS_JD.GetSize();
+            if (pDesingScheme_->PtS_JD.GetSize() > 1) {
                 OnDraw(GetWindowDC());
             }
         } else if (m_oldlinePtnums >= 2) {
-            myDesingScheme.JDCurveElements[m_oldlinePtnums - 1]->R = m_Curve_R;
-            myDesingScheme.JDCurveElements[m_oldlinePtnums - 1]->L0 = m_Curve_L0;
+            pDesingScheme_->JDCurveElements[m_oldlinePtnums - 1]->R = pL3DRoad_->m_Curve_R;
+            pDesingScheme_->JDCurveElements[m_oldlinePtnums - 1]->L0 = pL3DRoad_->m_Curve_L0;
             PLineCurve pTempCurveElements = new LineCurve;
-            pTempCurveElements->R = m_Curve_R;      // 曲线半径
-            pTempCurveElements->L0 = m_Curve_L0;    // 缓和曲线长
+            pTempCurveElements->R = pL3DRoad_->m_Curve_R;      // 曲线半径
+            pTempCurveElements->L0 = pL3DRoad_->m_Curve_L0;    // 缓和曲线长
             pTempCurveElements->ID = tt;            // 交点ID
             pTempCurveElements->P = (pTempCurveElements->L0 * pTempCurveElements->L0) / (pTempCurveElements->R * 24.0);
             pTempCurveElements->x = ppt->x;
             pTempCurveElements->y = -ppt->z;
             pTempCurveElements->z = ppt->y;
-            myDesingScheme.JDCurveElements.Add(pTempCurveElements);
-            myDesingScheme.PtS_JD.Add(ppt);
-            m_linePtnums = myDesingScheme.PtS_JD.GetSize();
-            if (myDesingScheme.PtS_JD.GetSize() > 1) {
+            pDesingScheme_->JDCurveElements.Add(pTempCurveElements);
+            pDesingScheme_->PtS_JD.Add(ppt);
+            m_linePtnums = pDesingScheme_->PtS_JD.GetSize();
+            if (pDesingScheme_->PtS_JD.GetSize() > 1) {
                 OnDraw(GetWindowDC());
             }
         }
@@ -1286,10 +1274,10 @@ void CMy3DSymbolLibNewView::fun(PCordinate ppt) {
 
 
 void CMy3DSymbolLibNewView::fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0) {
-    m_oldlinePtnums = myDesingScheme.PtS_JD.GetSize();  // 当前线路方案原有设计交点数
+    m_oldlinePtnums = pDesingScheme_->PtS_JD.GetSize();  // 当前线路方案原有设计交点数
     if (m_oldlinePtnums == 0) {                         // 如果当前线路方案没有设计交点,即还没有进行该方案的设计
-        myDesingScheme.PtS_JD.Add(ppt);                 // 加入设计交点到PtS_JD数组
-        m_linePtnums = myDesingScheme.PtS_JD.GetSize();  // 当前线路方案原有设计交点数
+        pDesingScheme_->PtS_JD.Add(ppt);                 // 加入设计交点到PtS_JD数组
+        m_linePtnums = pDesingScheme_->PtS_JD.GetSize();  // 当前线路方案原有设计交点数
         PLineCurve pTempCurveElements = new LineCurve;  // 定义新的交点变量
         // 第一个设计交点
         pTempCurveElements->fwj = 0.0;
@@ -1308,14 +1296,14 @@ void CMy3DSymbolLibNewView::fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0) {
         pTempCurveElements->JDLC = StartLC;
         // 交点ID="JD0";
         pTempCurveElements->ID = "JD0";
-        pTempCurveElements->x = myDesingScheme.PtS_JD.GetAt(0)->x;          // 交点的x坐标
-        pTempCurveElements->y = fabs(myDesingScheme.PtS_JD.GetAt(0)->z);    // 交点的y坐标
-        pTempCurveElements->z = -myDesingScheme.PtS_JD.GetAt(0)->y;         // 交点的z坐标
+        pTempCurveElements->x = pDesingScheme_->PtS_JD.GetAt(0)->x;          // 交点的x坐标
+        pTempCurveElements->y = fabs(pDesingScheme_->PtS_JD.GetAt(0)->z);    // 交点的y坐标
+        pTempCurveElements->z = -pDesingScheme_->PtS_JD.GetAt(0)->y;         // 交点的z坐标
         // 加入交点元素到DCurveElementss模板数组中
-        myDesingScheme.JDCurveElements.Add(pTempCurveElements);
+        pDesingScheme_->JDCurveElements.Add(pTempCurveElements);
     } else {  // 如果当前线路方案设计交点数>0,表示已经进行该方案的设计
         if (m_linePtnums <= 0) {
-            m_linePtnums = myDesingScheme.PtS_JD.GetSize();
+            m_linePtnums = pDesingScheme_->PtS_JD.GetSize();
         }
         CString tt;
         tt.Format("JD%d", m_linePtnums);  // 交点ID自动增加
@@ -1328,10 +1316,10 @@ void CMy3DSymbolLibNewView::fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0) {
             pTempCurveElements->x = ppt->x;
             pTempCurveElements->y = -ppt->z;
             pTempCurveElements->z = ppt->y;
-            myDesingScheme.JDCurveElements.Add(pTempCurveElements);
-            myDesingScheme.PtS_JD.Add(ppt);
-            m_linePtnums = myDesingScheme.PtS_JD.GetSize();
-            if (myDesingScheme.PtS_JD.GetSize() > 1) {
+            pDesingScheme_->JDCurveElements.Add(pTempCurveElements);
+            pDesingScheme_->PtS_JD.Add(ppt);
+            m_linePtnums = pDesingScheme_->PtS_JD.GetSize();
+            if (pDesingScheme_->PtS_JD.GetSize() > 1) {
                 OnDraw(GetWindowDC());
             }
         }
@@ -1398,20 +1386,20 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         glVertex3f(pt2[0], pt2[1], pt2[2]);
         glEnd();
         glLineWidth(1.0);
-    } else if (spaceSearchInfo_.m_QueryType == SELECTLINE || myDesingScheme.PtS_JD.GetSize() > 0) {  // 三维选线状态
+    } else if (spaceSearchInfo_.m_QueryType == SELECTLINE || pDesingScheme_->PtS_JD.GetSize() > 0) {  // 三维选线状态
         // 绘制选结过程中的设计交点连线
         m_oldlinePtnums = m_linePtnums;
         glColor3f(0, 0, 1);
         glLineWidth(2.0);
-        for (int32 i = 0; i < myDesingScheme.PtS_JD.GetSize() - 1; i++) {
+        for (int32 i = 0; i < pDesingScheme_->PtS_JD.GetSize() - 1; i++) {
             DrawCenterLine(i, TRUE);  // 绘制线路中心线
         }
         // 绘制交点标志
-        for (int32 j = 0; j <= myDesingScheme.PtS_JD.GetSize() - 1; ++j) {
+        for (int32 j = 0; j <= pDesingScheme_->PtS_JD.GetSize() - 1; ++j) {
             glLineWidth(spaceSearchInfo_.m_QueryLineWidth + 1);                                                  // 设置标志线宽度
             glColor3f(spaceSearchInfo_.m_QueryColorR / 255.0 , spaceSearchInfo_.m_QueryColorG / 255.0 , spaceSearchInfo_.m_QueryColorB / 255.0);   // 设置标志线颜色
-            float tmp_x = myDesingScheme.PtS_JD[j]->x;
-            float tmp_z = myDesingScheme.PtS_JD[j]->z;
+            float tmp_x = pDesingScheme_->PtS_JD[j]->x;
+            float tmp_z = pDesingScheme_->PtS_JD[j]->z;
             float tmp_y = GetHeight(tmp_x, tmp_z);
             // 绘制十字型标志线
             glBegin(GL_LINES);
@@ -4306,19 +4294,19 @@ void CMy3DSymbolLibNewView::OnCloseCurrentScene() {
 /**************************************/
 void CMy3DSymbolLibNewView::clearLinesData() {
     // 交点
-    myDesingScheme.PtS_JD.RemoveAll();
+    pDesingScheme_->PtS_JD.RemoveAll();
     // 铁路中线
-    myDesingScheme.PtS_3DLineZX.RemoveAll();
+    pDesingScheme_->PtS_3DLineZX.RemoveAll();
     // 路肩
-    myDesingScheme.PtS_RailwayLj3D.RemoveAll();
+    pDesingScheme_->PtS_RailwayLj3D.RemoveAll();
     // 轨道
-    myDesingScheme.PtS_Railway3D.RemoveAll();
+    pDesingScheme_->PtS_Railway3D.RemoveAll();
     // 线路设计交点
-    myDesingScheme.JDCurveElements.RemoveAll();
-    myDesingScheme.PtS_RailwayLjToBP3D.RemoveAll();
-    myDesingScheme.PtS_RailwayBP3D.RemoveAll();
-    myDesingScheme.PtS_HuPo.RemoveAll();
-    myDesingScheme.PtSHuPoTemp.RemoveAll();
+    pDesingScheme_->JDCurveElements.RemoveAll();
+    pDesingScheme_->PtS_RailwayLjToBP3D.RemoveAll();
+    pDesingScheme_->PtS_RailwayBP3D.RemoveAll();
+    pDesingScheme_->PtS_HuPo.RemoveAll();
+    pDesingScheme_->PtSHuPoTemp.RemoveAll();
 }
 
 
@@ -4350,47 +4338,47 @@ void CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle() {
     // TODO(jason): 在此添加命令处理程序代码
     // 鼠标光标 系统忙
     BeginWaitCursor();
-    myDesingScheme.CalculateCurveData();
-    myDesingScheme.PtS_Railway3D.RemoveAll();
-    myDesingScheme.PtS_RailwayLj3D.RemoveAll();
-    myDesingScheme.PtS_RailwayLjToBP3D.RemoveAll();
-    myDesingScheme.PtS_RailwayBP3D.RemoveAll();
-    myDesingScheme.PtS_HuPo.RemoveAll();
-    if (myDesingScheme.PtS_3DLineZX.GetSize() < 2)
+    pDesingScheme_->CalculateCurveData();
+    pDesingScheme_->PtS_Railway3D.RemoveAll();
+    pDesingScheme_->PtS_RailwayLj3D.RemoveAll();
+    pDesingScheme_->PtS_RailwayLjToBP3D.RemoveAll();
+    pDesingScheme_->PtS_RailwayBP3D.RemoveAll();
+    pDesingScheme_->PtS_HuPo.RemoveAll();
+    if (pDesingScheme_->PtS_3DLineZX.GetSize() < 2)
         return;
     CMainFrame* pMainFrame = reinterpret_cast<CMainFrame*>(AfxGetApp()->m_pMainWnd);
     double EndLC = 10000.0;
-    for (int64 i = 0; i < myDesingScheme.PtS_3DLineZX.GetSize() - 1; ++i) {
-        if (myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->Lc <= EndLC) {
-            myDesingScheme.Get3DLineModel(myDesingScheme.PtS_3DLineZX.GetAt(i)->x, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(i)->y, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(i)->z, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->x, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->y, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->z, \
-                                          m_Railway.m_Railway_width, m_Railway.m_Lj_width, m_Railway.m_Lj_Dh, \
-                                          m_Railway.m_GuiMianToLujianWidth, 45, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(i)->strJDStyle, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->strJDStyle, \
-                                          i, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(i)->Lc
-                                         );
+    for (int64 i = 0; i < pDesingScheme_->PtS_3DLineZX.GetSize() - 1; ++i) {
+        if (pDesingScheme_->PtS_3DLineZX.GetAt(i + 1)->Lc <= EndLC) {
+            pDesingScheme_->Get3DLineModel(pDesingScheme_->PtS_3DLineZX.GetAt(i)->x, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(i)->y, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(i)->z, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(i + 1)->x, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(i + 1)->y, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(i + 1)->z, \
+                                           m_Railway.m_Railway_width, m_Railway.m_Lj_width, m_Railway.m_Lj_Dh, \
+                                           m_Railway.m_GuiMianToLujianWidth, 45, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(i)->strJDStyle, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(i + 1)->strJDStyle, \
+                                           i, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(i)->Lc
+                                          );
         }
     }
-    if (myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 1)->Lc <= EndLC) {  // myDesingScheme.SchemeDatass.EndLC)
-        myDesingScheme.Get3DLineModelLast(myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->x, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->y, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->z, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 1)->x, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 1)->y, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 1)->z, \
-                                          m_Railway.m_Railway_width, m_Railway.m_Lj_width, m_Railway.m_Lj_Dh, \
-                                          m_Railway.m_GuiMianToLujianWidth, 45, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->strJDStyle, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 1)->strJDStyle, \
-                                          myDesingScheme.PtS_3DLineZX.GetSize() - 2, \
-                                          myDesingScheme.PtS_3DLineZX.GetAt(myDesingScheme.PtS_3DLineZX.GetSize() - 2)->Lc\
-                                         );
+    if (pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 1)->Lc <= EndLC) {  // pDesingScheme_->SchemeDatass.EndLC)
+        pDesingScheme_->Get3DLineModelLast(pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 2)->x, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 2)->y, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 2)->z, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 1)->x, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 1)->y, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 1)->z, \
+                                           m_Railway.m_Railway_width, m_Railway.m_Lj_width, m_Railway.m_Lj_Dh, \
+                                           m_Railway.m_GuiMianToLujianWidth, 45, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 2)->strJDStyle, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 1)->strJDStyle, \
+                                           pDesingScheme_->PtS_3DLineZX.GetSize() - 2, \
+                                           pDesingScheme_->PtS_3DLineZX.GetAt(pDesingScheme_->PtS_3DLineZX.GetSize() - 2)->Lc\
+                                          );
     }
     b_haveMadeRail3DwayList = FALSE;
     OnDraw(GetDC());  // 刷新三维场景
@@ -4435,9 +4423,9 @@ void CMy3DSymbolLibNewView::DrawRailwaythesme() {
         // 1.绘制左侧路基边坡
         glColor3f(1, 0, 0);
         glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());           // 绑定路基边坡纹理
-        for (int32 i = 0; i < myDesingScheme.PtS_HuPo.GetSize() - 1; i++) {
-            m_style = myDesingScheme.PtS_3DLineZX.GetAt(i)->strJDStyle;  // 交点类型
-            m_styleNext = myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->strJDStyle;
+        for (int32 i = 0; i < pDesingScheme_->PtS_HuPo.GetSize() - 1; i++) {
+            m_style = pDesingScheme_->PtS_3DLineZX.GetAt(i)->strJDStyle;  // 交点类型
+            m_styleNext = pDesingScheme_->PtS_3DLineZX.GetAt(i + 1)->strJDStyle;
             // 如果交点类型是非其他的点，则绘制路基边坡
             if (m_style != "...") {
                 DrawBP(i, 1);  // 绘制左侧路基边坡
@@ -4445,9 +4433,9 @@ void CMy3DSymbolLibNewView::DrawRailwaythesme() {
         }
         // 2.绘制右侧路基边坡
         glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());               // 绑定路基边坡纹理
-        for (int32 i = 0; i < myDesingScheme.PtS_HuPo.GetSize() - 1; i++) {
-            m_style = myDesingScheme.PtS_3DLineZX.GetAt(i)->strJDStyle;     // 交点类型
-            m_styleNext = myDesingScheme.PtS_3DLineZX.GetAt(i + 1)->strJDStyle;  // 下一点的交点类型
+        for (int32 i = 0; i < pDesingScheme_->PtS_HuPo.GetSize() - 1; i++) {
+            m_style = pDesingScheme_->PtS_3DLineZX.GetAt(i)->strJDStyle;     // 交点类型
+            m_styleNext = pDesingScheme_->PtS_3DLineZX.GetAt(i + 1)->strJDStyle;  // 下一点的交点类型
             if (m_style != "...") {
                 glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
                 DrawBP(i, 2);  // 绘制右侧路基边坡
@@ -4456,123 +4444,123 @@ void CMy3DSymbolLibNewView::DrawRailwaythesme() {
         // 3.绘制轨道
         glBindTexture(GL_TEXTURE_2D, m_cTxtureRailway.GetTxtID());          // 绑定轨道纹理
         glLineWidth(2.0);                                                   // 设置线宽
-        for (int32 i = 0; i < myDesingScheme.PtS_Railway3D.GetSize() - 1; i++) {
-            if (myDesingScheme.PtS_3DLineZX.GetAt(i)->Derh == 0)            // 如果挖为0
+        for (int32 i = 0; i < pDesingScheme_->PtS_Railway3D.GetSize() - 1; i++) {
+            if (pDesingScheme_->PtS_3DLineZX.GetAt(i)->Derh == 0)            // 如果挖为0
                 glColor3f(0, 1, 1);                                         // 设置颜色
             else
                 glColor3f(1, 0, 1);
-            float L = myDesingScheme.GetDistenceXY(myDesingScheme.PtS_Railway3D.GetAt(i)->x1, \
-                                                   myDesingScheme.PtS_Railway3D.GetAt(i)->z1, \
-                                                   myDesingScheme.PtS_Railway3D.GetAt(i + 1)->x2, \
-                                                   myDesingScheme.PtS_Railway3D.GetAt(i + 1)->z2);
+            float L = pDesingScheme_->GetDistenceXY(pDesingScheme_->PtS_Railway3D.GetAt(i)->x1, \
+                                                    pDesingScheme_->PtS_Railway3D.GetAt(i)->z1, \
+                                                    pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->x2, \
+                                                    pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->z2);
             // 以矩形方式连接前后相临轨道断面
             glBegin(GL_POLYGON);
             glTexCoord2f(0.0f, 0.0f);  // 设置纹理坐标(当前轨道断面左侧点)
-            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i)->x1, \
-                       myDesingScheme.PtS_Railway3D.GetAt(i)->y1,
-                       myDesingScheme.PtS_Railway3D.GetAt(i)->z1);
+            glVertex3f(pDesingScheme_->PtS_Railway3D.GetAt(i)->x1, \
+                       pDesingScheme_->PtS_Railway3D.GetAt(i)->y1,
+                       pDesingScheme_->PtS_Railway3D.GetAt(i)->z1);
             glTexCoord2f(1.0f, 0.0f);  // 设置纹理坐标(当前轨道断面右侧点)
-            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i)->x2, \
-                       myDesingScheme.PtS_Railway3D.GetAt(i)->y2,
-                       myDesingScheme.PtS_Railway3D.GetAt(i)->z2);
+            glVertex3f(pDesingScheme_->PtS_Railway3D.GetAt(i)->x2, \
+                       pDesingScheme_->PtS_Railway3D.GetAt(i)->y2,
+                       pDesingScheme_->PtS_Railway3D.GetAt(i)->z2);
             glTexCoord2f(1.0f, L / 10);  // 设置纹理坐标(下一前轨道断面右侧点)
-            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i + 1)->x2, \
-                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->y2,
-                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->z2);
+            glVertex3f(pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->x2, \
+                       pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->y2,
+                       pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->z2);
             glTexCoord2f(0.0f, L / 10);  // 设置纹理坐标(下一前轨道断面左侧点)
-            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i + 1)->x1, \
-                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->y1,
-                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->z1);
+            glVertex3f(pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->x1, \
+                       pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->y1,
+                       pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->z1);
             glEnd();
         }
         // 4.绘制道床边坡
         glBindTexture(GL_TEXTURE_2D, m_cTxtureGdToLJ.GetTxtID());  // 绑定道床边坡纹理
         glColor3f(1, 1, 0);  // 设置颜色
-        for (int32 i = 0; i < myDesingScheme.PtS_Railway3D.GetSize() - 1; i++) {
+        for (int32 i = 0; i < pDesingScheme_->PtS_Railway3D.GetSize() - 1; i++) {
             // 以矩形方式连接方式绘制左侧道床边坡
             glBegin(GL_POLYGON);
             glTexCoord2f(1.0f, 0.0f);  // 设置纹理坐标(当前左侧道床边坡左侧点)
-            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i)->x1, \
-                       myDesingScheme.PtS_Railway3D.GetAt(i)->y1,
-                       myDesingScheme.PtS_Railway3D.GetAt(i)->z1);
+            glVertex3f(pDesingScheme_->PtS_Railway3D.GetAt(i)->x1, \
+                       pDesingScheme_->PtS_Railway3D.GetAt(i)->y1,
+                       pDesingScheme_->PtS_Railway3D.GetAt(i)->z1);
             glTexCoord2f(1.0f, 1.0f);  // 设置纹理坐标(当前左侧道床边坡右侧点)
-            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i + 1)->x1, \
-                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->y1,
-                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->z1);
+            glVertex3f(pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->x1, \
+                       pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->y1,
+                       pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->z1);
             glTexCoord2f(0.0f, 1.0f);  // 设置纹理坐标(下一左侧道床边坡右侧点)
-            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->x1, \
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->y1,
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->z1);
+            glVertex3f(pDesingScheme_->PtS_RailwayLj3D.GetAt(i + 1)->x1, \
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i + 1)->y1,
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i + 1)->z1);
             glTexCoord2f(0.0f, 0.0f);  // 设置纹理坐标(下一左侧道床边坡左侧点)
-            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i)->x1, \
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->y1,
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->z1);
+            glVertex3f(pDesingScheme_->PtS_RailwayLj3D.GetAt(i)->x1, \
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i)->y1,
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i)->z1);
             glEnd();
             // 以矩形方式连接方式绘制右侧道床边坡
             glBegin(GL_POLYGON);
             glTexCoord2f(0.0f, 0.0f);  // 设置纹理坐标(当前右侧道床边坡左侧点)
-            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i)->x2, \
-                       myDesingScheme.PtS_Railway3D.GetAt(i)->y2,
-                       myDesingScheme.PtS_Railway3D.GetAt(i)->z2);
+            glVertex3f(pDesingScheme_->PtS_Railway3D.GetAt(i)->x2, \
+                       pDesingScheme_->PtS_Railway3D.GetAt(i)->y2,
+                       pDesingScheme_->PtS_Railway3D.GetAt(i)->z2);
             glTexCoord2f(0.0f, 1.0f);  // 设置纹理坐标(当前右侧道床边坡右侧点)
-            glVertex3f(myDesingScheme.PtS_Railway3D.GetAt(i + 1)->x2, \
-                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->y2,
-                       myDesingScheme.PtS_Railway3D.GetAt(i + 1)->z2);
+            glVertex3f(pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->x2, \
+                       pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->y2,
+                       pDesingScheme_->PtS_Railway3D.GetAt(i + 1)->z2);
             glTexCoord2f(1.0f, 1.0f);  // 设置纹理坐标(下一右侧道床边坡右侧点)
-            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->x2, \
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->y2,
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->z2);
+            glVertex3f(pDesingScheme_->PtS_RailwayLj3D.GetAt(i + 1)->x2, \
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i + 1)->y2,
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i + 1)->z2);
             glTexCoord2f(1.0f, 0.0f);  // 设置纹理坐标(下一右侧道床边坡左侧点)
-            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i)->x2, \
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->y2,
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->z2);
+            glVertex3f(pDesingScheme_->PtS_RailwayLj3D.GetAt(i)->x2, \
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i)->y2,
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i)->z2);
             glEnd();
         }
         // 5.绘制路肩
         glBindTexture(GL_TEXTURE_2D, m_cTxtureLJ.GetTxtID());  // 绑定路肩纹理
         glColor3f(1, 0.5, 0.25);
-        for (int32 i = 0; i < myDesingScheme.PtS_RailwayLj3D.GetSize() - 1; i++) {
+        for (int32 i = 0; i < pDesingScheme_->PtS_RailwayLj3D.GetSize() - 1; i++) {
             // 以矩形方式连接方式绘制左侧路肩
             glBegin(GL_POLYGON);
             glTexCoord2f(0.0f, 0.0f);  // 设置纹理坐标(当前左侧路肩断面左侧点)
-            glVertex3f(myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->x1, \
-                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->y1,
-                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->z1);
+            glVertex3f(pDesingScheme_->PtS_RailwayLjToBP3D.GetAt(i)->x1, \
+                       pDesingScheme_->PtS_RailwayLjToBP3D.GetAt(i)->y1,
+                       pDesingScheme_->PtS_RailwayLjToBP3D.GetAt(i)->z1);
             glTexCoord2f(0.0f, 1.0f);  // 设置纹理坐标(当前左侧路肩断面右侧点)
-            glVertex3f(myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i + 1)->x1, \
-                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i + 1)->y1,
-                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i + 1)->z1);
+            glVertex3f(pDesingScheme_->PtS_RailwayLjToBP3D.GetAt(i + 1)->x1, \
+                       pDesingScheme_->PtS_RailwayLjToBP3D.GetAt(i + 1)->y1,
+                       pDesingScheme_->PtS_RailwayLjToBP3D.GetAt(i + 1)->z1);
             glTexCoord2f(1.0f, 1.0f);  // 设置纹理坐标(下一左侧路肩断面右侧点)
-            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->x1, \
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->y1,
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->z1);
+            glVertex3f(pDesingScheme_->PtS_RailwayLj3D.GetAt(i + 1)->x1, \
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i + 1)->y1,
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i + 1)->z1);
             glTexCoord2f(1.0f, 0.0f);  // 设置纹理坐标(下一左侧路肩断面左侧点)
-            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i)->x1, \
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->y1,
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->z1);
+            glVertex3f(pDesingScheme_->PtS_RailwayLj3D.GetAt(i)->x1, \
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i)->y1,
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i)->z1);
             glEnd();
             // 以矩形方式连接方式绘制右侧路肩
             glBegin(GL_POLYGON);
             glTexCoord2f(0.0f, 0.0f);  // 设置纹理坐标(当前右侧路肩断面左侧点)
-            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i)->x2, \
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->y2,
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i)->z2);
+            glVertex3f(pDesingScheme_->PtS_RailwayLj3D.GetAt(i)->x2, \
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i)->y2,
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i)->z2);
             glTexCoord2f(1.0f, 0.0f);  // 设置纹理坐标(当前右侧路肩断面右侧点)
-            glVertex3f(myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->x2, \
-                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->y2,
-                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i)->z2);
+            glVertex3f(pDesingScheme_->PtS_RailwayLjToBP3D.GetAt(i)->x2, \
+                       pDesingScheme_->PtS_RailwayLjToBP3D.GetAt(i)->y2,
+                       pDesingScheme_->PtS_RailwayLjToBP3D.GetAt(i)->z2);
             glTexCoord2f(1.0f, 1.0f);  // 设置纹理坐标(下一右侧路肩断面右侧点)
-            glVertex3f(myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i + 1)->x2, \
-                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i + 1)->y2,
-                       myDesingScheme.PtS_RailwayLjToBP3D.GetAt(i + 1)->z2);
+            glVertex3f(pDesingScheme_->PtS_RailwayLjToBP3D.GetAt(i + 1)->x2, \
+                       pDesingScheme_->PtS_RailwayLjToBP3D.GetAt(i + 1)->y2,
+                       pDesingScheme_->PtS_RailwayLjToBP3D.GetAt(i + 1)->z2);
             glTexCoord2f(0.0f, 1.0f);  // 设置纹理坐标(下一右侧路肩断面左侧点)
-            glVertex3f(myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->x2, \
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->y2,
-                       myDesingScheme.PtS_RailwayLj3D.GetAt(i + 1)->z2);
+            glVertex3f(pDesingScheme_->PtS_RailwayLj3D.GetAt(i + 1)->x2, \
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i + 1)->y2,
+                       pDesingScheme_->PtS_RailwayLj3D.GetAt(i + 1)->z2);
             glEnd();
         }
         // 6.填补断面
-        int32 JD_Count = myDesingScheme.PtS_JD.GetSize();
+        int32 JD_Count = pDesingScheme_->PtS_JD.GetSize();
         int32 b_pIndex = 0;
         int32 e_pIndex = JD_Count - 1;
         if (JD_Count > 0) {
@@ -4580,7 +4568,7 @@ void CMy3DSymbolLibNewView::DrawRailwaythesme() {
             vector<Railway3DCordinate> rc2;
             vector<Railway3DCordinate> rc1;
             // 计算前后断面各点
-            myDesingScheme.CalculateFillFacePoints(rc2, rc1);
+            pDesingScheme_->CalculateFillFacePoints(rc2, rc1);
             // 根据点绘制面
             drawFillFace(rc2);
             drawFillFace(rc1);
@@ -4631,18 +4619,18 @@ void CMy3DSymbolLibNewView::DrawCenterLine(int64 index, BOOL ifSelectLine) {
     m_TempPts.RemoveAll();
     if (ifSelectLine) {  // 在选线设计
         Dh = 5;
-        x1 = myDesingScheme.PtS_JD.GetAt(index)->x;
-        // y1=myDesingScheme.PtS_JD.GetAt(index)->y;
-        z1 = myDesingScheme.PtS_JD.GetAt(index)->z;
+        x1 = pDesingScheme_->PtS_JD.GetAt(index)->x;
+        // y1=pDesingScheme_->PtS_JD.GetAt(index)->y;
+        z1 = pDesingScheme_->PtS_JD.GetAt(index)->z;
         y1 = GetHeight(x1, z1);
-        x2 = myDesingScheme.PtS_JD.GetAt(index + 1)->x;
-        // y2=myDesingScheme.PtS_JD.GetAt(index+1)->y;
-        z2 = myDesingScheme.PtS_JD.GetAt(index + 1)->z;
+        x2 = pDesingScheme_->PtS_JD.GetAt(index + 1)->x;
+        // y2=pDesingScheme_->PtS_JD.GetAt(index+1)->y;
+        z2 = pDesingScheme_->PtS_JD.GetAt(index + 1)->z;
         y2 = GetHeight(x2, z2);
     }
     glColor3f(0, 0, 1);
     PCordinate pt;
-    double L = myDesingScheme.GetDistenceXYZ(x1, y1, z1, x2, y2, z2);
+    double L = pDesingScheme_->GetDistenceXYZ(x1, y1, z1, x2, y2, z2);
     double L0 = 0;
     while (L0 <= L) {
         x0 = x1 + L0 / L * (x2 - x1);
@@ -4709,9 +4697,9 @@ void CMy3DSymbolLibNewView::DrawBP(int64 index, int32 BPside) {
     int64 i = index;
     int32 j;
     if (1 == BPside) {  // 左边坡
-        int32 N1 = myDesingScheme.PtS_HuPo.GetAt(i)->Huponums_L;
-        int32 N2 = myDesingScheme.PtS_HuPo.GetAt(i + 1)->Huponums_L;
-        if (myDesingScheme.PtS_HuPo.GetAt(i)->TW_left == 0 || myDesingScheme.PtS_HuPo.GetAt(i)->TW_right == 0) {
+        int32 N1 = pDesingScheme_->PtS_HuPo.GetAt(i)->Huponums_L;
+        int32 N2 = pDesingScheme_->PtS_HuPo.GetAt(i + 1)->Huponums_L;
+        if (pDesingScheme_->PtS_HuPo.GetAt(i)->TW_left == 0 || pDesingScheme_->PtS_HuPo.GetAt(i)->TW_right == 0) {
             glColor3f(0, 1, 1);
         } else {
             glColor3f(1, 0, 0);
@@ -4720,335 +4708,335 @@ void CMy3DSymbolLibNewView::DrawBP(int64 index, int32 BPside) {
             for (j = 0; j < N1; ++j) {
                 glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
                 // 如果路基类型相同(同为路堑或路堤)
-                if (myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].style == myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].style) {
+                if (pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].style == pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].style) {
                     glBegin(GL_POLYGON);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].z);
                     glEnd();
                 } else {  // 如果路基类型相同(路堑,路堤相连)
                     glBegin(GL_POLYGON);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].z);
                     glEnd();
                     glBegin(GL_POLYGON);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[2].z);
                     glTexCoord2f(0.5f, 0.5f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j + 1].Hp[1].z);
                     glTexCoord2f(0.5f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
                     glEnd();
                 }
                 if (j > 0) {
                     glBindTexture(GL_TEXTURE_2D, m_cTxturePT.GetTxtID());
                     glBegin(GL_POLYGON);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].z);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
                     glEnd();
                 }
             }
         } else {
             for (j = 0; j < N2; ++j) {
                 glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
-                if (myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].style == \
-                        myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].style) {
+                if (pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].style == \
+                        pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].style) {
                     glBegin(GL_POLYGON);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].z);
                     glEnd();
                 } else {
                     glBegin(GL_POLYGON);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].z);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[2].z);
                     glEnd();
                     glBegin(GL_POLYGON);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[2].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j + 1].Hp[1].z);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[2].z);
                     glEnd();
                 }
                 if (j > 0) {
                     glBindTexture(GL_TEXTURE_2D, m_cTxturePT.GetTxtID());
                     glBegin(GL_POLYGON);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[1].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_L[j].Hp[0].z);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[0].z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_L[j].Hp[1].z);
                     glEnd();
                 }
             }
         }
     } else if (BPside == 2) {
-        int32 N1 = myDesingScheme.PtS_HuPo.GetAt(i)->Huponums_R;
-        int32 N2 = myDesingScheme.PtS_HuPo.GetAt(i + 1)->Huponums_R;
+        int32 N1 = pDesingScheme_->PtS_HuPo.GetAt(i)->Huponums_R;
+        int32 N2 = pDesingScheme_->PtS_HuPo.GetAt(i + 1)->Huponums_R;
         if (N1 <= N2 && N1 > 0 && N2 > 0) {
             for (j = 0; j < N1; ++j) {
                 glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
-                if (myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].style == \
-                        myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].style) {
+                if (pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].style == \
+                        pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].style) {
                     glBegin(GL_POLYGON);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].z);
                     glEnd();
                 } else {
                     glBegin(GL_POLYGON);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].z);
                     glEnd();
                     glBegin(GL_POLYGON);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[2].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j + 1].Hp[1].z);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
                     glEnd();
                 }
                 if (j > 0) {
                     glBindTexture(GL_TEXTURE_2D, m_cTxturePT.GetTxtID());
                     glBegin(GL_POLYGON);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].z);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
                     glEnd();
                 }
             }
         } else {
             for (j = 0; j < N2; ++j) {
                 glBindTexture(GL_TEXTURE_2D, m_cTxtureBP.GetTxtID());
-                if (myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].style == \
-                        myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].style) {
+                if (pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].style == \
+                        pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].style) {
                     glBegin(GL_POLYGON);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].z);
                     glEnd();
                 } else {
                     glBegin(GL_POLYGON);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[2].z);
                     glEnd();
                     glBegin(GL_POLYGON);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[2].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j + 1].Hp[1].z);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[2].z);
                     glEnd();
                 }
                 if (j > 0) {
                     glBindTexture(GL_TEXTURE_2D, m_cTxturePT.GetTxtID());
                     glBegin(GL_POLYGON);
                     glTexCoord2f(0.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[1].z);
                     glTexCoord2f(1.0f, 0.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i)->HuPo_R[j].Hp[0].z);
                     glTexCoord2f(1.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[0].z);
                     glTexCoord2f(0.0f, 1.0f);
-                    glVertex3f(myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
-                               myDesingScheme.PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
+                    glVertex3f(pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].x,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].y,
+                               pDesingScheme_->PtS_HuPo.GetAt(i + 1)->HuPo_R[j].Hp[1].z);
                     glEnd();
                 }
             }
