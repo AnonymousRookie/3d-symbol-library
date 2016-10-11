@@ -3,8 +3,7 @@
 
 #include <vector>
 
-// SkyBox Tex
-enum {TP = 0, LF, BK, RT, FR};
+
 // LINE_ADD 添加线   AREA_ADD 添加面
 enum { QUERY_COORDINATE = 0, QUERY_DISTENCE, SELECTLINE, SELECTFLYPATH, LINE_ADD, AREA_ADD}; /*MOUSEMOVE_3DMODEL标识在移动模型，这是select——3dmodel模式下的操作应该暂停*/
 enum { SELECT = 0, MOVE, SCALE };

@@ -121,8 +121,7 @@ class CMy3DSymbolLibNewView : public CView {
 
     afx_msg void OnSkyboxTex();
 
-    void         CreateSkyBox();
-    void         SkyBoxTexture(UINT textur);
+
     afx_msg void OnUpdateDrawmodeLine(CCmdUI* pCmdUI);
     afx_msg void OnDrawmodeRender();
     afx_msg void OnUpdateDrawmodeRender(CCmdUI* pCmdUI);

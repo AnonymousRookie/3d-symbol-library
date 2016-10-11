@@ -223,11 +223,9 @@ void CMy3DSymbolLibNewView::InitData() {
         spaceSearchInfo_.m_bSearchDistencePtNums = 0;
         spaceSearchInfo_.m_QueryType = -1;
     }
-
     // 渲染模式
     m_Drawmode = 3;
     iTerrainType = 0;
-    pSkyBox_->iSkyBoxLoaded_ = false;
     g_isTerrainInit = false;
     // 初始化相机
     pCamera_->InitCamera();
@@ -271,19 +269,16 @@ void CMy3DSymbolLibNewView::InitData() {
         pCitySymbolData_->m_CitySymbolFolder = "CitySymbol";
         pTreeModelData_->m_TreeModelFolder   = "TreeModel";
     }
-
     m_LineEdit_pointNum = 0;
     fuse_Flag = FALSE;
     m_Area_pointNum = 0;
     Area_fuse_Flag = FALSE;
-
     m_CurrentProjectName = "";
     {
         // 是否存在已打开的符号文件
         exist_point_flag = FALSE;
         exist_line_flag = FALSE;
         exist_area_flag = FALSE;
-
         m_PointSymbolFile = "0";
         m_LineSymbolFile = "0";
         m_AreaSymbolFile = "0";
@@ -764,108 +759,6 @@ void CMy3DSymbolLibNewView::OnSkyboxTex() {
         g_texSkyBoxFlieNameFR = dlg.m_SkyBoxTexFR;
         LoadSkyBoxTex(g_texSkyBoxFlieNameTP, g_texSkyBoxFlieNameLF, g_texSkyBoxFlieNameBK, g_texSkyBoxFlieNameRT, g_texSkyBoxFlieNameFR);
     }
-}
-
-
-/********************************************************/
-/* Function:生成天空                                        */
-/********************************************************/
-void CMy3DSymbolLibNewView::CreateSkyBox() {
-    glPushMatrix();
-    int32 a = 3, wi = 3, he = 1, le = 3;
-    float width = MAP * wi;
-    float height = MAP * he;
-    float length = MAP * le;
-    int32 x0 = MAP - width / 2;
-    int32 x1 = MAP + width / 2;
-    int32 y0 = MAP / a - height / 3;
-    int32 y1 = MAP / a + height / 3;
-    int32 z0 = -MAP - length / 2;
-    int32 z1 = -MAP + length / 2;
-    // 设置BACK纹理参数
-    glBindTexture(GL_TEXTURE_2D, pSkyBox_->g_texSkyBox[BK]);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // 开始绘制
-    glBegin(GL_QUADS);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(x1, y0, z0);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(x1, y1, z0);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(x0, y1, z0);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(x0, y0, z0);
-    glEnd();
-    // 设置FRONT部分的纹理参数
-    glBindTexture(GL_TEXTURE_2D, pSkyBox_->g_texSkyBox[FR]);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // 开始绘制
-    glBegin(GL_QUADS);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(x0, y0, z1);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(x0, y1, z1);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(x1, y1, z1);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(x1, y0, z1);
-    glEnd();
-    // 设置TOP部分的纹理参数
-    glBindTexture(GL_TEXTURE_2D, pSkyBox_->g_texSkyBox[TP]);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // 开始绘制
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(x0, y1, z1);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(x0, y1, z0);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(x1, y1, z0);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(x1, y1, z1);
-    glEnd();
-    // 设置LEFT部分的纹理参数
-    glBindTexture(GL_TEXTURE_2D, pSkyBox_->g_texSkyBox[LF]);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // 开始绘制
-    glBegin(GL_QUADS);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(x0, y1, z0);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(x0, y1, z1);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(x0, y0, z1);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(x0, y0, z0);
-    glEnd();
-    // 设置RIGHT部分的纹理参数
-    glBindTexture(GL_TEXTURE_2D, pSkyBox_->g_texSkyBox[RT]);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // 开始绘制
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(x1, y0, z0);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(x1, y0, z1);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(x1, y1, z1);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(x1, y1, z0);
-    glEnd();
-    glPopMatrix();
-}
-
-void CMy3DSymbolLibNewView::SkyBoxTexture(UINT textur) {
-    glBindTexture(GL_TEXTURE_2D, textur);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 }
 
 void CMy3DSymbolLibNewView::OnDrawmodeLine() {
@@ -2555,7 +2448,7 @@ void CMy3DSymbolLibNewView::GetNorthPtangle() {
 /****************************************************************/
 void CMy3DSymbolLibNewView::MakeSkykList() {
     glNewList(m_SkyList , GL_COMPILE);
-    CreateSkyBox();
+    pSkyBox_->CreateSkyBox();
     glEndList();
 }
 
@@ -5548,7 +5441,7 @@ void CMy3DSymbolLibNewView::CalcuateJD(int32 rowNum, int32 row_index_begin, int3
     for (uint32 i = 0; i < JD_vector3.size(); ++i) {
         _pv.push_back(JD_vector3[i]);
     }
-    sort(_pv.begin(), _pv.end(), [](const Point3& p1, const Point3& p2)->bool {return p1.x < p2.x;});  // NOLINT
+    sort(_pv.begin(), _pv.end(), [](const Point3 & p1, const Point3 & p2)->bool {return p1.x < p2.x;}); // NOLINT
 }
 
 
@@ -5589,10 +5482,10 @@ void CMy3DSymbolLibNewView::GetMinXY(const vector<Point3>& _pv1,  const vector<P
     for (i = 0; i < _pv2.size(); ++i) {
         tmpPV.push_back(_pv2[i]);
     }
-    sort(tmpPV.begin(), tmpPV.end(), [](const Point3& p1, const Point3& p2)->bool {return p1.x < p2.x;});  // NOLINT
+    sort(tmpPV.begin(), tmpPV.end(), [](const Point3 & p1, const Point3 & p2)->bool {return p1.x < p2.x;}); // NOLINT
     *_minX = abs(tmpPV[0].x);
     *_maxX = abs(tmpPV[tmpPV.size() - 1].x);
-    sort(tmpPV.begin(), tmpPV.end(), [](const Point3& p1, const Point3& p2)->bool {return p1.z < p2.z;});  // NOLINT
+    sort(tmpPV.begin(), tmpPV.end(), [](const Point3 & p1, const Point3 & p2)->bool {return p1.z < p2.z;}); // NOLINT
     *_maxY = abs(tmpPV[0].z);
     *_minY = abs(tmpPV[tmpPV.size() - 1].z);
 }

@@ -4,14 +4,16 @@
 
 #include "Base/Uncopyable.h"
 
+// SkyBox Tex
+enum {TP = 0, LF, BK, RT, FR};
 
 class SkyBox : Base::Uncopyable {
-public:
+  public:
     SkyBox();
     ~SkyBox();
 
-
-public:
+    void CreateSkyBox();
+  public:
     CString m_SkyBoxFolder;
     CString m_SkyBoxKindFolder;
     CString m_SkyBoxTP;
