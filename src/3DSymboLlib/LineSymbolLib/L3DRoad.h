@@ -2,8 +2,10 @@
 #define L3D_ROAD_H
 
 #include <memory>
+#include <functional>
 #include "../MathUtils/Vec3.h"
-
+#include "DesingScheme.h"
+#include "../Texture.h"
 
 enum {INIT_CURVE_R = 15, INIT_CURVE_L0 = 1};
 
@@ -38,12 +40,44 @@ class L3DRoad {
     L3DRoad();
     ~L3DRoad();
 
-public:
+  public:
     void InitRoad();
+    // 填充2个面
+    void DrawFillFace(const vector<Railway3DCordinate>& fillFacePoints, CTexture* texture) const;
+    // 绘制边坡
+    void DrawBP(int64 index,
+                int32 BPside,
+                std::shared_ptr<CDesingScheme> pDesingScheme_,
+                CTexture* m_cTxtureBP,
+                CTexture* m_cTxturePT
+               );
 
+    typedef std::function<float (float x, float z)> GetHeightCallBack;
+    // 绘制中心线
+    void DrawCenterLine(int64 index,
+                        BOOL ifSelectLine,
+                        std::shared_ptr<CDesingScheme> pDesingScheme_,
+                        CArray<PCordinate, PCordinate>& m_TempPts,
+                        const GetHeightCallBack& getHeightCallBack,
+                        float getHeightCallBack_arg_x,
+                        float getHeightCallBack_arg_z
+                       );
+
+
+    void DrawRailwaythesme(std::shared_ptr<CDesingScheme> pDesingScheme_,
+                           CTexture* FillFace,
+                           GLuint m_Rail3DwayList,         // 线路三维模型显示列表(透视投影模式)
+                           CTexture* m_cTxtureBP,
+                           CTexture* m_cTxturePT,
+                           CTexture* m_cTxtureRailway,  // 轨道纹理
+                           CTexture* m_cTxtureGdToLJ,   // 道床边坡纹理
+                           CTexture* m_cTxtureLJ       // 路肩纹理
+                          );
   public:
     BOOL b_haveMadeRail3DwayList;   // 是否已经有三维线路显示列表(透视投影模式下)
     std::shared_ptr<Railway> pRailWay_;  // 线路路基结构
+
+
 
     /************************************************************************/
     /* Variables: 选线阈值设定(距离,夹角)                                     */

@@ -5,6 +5,7 @@
 #include <MMSystem.h>
 #include <cmath>
 #include <algorithm>
+#include <functional>
 #include <atlimage.h>
 #include "MFCFrameWork/MainFrm.h"
 #include "SpaceSearchSet.h"
@@ -256,7 +257,9 @@ class CMy3DSymbolLibNewView : public CView {
     /************************************************************************/
     /*                   线路                                               */
     /************************************************************************/
-
+    // 线路设计
+    std::shared_ptr<CDesingScheme> pDesingScheme_;
+    std::shared_ptr<L3DRoad> pL3DRoad_;
 
     GLuint m_Rail3DwayList;         // 线路三维模型显示列表(透视投影模式)
 
@@ -287,7 +290,7 @@ class CMy3DSymbolLibNewView : public CView {
     void getDegreeBetween2Vectors(CVector3& v1_Begin/*in*/, CVector3& v1_End/*in*/,  /* NOLINT */
                                   CVector3& v2_Begin/*in*/, CVector3& v2_End/*in*/, float* pDegreeRet/*out*/);  // NOLINT
 
-    void drawFillFace(vector<Railway3DCordinate> fillFacePoints);
+    void drawFillFace(const vector<Railway3DCordinate>& fillFacePoints);
 
     //=====================================================================================
 
@@ -452,18 +455,6 @@ class CMy3DSymbolLibNewView : public CView {
     PModelStruct ptree;             // tree
     PModelStruct pCitySymbol;       // CitySymbol
     BOOL m_isSetXYByMouse;
-
-
-
-
-    // 线路设计
-
-    std::shared_ptr<CDesingScheme> pDesingScheme_;
-
-    std::shared_ptr<L3DRoad> pL3DRoad_;
-
-
-
 
 
 
