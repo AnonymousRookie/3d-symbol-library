@@ -1386,7 +1386,13 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         glColor3f(0, 0, 1);
         glLineWidth(2.0);
         for (int32 i = 0; i < pDesingScheme_->PtS_JD.GetSize() - 1; i++) {
-            DrawCenterLine(i, TRUE);  // 绘制线路中心线
+            // 绘制线路中心线
+            pL3DRoad_->DrawCenterLine(i,
+                TRUE,
+                pDesingScheme_,
+                m_TempPts,
+                std::bind(&CMy3DSymbolLibNewView::GetHeight, this, std::placeholders::_1, std::placeholders::_2),
+                0, 0);
         }
         // 绘制交点标志
         for (int32 j = 0; j <= pDesingScheme_->PtS_JD.GetSize() - 1; ++j) {
@@ -4419,31 +4425,8 @@ void CMy3DSymbolLibNewView::DrawRailwaythesme() {
                                  &m_cTxtureLJ);
 }
 
-/**************************************/
-/* Function: 根据点绘制面              */
-/**************************************/
-void CMy3DSymbolLibNewView::drawFillFace(const vector<Railway3DCordinate>& fillFacePoints) {
-    pL3DRoad_->DrawFillFace(fillFacePoints, &m_cFillFaceTxture);
-}
 
-/**************************************/
-/* Function: 绘制中心线               */
-/**************************************/
-void CMy3DSymbolLibNewView::DrawCenterLine(int64 index, BOOL ifSelectLine) {
-    pL3DRoad_->DrawCenterLine(index,
-                              ifSelectLine,
-                              pDesingScheme_,
-                              m_TempPts,
-                              std::bind(&CMy3DSymbolLibNewView::GetHeight, this, std::placeholders::_1, std::placeholders::_2),
-                              0, 0);
-}
 
-/**************************************/
-/* Function: 绘制边坡                 */
-/**************************************/
-void CMy3DSymbolLibNewView::DrawBP(int64 index, int32 BPside) {
-    pL3DRoad_->DrawBP(index, BPside, pDesingScheme_, &m_cTxtureBP, &m_cTxturePT);
-}
 
 /**************************************/
 /* Function: 清除所有线路                 */

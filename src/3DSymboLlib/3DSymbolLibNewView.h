@@ -276,11 +276,6 @@ class CMy3DSymbolLibNewView : public CView {
     // 实现透视投影模式下的线路三维模型绘制
     void DrawRailwaythesme();
 
-    // 绘制中心线(位于地面以下的部分不绘制)
-    void DrawCenterLine(int64 index, BOOL ifSelectLine);
-
-    // 绘制边坡
-    void DrawBP(int64 index, int32 BPside);
 
     void fun(PCordinate ppt);
     void fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0);
@@ -290,7 +285,7 @@ class CMy3DSymbolLibNewView : public CView {
     void getDegreeBetween2Vectors(CVector3& v1_Begin/*in*/, CVector3& v1_End/*in*/,  /* NOLINT */
                                   CVector3& v2_Begin/*in*/, CVector3& v2_End/*in*/, float* pDegreeRet/*out*/);  // NOLINT
 
-    void drawFillFace(const vector<Railway3DCordinate>& fillFacePoints);
+
 
     //=====================================================================================
 
