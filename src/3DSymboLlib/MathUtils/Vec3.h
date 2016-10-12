@@ -284,6 +284,7 @@ class Vec3 {
 };
 
 typedef Vec3 CVector3;
+typedef Vec3 Point3;
 
 #include "Vec3.inl"
 

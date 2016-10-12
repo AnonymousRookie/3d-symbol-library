@@ -68,8 +68,7 @@ typedef struct Curve_R_L0_Struct {
     int32 curve_L0;
 } Curve_R_L0_Struct, *PCurve_R_L0_Struct;
 
-// 点
-typedef Vec3 Point3;
+
 
 // 线
 typedef struct _Line3 {

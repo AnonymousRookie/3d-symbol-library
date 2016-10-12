@@ -173,6 +173,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\GlobalVariable.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\LineSymbolLib\DesingScheme.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\LineSymbolLib\L3DRoad.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\LineSymbolLib\SimpleLine.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\LeastSquares.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\MathUtil.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\MathUtils\PointPolygonRelationship.h" />
@@ -218,6 +219,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClCompile Include="..\..\src\3DSymboLlib\GlobalVariable.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\LineSymbolLib\DesingScheme.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\LineSymbolLib\L3DRoad.cpp" />
+    <ClCompile Include="..\..\src\3DSymboLlib\LineSymbolLib\SimpleLine.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\LeastSquares.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\PointPolygonRelationship.cpp" />
     <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\Vec3.cpp" />

@@ -77,4 +77,9 @@ extern std::string g_recentlyOpenedProjectName;  // 选中的最近打开的工�
 // 最近打开的工程文件列表
 extern CStringArray g_strRecentOpenedFileArray;
 
+
+namespace Global {
+float GetHeight(float x, float z, float (*g_terrain)[3]);
+}
+
 #endif  // GLOBAL_VARIABLE_H
