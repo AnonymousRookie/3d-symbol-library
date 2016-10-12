@@ -203,9 +203,7 @@ CMy3DSymbolLibNewDoc* CMy3DSymbolLibNewView::GetDocument() const {  // 非调试
 
 
 
-/************************************************************************/
-/* Function: 初始化相关变量                                             */
-/************************************************************************/
+// Function: 初始化相关变量
 void CMy3DSymbolLibNewView::InitData() {
     glActiveTextureARB = NULL;
     glMultiTexCoord2fARB = NULL;
@@ -289,9 +287,7 @@ void CMy3DSymbolLibNewView::InitData() {
 }
 
 
-/************************************************************************/
-/* Function: 初始化线路数据                                             */
-/************************************************************************/
+// Function: 初始化线路数据
 void CMy3DSymbolLibNewView::initLines() {
     pL3DRoad_->InitRoad();
 }
@@ -421,10 +417,7 @@ void CMy3DSymbolLibNewView::OnSize(UINT nType, int32 cx, int32 cy) {
     }
 }
 
-
-/************************************************************************/
-/* Function: 导入等高线地形数据和纹理                                       */
-/************************************************************************/
+// Function: 导入等高线地形数据和纹理
 void CMy3DSymbolLibNewView::OnContourTerrainImport() {
     TerrainImportContour dlg;
     if (dlg.DoModal() == IDOK) {
@@ -453,9 +446,8 @@ bool CMy3DSymbolLibNewView::LoadT8(char* filename, GLuint& texture) {  // NOLINT
 }
 
 
-/************************************************************************/
-/* Function: 调等高线地势图                                             */
-/************************************************************************/
+
+// Function: 调等高线地势图
 unsigned char* CMy3DSymbolLibNewView::LoadBit(char* filename, BITMAPINFOHEADER* bitmap) {
     FILE* filePtr;                                              // 定义位图结构
     BITMAPFILEHEADER  Header;                                   // 定义位图指针
@@ -519,9 +511,7 @@ void CMy3DSymbolLibNewView::InitTerrain() {
 }
 
 
-/************************************************************************/
-/* Function: 三维地形绘制   ,利用glDrawElements快速绘制排列好的顶点地形     */
-/************************************************************************/
+// Function: 三维地形绘制   ,利用glDrawElements快速绘制排列好的顶点地形
 void CMy3DSymbolLibNewView::DrawTerrain() {
     // glShadeModel函数用来设置阴影的效果，GL_SMOOTH为默认值，表示平滑阴影效果；
     glShadeModel(GL_SMOOTH);
@@ -560,10 +550,7 @@ void CMy3DSymbolLibNewView::DrawTerrain() {
     }
 }
 
-
-/************************************************************************/
-/* Function: 获取地面高度                                                   */
-/************************************************************************/
+// Function: 获取地面高度
 float CMy3DSymbolLibNewView::GetHeight(float x, float z) {
     float CameraX = x / MAP_SCALE;                  // 计算在哪一列
     float CameraZ = -z / MAP_SCALE;                 // 计算在哪一行
@@ -598,9 +585,8 @@ void CMy3DSymbolLibNewView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
     CView::OnChar(nChar, nRepCnt, nFlags);
 }
 
-/********************************************************/
-/* Function:设置绘图模式                                    */
-/********************************************************/
+
+// Function:设置绘图模式
 void  CMy3DSymbolLibNewView::SetDrawMode() {
     switch (m_Drawmode) {  // 绘制模式
         case 1:  // 线框模式
@@ -618,10 +604,7 @@ void  CMy3DSymbolLibNewView::SetDrawMode() {
     }
 }
 
-
-/********************************************************/
-/* Function:场景绘制                                     */
-/********************************************************/
+// Function:场景绘制
 void CMy3DSymbolLibNewView::DrawScene() {
     glClearColor(0.53, 0.81, 0.92, 0.0);                 // 设置刷新背景色SkyBlue: 135,206,235
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // 刷新背景
@@ -728,10 +711,7 @@ void CMy3DSymbolLibNewView::DrawScene() {
     glEnable(GL_COLOR_MATERIAL);
 }
 
-
-/********************************************************/
-/* Function:天空盒纹理导入以及参数设置                      */
-/********************************************************/
+// Function:天空盒纹理导入以及参数设置
 void CMy3DSymbolLibNewView::OnSkyboxTex() {
     CSkyBoxTexLoad dlg;
     if (dlg.DoModal() == IDOK) {
@@ -773,10 +753,7 @@ void CMy3DSymbolLibNewView::OnUpdateDrawmodeTexture(CCmdUI* pCmdUI) {
     pCmdUI->SetCheck(m_Drawmode == 3);  // 根据m_ViewType值是否设置选中标志
 }
 
-
-/********************************************************/
-/* Function:空间查询标志设置                                */
-/********************************************************/
+// Function:空间查询标志设置
 void CMy3DSymbolLibNewView::OnSpacequerySet() {
     CSpaceSearchSet dlg;
     dlg.spaceSearchInfo_.m_shizxLength = spaceSearchInfo_.m_shizxLength;      // 查询标志十字线长度
@@ -795,20 +772,14 @@ void CMy3DSymbolLibNewView::OnSpacequerySet() {
     }
 }
 
-
-/********************************************************/
-/* Function: 查询三维坐标                                 */
-/********************************************************/
+// Function: 查询三维坐标
 void CMy3DSymbolLibNewView::OnQueryCoordinate() {
     // 如果当前已经是查询三维坐标状态，则关闭; 如果当前已经不是查询三维坐标状态，则打开
     spaceSearchInfo_.m_QueryType = (QUERY_COORDINATE == spaceSearchInfo_.m_QueryType) ? -1 : QUERY_COORDINATE;
     m_OperateType = -1;
 }
 
-
-/********************************************************/
-/* Function: 设置是否选中状态                             */
-/********************************************************/
+// Function: 设置是否选中状态
 void CMy3DSymbolLibNewView::OnUpdateQueryCoordinate(CCmdUI* pCmdUI) {
     pCmdUI->SetCheck(spaceSearchInfo_.m_QueryType == QUERY_COORDINATE);
 }
@@ -826,8 +797,7 @@ void CMy3DSymbolLibNewView::OnUpdateQueryDistence(CCmdUI* pCmdUI) {
 
 
 /********************************************************/
-/* Function: 屏幕坐标 ==> 三维坐标                      */
-/********************************************************/
+// Function: 屏幕坐标 ==> 三维坐标
 void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
     int32 mouse_x = point.x;
     int32 mouse_y = point.y;
@@ -1182,8 +1152,7 @@ void CMy3DSymbolLibNewView::ScreenToGL2(CPoint point, GLdouble& wx , GLdouble& w
 }
 
 /********************************************************/
-/* Function: 计算2个向量之间的夹角                      */
-/********************************************************/
+// Function: 计算2个向量之间的夹角
 void CMy3DSymbolLibNewView::getDegreeBetween2Vectors(CVector3& v1_Begin, CVector3& v1_End,  /* NOLINT */
         CVector3& v2_Begin, CVector3& v2_End, float* pDegreeRet/*返回结果*/) {  // NOLINT
     CVector3 v1 = v1_End - v1_Begin;
@@ -1323,8 +1292,7 @@ void CMy3DSymbolLibNewView::fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0) {
 
 
 /********************************************************/
-/* Function: 绘制空间查询标志                             */
-/********************************************************/
+// Function: 绘制空间查询标志
 void CMy3DSymbolLibNewView::DrawSearchPoint() {
     glViewport(0, 0, WinViewX, WinViewY);                                               // 重新设置视口大小
     glPushAttrib(GL_CURRENT_BIT);                                                       // 保存现有颜色属性
@@ -1649,8 +1617,7 @@ void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 
 /****************************************************************/
-/* Function: 根据鼠标和键盘实现三维场景相机的移动和旋转控制         */
-/****************************************************************/
+// Function: 根据鼠标和键盘实现三维场景相机的移动和旋转控制
 void CMy3DSymbolLibNewView::CamraUpdate() {
     CVector3 vCross = CVector3::CrossProduct(pCamera_->m_vLook - pCamera_->m_vEyePosition, pCamera_->m_vUp);  // 叉积计算
     m_vStrafe = vCross.getNormalized();                                  // vCross归一化
@@ -1662,8 +1629,7 @@ void CMy3DSymbolLibNewView::CamraUpdate() {
 
 
 /****************************************************************/
-/* Function: 在X轴方向上移动时设置相机观察点和视点坐标              */
-/****************************************************************/
+// Function: 在X轴方向上移动时设置相机观察点和视点坐标
 void CMy3DSymbolLibNewView::MoveCameraX(float speed) {
     pCamera_->m_vEyePosition.x += m_vStrafe.x * speed;                        // 相机视点x新坐标
     pCamera_->m_vEyePosition.z += m_vStrafe.z * speed;                        // 相机视点z新坐标
@@ -1673,8 +1639,7 @@ void CMy3DSymbolLibNewView::MoveCameraX(float speed) {
 
 
 /****************************************************************/
-/* Function: 在Z轴方向上移动时设置相机观察点和视点坐标              */
-/****************************************************************/
+// Function: 在Z轴方向上移动时设置相机观察点和视点坐标
 void CMy3DSymbolLibNewView::MoveCameraZ(float speed) {
     CVector3 vVector = pCamera_->m_vLook - pCamera_->m_vEyePosition;                        // 相机视点与观察点三维坐标差值
     vVector = vVector.getNormalized();                              // 相机视点与观察点三维坐标差值归一化
@@ -1686,8 +1651,7 @@ void CMy3DSymbolLibNewView::MoveCameraZ(float speed) {
 
 
 /****************************************************************/
-/* Function: 根据键盘按键值来重新设置相机                           */
-/****************************************************************/
+// Function: 根据键盘按键值来重新设置相机
 void CMy3DSymbolLibNewView::CheckForMovement() {
     if (m_keynumber == 1) {                                         // ↑上箭头按键，向场景外移动(Z轴正方向)
         MoveCameraZ(pCamera_->m_Step_Z);                                      // 在Z轴方向上移动时设置相机观察点和视点坐标
@@ -1702,8 +1666,7 @@ void CMy3DSymbolLibNewView::CheckForMovement() {
 
 
 /****************************************************************/
-/* Function: 设置相机                                           */
-/****************************************************************/
+// Function: 设置相机
 void CMy3DSymbolLibNewView::SetCamra() {
     gluLookAt(pCamera_->m_vEyePosition.x, pCamera_->m_vEyePosition.y, pCamera_->m_vEyePosition.z,     // 视点
               pCamera_->m_vLook.x, pCamera_->m_vLook.y, pCamera_->m_vLook.z,                          // 目标点
@@ -1765,8 +1728,7 @@ void CMy3DSymbolLibNewView::OnMouseMove(UINT nFlags, CPoint point) {
 
 
 /****************************************************************/
-/* Function: 通过鼠标实现相机控制                                   */
-/****************************************************************/
+// Function: 通过鼠标实现相机控制
 void CMy3DSymbolLibNewView::SetViewByMouse() {
     if (!m_bmouseView) {    // 如果鼠标控制场景关闭时,返回
         return;
@@ -1798,8 +1760,7 @@ void CMy3DSymbolLibNewView::SetViewByMouse() {
 
 
 /****************************************************************/
-/* Function: 通过鼠标控制相机的旋转(旋转视角)                       */
-/****************************************************************/
+// Function: 通过鼠标控制相机的旋转(旋转视角)
 void CMy3DSymbolLibNewView::RotateView(float angle, float x, float y, float z) {
     CVector3 vNewView;
     CVector3 vView = pCamera_->m_vLook - pCamera_->m_vEyePosition;          // 相机视点与观察点三维坐标差值
@@ -1832,8 +1793,7 @@ void CMy3DSymbolLibNewView::OnCameraParamSet() {
 
 
 /****************************************************************/
-/* Function: 手动设置飞行路径                                       */
-/****************************************************************/
+// Function: 手动设置飞行路径
 void CMy3DSymbolLibNewView::OnPathManuinput() {
     m_ShowFlyPath = TRUE;           // 标识是否显示飞行路径
     spaceSearchInfo_.m_QueryType = SELECTFLYPATH;    // 进行飞行路径选择
@@ -1842,8 +1802,7 @@ void CMy3DSymbolLibNewView::OnPathManuinput() {
 
 
 /****************************************************************/
-/* Function: 绘制飞行路径                                           */
-/****************************************************************/
+// Function: 绘制飞行路径
 void CMy3DSymbolLibNewView::DrawFlyPath() {
     // 如果显示飞行路径并且飞行路径坐标点数>1,才绘制飞行路径
     if (m_ShowFlyPath == TRUE  && m_FlayPath.GetSize() > 1) {  // 进行飞行路径选择
@@ -1866,8 +1825,7 @@ void CMy3DSymbolLibNewView::DrawFlyPath() {
 
 
 /****************************************************************/
-/* Function: 路径坐标插值                                           */
-/****************************************************************/
+// Function: 路径坐标插值
 void CMy3DSymbolLibNewView::OnFlppathInterpolation() {
     int32 i;
     float m_InsertDdis = 1;         // 插值间距
@@ -1920,8 +1878,7 @@ void CMy3DSymbolLibNewView::OnFlppathInterpolation() {
 
 
 /****************************************************************/
-/* Function: 保存飞行路径                                        */
-/****************************************************************/
+// Function: 保存飞行路径
 void CMy3DSymbolLibNewView::OnFlypathSave() {
     CString     NeededFile;
     char        FileFilter[] = "飞行路径(*.pth)|*.pth||";
@@ -1944,8 +1901,7 @@ void CMy3DSymbolLibNewView::OnFlypathSave() {
 
 
 /****************************************************************/
-/* Function: 飞行路径保存                                           */
-/****************************************************************/
+// Function: 飞行路径保存
 int32 CMy3DSymbolLibNewView::FlyPathSave(char* pathfile) {
     FILE*    fpw;
     char    message[200];
@@ -1966,8 +1922,7 @@ int32 CMy3DSymbolLibNewView::FlyPathSave(char* pathfile) {
 
 
 /****************************************************************/
-/* Function: 打开飞行路径                                           */
-/****************************************************************/
+// Function: 打开飞行路径
 void CMy3DSymbolLibNewView::OnFlyOpenpath() {
     CString     NeededFile;
     char        FileFilter[] = "飞行路径(*.pth)|*.pth||";
@@ -1997,8 +1952,7 @@ void CMy3DSymbolLibNewView::OnFlyOpenpath() {
 
 
 /****************************************************************/
-/* Function: 读取飞行路径文件数据动态数组中                     */
-/****************************************************************/
+// Function: 读取飞行路径文件数据动态数组中
 int32 CMy3DSymbolLibNewView::FlyPathRead(char* pathfile) {
     CString tt, m_strszLine;
     PCordinate ppt = new Cordinate;
@@ -2029,8 +1983,7 @@ int32 CMy3DSymbolLibNewView::FlyPathRead(char* pathfile) {
 
 
 /****************************************************************/
-/* Function: 显示或关闭飞行路径                                 */
-/****************************************************************/
+// Function: 显示或关闭飞行路径
 void CMy3DSymbolLibNewView::OnFlyOnoffpath() {
     m_ShowFlyPath = m_ShowFlyPath ? FALSE : TRUE;
     Invalidate(FALSE);
@@ -2038,8 +1991,7 @@ void CMy3DSymbolLibNewView::OnFlyOnoffpath() {
 
 
 /****************************************************************/
-/* Function: 根据m_ShowFlyPath值修改菜单文本                        */
-/****************************************************************/
+// Function: 根据m_ShowFlyPath值修改菜单文本
 void CMy3DSymbolLibNewView::OnUpdateFlyOnoffpath(CCmdUI* pCmdUI) {
     if (m_ShowFlyPath)                      // 如果当前是显示飞行路径
         pCmdUI->SetText("关闭飞行路径");     // 将菜单名称设置为"关闭飞行路径"
@@ -2049,8 +2001,7 @@ void CMy3DSymbolLibNewView::OnUpdateFlyOnoffpath(CCmdUI* pCmdUI) {
 
 
 /****************************************************************/
-/* Function: 按固定高度漫游                                     */
-/****************************************************************/
+// Function: 按固定高度漫游
 void CMy3DSymbolLibNewView::OnFlyStaticheight() {
     if (m_FlayPath.GetSize() <= 0) {                    // 如果飞行路径坐标点数量<=0，即飞行路径为空
         MessageBox("没有输入路径文件", "飞行浏览", MB_ICONWARNING);
@@ -2075,16 +2026,14 @@ void CMy3DSymbolLibNewView::OnUpdateFlyStaticheight(CCmdUI* pCmdUI) {
 
 
 /****************************************************************/
-/* Function: 设置飞行计时器                                     */
-/****************************************************************/
+// Function: 设置飞行计时器
 void CMy3DSymbolLibNewView::SetFLyTimer() {
     SetTimer(1, m_flyspeed, NULL);                      // m_flyspeed:飞行计时器时间间隔,
 }
 
 
 /****************************************************************/
-/* Function: 计时器,飞行频率控制器                              */
-/****************************************************************/
+// Function: 计时器,飞行频率控制器
 void CMy3DSymbolLibNewView::OnTimer(UINT nIDEvent) {
     switch (nIDEvent) {
         case 1:  // 三维漫游
@@ -2122,8 +2071,7 @@ void CMy3DSymbolLibNewView::OnTimer(UINT nIDEvent) {
 
 
 /****************************************************************/
-/* Function: 根据漫游路径相临坐标点计算相机各参数                   */
-/****************************************************************/
+// Function: 根据漫游路径相临坐标点计算相机各参数
 void CMy3DSymbolLibNewView::GetCameraCorrdinate(double x1, double y1, double z1, double x2, double y2, double z2) {
     // (x1,y1,x1):飞行路径当前点坐标
     // (x2,y2,x2):飞行路径下一点坐标
@@ -2153,8 +2101,7 @@ void CMy3DSymbolLibNewView::GetCameraCorrdinate(double x1, double y1, double z1,
 
 
 /****************************************************************/
-/* Function: 按相对高度漫游方式                                 */
-/****************************************************************/
+// Function: 按相对高度漫游方式
 void CMy3DSymbolLibNewView::OnFlyRoutineheight() {
     if (m_FlayPath.GetSize() <= 0) {  // 如果飞行路径坐标点数量<=0，即飞行路径为空
         MessageBox("没有输入路径文件", "飞行浏览", MB_ICONWARNING);
@@ -2169,8 +2116,7 @@ void CMy3DSymbolLibNewView::OnFlyRoutineheight() {
 
 
 /****************************************************************/
-/* Function: 设置菜单是否设置选中标识"√"                           */
-/****************************************************************/
+// Function: 设置菜单是否设置选中标识"√"
 void CMy3DSymbolLibNewView::OnUpdateFlyRoutineheight(CCmdUI* pCmdUI) {
     pCmdUI->Enable(m_PathFlag == TRUE);                  // 根据是否具有有效飞行路径值设置菜单状态
     if (m_FlyHeightType == GIS_FLY_PATHHEIGHT)              // 如果当前是"沿相对高度漫游"方式
@@ -2181,8 +2127,7 @@ void CMy3DSymbolLibNewView::OnUpdateFlyRoutineheight(CCmdUI* pCmdUI) {
 
 
 /****************************************************************/
-/* Function: 开始/暂停漫游                                      */
-/****************************************************************/
+// Function: 开始/暂停漫游
 void CMy3DSymbolLibNewView::OnFlyPlaypause() {
     if (m_FlyPause == FALSE) {                              // 如果不是暂停漫游,即处于漫游状态
         m_FlyPause = TRUE;                                  // 设置暂停标识m_FlyPause=TRUE
@@ -2195,8 +2140,7 @@ void CMy3DSymbolLibNewView::OnFlyPlaypause() {
 
 
 /****************************************************************/
-/* Function: 根据m_FlyPause值设置菜单ID_FLY_PLAYPAUSE文本           */
-/****************************************************************/
+// Function: 根据m_FlyPause值设置菜单ID_FLY_PLAYPAUSE文本
 void CMy3DSymbolLibNewView::OnUpdateFlyPlaypause(CCmdUI* pCmdUI) {
     pCmdUI->Enable(m_fly_start_pause_Enable == TRUE);
     if (m_FlyPause)                             // 如果处于漫游状态
@@ -2207,8 +2151,7 @@ void CMy3DSymbolLibNewView::OnUpdateFlyPlaypause(CCmdUI* pCmdUI) {
 
 
 /****************************************************************/
-/* Function: 停止漫游                                           */
-/****************************************************************/
+// Function: 停止漫游
 void CMy3DSymbolLibNewView::OnFlyStop() {
     KillTimer(1);                       // 销毁定时器1
     m_flypathPtIndex = 0;               // 飞行路径坐标索引=0
@@ -2219,8 +2162,7 @@ void CMy3DSymbolLibNewView::OnFlyStop() {
 
 
 /****************************************************************/
-/* Function: 单步前进                                           */
-/****************************************************************/
+// Function: 单步前进
 void CMy3DSymbolLibNewView::OnFlyOnestep() {
     // 如果飞行路径坐标索引>=0并且<飞行路径坐标总数-1,该条件表示的是
     // 只要飞行路径坐标索引没有到飞行路径尾,就可以执行单步前进
@@ -2243,8 +2185,7 @@ void CMy3DSymbolLibNewView::OnFlyOnestep() {
 
 
 /****************************************************************/
-/* Function: 飞行视野扩大                                           */
-/****************************************************************/
+// Function: 飞行视野扩大
 void CMy3DSymbolLibNewView::OnFlyViewEnlarge() {
     m_ViewWideNarrow += 5.0f;                        // m_ViewWideNarrow值增加
     OnDraw(GetDC());                                 // 刷新三维场景
@@ -2252,8 +2193,7 @@ void CMy3DSymbolLibNewView::OnFlyViewEnlarge() {
 
 
 /****************************************************************/
-/* Function: 飞行视野减小                                           */
-/****************************************************************/
+// Function: 飞行视野减小
 void CMy3DSymbolLibNewView::OnFlyViewSmall() {
     m_ViewWideNarrow -= 5.0f;                        // m_ViewWideNarrow值减小
     OnDraw(GetDC());                                 // 刷新三维场景
@@ -2261,8 +2201,7 @@ void CMy3DSymbolLibNewView::OnFlyViewSmall() {
 
 
 /****************************************************************/
-/* Function: 飞行高度增加                                           */
-/****************************************************************/
+// Function: 飞行高度增加
 void CMy3DSymbolLibNewView::OnFlyHeightUp() {
     m_StaticHeight += 8;                            // 高度值增加(步长=8,可任意设定)
     OnDraw(GetDC());                                // 刷新三维场景
@@ -2270,8 +2209,7 @@ void CMy3DSymbolLibNewView::OnFlyHeightUp() {
 
 
 /****************************************************************/
-/* Function: 飞行高度降低                                           */
-/****************************************************************/
+// Function: 飞行高度降低
 void CMy3DSymbolLibNewView::OnFlyHeightDown() {
     m_StaticHeight -= 8;                            // 高度值增加(步长=8,可任意设定)
     OnDraw(GetDC());                                // 刷新三维场景
@@ -2279,8 +2217,7 @@ void CMy3DSymbolLibNewView::OnFlyHeightDown() {
 
 
 /****************************************************************/
-/* Function: 飞行视角上倾(仰视)                                 */
-/****************************************************************/
+// Function: 飞行视角上倾(仰视)
 void CMy3DSymbolLibNewView::OnFlyViewUp() {
     m_ViewUpDown += 1.0f;
     OnDraw(GetDC());                                // 刷新三维场景
@@ -2288,8 +2225,7 @@ void CMy3DSymbolLibNewView::OnFlyViewUp() {
 
 
 /****************************************************************/
-/* Function: 飞行视角下倾(俯视)                                 */
-/****************************************************************/
+// Function: 飞行视角下倾(俯视)
 void CMy3DSymbolLibNewView::OnFlyViewDown() {
     m_ViewUpDown -= 1.0f;
     OnDraw(GetDC());                                // 刷新三维场景
@@ -2297,8 +2233,7 @@ void CMy3DSymbolLibNewView::OnFlyViewDown() {
 
 
 /****************************************************************/
-/* Function: 加速                                               */
-/****************************************************************/
+// Function: 加速
 void CMy3DSymbolLibNewView::OnFlySpeedUp() {
     m_flyspeed -= 2;                                // 飞行时的计时器时间间隔减少
     if (m_flyspeed <= 1)                            // 如果计时器时间间隔<=1,则有
@@ -2308,8 +2243,7 @@ void CMy3DSymbolLibNewView::OnFlySpeedUp() {
 
 
 /****************************************************************/
-/* Function: 减速                                               */
-/****************************************************************/
+// Function: 减速
 void CMy3DSymbolLibNewView::OnFlySpeedDown() {
     m_flyspeed += 2;                                // 飞行时的计时器时间间隔增加
     SetFLyTimer();                                  // 设置飞行计时器
@@ -2317,8 +2251,7 @@ void CMy3DSymbolLibNewView::OnFlySpeedDown() {
 
 
 /****************************************************************/
-/* Function: 三维漫游调整热键帮助                                   */
-/****************************************************************/
+// Function: 三维漫游调整热键帮助
 void CMy3DSymbolLibNewView::DisplayHelp() {
     std::ostringstream help_info_str;
     help_info_str << " 向↑键   往前方向移动\n";
@@ -2357,8 +2290,7 @@ void CMy3DSymbolLibNewView::TextFlyHelp() {
 
 
 /****************************************************************/
-/* Function: 初始化显示列表                                     */
-/****************************************************************/
+// Function: 初始化显示列表
 void CMy3DSymbolLibNewView::InitList() {
     pNClock_->m_ClockList = glGenLists(1);
     m_SkyList = pNClock_->m_ClockList + 1;                   // 背景天空显示列表
@@ -2368,8 +2300,7 @@ void CMy3DSymbolLibNewView::InitList() {
 
 
 /****************************************************************/
-/* Function: 时钟指北针的绘制                                       */
-/****************************************************************/
+// Function: 时钟指北针的绘制
 void CMy3DSymbolLibNewView::DrawClock() {
     glPushAttrib(GL_CURRENT_BIT);                   // 保存现有颜色属性
     glPushMatrix();                                 // 压入矩阵堆栈
@@ -2398,8 +2329,7 @@ void CMy3DSymbolLibNewView::SetClockProjectionNavigate() {
 
 
 /****************************************************************/
-/* Function: 根据相机的视点坐标和观察点坐标计算时钟指北针指向角度   */
-/****************************************************************/
+// Function: 根据相机的视点坐标和观察点坐标计算时钟指北针指向角度
 void CMy3DSymbolLibNewView::GetNorthPtangle() {
     float dx, dz, ar;
     dx = pCamera_->m_vEyePosition.x - pCamera_->m_vLook.x;              // 相机视点与观察点x坐标之差
@@ -2433,8 +2363,7 @@ void CMy3DSymbolLibNewView::GetNorthPtangle() {
 
 
 /****************************************************************/
-/* Function: 生成绘制背景天空显示列表                               */
-/****************************************************************/
+// Function: 生成绘制背景天空显示列表
 void CMy3DSymbolLibNewView::MakeSkykList() {
     glNewList(m_SkyList , GL_COMPILE);
     pSkyBox_->CreateSkyBox();
@@ -2443,8 +2372,7 @@ void CMy3DSymbolLibNewView::MakeSkykList() {
 
 
 /****************************************************************/
-/* Function: 绘制天空背景                                           */
-/****************************************************************/
+// Function: 绘制天空背景
 void CMy3DSymbolLibNewView::DrawSky() {
     glPushAttrib(GL_CURRENT_BIT);
     glPushMatrix();
@@ -2461,8 +2389,7 @@ void CMy3DSymbolLibNewView::DrawSky() {
 
 
 /****************************************************************/
-/* Function: 背景天空投影设置                                       */
-/****************************************************************/
+// Function: 背景天空投影设置
 void CMy3DSymbolLibNewView::SetSkyProjection() {
     glViewport(0, 0, WinViewX, WinViewY);             // 设置视口大小和位置
     glMatrixMode(GL_PROJECTION);
@@ -2475,8 +2402,7 @@ void CMy3DSymbolLibNewView::SetSkyProjection() {
 
 
 /****************************************************************/
-/* Function: 背景天空导航图投影设置                             */
-/****************************************************************/
+// Function: 背景天空导航图投影设置
 void CMy3DSymbolLibNewView::SetSkyProjectionNavigate() {
     glClearDepth(1.0f);                             // 设置初始化深度缓存值
     glEnable(GL_DEPTH_TEST);                        // 启用深度测试
@@ -2496,8 +2422,7 @@ void CMy3DSymbolLibNewView::SetSkyProjectionNavigate() {
 
 
 /****************************************************************/
-/* Function: 导入3DS模型 设置参数                                 */
-/****************************************************************/
+// Function: 导入3DS模型 设置参数
 void CMy3DSymbolLibNewView::On3dsModelLoad() {
     // TODO(jason): 在此添加命令处理程序代码
     CString tt, stt;
@@ -2578,8 +2503,7 @@ void CMy3DSymbolLibNewView::Draw3DModel(PModelParamStruct model) {
 
 
 /****************************************************************/
-/* Function: 3d模型选择以及参数设置                             */
-/****************************************************************/
+// Function: 3d模型选择以及参数设置
 void CMy3DSymbolLibNewView::On3dsModelSelectSet() {
     // TODO(jason): 在此添加命令处理程序代码
     bIsSelect3DModel_ = !bIsSelect3DModel_;
@@ -2611,8 +2535,7 @@ void CMy3DSymbolLibNewView::OnUpdate3dsModelSelectSet(CCmdUI* pCmdUI) {
 
 
 /****************************************************************/
-/* Function: 移动模型,从左键按下到左键弹起的距离                    */
-/****************************************************************/
+// Function: 移动模型,从左键按下到左键弹起的距离
 void CMy3DSymbolLibNewView::OnLButtonUp(UINT nFlags, CPoint point) {
     // TODO(jason): 在此添加消息处理程序代码和/或调用默认值
     if (m_OperateType == MOVE) {  // 移动选中3D模型
@@ -2640,8 +2563,7 @@ void CMy3DSymbolLibNewView::OnUpdate3dsModelMouseMove(CCmdUI* pCmdUI) {
 
 
 /****************************************************************/
-/* Function: 在坐标转换时判断鼠标是否落入3D模型空间范围内           */
-/****************************************************************/
+// Function: 在坐标转换时判断鼠标是否落入3D模型空间范围内
 void CMy3DSymbolLibNewView::JudgeModelSelected(PCordinate ppt) {
     // 获取模型中三维点极值
     int32 minx, maxx, minz, maxz;
@@ -2673,8 +2595,7 @@ void CMy3DSymbolLibNewView::JudgeModelSelected(PCordinate ppt) {
 
 
 /****************************************************************/
-/* Function: 导入景观树 设置参数                                    */
-/****************************************************************/
+// Function: 导入景观树 设置参数
 void CMy3DSymbolLibNewView::OnTreeLoad() {
     // TODO(jason): 在此添加命令处理程序代码
     CString tt, stt;
@@ -2715,8 +2636,7 @@ void CMy3DSymbolLibNewView::OnTreeLoad() {
 
 
 /*************************************************************************/
-/* Function: 树的贴图需要透明显示，透明显示要求树的图片应该是16位色的BMP位图     */
-/*************************************************************************/
+// Function: 树的贴图需要透明显示，透明显示要求树的图片应该是16位色的BMP位图
 void CMy3DSymbolLibNewView::LoadT16(char* filename, GLuint& texture) {  // NOLINT
     glGenTextures(1, &texture);                                         // 获取1个未使用的贴图名称
     glBindTexture(GL_TEXTURE_2D, texture);                              // 选择要绑定的贴图（纹理）
@@ -2741,8 +2661,7 @@ void CMy3DSymbolLibNewView::LoadT16(char* filename, GLuint& texture) {  // NOLIN
 
 
 /********************************************************************/
-/* Function: 显示特殊平面树，场景旋转时树也跟着旋转，始终是正面对着用户 */
-/********************************************************************/
+// Function: 显示特殊平面树，场景旋转时树也跟着旋转，始终是正面对着用户
 void CMy3DSymbolLibNewView::ShowTree(int32 i) {
     float x, y, z;
     x = m_TreeModel.GetAt(i)->xPos;
@@ -2777,8 +2696,7 @@ void CMy3DSymbolLibNewView::ShowTree(int32 i) {
 
 
 /****************************************************************/
-/* Function: 导入城市标识,行政点,咖啡店,厕所,服务区等               */
-/****************************************************************/
+// Function: 导入城市标识,行政点,咖啡店,厕所,服务区等
 void CMy3DSymbolLibNewView::OnCitySymbolLoad() {
     CString tt, stt;
     FILE* fp;
@@ -2817,8 +2735,7 @@ void CMy3DSymbolLibNewView::OnCitySymbolLoad() {
 
 
 /****************************************************************/
-/* Function:显示城市符号                                            */
-/****************************************************************/
+// Function:显示城市符号
 void CMy3DSymbolLibNewView::ShowCitySymbol(int32 i) {
     float x, y, z;
     x = m_CitySymbolModel.GetAt(i)->xPos;
@@ -2856,8 +2773,7 @@ void CMy3DSymbolLibNewView::ShowCitySymbol(int32 i) {
 
 
 /****************************************************************/
-/* Function: 透明PNG 纹理加载                                       */
-/****************************************************************/
+// Function: 透明PNG 纹理加载
 void CMy3DSymbolLibNewView::LoadPNG(const char* fileName, GLuint& texture) {  // NOLINT
     glGenTextures(1, &texture);                     // 获取1个未使用的贴图名称
     glBindTexture(GL_TEXTURE_2D, texture);          // 选择要绑定的贴图（纹理）
@@ -2880,8 +2796,7 @@ void CMy3DSymbolLibNewView::LoadPNG(const char* fileName, GLuint& texture) {  //
 
 
 /****************************************************************/
-/* Function: 导入天气预报图片                                   */
-/****************************************************************/
+// Function: 导入天气预报图片
 void CMy3DSymbolLibNewView::OnWeatherLoad() {
     CString tt, stt;
     FILE* fp;
@@ -2916,8 +2831,7 @@ void CMy3DSymbolLibNewView::OnWeatherLoad() {
 
 
 /****************************************************************/
-/* Function: 显示天气图标                                           */
-/****************************************************************/
+// Function: 显示天气图标
 void CMy3DSymbolLibNewView::ShowWeather() {
     glPushAttrib(GL_CURRENT_BIT);                   // 保存现有颜色属性
     glPushMatrix();                                 // 压入矩阵堆栈
@@ -2956,8 +2870,7 @@ void CMy3DSymbolLibNewView::ShowWeather() {
 
 
 /****************************************************************/
-/* Function: 参数设置对话框内变量直接全部赋值给结构体               */
-/****************************************************************/
+// Function: 参数设置对话框内变量直接全部赋值给结构体
 void CMy3DSymbolLibNewView::C3DModelParamSetTOPModelStruct(const C3DModelParamSet& model, const PModelStruct& pStruct) {
     pStruct->angle = model.angle;
     pStruct->hPos = model.hPos;
@@ -2989,8 +2902,7 @@ void CMy3DSymbolLibNewView::C3DModelParamSetTOPModelStruct(C3DModelParamSet* mod
 
 
 /****************************************************************************/
-/* Function: 导入3D立体景观树，实质上是将平面树纹理绕Y轴旋转90度实现二次贴纹理  */
-/****************************************************************************/
+// Function: 导入3D立体景观树，实质上是将平面树纹理绕Y轴旋转90度实现二次贴纹理
 void CMy3DSymbolLibNewView::On3dTreeLoad() {
     CString tt, stt;
     FILE* fp;
@@ -3031,8 +2943,7 @@ void CMy3DSymbolLibNewView::On3dTreeLoad() {
 
 
 /****************************************************************************/
-/* Function: 自定义消息响应,非模式对话框(非3DS模型参数对话框)                   */
-/****************************************************************************/
+// Function: 自定义消息响应,非模式对话框(非3DS模型参数对话框)
 LRESULT CMy3DSymbolLibNewView::OnGoodBye(WPARAM wParam, LPARAM lParam) {
     // 确定
     if (wParam == IDOK) {
@@ -3080,8 +2991,7 @@ LRESULT CMy3DSymbolLibNewView::OnGoodBye(WPARAM wParam, LPARAM lParam) {
 
 
 /****************************************************************************/
-/* Function: 显示3D立体景观树                                                   */
-/****************************************************************************/
+// Function: 显示3D立体景观树
 void CMy3DSymbolLibNewView::Show3DTree(int32 i) {
     float x, y, z;
     x = m_3DTreeModel.GetAt(i)->xPos;
@@ -3128,8 +3038,7 @@ void CMy3DSymbolLibNewView::Show3DTree(int32 i) {
 
 
 /****************************************************************************/
-/* Function: 滚轮缩放,当选中某个模型时就对模型进行缩放，否则是缩放整个视景窗口  */
-/****************************************************************************/
+// Function: 滚轮缩放,当选中某个模型时就对模型进行缩放，否则是缩放整个视景窗口
 BOOL CMy3DSymbolLibNewView::OnMouseWheel(UINT nFlags, int16 zDelta, CPoint pt) {
     // 缩放选中模型大小
     if (m_OperateType == SCALE) {
@@ -3425,8 +3334,7 @@ void CMy3DSymbolLibNewView::JudgeRayIntersect(
 
 
 /****************************************************************************/
-/* Function: 加载工程文件                                                       */
-/****************************************************************************/
+// Function: 加载工程文件
 void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
     CStdioFile file;
     BOOL b_open = file.Open(filename, CStdioFile::modeRead);
@@ -3846,8 +3754,7 @@ void CMy3DSymbolLibNewView::LoadAreaSymbolFile(CString filename) {
 
 
 /****************************************************************************/
-/* Function: 初始阶段导入场景文件                                               */
-/****************************************************************************/
+// Function: 初始阶段导入场景文件
 void CMy3DSymbolLibNewView::OnSceneLoad() {
     CString sceneConfigPath;
     CFileDialog FileDialog(TRUE, "打开工程", NULL, OFN_HIDEREADONLY \
@@ -3867,12 +3774,8 @@ void CMy3DSymbolLibNewView::OnSceneLoad() {
 }
 
 
-
-
-
 /****************************************************************************/
-/* Function: 导入天空盒纹理                                                 */
-/****************************************************************************/
+// Function: 导入天空盒纹理
 void CMy3DSymbolLibNewView::LoadSkyBoxTex(CString skyTP, CString skyLF, CString skyBK, CString skyRT, CString skyFR) {
     char cc[256];
     // sprintf(cc, skyTP);
@@ -3895,9 +3798,7 @@ void CMy3DSymbolLibNewView::LoadSkyBoxTex(CString skyTP, CString skyLF, CString 
 }
 
 
-/****************************************************************************/
-/* Function: 导入地形纹理                                                       */
-/****************************************************************************/
+// Function: 导入地形纹理
 void CMy3DSymbolLibNewView::LoadTerrainTex(CString terrainTex, CString terrainContour) {
     char cc[256];
     strcpy(cc, terrainTex);             // 地面贴图  // NOLINT
@@ -3909,12 +3810,7 @@ void CMy3DSymbolLibNewView::LoadTerrainTex(CString terrainTex, CString terrainCo
     iTerrainType = 1;
 }
 
-
-
-
-/****************************************************************************/
-/* Function: 加载3DS模型                                                        */
-/****************************************************************************/
+// Function: 加载3DS模型
 void CMy3DSymbolLibNewView::Load3DModel(PModelParamStruct p3d, int32 iLoadModelType) {
     if (iLoadModelType == MODEL_NEW) {
         m_3DModel.Add(p3d);
@@ -3943,17 +3839,12 @@ void CMy3DSymbolLibNewView::Load3DModel(PModelParamStruct p3d, int32 iLoadModelT
     }
 }
 
-
-
 void CMy3DSymbolLibNewView::OnSceneSave() {
     if (ScenSave(m_CurrentProjectName))
         MessageBox("场景配置文件保存完毕", "保存场景配置方案", MB_ICONWARNING);
 }
 
-
-/****************************************************************************/
-/* Function: 当前场景另存为                                                 */
-/****************************************************************************/
+// Function: 当前场景另存为
 void CMy3DSymbolLibNewView::OnSceneSaveAs() {
     // TODO(jason): 在此添加命令处理程序代码
     CString     NeededFile;
@@ -4028,8 +3919,7 @@ bool CMy3DSymbolLibNewView::ScenSave(CString scenePth) {
 }
 
 /****************************************************************************/
-/* Function: 保存点、线、面文件                                             */
-/****************************************************************************/
+// Function: 保存点、线、面文件
 // 保存点文件
 int32 CMy3DSymbolLibNewView::savePointSymbolFile(CString filename) {
     CStdioFile file;
@@ -4169,17 +4059,13 @@ int32 CMy3DSymbolLibNewView::saveAreaSymbolFile(CString filename) {
 }
 
 
-/****************************************************************************/
-/* Function: 选中模型之后右键弹出菜单中进行鼠标移动模型操作                     */
-/****************************************************************************/
+// Function: 选中模型之后右键弹出菜单中进行鼠标移动模型操作
 void CMy3DSymbolLibNewView::OnModelMove() {
     m_OperateType = MOVE;
 }
 
 
-/****************************************************************************/
-/* Function: 编辑模型参数,例如模型纹理路径,大小,方向,缩放比例                   */
-/****************************************************************************/
+// Function: 编辑模型参数,例如模型纹理路径,大小,方向,缩放比例
 void CMy3DSymbolLibNewView::OnModelParam() {
     ModelParam dlg;
     dlg.modelFolder = m_AllDataPath + "\\" + pT3DModelData_->m_3DModelFolder + "\\";
@@ -4190,9 +4076,8 @@ void CMy3DSymbolLibNewView::OnModelParam() {
 }
 
 
-/****************************************************************************/
-/* Function: 参数设置对话框内变量直接全部赋值给结构体                           */
-/****************************************************************************/
+
+// Function: 参数设置对话框内变量直接全部赋值给结构体
 void CMy3DSymbolLibNewView::ModelParamDlgToPModelParamStruct(const ModelParam& model, PModelParamStruct pStruct) {
     pStruct->posX = model.posX;
     pStruct->posY = model.posY;
@@ -4210,9 +4095,8 @@ void CMy3DSymbolLibNewView::ModelParamDlgToPModelParamStruct(const ModelParam& m
 }
 
 
-/****************************************************************************/
-/* Function: 参数传给对话框                                                 */
-/****************************************************************************/
+
+// Function: 参数传给对话框
 void CMy3DSymbolLibNewView::PModelParamStructToModelParamDlg(ModelParam& model, PModelParamStruct pStruct) {  // NOLINT
     model.posX = pStruct->posX;
     model.posY = pStruct->posY;
@@ -4235,16 +4119,13 @@ void CMy3DSymbolLibNewView::PModelParamStructToModelParamDlg(ModelParam& model, 
 }
 
 
-/****************************************************************************/
-/* Function: 缩放选中模型                                                       */
-/****************************************************************************/
+
+// Function: 缩放选中模型
 void CMy3DSymbolLibNewView::OnModelScale() {
     m_OperateType = SCALE;
 }
 
-/**************************************/
-/* Function: 配置符号列表                 */
-/**************************************/
+// Function: 配置符号列表
 void CMy3DSymbolLibNewView::OnConfigureSymbolList() {
     // TODO(jason): 在此添加命令处理程序代码
     ModelListConfigureDialog mlcDlg;
@@ -4253,9 +4134,7 @@ void CMy3DSymbolLibNewView::OnConfigureSymbolList() {
     }
 }
 
-/**************************************/
-/* Function: 系统设置                 */
-/**************************************/
+// Function: 系统设置
 void CMy3DSymbolLibNewView::OnSystemSetting() {
     // TODO(jason): 在此添加命令处理程序代码
     CSystemSetting sysSetDlg;
@@ -4264,9 +4143,7 @@ void CMy3DSymbolLibNewView::OnSystemSetting() {
     }
 }
 
-/**************************************/
-/* Function: 关闭当前场景                 */
-/**************************************/
+// Function: 关闭当前场景
 void CMy3DSymbolLibNewView::OnCloseCurrentScene() {
     // TODO(jason): 在此添加命令处理程序代码
     InitData();
@@ -4291,8 +4168,7 @@ void CMy3DSymbolLibNewView::OnCloseCurrentScene() {
 
 
 /**************************************/
-/* Function: 清除所有线路数据             */
-/**************************************/
+// Function: 清除所有线路数据
 void CMy3DSymbolLibNewView::clearLinesData() {
     // 交点
     pDesingScheme_->PtS_JD.RemoveAll();
@@ -4311,9 +4187,8 @@ void CMy3DSymbolLibNewView::clearLinesData() {
 }
 
 
-/********************************************/
-/* Function: 选中模型后,右击菜单,删除模型       */
-/********************************************/
+
+// Function: 选中模型后,右击菜单,删除模型
 void CMy3DSymbolLibNewView::OnModelDelete() {
     m_3DModel.GetAt(m_selectedModelID)->isDeleted = true;
     m_3DModel.GetAt(m_selectedModelID)->modelSelected = false;
@@ -4332,9 +4207,7 @@ void CMy3DSymbolLibNewView::OnModelDelete() {
 /*                        线路设计                                       */
 /************************************************************************/
 
-/**************************************/
-/* Function: 线路三维建模                 */
-/**************************************/
+// Function: 线路三维建模
 void CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle() {
     // TODO(jason): 在此添加命令处理程序代码
     // 鼠标光标 系统忙
@@ -4385,9 +4258,7 @@ void CMy3DSymbolLibNewView::OnMenuBuild3dlinemodle() {
     OnDraw(GetDC());  // 刷新三维场景
 }
 
-/**************************************/
-/* Function: 三维选线设计                 */
-/**************************************/
+// Function: 三维选线设计
 void CMy3DSymbolLibNewView::OnMenuLinedesign() {
     // TODO(jason): 在此添加命令处理程序代码
     if (spaceSearchInfo_.m_QueryType == SELECTLINE)  // 如果当前已经三维选线状态，则关闭
@@ -4396,18 +4267,13 @@ void CMy3DSymbolLibNewView::OnMenuLinedesign() {
         spaceSearchInfo_.m_QueryType = SELECTLINE;
 }
 
-/****************************************************/
-/* Function: 设置三维选线设计选中状态                   */
-/****************************************************/
+// Function: 设置三维选线设计选中状态
 void CMy3DSymbolLibNewView::OnUpdateMenuLinedesign(CCmdUI* pCmdUI) {
     // TODO(jason): 在此添加命令更新用户界面处理程序代码
     pCmdUI->SetCheck(spaceSearchInfo_.m_QueryType == SELECTLINE);
 }
 
-
-/****************************************************/
-/* Function: 实现透视投影模式下的线路三维模型绘制       */
-/****************************************************/
+// Function: 实现透视投影模式下的线路三维模型绘制
 void CMy3DSymbolLibNewView::DrawRailwaythesme() {
     // 压入属性堆栈
     glPushAttrib(GL_DEPTH_BUFFER_BIT | GL_ENABLE_BIT | GL_POLYGON_BIT);
@@ -4426,22 +4292,14 @@ void CMy3DSymbolLibNewView::DrawRailwaythesme() {
                                  &m_cTxtureLJ);
 }
 
-
-
-
-/**************************************/
-/* Function: 清除所有线路                 */
-/**************************************/
+// 清除所有线路
 void CMy3DSymbolLibNewView::OnMenuClearLines() {
     // TODO(jason): 在此添加命令处理程序代码
     clearLinesData();
     initLines();
 }
 
-
-/************************************************************************/
-/* Function: 新建工程                                                   */
-/************************************************************************/
+// 新建工程
 void CMy3DSymbolLibNewView::OnSceneNew() {
     // TODO(jason): 在此添加命令处理程序代码
     // step 1 : 设置工程文件名, 创建该文件
@@ -4525,7 +4383,6 @@ void CMy3DSymbolLibNewView::OnSceneNew() {
     OnDraw(GetDC());  // 刷新三维场景
 }
 
-
 // 判断当前工程中是否存在已经打开的点、线、面文件
 BOOL CMy3DSymbolLibNewView::exist_point_file() {
     return exist_point_flag;
@@ -4536,7 +4393,6 @@ BOOL CMy3DSymbolLibNewView::exist_line_file() {
 BOOL CMy3DSymbolLibNewView::exist_area_file() {
     return exist_area_flag;
 }
-
 
 // 成功返回0 ,否则返回-1; type:0-点, 1-线, 2-面, _fileName:创建的文件名通过函数参数传出来
 int32 CMy3DSymbolLibNewView::new_symbol_file(uint32 type, char* _fileName) {
@@ -4580,7 +4436,6 @@ int32 CMy3DSymbolLibNewView::new_symbol_file(uint32 type, char* _fileName) {
     return -1;
 }
 
-
 // 新建符号文件, 0-点, 1-线, 2-面
 int32 CMy3DSymbolLibNewView::new_point_file() {
     int32 newFileFlag = 0;
@@ -4604,11 +4459,6 @@ int32 CMy3DSymbolLibNewView::new_area_file() {
     return newFileFlag;
 }
 
-
-//--------------------------------------------------------------------------------------
-
-
-
 /************************************************************************/
 /*                              线符号                                  */
 /************************************************************************/
@@ -4622,19 +4472,16 @@ void CMy3DSymbolLibNewView::OnMenuLineAdd() {
         spaceSearchInfo_.m_QueryType = LINE_ADD;
 }
 
-
 // 线编辑 ==》融合   线矢量与地表三角网融合
 void CMy3DSymbolLibNewView::OnMenuLineFuse() {
     // TODO(jason): 在此添加命令处理程序代码
     pSimpleLine_->OnLineFuse(m_LinesArray, g_terrain);
 }
 
-
 void CMy3DSymbolLibNewView::OnUpdateMenuLineAdd(CCmdUI* pCmdUI) {
     // TODO(jason): 在此添加命令更新用户界面处理程序代码
     pCmdUI->SetCheck(spaceSearchInfo_.m_QueryType == LINE_ADD);
 }
-
 
 
 // 增加线符号的宽度信息
@@ -4646,7 +4493,6 @@ void CMy3DSymbolLibNewView::OnMenuAddLineWidth() {
 /************************************************************************/
 /*                              面符号                                  */
 /************************************************************************/
-
 
 // 添加面符号
 void CMy3DSymbolLibNewView::OnMenuAddAreaSlib() {
@@ -4674,7 +4520,6 @@ void CMy3DSymbolLibNewView::OnUpdateMenuAddAreaSlib(CCmdUI* pCmdUI) {
     // TODO(jason): 在此添加命令更新用户界面处理程序代码
     pCmdUI->SetCheck(spaceSearchInfo_.m_QueryType == AREA_ADD);
 }
-
 
 // 多边形矢量与DEM融合
 void CMy3DSymbolLibNewView::OnMenuAreaFuse() {
@@ -4916,8 +4761,6 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
     }
 }
 
-
-
 void CMy3DSymbolLibNewView::LoadAreaTexture(CString _areaTexture_str, UINT& texture_id) {  // 加载面符号纹理  // NOLINT
     char cc[256] = "";
     // strcpy(cc,  _areaTexture_str);
@@ -5028,8 +4871,6 @@ void CMy3DSymbolLibNewView::OnMenuAddPoint3dImg() {
     }
 }
 
-
-
 // 新建工程/打开工程 对话框, 消息响应
 LRESULT CMy3DSymbolLibNewView::OnProjectSetted(WPARAM wParam, LPARAM lParam) {
     if (1 == wParam) {      // new project
@@ -5050,8 +4891,6 @@ LRESULT CMy3DSymbolLibNewView::OnProjectSetted(WPARAM wParam, LPARAM lParam) {
 }
 
 
-
-
 // 鼠标移到面符号多边形上右击弹出菜单单击响应
 void CMy3DSymbolLibNewView::OnMenuUpdateAreaTexture() {
     // TODO(jason): 在此添加命令处理程序代码
@@ -5069,7 +4908,6 @@ void CMy3DSymbolLibNewView::OnMenuUpdateAreaTexture() {
         return;
     }
 }
-
 
 // 删除指定面符号
 void CMy3DSymbolLibNewView::OnMenuAreaDelete() {

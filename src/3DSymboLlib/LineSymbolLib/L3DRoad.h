@@ -6,6 +6,7 @@
 #include "../MathUtils/Vec3.h"
 #include "DesingScheme.h"
 #include "../Texture.h"
+#include "../Base/Uncopyable.h"
 
 enum {INIT_CURVE_R = 15, INIT_CURVE_L0 = 1};
 
@@ -35,7 +36,7 @@ struct Railway {
 
 
 
-class L3DRoad {
+class L3DRoad : Base::Uncopyable {
   public:
     L3DRoad();
     ~L3DRoad();

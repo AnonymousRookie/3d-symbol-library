@@ -4,8 +4,9 @@
 #include "../MathUtils/Vec3.h"
 #include "../SymbolDefines.h"
 #include "../GlobalVariable.h"
+#include "../Base/Uncopyable.h"
 
-class SimpleLine {
+class SimpleLine : Base::Uncopyable {
   public:
     SimpleLine();
     ~SimpleLine();

@@ -30,6 +30,8 @@
 #include "LineSymbolLib/L3DRoad.h"
 #include "LineSymbolLib/DesingScheme.h"
 
+
+
 class CMy3DSymbolLibNewView : public CView {
   protected:  // 仅从序列化创建
     CMy3DSymbolLibNewView();
@@ -81,15 +83,20 @@ class CMy3DSymbolLibNewView : public CView {
 
     BOOL SetupPixelFormat();
     BOOL InitializeOpenGL(CDC* pDC);
+    void InitList();  // 初始化显示列表
 
     void InitData();
     afx_msg int32 OnCreate(LPCREATESTRUCT lpCreateStruct);
     afx_msg void OnDestroy();
     afx_msg void OnSize(UINT nType, int32 cx, int32 cy);
-    afx_msg void OnContourTerrainImport();
-
     afx_msg LRESULT OnGoodBye(WPARAM wParam, LPARAM lParam);  // 自定义响应消息,响应模型设置,非模式对话框
 
+
+
+    /*********************************************************************************************/
+    // 地形Terrain
+    /*********************************************************************************************/
+  public:
     // 导入等高线地势图纹理及数据
     int32               iTerrainType;                       // 1-等高, 2-随机, 0-没有导入地形
     CString             terrainTexFileName;
@@ -100,67 +107,26 @@ class CMy3DSymbolLibNewView : public CView {
     bool                LoadT8(char* filename, GLuint& texture);  // NOLINT
     uint8*              LoadBit(char* filename, BITMAPINFOHEADER* bitmap);
 
-
     bool        g_isTerrainInit;
     void        InitTerrain();
     void        DrawTerrain();
     float       GetHeight(float x, float z);        // 获取地面高度
 
-    // 相机
-    std::shared_ptr<Camera> pCamera_;
+    // 地形数据
+    std::shared_ptr<TerrainData> pTerrainData_;
+    // 地形纹理
+    void LoadTerrainTex(CString terrainTex, CString terrainContour);
+    afx_msg void OnContourTerrainImport();
 
+
+    /*********************************************************************************************/
+    // 相机Camera
+    /*********************************************************************************************/
+  public:
+    std::shared_ptr<Camera> pCamera_;
     // 用于计算相机事参数的CVector3类型变量
     Vec3    m_vStrafe;
     CVector3    View;
-
-    void DrawScene();
-    afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-
-    // 设置绘图模式
-    int32 m_Drawmode;
-    void SetDrawMode();
-
-    // 天空盒
-    std::shared_ptr<SkyBox> pSkyBox_;
-
-    afx_msg void OnSkyboxTex();
-
-
-    afx_msg void OnUpdateDrawmodeLine(CCmdUI* pCmdUI);
-    afx_msg void OnDrawmodeRender();
-    afx_msg void OnUpdateDrawmodeRender(CCmdUI* pCmdUI);
-    afx_msg void OnUpdateDrawmodeTexture(CCmdUI* pCmdUI);
-    afx_msg void OnDrawmodeLine();
-    afx_msg void OnDrawmodeTexture();
-    afx_msg void OnSpacequerySet();
-
-    // 空间查询标志参数
-    SpaceSearchInfo spaceSearchInfo_;
-    double pt1[3], pt2[3];     // 存储查询的坐标
-
-    BYTE    m_OperateType;      // 模型操作类型
-
-    bool    m_bmouseView;       // 是否起用鼠标控制相机
-    POINT   m_oldMousePos;      // 前一鼠标位置
-
-    int64 m_linePtnums;      // 当前线路方案设计交点总数
-    int64 m_oldlinePtnums;   // 原有线路方案设计交点数
-
-    afx_msg void OnQueryCoordinate();
-    afx_msg void OnUpdateQueryCoordinate(CCmdUI* pCmdUI);
-    afx_msg void OnQueryDistence();
-    afx_msg void OnUpdateQueryDistence(CCmdUI* pCmdUI);
-
-    void ScreenToGL(CPoint point);
-    void DrawSearchPoint();
-    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-
-    afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-
-
-    int32     m_keynumber;  // 标识键盘按键值
-    afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-
     void CamraUpdate();
     void MoveCameraZ(float speed);
     void CheckForMovement();
@@ -173,8 +139,83 @@ class CMy3DSymbolLibNewView : public CView {
     float  derAngleZ;       //  鼠标控制时Z方向的敏感系数
     float  derDisScale;     //  鼠标移动模型时敏感系数
     afx_msg void OnCameraParamSet();
+    bool    m_bmouseView;       // 是否起用鼠标控制相机
+    POINT   m_oldMousePos;      // 前一鼠标位置
 
+    /*********************************************************************************************/
+    // 天空盒SkyBox
+    /*********************************************************************************************/
+  public:
+    // 天空盒
+    std::shared_ptr<SkyBox> pSkyBox_;
+    afx_msg void OnSkyboxTex();
+    // 天气数据
+    CString m_WeatherFolder, m_WeatherTex;
+    // 天空盒纹理
+    void LoadSkyBoxTex(CString skyTP, CString skyLF, CString skyBK, CString skyRT, CString skyFR);
+    CString g_texSkyBoxFlieNameTP, g_texSkyBoxFlieNameLF, g_texSkyBoxFlieNameBK, g_texSkyBoxFlieNameRT, g_texSkyBoxFlieNameFR;
+
+    // 导入天气纹理 只有一个纹理
+    afx_msg void OnWeatherLoad();
+
+    UINT g_weatherTex;          // 贴图,纹理
+    void ShowWeather();
+    bool bIsWeatherLoad_;
+
+    GLuint m_SkyList;       // 时钟指北针显示列表
+    bool m_bShowbreviary;   // 是否显示缩略视图
+    void MakeSkykList();
+    void DrawSky();
+    void SetSkyProjection();
+    void SetSkyProjectionNavigate();
+
+    /*********************************************************************************************/
+    // 绘图模式
+    /*********************************************************************************************/
+  public:
+    // 设置绘图模式
+    int32 m_Drawmode;
+    void SetDrawMode();
+    afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+    afx_msg void OnUpdateDrawmodeLine(CCmdUI* pCmdUI);
+    afx_msg void OnDrawmodeRender();
+    afx_msg void OnUpdateDrawmodeRender(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateDrawmodeTexture(CCmdUI* pCmdUI);
+    afx_msg void OnDrawmodeLine();
+    afx_msg void OnDrawmodeTexture();
+
+
+    /*********************************************************************************************/
+    // 空间查询 SpaceSearch
+    /*********************************************************************************************/
+  public:
+    // 空间查询标志参数
+    SpaceSearchInfo spaceSearchInfo_;
+    double pt1[3], pt2[3];     // 存储查询的坐标
+    BYTE    m_OperateType;      // 模型操作类型
+    afx_msg void OnQueryCoordinate();
+    afx_msg void OnUpdateQueryCoordinate(CCmdUI* pCmdUI);
+    afx_msg void OnQueryDistence();
+    afx_msg void OnUpdateQueryDistence(CCmdUI* pCmdUI);
+    void DrawSearchPoint();
+    afx_msg void OnSpacequerySet();
+
+    void ScreenToGL(CPoint point);
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+
+    afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+
+    int32     m_keynumber;  // 标识键盘按键值
+    afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+
+
+
+
+
+    /*********************************************************************************************/
     // 三维漫游
+    /*********************************************************************************************/
+  public:
     BOOL m_ShowFlyPath;                                 // 标识是否显示飞行路径
     CArray<PCordinate, PCordinate> m_FlayPath;          // 存储进行飞行路径选择时所选择的一系列点坐标
     CArray<PCordinate, PCordinate> m_FlayPathTempPts;   // 存储临时进行飞行路径选择时所选择的一系列点坐标
@@ -228,137 +269,94 @@ class CMy3DSymbolLibNewView : public CView {
     HFONT   hFont, hFont0;
     void    TextFlyHelp();      // 显示文字
 
-    // 指北针
-    std::shared_ptr<NClcok> pNClock_;
 
-    void InitList();
 
+
+    /*********************************************************************************************/
+    // 指北针 NClcok
+    /*********************************************************************************************/
+  public:
+    std::shared_ptr<NClcok> pNClock_;  // 指北针
     void DrawClock();
     void SetClockProjectionNavigate();
-
     void GetNorthPtangle();
 
 
-    GLuint m_SkyList;       // 时钟指北针显示列表
-    bool m_bShowbreviary;   // 是否显示缩略视图
-    void MakeSkykList();
-    void DrawSky();
-    void SetSkyProjection();
-    void SetSkyProjectionNavigate();
-
-    // 3DS模型
-    afx_msg void On3dsModelLoad();
-
-    int32 m_i3DModelNum;
-
-
-    CArray<PModelParamStruct, PModelParamStruct> m_3DModel;
+    /*********************************************************************************************/
+    // 非3DS模型参数设置的非模式对话框   函数与变量
+    /*********************************************************************************************/
+  public:
+    C3DModelParamSet* paramSet_modeless_dlg;
+    void C3DModelParamSetTOPModelStruct(C3DModelParamSet* model, PModelStruct& pStruct);  // NOLINT
+    PModelStruct p3dtree;           // 3dtree
+    PModelStruct ptree;             // tree
+    PModelStruct pCitySymbol;       // CitySymbol
+    BOOL m_isSetXYByMouse;
 
 
-    /************************************************************************/
-    /*                   线路                                               */
-    /************************************************************************/
-    // 线路设计
-    std::shared_ptr<CDesingScheme> pDesingScheme_;
-    std::shared_ptr<L3DRoad> pL3DRoad_;
+    /*********************************************************************************************/
+    // 场景 工程文件管理
+    /*********************************************************************************************/
+  public:
+    // 场景配置文件导入
+    bool m_bSecneConfig;
+    afx_msg void OnSceneLoad();
+    CString m_AllDataPath;  // 所有数据文件路径
+    CString m_SceneConfig;  // 场景文件夹
+    void loadSceneFile(CString filename);   // 加载场景工程文件
+    // 加载点文件
+    void LoadPointSymbolFile(CString filename);
+    // 加载线文件
+    void LoadLineSymbolFile(CString filename);
+    // 加载区文件
+    void LoadAreaSymbolFile(CString filename);
+    // 当前工程文件名
+    CString m_CurrentProjectName;
+    // 当前符号种类个数
+    CString m_CurrentSymbolTypeNum;
+    // 点、线、区文件
+    CString m_PointSymbolFile, m_LineSymbolFile, m_AreaSymbolFile;
+    // 判断当前工程中是否存在已经打开的点、线、面文件
+    BOOL exist_point_file();
+    BOOL exist_line_file();
+    BOOL exist_area_file();
+    BOOL exist_point_flag;
+    BOOL exist_line_flag;
+    BOOL exist_area_flag;
+    // 新建符号文件
+    int32 new_symbol_file(uint32 type, char* fileName);  // 0,1,2 点线面
+    int32 new_point_file();
+    int32 new_line_file();
+    int32 new_area_file();
+    // 保存点文件
+    int32 savePointSymbolFile(CString filename);
+    // 保存线文件
+    int32 saveLineSymbolFile(CString filename);
+    // 保存区文件
+    int32 saveAreaSymbolFile(CString filename);
+    bool ScenSave(CString scenePth);
+    void DrawScene();
 
-    GLuint m_Rail3DwayList;         // 线路三维模型显示列表(透视投影模式)
+    afx_msg void OnConfigureSymbolList();
+    afx_msg void OnSystemSetting();
+    afx_msg void OnCloseCurrentScene();
+    afx_msg void OnSceneNew();
+    afx_msg void OnSceneSaveAs();
+    afx_msg void OnSceneSave();
 
-    CArray<PCordinate, PCordinate> m_TempPts;  // 临时点
-
-    CTexture m_cTxtureBP;       // 路基边坡纹理
-    CTexture m_cTxtureLJ;       // 路肩纹理
-    CTexture m_cTxtureGdToLJ;   // 道床边坡纹理
-    CTexture m_cTxtureRailway;  // 轨道纹理
-    CTexture m_cTxturePT;       // 边坡平台纹理
-
-    CTexture m_cFillFaceTxture;  // 断面纹理
-
-    // 实现透视投影模式下的线路三维模型绘制
-    void DrawRailwaythesme();
-
-
-    void fun(PCordinate ppt);
-    void fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0);
-
-
-    // 计算2个向量之间的夹角,由参数返回
-    void getDegreeBetween2Vectors(CVector3& v1_Begin/*in*/, CVector3& v1_End/*in*/,  /* NOLINT */
-                                  CVector3& v2_Begin/*in*/, CVector3& v2_End/*in*/, float* pDegreeRet/*out*/);  // NOLINT
-
-
-
-    //=====================================================================================
-
-
-    // 3DS模型
-    std::shared_ptr<CLoad3DS> p3ds_;  // 定义3DS模型
-
-    void Draw3DModel(PModelParamStruct model);
-
-    afx_msg void On3dsModelSelectSet();
-    afx_msg void OnUpdate3dsModelSelectSet(CCmdUI* pCmdUI);
-    bool bIsSelect3DModel_;
-
-    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-
-    bool bIsMouseMove3DModel_;
-    afx_msg void On3dsModelMouseMove();
-    afx_msg void OnUpdate3dsModelMouseMove(CCmdUI* pCmdUI);
-    void JudgeModelSelected(PCordinate ppt);        // 判断模型组中哪些模型被选中,进行状态修改
-    int32 m_bMouseMove3DModelPtNums;                // 左键按下数量加一,左键弹起再加一,到2时就可移动模型位置,移动向量为鼠标变动向量
-
-
-    CMainFrame* pMain;                              // 获取MainFrame类指针
-
-    // 景观树控制
-    afx_msg void OnTreeLoad();
-    CArray<PModelStruct, PModelStruct> m_TreeModel;     // 存储所有景观树信息
-    void LoadT16(char* filename, GLuint& texture);      // NOLINT
-    int32 m_iTreeModelNum;
-    UINT g_cactus[50];                                  // 贴图,纹理
-
-    // 显示特殊平面树，场景旋转时树也跟着旋转，始终是正面对着用户，这样就看不出是平面了
-    void ShowTree(int32 i);
-
-    // 导入3D立体景观树模型
-    afx_msg void On3dTreeLoad();
-    CArray<PModelStruct, PModelStruct> m_3DTreeModel;   // 存储所有景观树信息
-    int32 m_i3DTreeModelNum;
-    UINT g_cactus3DTree[50];                            // 贴图,纹理
-
-    // 显示特殊平面树，场景旋转时树也跟着旋转，始终是正面对着用户，这样就看不出是平面了
-    void Show3DTree(int32 i);
-
-    // 城市符号
-    afx_msg void OnCitySymbolLoad();
-    int32 m_iCitySymbolModelNum;
-    CArray<PModelStruct, PModelStruct> m_CitySymbolModel;   // 存储所有城市符号信息
-    UINT g_citySymbolTex[50];                               // 贴图,纹理
-    void ShowCitySymbol(int32 i);
-    void LoadPNG(const char* fileName, GLuint& texture);  // NOLINT
-
-    // 导入天气纹理 只有一个纹理
-
-    afx_msg void OnWeatherLoad();
-
-    UINT g_weatherTex;          // 贴图,纹理
-    void ShowWeather();
-    bool bIsWeatherLoad_;
-
-    // 判断是否进行了坐标查询操作
-    bool IsSearchPoint_;
-
-    // 将对话框变量赋值给结构体
-    void C3DModelParamSetTOPModelStruct(const C3DModelParamSet& model, const PModelStruct& pStruct);
-    // 将对话框变量赋值给结构体
-    void ModelParamDlgToPModelParamStruct(const ModelParam& model, PModelParamStruct pStruct);
-    // 将结构体内容赋值给变量
-    void PModelParamStructToModelParamDlg(ModelParam& model, PModelParamStruct pStruct);  // NOLINT
-
-    // 滚轮控制视景窗体的大小（缩小，放大）
-    afx_msg BOOL OnMouseWheel(UINT nFlags, int16 zDelta, CPoint pt);
-
+    /*********************************************************************************************/
+    // 点符号
+    /*********************************************************************************************/
+  public:
+    /* 3DS 模型 */
+    std::shared_ptr<T3DModelData> pT3DModelData_;
+    // 控制选中模型,单个模型选择可以控制所有模型参数设置，组模型选择的话只能移动组合模型
+    // 右键按下 弹起 标识
+    int32 m_selectedModelID;  // 当前鼠标选中模型ID，当前默认只有3DS模型
+    afx_msg void OnModelMove();
+    afx_msg void OnModelParam();
+    afx_msg void OnModelScale();
+    afx_msg void OnModelDelete();
     // 射线拾取物体
     void JudgeRayIntersect(
         CVector3& rayStart,      // 射线起点
@@ -384,198 +382,163 @@ class CMy3DSymbolLibNewView : public CView {
     bool m_bMouseMoveSelect;  // 选择模式下的鼠标移动拾取模型
     int32 m_mouseShape;        // 鼠标形态
 
-    // 场景配置文件导入
-    bool m_bSecneConfig;
-    afx_msg void OnSceneLoad();
+    // 3DS模型
+    afx_msg void On3dsModelLoad();
 
+    int32 m_i3DModelNum;
+    CArray<PModelParamStruct, PModelParamStruct> m_3DModel;
+    // 3DS模型
+    std::shared_ptr<CLoad3DS> p3ds_;  // 定义3DS模型
 
+    void Draw3DModel(PModelParamStruct model);
 
-    CString m_AllDataPath;  // 所有数据文件路径
-    CString m_SceneConfig;  // 场景文件夹
+    afx_msg void On3dsModelSelectSet();
+    afx_msg void OnUpdate3dsModelSelectSet(CCmdUI* pCmdUI);
+    bool bIsSelect3DModel_;
 
+    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 
-
-
-    // 地形数据
-    std::shared_ptr<TerrainData> pTerrainData_;
-    // 城市标识数据
-    std::shared_ptr<CitySymbolData> pCitySymbolData_;
-    // 景观树数据
-    std::shared_ptr<TreeModelData> pTreeModelData_;
-    // 3DS 模型
-    std::shared_ptr<T3DModelData> pT3DModelData_;
-
-
-    // 天气数据
-    CString m_WeatherFolder, m_WeatherTex;
-
-    // 天空盒纹理
-    void LoadSkyBoxTex(CString skyTP, CString skyLF, CString skyBK, CString skyRT, CString skyFR);
-    CString g_texSkyBoxFlieNameTP, g_texSkyBoxFlieNameLF, g_texSkyBoxFlieNameBK, g_texSkyBoxFlieNameRT, g_texSkyBoxFlieNameFR;
-
-    // 地形纹理
-    void LoadTerrainTex(CString terrainTex, CString terrainContour);
-
+    bool bIsMouseMove3DModel_;
+    afx_msg void On3dsModelMouseMove();
+    afx_msg void OnUpdate3dsModelMouseMove(CCmdUI* pCmdUI);
+    void JudgeModelSelected(PCordinate ppt);        // 判断模型组中哪些模型被选中,进行状态修改
+    int32 m_bMouseMove3DModelPtNums;                // 左键按下数量加一,左键弹起再加一,到2时就可移动模型位置,移动向量为鼠标变动向量
     // 3D模型设置
     void Load3DModel(PModelParamStruct p3d, int32 iLoadModelType);
 
-    bool m_bIsLBtnDown;
-    afx_msg void OnSceneSave();
-    bool ScenSave(CString scenePth);
+    // ----------------------------------------------------------------------------
 
-    // 控制选中模型,单个模型选择可以控制所有模型参数设置，组模型选择的话只能移动组合模型
-    // 右键按下 弹起 标识
+    /* 景观树数据 */
+    std::shared_ptr<TreeModelData> pTreeModelData_;
+    // 景观树控制
+    afx_msg void OnTreeLoad();
+    CArray<PModelStruct, PModelStruct> m_TreeModel;     // 存储所有景观树信息
+    void LoadT16(char* filename, GLuint& texture);      // NOLINT
+    int32 m_iTreeModelNum;
+    UINT g_cactus[50];                                  // 贴图,纹理
 
-    int32 m_selectedModelID;  // 当前鼠标选中模型ID，当前默认只有3DS模型
-    afx_msg void OnModelMove();
-    afx_msg void OnModelParam();
-    afx_msg void OnModelScale();
+    // 显示特殊平面树，场景旋转时树也跟着旋转，始终是正面对着用户，这样就看不出是平面了
+    void ShowTree(int32 i);
 
-    afx_msg void OnConfigureSymbolList();
-    afx_msg void OnSystemSetting();
-    afx_msg void OnCloseCurrentScene();
-    afx_msg void OnModelDelete();
+    // 导入3D立体景观树模型
+    afx_msg void On3dTreeLoad();
+    CArray<PModelStruct, PModelStruct> m_3DTreeModel;   // 存储所有景观树信息
+    int32 m_i3DTreeModelNum;
+    UINT g_cactus3DTree[50];                            // 贴图,纹理
+    // 显示特殊平面树，场景旋转时树也跟着旋转，始终是正面对着用户，这样就看不出是平面了
+    void Show3DTree(int32 i);
+
+    // ----------------------------------------------------------------------------
+
+    /* 城市标识数据 */
+    std::shared_ptr<CitySymbolData> pCitySymbolData_;
+    // 城市符号
+    afx_msg void OnCitySymbolLoad();
+    int32 m_iCitySymbolModelNum;
+    CArray<PModelStruct, PModelStruct> m_CitySymbolModel;   // 存储所有城市符号信息
+    UINT g_citySymbolTex[50];                               // 贴图,纹理
+    void ShowCitySymbol(int32 i);
+    void LoadPNG(const char* fileName, GLuint& texture);  // NOLINT
+
+    afx_msg void OnMenuAddPointSymbol();
+    afx_msg void OnMenuAddPoint3dsmax();
+    afx_msg void OnMenuAddPoint2dImg();
+    afx_msg void OnMenuAddPoint3dImg();
+
+
+    /*********************************************************************************************/
+    // 线符号
+    /*********************************************************************************************/
+  private:
+    /* SimpleLine */
+    std::shared_ptr<SimpleLine> pSimpleLine_;
+    int32 m_LineEdit_pointNum;  // 线编辑  选择的点的个数
+    Line3 m_line;
+    CArray<PLine3, PLine3> m_LinesArray;  // 存放所有的线符号
+    afx_msg void OnMenuLineAdd();
+    afx_msg void OnMenuLineFuse();
+    afx_msg void OnUpdateMenuLineAdd(CCmdUI* pCmdUI);
+    afx_msg void OnMenuAddLineWidth();
+    // --------------------------------------------------------------
+
+    /* L3DRoad */
+    std::shared_ptr<CDesingScheme> pDesingScheme_;  // 线路设计
+    std::shared_ptr<L3DRoad> pL3DRoad_;
+    GLuint m_Rail3DwayList;         // 线路三维模型显示列表(透视投影模式)
+    CArray<PCordinate, PCordinate> m_TempPts;  // 临时点
+    CTexture m_cTxtureBP;       // 路基边坡纹理
+    CTexture m_cTxtureLJ;       // 路肩纹理
+    CTexture m_cTxtureGdToLJ;   // 道床边坡纹理
+    CTexture m_cTxtureRailway;  // 轨道纹理
+    CTexture m_cTxturePT;       // 边坡平台纹理
+    CTexture m_cFillFaceTxture;  // 断面纹理
+    // 实现透视投影模式下的线路三维模型绘制
+    void DrawRailwaythesme();
+    void fun(PCordinate ppt);
+    void fun(PCordinate ppt, PCurve_R_L0_Struct pcrl0);
+    // 计算2个向量之间的夹角,由参数返回
+    void getDegreeBetween2Vectors(CVector3& v1_Begin/*in*/, CVector3& v1_End/*in*/,  /* NOLINT */
+                                  CVector3& v2_Begin/*in*/, CVector3& v2_End/*in*/, float* pDegreeRet/*out*/);  // NOLINT
+    afx_msg void OnMenuClearLines();    // 清除所有线路
+    void initLines();                       // 初始化线路数据
+    void clearLinesData();                  // 清除所有线路数据
+    int64 m_linePtnums;      // 当前线路方案设计交点总数
+    int64 m_oldlinePtnums;   // 原有线路方案设计交点数
     afx_msg void OnMenuBuild3dlinemodle();
     afx_msg void OnMenuLinedesign();
     afx_msg void OnUpdateMenuLinedesign(CCmdUI* pCmdUI);
 
 
-
-    /************************************************************************/
-    /* 非3DS模型参数设置的非模式对话框   函数与变量                             */
-    /************************************************************************/
-  public:
-    C3DModelParamSet* paramSet_modeless_dlg;
-    void C3DModelParamSetTOPModelStruct(C3DModelParamSet* model, PModelStruct& pStruct);  // NOLINT
-    PModelStruct p3dtree;           // 3dtree
-    PModelStruct ptree;             // tree
-    PModelStruct pCitySymbol;       // CitySymbol
-    BOOL m_isSetXYByMouse;
-
-
-
-  public:
-    afx_msg void OnMenuClearLines();    // 清除所有线路
-
+    /*********************************************************************************************/
+    //        面符号
+    /*********************************************************************************************/
   private:
-    void initLines();                       // 初始化线路数据
-    void clearLinesData();                  // 清除所有线路数据
-    void loadSceneFile(CString filename);   // 加载场景工程文件
-
-    // 加载点文件
-    void LoadPointSymbolFile(CString filename);
-    // 加载线文件
-    void LoadLineSymbolFile(CString filename);
-    // 加载区文件
-    void LoadAreaSymbolFile(CString filename);
-
-
-    // 当前工程文件名
-    CString m_CurrentProjectName;
-
-
-    // 当前符号种类个数
-    CString m_CurrentSymbolTypeNum;
-    // 点、线、区文件
-    CString m_PointSymbolFile, m_LineSymbolFile, m_AreaSymbolFile;
-
-
-    // 判断当前工程中是否存在已经打开的点、线、面文件
-    BOOL exist_point_file();
-    BOOL exist_line_file();
-    BOOL exist_area_file();
-
-    BOOL exist_point_flag;
-    BOOL exist_line_flag;
-    BOOL exist_area_flag;
-
-    // 新建符号文件
-
-    int32 new_symbol_file(uint32 type, char* fileName);  // 0,1,2 点线面
-
-    int32 new_point_file();
-    int32 new_line_file();
-    int32 new_area_file();
-
-
-
-    // 保存点文件
-    int32 savePointSymbolFile(CString filename);
-    // 保存线文件
-    int32 saveLineSymbolFile(CString filename);
-    // 保存区文件
-    int32 saveAreaSymbolFile(CString filename);
-
-
-  private:
-
-    std::shared_ptr<SimpleLine> pSimpleLine_;
-
-
-    int32 m_LineEdit_pointNum;  // 线编辑  选择的点的个数
-
-    Line3 m_line;
-
-    CArray<PLine3, PLine3> m_LinesArray;  // 存放所有的线符号
-
-
-
-
-    /************************************************************************/
-    /*        面符号                                                        */
-    /************************************************************************/
-  private:
-
     int32 m_Area_pointNum;                      // 面符号 选择的点的个数
     Area_4 m_area4_forScreenRecord;             // 4边形
-
     CArray<PArea_4, PArea_4> m_Area4_Array;     // 存放所有的面符号
-
     vector<Point3> Line_1_JD_vector;
     vector<Point3> Line_2_JD_vector;
     vector<Point3> Line_3_JD_vector;
     vector<Point3> Line_4_JD_vector;
-
     BOOL Area_fuse_Flag;
     // 多边形三角化
     void Area_Triangled(const PArea_4& _area4);
-
     UINT m_area_texture;
     void LoadAreaTexture(CString _areaTexture_str, UINT& texture_id);  // 加载面符号纹理  // NOLINT
-
-
     // 更换选中的面符号的纹理
     void UpdateAreaTexture(PPR_Point _mp, CPoint point);
     void ScreenToGL2(CPoint point, GLdouble& wx , GLdouble& wz);  // NOLINT
-
-
     uint16 area_id;
-
-
     // 面符号 - 四边形
     std::shared_ptr<Area4Symbol> pArea4Symbol_;
 
-
-
   public:
     afx_msg LRESULT OnProjectSetted(WPARAM wParam, LPARAM lParam);
-
-  public:
-    afx_msg void OnSceneNew();
-    afx_msg void OnSceneSaveAs();
-    afx_msg void OnMenuLineAdd();
-    afx_msg void OnMenuLineFuse();
-    afx_msg void OnUpdateMenuLineAdd(CCmdUI* pCmdUI);
-    afx_msg void OnMenuAddLineWidth();
     afx_msg void OnMenuAddAreaSlib();
     afx_msg void OnUpdateMenuAddAreaSlib(CCmdUI* pCmdUI);
     afx_msg void OnMenuAreaFuse();
-    afx_msg void OnMenuAddPointSymbol();
-    afx_msg void OnMenuAddPoint3dsmax();
-    afx_msg void OnMenuAddPoint2dImg();
-    afx_msg void OnMenuAddPoint3dImg();
     afx_msg void OnMenuUpdateAreaTexture();
     afx_msg void OnMenuAreaDelete();
+
+    /*********************************************************************************************/
+    // Others
+    /*********************************************************************************************/
+  public:
+    CMainFrame* pMain;  // 获取MainFrame类指针
+    // 判断是否进行了坐标查询操作
+    bool IsSearchPoint_;
+    // 将对话框变量赋值给结构体
+    void C3DModelParamSetTOPModelStruct(const C3DModelParamSet& model, const PModelStruct& pStruct);
+    // 将对话框变量赋值给结构体
+    void ModelParamDlgToPModelParamStruct(const ModelParam& model, PModelParamStruct pStruct);
+    // 将结构体内容赋值给变量
+    void PModelParamStructToModelParamDlg(ModelParam& model, PModelParamStruct pStruct);  // NOLINT
+    // 滚轮控制视景窗体的大小（缩小，放大）
+    afx_msg BOOL OnMouseWheel(UINT nFlags, int16 zDelta, CPoint pt);
+    bool m_bIsLBtnDown;
+
+
+
 };
 
 #ifndef _DEBUG  // 3DSymbolLibNewView.cpp 中的调试版本
