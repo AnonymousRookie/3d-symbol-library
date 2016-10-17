@@ -76,7 +76,7 @@ class L3DRoad : Base::Uncopyable {
                           );
   public:
     BOOL b_haveMadeRail3DwayList;   // 是否已经有三维线路显示列表(透视投影模式下)
-    std::shared_ptr<Railway> pRailWay_;  // 线路路基结构
+    std::unique_ptr<Railway> pRailWay_;  // 线路路基结构
 
 
 

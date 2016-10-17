@@ -113,7 +113,7 @@ class CMy3DSymbolLibNewView : public CView {
     float       GetHeight(float x, float z);        // 获取地面高度
 
     // 地形数据
-    std::shared_ptr<TerrainData> pTerrainData_;
+    std::unique_ptr<TerrainData> pTerrainData_;
     // 地形纹理
     void LoadTerrainTex(CString terrainTex, CString terrainContour);
     afx_msg void OnContourTerrainImport();
@@ -123,7 +123,7 @@ class CMy3DSymbolLibNewView : public CView {
     // 相机Camera
     /*********************************************************************************************/
   public:
-    std::shared_ptr<Camera> pCamera_;
+    std::unique_ptr<Camera> pCamera_;
     // 用于计算相机事参数的CVector3类型变量
     Vec3    m_vStrafe;
     CVector3    View;
@@ -147,7 +147,7 @@ class CMy3DSymbolLibNewView : public CView {
     /*********************************************************************************************/
   public:
     // 天空盒
-    std::shared_ptr<SkyBox> pSkyBox_;
+    std::unique_ptr<SkyBox> pSkyBox_;
     afx_msg void OnSkyboxTex();
     // 天气数据
     CString m_WeatherFolder, m_WeatherTex;
@@ -276,7 +276,7 @@ class CMy3DSymbolLibNewView : public CView {
     // 指北针 NClcok
     /*********************************************************************************************/
   public:
-    std::shared_ptr<NClcok> pNClock_;  // 指北针
+    std::unique_ptr<NClcok> pNClock_;  // 指北针
     void DrawClock();
     void SetClockProjectionNavigate();
     void GetNorthPtangle();
@@ -349,7 +349,7 @@ class CMy3DSymbolLibNewView : public CView {
     /*********************************************************************************************/
   public:
     /* 3DS 模型 */
-    std::shared_ptr<T3DModelData> pT3DModelData_;
+    std::unique_ptr<T3DModelData> pT3DModelData_;
     // 控制选中模型,单个模型选择可以控制所有模型参数设置，组模型选择的话只能移动组合模型
     // 右键按下 弹起 标识
     int32 m_selectedModelID;  // 当前鼠标选中模型ID，当前默认只有3DS模型
@@ -388,7 +388,7 @@ class CMy3DSymbolLibNewView : public CView {
     int32 m_i3DModelNum;
     CArray<PModelParamStruct, PModelParamStruct> m_3DModel;
     // 3DS模型
-    std::shared_ptr<CLoad3DS> p3ds_;  // 定义3DS模型
+    std::unique_ptr<CLoad3DS> p3ds_;  // 定义3DS模型
 
     void Draw3DModel(PModelParamStruct model);
 
@@ -409,7 +409,7 @@ class CMy3DSymbolLibNewView : public CView {
     // ----------------------------------------------------------------------------
 
     /* 景观树数据 */
-    std::shared_ptr<TreeModelData> pTreeModelData_;
+    std::unique_ptr<TreeModelData> pTreeModelData_;
     // 景观树控制
     afx_msg void OnTreeLoad();
     CArray<PModelStruct, PModelStruct> m_TreeModel;     // 存储所有景观树信息
@@ -431,7 +431,7 @@ class CMy3DSymbolLibNewView : public CView {
     // ----------------------------------------------------------------------------
 
     /* 城市标识数据 */
-    std::shared_ptr<CitySymbolData> pCitySymbolData_;
+    std::unique_ptr<CitySymbolData> pCitySymbolData_;
     // 城市符号
     afx_msg void OnCitySymbolLoad();
     int32 m_iCitySymbolModelNum;
@@ -451,7 +451,7 @@ class CMy3DSymbolLibNewView : public CView {
     /*********************************************************************************************/
   private:
     /* SimpleLine */
-    std::shared_ptr<SimpleLine> pSimpleLine_;
+    std::unique_ptr<SimpleLine> pSimpleLine_;
     int32 m_LineEdit_pointNum;  // 线编辑  选择的点的个数
     Line3 m_line;
     CArray<PLine3, PLine3> m_LinesArray;  // 存放所有的线符号
@@ -463,7 +463,7 @@ class CMy3DSymbolLibNewView : public CView {
 
     /* L3DRoad */
     std::shared_ptr<CDesingScheme> pDesingScheme_;  // 线路设计
-    std::shared_ptr<L3DRoad> pL3DRoad_;
+    std::unique_ptr<L3DRoad> pL3DRoad_;
     GLuint m_Rail3DwayList;         // 线路三维模型显示列表(透视投影模式)
     CArray<PCordinate, PCordinate> m_TempPts;  // 临时点
     CTexture m_cTxtureBP;       // 路基边坡纹理
@@ -510,7 +510,7 @@ class CMy3DSymbolLibNewView : public CView {
     void ScreenToGL2(CPoint point, GLdouble& wx , GLdouble& wz);  // NOLINT
     uint16 area_id;
     // 面符号 - 四边形
-    std::shared_ptr<Area4Symbol> pArea4Symbol_;
+    std::unique_ptr<Area4Symbol> pArea4Symbol_;
 
   public:
     afx_msg LRESULT OnProjectSetted(WPARAM wParam, LPARAM lParam);
