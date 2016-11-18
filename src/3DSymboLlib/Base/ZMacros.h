@@ -3,6 +3,7 @@
 
 #include "ZStackDumper.h"
 
+#ifdef _DEBUG
 #define Z_ASSERT(p)                                 \
     do {                                            \
         if (nullptr == p) {                         \
@@ -11,7 +12,11 @@
            assert(p);                               \
         }                                           \
     } while(0)
-
+#else
+#define Z_ASSERT(p)                                 \
+    do {                                            \
+    } while(0)
+#endif
 
 #define Z_LOGGER_ERROR_TRACE()                      \
     do {                                            \
