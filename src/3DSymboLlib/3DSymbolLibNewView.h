@@ -118,7 +118,8 @@ class CMy3DSymbolLibNewView : public CView {
     void LoadTerrainTex(CString terrainTex, CString terrainContour);
     afx_msg void OnContourTerrainImport();
 
-
+    // 地形等高线数据
+    std::vector<float> terrainContourData_;
     /*********************************************************************************************/
     // 相机Camera
     /*********************************************************************************************/

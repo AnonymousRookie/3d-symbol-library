@@ -86,10 +86,15 @@
 
 
 
-#define MAP_W       32         // size of map aint64 x-axis 32， 32*32地面方阵
-#define MAP_SCALE   24.0f      // the scale of the terrain map，边长为24
+// #define MAP_W       32         // size of map aint64 x-axis 32， 32*32地面方阵
+// #define MAP_SCALE   24.0f      // the scale of the terrain map，边长为24
+
+#define MAP_W       128
+#define MAP_SCALE   6.00f
+
+
 #define MAP         MAP_W*MAP_SCALE/2
-#define PAI         3.1415926       // 定义π常量
+#define PAI         3.1415926  // 定义π常量
 #define HDANGLE     52.706     // 定义1弧度等于多少度(1弧度=180/PAI)
 #define PAI_D180    PAI/180    // 定义1度等于多少弧度(1度=PAI/180弧度)
 #define MODEL_NUM_MAX 30

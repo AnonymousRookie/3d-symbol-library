@@ -302,6 +302,9 @@
     <ClInclude Include="..\..\src\3DSymboLlib\LineSymbolLib\SimpleLine.h">
       <Filter>SymbolLib\LineSymbolLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\Base\ZStringUtils.h">
+      <Filter>SymbolLib\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNew.cpp">

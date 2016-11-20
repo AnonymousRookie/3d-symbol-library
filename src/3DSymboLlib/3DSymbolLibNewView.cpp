@@ -3,6 +3,10 @@
 #include "3DSymbolLibNew.h"
 #endif
 
+#include <string>  
+#include <fstream>  
+#include <streambuf>  
+#include <vector>
 #include <sstream>
 #include "MFCFrameWork/3DSymbolLibNewDoc.h"
 #include "3DSymbolLibNewView.h"
@@ -13,7 +17,7 @@
 #include "SystemSetting.h"
 #include "AreaSymbolLib/AreaClassification.h"
 #include "MathUtils/MathUtil.h"
-
+#include "Base/ZStringUtils.h"
 
 extern t3DModel g_3DModel[MODEL_NUM_MAX];
 
@@ -481,13 +485,29 @@ unsigned char* CMy3DSymbolLibNewView::LoadBit(char* filename, BITMAPINFOHEADER* 
 
 
 void CMy3DSymbolLibNewView::InitTerrain() {
+    // 读取等高线数据
+    terrainContourData_.clear();
+    std::ifstream t("C:\\128x128.txt");  
+    std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
+
+    std::vector<std::string> row = StringUtils::split(str, '\n');
+    for(auto iter = row.begin(); iter != row.end(); ++iter) {
+
+        std::vector<std::string> tmp = StringUtils::split(*iter, ',');
+        for(auto it = tmp.begin(); it != tmp.end(); ++it) {
+            terrainContourData_.push_back(StringUtils::stringToFloat(*it));
+        }
+        cout << endl;
+    }
+    // init terrain
     int32 index = 0;
     int32 Vertex = 0;
     for (int32 z = 0; z < MAP_W; ++z)
         for (int32 x = 0; x < MAP_W; ++x) {                                             // MAP_W是地形块数，32行，32列的方形地形
             Vertex = z * MAP_W + x;
             g_terrain [Vertex][0] = static_cast<float>(x) * MAP_SCALE;                  // 地域数组 3维，MAP_SCALE是边长
-            g_terrain [Vertex][1] = static_cast<float>(g_imageData[Vertex * 3] / 3);    // 地域数组 3维 灰度等高线生成高度图，在Modelobj初始化就赋值了
+            // g_terrain [Vertex][1] = static_cast<float>(g_imageData[Vertex * 3] / 3);    // 地域数组 3维 灰度等高线生成高度图，在Modelobj初始化就赋值了
+            g_terrain [Vertex][1] = static_cast<float>(terrainContourData_.at(Vertex));    // 地域数组 3维 灰度等高线生成高度图，在Modelobj初始化就赋值了
             g_terrain [Vertex][2] = -static_cast<float>(z) * MAP_SCALE;                 // 地域数组 3维
             g_texcoord[Vertex][0] = static_cast<float>(x);                              // 索引数组2维，指示曲面贴图的平面坐标
             g_texcoord[Vertex][1] = static_cast<float>(z);

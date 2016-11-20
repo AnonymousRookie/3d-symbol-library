@@ -167,6 +167,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\Base\Uncopyable.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZStackDumper.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZMacros.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\Base\ZStringUtils.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZTypes.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Bitmap.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Camera.h" />
