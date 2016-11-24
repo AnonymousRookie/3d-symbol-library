@@ -305,6 +305,9 @@
     <ClInclude Include="resource.h">
       <Filter>SymbolLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\LineSymbolLib\L2DRoad.h">
+      <Filter>SymbolLib\LineSymbolLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNew.cpp">
@@ -425,6 +428,9 @@
       <Filter>SymbolLib\LineSymbolLib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\LineSymbolLib\SimpleLine.cpp">
+      <Filter>SymbolLib\LineSymbolLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\LineSymbolLib\L2DRoad.cpp">
       <Filter>SymbolLib\LineSymbolLib</Filter>
     </ClCompile>
   </ItemGroup>

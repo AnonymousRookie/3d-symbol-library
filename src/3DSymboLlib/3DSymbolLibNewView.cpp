@@ -123,6 +123,9 @@ BEGIN_MESSAGE_MAP(CMy3DSymbolLibNewView, CView)
     ON_MESSAGE(WM_PROJECT_SET_OK, &CMy3DSymbolLibNewView::OnProjectSetted)
     ON_COMMAND(ID_MENU_UPDATE_AREA_TEXTURE, &CMy3DSymbolLibNewView::OnMenuUpdateAreaTexture)
     ON_COMMAND(ID_MENU_AREA_DELETE, &CMy3DSymbolLibNewView::OnMenuAreaDelete)
+    ON_COMMAND(ID_LINE_2D_ROAD_ADD, &CMy3DSymbolLibNewView::OnLine2dRoadAdd)
+    ON_COMMAND(ID_LINE_2D_ROAD_FUSE, &CMy3DSymbolLibNewView::OnLine2dRoadFuse)
+    ON_COMMAND(ID_LINE_2D_ROAD_SET, &CMy3DSymbolLibNewView::OnLine2dRoadSet)
 END_MESSAGE_MAP()
 
 
@@ -4933,4 +4936,24 @@ void CMy3DSymbolLibNewView::OnMenuUpdateAreaTexture() {
 void CMy3DSymbolLibNewView::OnMenuAreaDelete() {
     // TODO(jason): 在此添加命令处理程序代码
     m_Area4_Array[area_id]->deleted = 1;
+}
+
+
+
+// 二维道路矢量与三维地形融合
+void CMy3DSymbolLibNewView::OnLine2dRoadAdd()
+{
+    // TODO: 在此添加命令处理程序代码
+}
+
+
+void CMy3DSymbolLibNewView::OnLine2dRoadFuse()
+{
+    // TODO: 在此添加命令处理程序代码
+}
+
+
+void CMy3DSymbolLibNewView::OnLine2dRoadSet()
+{
+    // TODO: 在此添加命令处理程序代码
 }

@@ -540,6 +540,9 @@ class CMy3DSymbolLibNewView : public CView {
 
 
 
+    afx_msg void OnLine2dRoadAdd();
+    afx_msg void OnLine2dRoadFuse();
+    afx_msg void OnLine2dRoadSet();
 };
 
 #ifndef _DEBUG  // 3DSymbolLibNewView.cpp 中的调试版本
