@@ -45,7 +45,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\temp\</IntDir>
-    <IncludePath>$(SolutionDir)..\include\;$(SolutionDir)..\lib\glog\src\windows\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\include\;$(SolutionDir)..\lib\glog\src\windows\;$(SolutionDir)..\vsbuild\3DSymbolLibNew\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\lib\opengl\;$(SolutionDir)..\lib\glog\Debug\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -53,7 +53,7 @@
     <OutDir>$(SolutionDir)..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\temp\</IntDir>
     <LibraryPath>$(SolutionDir)..\lib\opengl\;$(SolutionDir)..\lib\glog\Release\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)..\include\;$(SolutionDir)..\lib\glog\src\windows\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\include\;$(SolutionDir)..\lib\glog\src\windows\;$(SolutionDir)..\vsbuild\3DSymbolLibNew\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -187,7 +187,6 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\MainFrm.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\OutputWnd.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\PropertiesWnd.h" />
-    <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\resource.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\ViewTree.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\ModelListConfigureDialog.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\NClock.h" />
@@ -209,6 +208,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\targetver.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\TerrainImportContour.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Texture.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNew.cpp" />

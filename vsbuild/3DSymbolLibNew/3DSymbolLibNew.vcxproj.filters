@@ -266,9 +266,6 @@
     <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\PropertiesWnd.h">
       <Filter>SymbolLib\MFCFrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\resource.h">
-      <Filter>SymbolLib\MFCFrameWork</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\3DSymboLlib\MFCFrameWork\ViewTree.h">
       <Filter>SymbolLib\MFCFrameWork</Filter>
     </ClInclude>
@@ -304,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZStringUtils.h">
       <Filter>SymbolLib\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>SymbolLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
