@@ -20,6 +20,8 @@ enum {MODEL_NEW, MODEL_CHANGE};
 #define EXIST_OPENED_SYMBOLLIB_FILE         1
 #define NOT_EXIST_OPENED_SYMBOLLIB_FILE     0
 
+// 线符号 OR 面符号
+enum { LINE_SYMBOL = 1, AREA_SYMBOL};
 
 // model select struct
 typedef struct {

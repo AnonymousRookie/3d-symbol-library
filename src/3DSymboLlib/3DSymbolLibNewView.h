@@ -29,8 +29,8 @@
 #include "LineSymbolLib/SimpleLine.h"
 #include "LineSymbolLib/L3DRoad.h"
 #include "LineSymbolLib/DesingScheme.h"
-
-
+#include "LineSymbolLib/L2DRoad.h"
+#include <unordered_map>
 
 class CMy3DSymbolLibNewView : public CView {
   protected:  // 仅从序列化创建
@@ -461,7 +461,18 @@ class CMy3DSymbolLibNewView : public CView {
     afx_msg void OnUpdateMenuLineAdd(CCmdUI* pCmdUI);
     afx_msg void OnMenuAddLineWidth();
     // --------------------------------------------------------------
+    /* L2DRoad */
+    std::unique_ptr<L2DRoad> pL2DRoad_;
+    std::unordered_map<int, LineSymbol*> allLineSymbols_;  // 存放所有的线符号
+    LineSymbol* pLineSymbol_;
 
+    // 根据线段的2个端点, 获取增加宽度后的矩形的4个顶点
+    int GetArea4FromLine(const Point3& p1, const Point3& p2, const float& line_width, Area_4* pArea4/*output*/);
+    CArray<PArea_4, PArea_4> m_Line_Area4_Array_;     // 存放所有的面符号(线符号增加宽度后形成的面)
+
+    BOOL Line_fuse_Flag_;
+
+    // --------------------------------------------------------------
     /* L3DRoad */
     std::shared_ptr<CDesingScheme> pDesingScheme_;  // 线路设计
     std::unique_ptr<L3DRoad> pL3DRoad_;
@@ -543,6 +554,7 @@ class CMy3DSymbolLibNewView : public CView {
     afx_msg void OnLine2dRoadAdd();
     afx_msg void OnLine2dRoadFuse();
     afx_msg void OnLine2dRoadSet();
+    afx_msg void OnUpdateLine2dRoadAdd(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // 3DSymbolLibNewView.cpp 中的调试版本

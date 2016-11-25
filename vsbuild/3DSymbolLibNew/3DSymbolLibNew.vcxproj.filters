@@ -433,6 +433,9 @@
     <ClCompile Include="..\..\src\3DSymboLlib\LineSymbolLib\L2DRoad.cpp">
       <Filter>SymbolLib\LineSymbolLib</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\MathUtils\MathUtil.cpp">
+      <Filter>SymbolLib\MathUtils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DSymbolLibNew.rc">

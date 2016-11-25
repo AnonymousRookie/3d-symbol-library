@@ -1,6 +1,8 @@
 ﻿#ifndef MATH_UTIL_H
 #define MATH_UTIL_H
 
+#include "Vec3.h"
+
 
 // 最大最小值
 #define MATH_MIN(a, b)            (((a) < (b)) ? (a) : (b))
@@ -30,6 +32,11 @@
 
 
 #define PI 3.1415926535897932
+
+
+
+
+
 
 
 #endif  // MATH_UTIL_H
