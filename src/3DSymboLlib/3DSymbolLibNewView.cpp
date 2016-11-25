@@ -3,9 +3,9 @@
 #include "3DSymbolLibNew.h"
 #endif
 
-#include <string>
-#include <fstream>
-#include <streambuf>
+#include <string>  
+#include <fstream>  
+#include <streambuf>  
 #include <vector>
 #include <sstream>
 #include "MFCFrameWork/3DSymbolLibNewDoc.h"
@@ -144,7 +144,7 @@ CMy3DSymbolLibNewView::CMy3DSymbolLibNewView()
       pSkyBox_(new SkyBox),
       pDesingScheme_(new CDesingScheme),
       pSimpleLine_(new SimpleLine),
-      pL3DRoad_(new L3DRoad),
+      pL3DRoad_(new L3DRoad), 
       pL2DRoad_(new L2DRoad) {}
 
 CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView() {}
@@ -283,6 +283,7 @@ void CMy3DSymbolLibNewView::InitData() {
     pSimpleLine_->fuse_Flag = FALSE;
     m_Area_pointNum = 0;
     Area_fuse_Flag = FALSE;
+    Line_fuse_Flag_ = FALSE;
     m_CurrentProjectName = "";
     {
         // 是否存在已打开的符号文件
@@ -492,12 +493,14 @@ unsigned char* CMy3DSymbolLibNewView::LoadBit(char* filename, BITMAPINFOHEADER* 
 void CMy3DSymbolLibNewView::InitTerrain() {
     // 读取等高线数据
     terrainContourData_.clear();
-    std::ifstream t("C:\\128x128.txt");
+    std::ifstream t("C:\\128x128.txt");  
     std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
+
     std::vector<std::string> row = StringUtils::split(str, '\n');
-    for (auto iter = row.begin(); iter != row.end(); ++iter) {
+    for(auto iter = row.begin(); iter != row.end(); ++iter) {
+
         std::vector<std::string> tmp = StringUtils::split(*iter, ',');
-        for (auto it = tmp.begin(); it != tmp.end(); ++it) {
+        for(auto it = tmp.begin(); it != tmp.end(); ++it) {
             terrainContourData_.push_back(StringUtils::stringToFloat(*it));
         }
         cout << endl;
@@ -671,6 +674,16 @@ void CMy3DSymbolLibNewView::DrawScene() {
                 }
             }
         }
+
+        if (Line_fuse_Flag_) {
+            int32 tmp_size = m_Line_Area4_Array_.GetSize();
+            for (int32 i = 0; i < tmp_size; ++i) {
+                if (m_Line_Area4_Array_[i]->deleted != 1) {
+                    Line_Area_Triangled(m_Line_Area4_Array_[i]);
+                }
+            }
+        }
+
         // ---------------------------------------------------------
         // 显示景观树
         glPushMatrix();
@@ -897,26 +910,29 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             }
             Invalidate(FALSE);
             MessageBox(tt, "三维距离查询", MB_ICONINFORMATION);       // 给出距离查询信息
-            // SimpleLine
-            // } else if (spaceSearchInfo_.m_QueryType == LINE_ADD) {                        // 线编辑  添加线
-            //    ++m_LineEdit_pointNum;                                   // 选择点数 + 1
-            //    if (m_LineEdit_pointNum == 1) {                          // 如果只选择了1个点
-            //        m_line.pt1 = Point3(wx, wy, wz);
-            //    } else if (m_LineEdit_pointNum == 2) {
-            //        m_line.pt2 = Point3(wx, wy, wz);
-            //    }
-            //    if (m_LineEdit_pointNum >= 2) {     // 如果选择点数2个，归零
-            //        m_LineEdit_pointNum = 0;
-            //        PLine3 line = new Line3;
-            //        line->pt1 = m_line.pt1;
-            //        line->pt2 = m_line.pt2;
-            //        m_LinesArray.Add(line);
-            //    }
-            // L2DRoad
+       
+        // SimpleLine     
+        // } else if (spaceSearchInfo_.m_QueryType == LINE_ADD) {                        // 线编辑  添加线
+        //    ++m_LineEdit_pointNum;                                   // 选择点数 + 1
+        //    if (m_LineEdit_pointNum == 1) {                          // 如果只选择了1个点
+        //        m_line.pt1 = Point3(wx, wy, wz);
+        //    } else if (m_LineEdit_pointNum == 2) {
+        //        m_line.pt2 = Point3(wx, wy, wz);
+        //    }
+        //    if (m_LineEdit_pointNum >= 2) {     // 如果选择点数2个，归零
+        //        m_LineEdit_pointNum = 0;
+        //        PLine3 line = new Line3;
+        //        line->pt1 = m_line.pt1;
+        //        line->pt2 = m_line.pt2;
+        //        m_LinesArray.Add(line);
+        //    }
+        
+        // L2DRoad
         } else if (spaceSearchInfo_.m_QueryType == LINE_ADD) {                        // 线编辑  添加线
             Point3* p = new Point3(wx, wy, wz);
             pLineSymbol_->line_type_ = 1;
             pLineSymbol_->line_points_.push_back(p);
+
         } else if (spaceSearchInfo_.m_QueryType == AREA_ADD) {   // 选取面符号上的点
             m_Area_pointNum++;                  // 选择点数 + 1
             if (m_Area_pointNum == 1) {
@@ -1413,23 +1429,28 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
             glVertex3f(tmp_x, tmp_y + spaceSearchInfo_.m_shuzxHeight, tmp_z);
             glEnd();
         }
-        //} else if (spaceSearchInfo_.m_QueryType == LINE_ADD) {   // 绘制线段
-        //    glLineWidth(3.0);                   // 设置查询标志线宽度
-        //    glColor3f(spaceSearchInfo_.m_QueryColorR / 255.0 , spaceSearchInfo_.m_QueryColorG / 255.0 , spaceSearchInfo_.m_QueryColorB / 255.0);  // 设置查询标志线颜色
-        //    for (int32 i = 0; i < m_LinesArray.GetSize(); ++i) {
-        //        glBegin(GL_LINES);
-        //        glVertex3f(m_LinesArray[i]->pt1.x, m_LinesArray[i]->pt1.y, m_LinesArray[i]->pt1.z);
-        //        glVertex3f(m_LinesArray[i]->pt2.x, m_LinesArray[i]->pt2.y, m_LinesArray[i]->pt2.z);
-        //        glEnd();
-        //    }
-        //    glLineWidth(1.0);
-        //}
+    //} else if (spaceSearchInfo_.m_QueryType == LINE_ADD) {   // 绘制线段
+    //    glLineWidth(3.0);                   // 设置查询标志线宽度
+    //    glColor3f(spaceSearchInfo_.m_QueryColorR / 255.0 , spaceSearchInfo_.m_QueryColorG / 255.0 , spaceSearchInfo_.m_QueryColorB / 255.0);  // 设置查询标志线颜色
+    //    for (int32 i = 0; i < m_LinesArray.GetSize(); ++i) {
+    //        glBegin(GL_LINES);
+    //        glVertex3f(m_LinesArray[i]->pt1.x, m_LinesArray[i]->pt1.y, m_LinesArray[i]->pt1.z);
+    //        glVertex3f(m_LinesArray[i]->pt2.x, m_LinesArray[i]->pt2.y, m_LinesArray[i]->pt2.z);
+    //        glEnd();
+    //    }
+    //    glLineWidth(1.0);
+    //} 
+    
     } else if (spaceSearchInfo_.m_QueryType == LINE_ADD) {   // 绘制线段
         glLineWidth(2.0);                   // 设置查询标志线宽度
         glColor3f(spaceSearchInfo_.m_QueryColorR / 255.0 , spaceSearchInfo_.m_QueryColorG / 255.0 , spaceSearchInfo_.m_QueryColorB / 255.0);  // 设置查询标志线颜色
-        for (auto iter = allLineSymbols_.begin(); iter != allLineSymbols_.end(); ++iter) {
+        
+
+        for (auto iter = allLineSymbols_.begin(); iter!= allLineSymbols_.end(); ++iter) {
             LineSymbol* pLs = iter->second;
+
             vector<Vec3*> lp = pLs->line_points_;
+
             if (lp.size() >= 2) {
                 glBegin(GL_LINE_STRIP);
                 for (auto it = lp.begin(); it != lp.end(); ++it) {
@@ -1437,9 +1458,13 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
                 }
                 glEnd();
             }
-            glLineWidth(1.0);
-        }
-    } else if (spaceSearchInfo_.m_QueryType == AREA_ADD) { // 绘制4边形
+
+        glLineWidth(1.0);
+        } 
+    }
+    
+    
+    else if (spaceSearchInfo_.m_QueryType == AREA_ADD) {   // 绘制4边形
         glLineWidth(3.0);                   // 设置查询标志线宽度
         glColor3f(0.3, 0.6, 0.5);           // 设置查询标志线颜色
         for (int32 i = 0; i < m_Area4_Array.GetSize(); ++i) {
@@ -4603,8 +4628,8 @@ void CMy3DSymbolLibNewView::OnMenuAreaFuse() {
 }
 
 // 多边形三角化
-void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4, const int& symbol_type) {
-    if ((symbol_type == AREA_SYMBOL && Area_fuse_Flag == TRUE) || () && m_Drawmode == 3) {
+void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
+    if (Area_fuse_Flag == TRUE && m_Drawmode == 3) {
         glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
         glPushMatrix();             // 压入矩阵堆栈
         glLineWidth(3.0);           // 设置线宽
@@ -4778,6 +4803,185 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4, const int& sym
     }
 }
 
+
+void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
+    if (Line_fuse_Flag_ == TRUE && m_Drawmode == 3) {
+        glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
+        glPushMatrix();             // 压入矩阵堆栈
+        glLineWidth(3.0);           // 设置线宽
+        glColor3f(0, 0.5, 1);       // 设置颜色
+        {
+            glBindTexture(GL_TEXTURE_2D, _area4->area_texture_rd);
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+            static const double deta = 1.00;
+            // 1.多边形内原先完整的三角形
+            for (uint32 i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
+                glColor3f(1.0000 , 0.9804 , 0.9804);
+                glBegin(GL_TRIANGLES);
+                {
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1.x, _area4->TrianglesInPolygonVecotr[i].pt1.y + deta, _area4->TrianglesInPolygonVecotr[i].pt1.z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2.x, _area4->TrianglesInPolygonVecotr[i].pt2.y + deta, _area4->TrianglesInPolygonVecotr[i].pt2.z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3.x, _area4->TrianglesInPolygonVecotr[i].pt3.y + deta, _area4->TrianglesInPolygonVecotr[i].pt3.z);
+                }
+                glEnd();
+            }
+            // 2. 经过局部三角化的三角形
+            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1.size(); ++i) {
+                glColor3f(0.0980 , 0.0980 , 0.4392);
+                glBegin(GL_TRIANGLES);
+                {
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1.x, _area4->LocalTrianglesVecotr1[i].pt1.y + deta, _area4->LocalTrianglesVecotr1[i].pt1.z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2.x, _area4->LocalTrianglesVecotr1[i].pt2.y + deta, _area4->LocalTrianglesVecotr1[i].pt2.z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3.x, _area4->LocalTrianglesVecotr1[i].pt3.y + deta, _area4->LocalTrianglesVecotr1[i].pt3.z);
+                }
+                glEnd();
+            }
+            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2.size(); ++i) {
+                glColor3f(0.611, 0.400, 0.121);
+                glBegin(GL_TRIANGLES);
+                {
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1.x, _area4->LocalTrianglesVecotr2[i].pt1.y + deta, _area4->LocalTrianglesVecotr2[i].pt1.z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2.x, _area4->LocalTrianglesVecotr2[i].pt2.y + deta, _area4->LocalTrianglesVecotr2[i].pt2.z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3.x, _area4->LocalTrianglesVecotr2[i].pt3.y + deta, _area4->LocalTrianglesVecotr2[i].pt3.z);
+                }
+                glEnd();
+            }
+            // 2.1 多边形 顶点处
+            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1_1.size(); ++i) {
+                glColor3f(1.0000 , 0.3882 , 0.2784);
+                glBegin(GL_TRIANGLES);
+                {
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1.x, _area4->LocalTrianglesVecotr1_1[i].pt1.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt1.z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2.x, _area4->LocalTrianglesVecotr1_1[i].pt2.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt2.z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3.x, _area4->LocalTrianglesVecotr1_1[i].pt3.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt3.z);
+                }
+                glEnd();
+            }
+            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2_1.size(); ++i) {
+                glColor3f(0.6980 , 0.1333 , 0.1333);
+                glBegin(GL_TRIANGLES);
+                {
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1.x, _area4->LocalTrianglesVecotr2_1[i].pt1.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt1.z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2.x, _area4->LocalTrianglesVecotr2_1[i].pt2.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt2.z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3.x, _area4->LocalTrianglesVecotr2_1[i].pt3.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt3.z);
+                }
+                glEnd();
+            }
+            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr_last.size(); ++i) {
+                glColor3f(0.6275,  0.1255,  0.9412);
+                glBegin(GL_TRIANGLES);
+                {
+                    glTexCoord2f(0.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1.x, _area4->LocalTrianglesVecotr_last[i].pt1.y + deta, _area4->LocalTrianglesVecotr_last[i].pt1.z);
+                    glTexCoord2f(0.0f, 1.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2.x, _area4->LocalTrianglesVecotr_last[i].pt2.y + deta, _area4->LocalTrianglesVecotr_last[i].pt2.z);
+                    glTexCoord2f(1.0f, 0.0f);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3.x, _area4->LocalTrianglesVecotr_last[i].pt3.y + deta, _area4->LocalTrianglesVecotr_last[i].pt3.z);
+                }
+                glEnd();
+            }
+        }
+        glLineWidth(1.0);           // 恢复线宽
+        glPopAttrib();
+        glPopMatrix();              // 弹出矩阵堆栈
+    }
+    // ...............................................................
+    if (Line_fuse_Flag_ == TRUE && m_Drawmode == 1) {
+        glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
+        glPushMatrix();             // 压入矩阵堆栈
+        glLineWidth(3.0);           // 设置线宽
+        glColor3f(0, 0.5, 1);       // 设置颜色
+        {
+            // 1.多边形内原先完整的三角形
+            for (uint32 i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
+                glColor3f(1.0000, 0.9804, 0.9804);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1.x, _area4->TrianglesInPolygonVecotr[i].pt1.y , _area4->TrianglesInPolygonVecotr[i].pt1.z);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2.x, _area4->TrianglesInPolygonVecotr[i].pt2.y , _area4->TrianglesInPolygonVecotr[i].pt2.z);
+                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3.x, _area4->TrianglesInPolygonVecotr[i].pt3.y , _area4->TrianglesInPolygonVecotr[i].pt3.z);
+                }
+                glEnd();
+            }
+            // 2. 经过局部三角化的三角形
+            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1.size(); ++i) {
+                glColor3f(1.0, 1.0, 0.1);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1.x, _area4->LocalTrianglesVecotr1[i].pt1.y , _area4->LocalTrianglesVecotr1[i].pt1.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2.x, _area4->LocalTrianglesVecotr1[i].pt2.y , _area4->LocalTrianglesVecotr1[i].pt2.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3.x, _area4->LocalTrianglesVecotr1[i].pt3.y , _area4->LocalTrianglesVecotr1[i].pt3.z);
+                }
+                glEnd();
+            }
+            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2.size(); ++i) {
+                glColor3f(0.611, 0.400, 0.121);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1.x, _area4->LocalTrianglesVecotr2[i].pt1.y , _area4->LocalTrianglesVecotr2[i].pt1.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2.x, _area4->LocalTrianglesVecotr2[i].pt2.y , _area4->LocalTrianglesVecotr2[i].pt2.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3.x, _area4->LocalTrianglesVecotr2[i].pt3.y , _area4->LocalTrianglesVecotr2[i].pt3.z);
+                }
+                glEnd();
+            }
+            // 2.1 多边形 顶点处
+            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1_1.size(); ++i) {
+                glColor3f(1.0000, 0.3882, 0.2784);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1.x, _area4->LocalTrianglesVecotr1_1[i].pt1.y , _area4->LocalTrianglesVecotr1_1[i].pt1.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2.x, _area4->LocalTrianglesVecotr1_1[i].pt2.y , _area4->LocalTrianglesVecotr1_1[i].pt2.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3.x, _area4->LocalTrianglesVecotr1_1[i].pt3.y , _area4->LocalTrianglesVecotr1_1[i].pt3.z);
+                }
+                glEnd();
+            }
+            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2_1.size(); ++i) {
+                glColor3f(0.6980, 0.1333, 0.1333);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1.x, _area4->LocalTrianglesVecotr2_1[i].pt1.y, _area4->LocalTrianglesVecotr2_1[i].pt1.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2.x, _area4->LocalTrianglesVecotr2_1[i].pt2.y, _area4->LocalTrianglesVecotr2_1[i].pt2.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3.x, _area4->LocalTrianglesVecotr2_1[i].pt3.y, _area4->LocalTrianglesVecotr2_1[i].pt3.z);
+                }
+                glEnd();
+            }
+            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr_last.size(); ++i) {
+                glColor3f(0.6275, 0.1255, 0.9412);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1.x, _area4->LocalTrianglesVecotr_last[i].pt1.y, _area4->LocalTrianglesVecotr_last[i].pt1.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2.x, _area4->LocalTrianglesVecotr_last[i].pt2.y, _area4->LocalTrianglesVecotr_last[i].pt2.z);
+                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3.x, _area4->LocalTrianglesVecotr_last[i].pt3.y, _area4->LocalTrianglesVecotr_last[i].pt3.z);
+                }
+                glEnd();
+            }
+        }
+        glLineWidth(1.0);           // 恢复线宽
+        glPopAttrib();
+        glPopMatrix();              // 弹出矩阵堆栈
+    }
+}
+
+
+
+
 void CMy3DSymbolLibNewView::LoadAreaTexture(CString _areaTexture_str, UINT& texture_id) {  // 加载面符号纹理  // NOLINT
     char cc[256] = "";
     // strcpy(cc,  _areaTexture_str);
@@ -4935,12 +5139,14 @@ void CMy3DSymbolLibNewView::OnMenuAreaDelete() {
 
 
 // 二维道路矢量与三维地形融合
-void CMy3DSymbolLibNewView::OnLine2dRoadAdd() {
+void CMy3DSymbolLibNewView::OnLine2dRoadAdd()
+{
     if (spaceSearchInfo_.m_QueryType == LINE_ADD) {
         spaceSearchInfo_.m_QueryType = -1;
-        //
+        // 
         delete pLineSymbol_;
         pLineSymbol_ = nullptr;
+        
     } else {
         spaceSearchInfo_.m_QueryType = LINE_ADD;
         // 创建新的线符号
@@ -4952,75 +5158,83 @@ void CMy3DSymbolLibNewView::OnLine2dRoadAdd() {
 int CMy3DSymbolLibNewView::GetArea4FromLine(const Point3& p1, const Point3& p2, const float& line_width, Area_4* pArea4/*output*/) {
     // 线段与x轴垂直
     if (MATH_FLOAT_EQUAL(p1.x, p2.x)) {
-        pArea4->pt1.x = p1.x - line_width / 2;
+        pArea4->pt1.x = p1.x - line_width/2;
         pArea4->pt1.z = p1.z;
         pArea4->pt1.y = GetHeight(pArea4->pt1.x, pArea4->pt1.z);
         //
-        pArea4->pt2.x = p1.x + line_width / 2;
+        pArea4->pt2.x = p1.x + line_width/2;
         pArea4->pt2.z = p1.z;
         pArea4->pt2.y = GetHeight(pArea4->pt2.x, pArea4->pt2.z);
         //
-        pArea4->pt3.x = p2.x + line_width / 2;
+        pArea4->pt3.x = p2.x + line_width/2;
         pArea4->pt3.z = p2.z;
         pArea4->pt3.y = GetHeight(pArea4->pt3.x, pArea4->pt3.z);
         //
-        pArea4->pt4.x = p2.x - line_width / 2;
+        pArea4->pt4.x = p2.x - line_width/2;
         pArea4->pt4.z = p2.z;
         pArea4->pt4.y = GetHeight(pArea4->pt4.x, pArea4->pt4.z);
     }
     // 线段与y轴垂直
     else if (MATH_FLOAT_EQUAL(p1.z, p2.z)) {
         pArea4->pt1.x = p1.x;
-        pArea4->pt1.z = p1.z + line_width / 2;
+        pArea4->pt1.z = p1.z + line_width/2;
         pArea4->pt1.y = GetHeight(pArea4->pt1.x, pArea4->pt1.z);
         //
         pArea4->pt2.x = p2.x;
-        pArea4->pt2.z = p2.z + line_width / 2;
+        pArea4->pt2.z = p2.z + line_width/2;
         pArea4->pt2.y = GetHeight(pArea4->pt2.x, pArea4->pt2.z);
         //
         pArea4->pt3.x = p2.x;
-        pArea4->pt3.z = p2.z - line_width / 2;
+        pArea4->pt3.z = p2.z - line_width/2;
         pArea4->pt3.y = GetHeight(pArea4->pt3.x, pArea4->pt3.z);
         //
         pArea4->pt4.x = p1.x;
-        pArea4->pt4.z = p1.z - line_width / 2;
+        pArea4->pt4.z = p1.z - line_width/2;
         pArea4->pt4.y = GetHeight(pArea4->pt4.x, pArea4->pt4.z);
-    } else {
+    }
+    else {
         // 求k
         float k = (p1.z - p2.z) / (p1.x - p2.x);
         // if (k > 0) {
-        float deltaX = sin(atan(k)) * line_width / 2;
-        float deltaY = cos(atan(k)) * line_width / 2;
-        pArea4->pt1.x = p1.x - deltaX;
-        pArea4->pt1.z = p1.z + deltaY;
-        pArea4->pt1.y = GetHeight(pArea4->pt1.x, pArea4->pt1.z);
-        //
-        pArea4->pt2.x = p1.x + deltaX;
-        pArea4->pt2.z = p1.z - deltaY;
-        pArea4->pt2.y = GetHeight(pArea4->pt2.x, pArea4->pt2.z);
-        //
-        pArea4->pt3.x = p2.x + deltaX;
-        pArea4->pt3.z = p2.z - deltaY;
-        pArea4->pt3.y = GetHeight(pArea4->pt3.x, pArea4->pt3.z);
-        //
-        pArea4->pt4.x = p2.x - deltaX;
-        pArea4->pt4.z = p2.z + deltaY;
-        pArea4->pt4.y = GetHeight(pArea4->pt4.x, pArea4->pt4.z);
+            float deltaX = sin(atan(k)) * line_width/2;
+            float deltaY = cos(atan(k)) * line_width/2;
+
+            pArea4->pt1.x = p1.x - deltaX;
+            pArea4->pt1.z = p1.z + deltaY;
+            pArea4->pt1.y = GetHeight(pArea4->pt1.x, pArea4->pt1.z);
+            //
+            pArea4->pt2.x = p1.x + deltaX;
+            pArea4->pt2.z = p1.z - deltaY;
+            pArea4->pt2.y = GetHeight(pArea4->pt2.x, pArea4->pt2.z);
+            //
+            pArea4->pt3.x = p2.x + deltaX;
+            pArea4->pt3.z = p2.z - deltaY;
+            pArea4->pt3.y = GetHeight(pArea4->pt3.x, pArea4->pt3.z);
+            //
+            pArea4->pt4.x = p2.x - deltaX;
+            pArea4->pt4.z = p2.z + deltaY;
+            pArea4->pt4.y = GetHeight(pArea4->pt4.x, pArea4->pt4.z);
         //} else {
+
+        
     }
+
     return 0;
 }
 
-void CMy3DSymbolLibNewView::OnLine2dRoadFuse() {
+void CMy3DSymbolLibNewView::OnLine2dRoadFuse()
+{
     // 将刚才创建的线符号保存
     int line_count = allLineSymbols_.size();
     if (pLineSymbol_->line_type_ != 0) {
         allLineSymbols_.insert(std::unordered_map<int, LineSymbol*>::value_type(line_count++, pLineSymbol_));
     }
-    //
+
+    // 
     LOGGER_INFO << "allLineSymbols_.size() = " << allLineSymbols_.size();
-    for (auto iter = allLineSymbols_.begin(); iter != allLineSymbols_.end(); ++iter) {
+    for (auto iter = allLineSymbols_.begin(); iter!= allLineSymbols_.end(); ++iter) {
         LineSymbol* pLs = iter->second;
+
         vector<Vec3*> lp = pLs->line_points_;
         LOGGER_INFO << "lp.size() = " << lp.size();
         for (auto it = lp.begin(); it != lp.end(); ++it) {
@@ -5030,20 +5244,65 @@ void CMy3DSymbolLibNewView::OnLine2dRoadFuse() {
             Area_4* pArea4 = new Area_4;
             Point3 p1 = Point3(lp.at(0)->x, lp.at(0)->y, lp.at(0)->z);
             Point3 p2 = Point3(lp.at(1)->x, lp.at(1)->y, lp.at(1)->z);
+
             GetArea4FromLine(p1, p2, pLs->line_width_, pArea4);
+
             pArea4->area_texture = "";
             pArea4->deleted = 0;
-            m_Area4_Array.Add(pArea4);
+            m_Line_Area4_Array_.Add(pArea4);
+        }
+
+    }
+
+
+    // ...............
+
+
+    if (m_Line_Area4_Array_.GetSize() <= 0) {
+        return;
+    }
+    // =========================================================================================
+    uint32 tmp_size = m_Line_Area4_Array_.GetSize();
+    for (uint32 i = 0; i < tmp_size; ++i) {
+        Area_4 tmp_area4;
+        tmp_area4.pt1 = m_Line_Area4_Array_[i]->pt1;
+        tmp_area4.pt2 = m_Line_Area4_Array_[i]->pt2;
+        tmp_area4.pt3 = m_Line_Area4_Array_[i]->pt3;
+        tmp_area4.pt4 = m_Line_Area4_Array_[i]->pt4;
+        pArea4Symbol_->FindAllTrianglesInPolygon(tmp_area4, g_terrain);
+        m_Line_Area4_Array_[i]->pt1 = tmp_area4.pt1;
+        m_Line_Area4_Array_[i]->pt2 = tmp_area4.pt2;
+        m_Line_Area4_Array_[i]->pt3 = tmp_area4.pt3;
+        m_Line_Area4_Array_[i]->pt4 = tmp_area4.pt4;
+        m_Line_Area4_Array_[i]->LocalTrianglesVecotr1 = tmp_area4.LocalTrianglesVecotr1;
+        m_Line_Area4_Array_[i]->LocalTrianglesVecotr1_1 = tmp_area4.LocalTrianglesVecotr1_1;
+        m_Line_Area4_Array_[i]->LocalTrianglesVecotr2 = tmp_area4.LocalTrianglesVecotr2;
+        m_Line_Area4_Array_[i]->LocalTrianglesVecotr2_1 = tmp_area4.LocalTrianglesVecotr2_1;
+        m_Line_Area4_Array_[i]->LocalTrianglesVecotr_last = tmp_area4.LocalTrianglesVecotr_last;
+        m_Line_Area4_Array_[i]->TrianglesInPolygonVecotr = tmp_area4.TrianglesInPolygonVecotr;
+        // ==================================================================================
+        CString scenePath = g_sceneDataPath.c_str();
+        CString area_texture = scenePath + "\\AreaTexture\\grassland\\area.bmp";
+
+        if (m_Line_Area4_Array_[i]->area_texture == "") {
+            // AfxMessageBox("texture == NULL");
+            m_Line_Area4_Array_[i]->area_texture = area_texture;
+            LoadAreaTexture(area_texture, m_Line_Area4_Array_[i]->area_texture_rd);
+        } else {
+            LoadAreaTexture(m_Line_Area4_Array_[i]->area_texture, m_Line_Area4_Array_[i]->area_texture_rd);
         }
     }
+    Line_fuse_Flag_ = TRUE;
 }
 
 
-void CMy3DSymbolLibNewView::OnLine2dRoadSet() {
+void CMy3DSymbolLibNewView::OnLine2dRoadSet()
+{
 }
 
 
-void CMy3DSymbolLibNewView::OnUpdateLine2dRoadAdd(CCmdUI* pCmdUI) {
+void CMy3DSymbolLibNewView::OnUpdateLine2dRoadAdd(CCmdUI *pCmdUI)
+{
     pCmdUI->SetCheck(spaceSearchInfo_.m_QueryType == LINE_ADD);
 }
 

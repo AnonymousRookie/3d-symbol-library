@@ -471,7 +471,7 @@ class CMy3DSymbolLibNewView : public CView {
     CArray<PArea_4, PArea_4> m_Line_Area4_Array_;     // 存放所有的面符号(线符号增加宽度后形成的面)
 
     BOOL Line_fuse_Flag_;
-
+    void Line_Area_Triangled(const PArea_4& _area4);
     // --------------------------------------------------------------
     /* L3DRoad */
     std::shared_ptr<CDesingScheme> pDesingScheme_;  // 线路设计
@@ -515,6 +515,9 @@ class CMy3DSymbolLibNewView : public CView {
     BOOL Area_fuse_Flag;
     // 多边形三角化
     void Area_Triangled(const PArea_4& _area4);
+
+    
+
     UINT m_area_texture;
     void LoadAreaTexture(CString _areaTexture_str, UINT& texture_id);  // 加载面符号纹理  // NOLINT
     // 更换选中的面符号的纹理
