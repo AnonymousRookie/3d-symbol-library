@@ -22,8 +22,8 @@ const int32 MAX_N = 1000;
 
 struct PPR_Point {
     PPR_Point() {}
-    PPR_Point(double x, double y): x(x), y(y) {}
-    double x, y;
+    PPR_Point(float _x, float _y): x(_x), y(_y) {}
+    float x, y;
 };
 struct LineSegment {
     PPR_Point pt1, pt2;

@@ -468,7 +468,10 @@ class CMy3DSymbolLibNewView : public CView {
 
     // 根据线段的2个端点, 获取增加宽度后的矩形的4个顶点
     int GetArea4FromLine(const Point3& p1, const Point3& p2, const float& line_width, Area_4* pArea4/*output*/);
-    CArray<PArea_4, PArea_4> m_Line_Area4_Array_;     // 存放所有的面符号(线符号增加宽度后形成的面)
+    
+    
+    vector< std::shared_ptr<CArray<PArea_4, PArea_4>> > allLineArea4Array_;  // 存放所有的线的面
+
 
     BOOL Line_fuse_Flag_;  // 是否已经对线符号进行融合
     // 三角化并渲染增加宽度后的线符号

@@ -675,10 +675,14 @@ void CMy3DSymbolLibNewView::DrawScene() {
         }
 
         if (Line_fuse_Flag_) {
-            int32 tmp_size = m_Line_Area4_Array_.GetSize();
-            for (int32 i = 0; i < tmp_size; ++i) {
-                if (m_Line_Area4_Array_[i]->deleted != 1) {
-                    Line_Area_Triangled(m_Line_Area4_Array_[i]);
+            for (uint32 i = 0; i < allLineArea4Array_.size(); ++i) {
+                auto pLineArea4Array = allLineArea4Array_.at(i);
+                //
+                int32 tmp_size = pLineArea4Array->GetSize();
+                for (int32 i = 0; i < tmp_size; ++i) {
+                    if ((*pLineArea4Array)[i]->deleted != 1) {
+                        Line_Area_Triangled((*pLineArea4Array)[i]);
+                    }
                 }
             }
         }
@@ -5235,40 +5239,48 @@ int CMy3DSymbolLibNewView::GetArea4FromLine(const Point3& p1, const Point3& p2, 
 
 void CMy3DSymbolLibNewView::OnLine2dRoadFuse()
 {
-    if (m_Line_Area4_Array_.GetSize() <= 0) {
+    if (allLineArea4Array_.size() <= 0) {
         return;
     }
-    // =========================================================================================
-    uint32 tmp_size = m_Line_Area4_Array_.GetSize();
-    for (uint32 i = 0; i < tmp_size; ++i) {
-        Area_4 tmp_area4;
-        tmp_area4.pt1 = m_Line_Area4_Array_[i]->pt1;
-        tmp_area4.pt2 = m_Line_Area4_Array_[i]->pt2;
-        tmp_area4.pt3 = m_Line_Area4_Array_[i]->pt3;
-        tmp_area4.pt4 = m_Line_Area4_Array_[i]->pt4;
-        pArea4Symbol_->FindAllTrianglesInPolygon(tmp_area4, g_terrain);
-        m_Line_Area4_Array_[i]->pt1 = tmp_area4.pt1;
-        m_Line_Area4_Array_[i]->pt2 = tmp_area4.pt2;
-        m_Line_Area4_Array_[i]->pt3 = tmp_area4.pt3;
-        m_Line_Area4_Array_[i]->pt4 = tmp_area4.pt4;
-        m_Line_Area4_Array_[i]->LocalTrianglesVecotr1 = tmp_area4.LocalTrianglesVecotr1;
-        m_Line_Area4_Array_[i]->LocalTrianglesVecotr1_1 = tmp_area4.LocalTrianglesVecotr1_1;
-        m_Line_Area4_Array_[i]->LocalTrianglesVecotr2 = tmp_area4.LocalTrianglesVecotr2;
-        m_Line_Area4_Array_[i]->LocalTrianglesVecotr2_1 = tmp_area4.LocalTrianglesVecotr2_1;
-        m_Line_Area4_Array_[i]->LocalTrianglesVecotr_last = tmp_area4.LocalTrianglesVecotr_last;
-        m_Line_Area4_Array_[i]->TrianglesInPolygonVecotr = tmp_area4.TrianglesInPolygonVecotr;
-        // ==================================================================================
-        CString scenePath = g_sceneDataPath.c_str();
-        CString area_texture = scenePath + "\\AreaTexture\\grassland\\area.bmp";
 
-        if (m_Line_Area4_Array_[i]->area_texture == "") {
-            // AfxMessageBox("texture == NULL");
-            m_Line_Area4_Array_[i]->area_texture = area_texture;
-            LoadAreaTexture(area_texture, m_Line_Area4_Array_[i]->area_texture_rd);
-        } else {
-            LoadAreaTexture(m_Line_Area4_Array_[i]->area_texture, m_Line_Area4_Array_[i]->area_texture_rd);
+    // =========================================================================================
+    for (uint32 k = 0; k < allLineArea4Array_.size(); ++k) {
+        auto pLineArea4Array = allLineArea4Array_.at(k);
+
+        uint32 tmp_size = (*pLineArea4Array).GetSize();
+        for (uint32 i = 0; i < tmp_size; ++i) {
+            Area_4 tmp_area4;
+            tmp_area4.pt1 = (*pLineArea4Array)[i]->pt1;
+            tmp_area4.pt2 = (*pLineArea4Array)[i]->pt2;
+            tmp_area4.pt3 = (*pLineArea4Array)[i]->pt3;
+            tmp_area4.pt4 = (*pLineArea4Array)[i]->pt4;
+            pArea4Symbol_->FindAllTrianglesInPolygon(tmp_area4, g_terrain);
+            (*pLineArea4Array)[i]->pt1 = tmp_area4.pt1;
+            (*pLineArea4Array)[i]->pt2 = tmp_area4.pt2;
+            (*pLineArea4Array)[i]->pt3 = tmp_area4.pt3;
+            (*pLineArea4Array)[i]->pt4 = tmp_area4.pt4;
+            (*pLineArea4Array)[i]->LocalTrianglesVecotr1 = tmp_area4.LocalTrianglesVecotr1;
+            (*pLineArea4Array)[i]->LocalTrianglesVecotr1_1 = tmp_area4.LocalTrianglesVecotr1_1;
+            (*pLineArea4Array)[i]->LocalTrianglesVecotr2 = tmp_area4.LocalTrianglesVecotr2;
+            (*pLineArea4Array)[i]->LocalTrianglesVecotr2_1 = tmp_area4.LocalTrianglesVecotr2_1;
+            (*pLineArea4Array)[i]->LocalTrianglesVecotr_last = tmp_area4.LocalTrianglesVecotr_last;
+            (*pLineArea4Array)[i]->TrianglesInPolygonVecotr = tmp_area4.TrianglesInPolygonVecotr;
+            // ==================================================================================
+            CString scenePath = g_sceneDataPath.c_str();
+            CString area_texture = scenePath + "\\RoadTexture\\4.bmp";
+
+            if ((*pLineArea4Array)[i]->area_texture == "") {
+                // AfxMessageBox("texture == NULL");
+                (*pLineArea4Array)[i]->area_texture = area_texture;
+                LoadAreaTexture(area_texture, (*pLineArea4Array)[i]->area_texture_rd);
+            } else {
+                LoadAreaTexture((*pLineArea4Array)[i]->area_texture, (*pLineArea4Array)[i]->area_texture_rd);
+            }
         }
     }
+
+
+    
     Line_fuse_Flag_ = TRUE;
 
     if (nullptr != pLineSymbol_) {
@@ -5313,6 +5325,9 @@ void CMy3DSymbolLibNewView::OnLine2dRoadAddEnd()
 
 
         if (!lp.empty()) {
+             
+            std::shared_ptr<CArray<PArea_4, PArea_4>> m_Line_Area4_Array_ = std::make_shared<CArray<PArea_4, PArea_4>>(); // 存放一条线中所有的面符号(线符号增加宽度后形成的面)
+
 
             for (auto it = lp.begin(); it != lp.end(); ++it) {
                 LOGGER_INFO << (*it)->x << ", " << (*it)->y << ", " << (*it)->z;
@@ -5333,9 +5348,150 @@ void CMy3DSymbolLibNewView::OnLine2dRoadAddEnd()
 
                     pArea4->area_texture = "";
                     pArea4->deleted = 0;
-                    m_Line_Area4_Array_.Add(pArea4);
+                    m_Line_Area4_Array_->Add(pArea4);
                 }
             }
+
+            std::shared_ptr<CArray<PArea_4, PArea_4>> pLine_Area4_Array_After_XiangJiao = std::make_shared<CArray<PArea_4, PArea_4>>(); // 存放一条线中所有的面符号(线符号增加宽度后形成的面)
+            if (m_Line_Area4_Array_->GetSize() >= 2) {  //至少2个矩形，相交 
+
+                CPointPolygonRelationship tmpCPR;
+                LineSegment tmpLineSegment_A1;
+                LineSegment tmpLineSegment_A2;
+
+                LineSegment tmpLineSegment_B1;
+                LineSegment tmpLineSegment_B2;
+
+                for (int i = 0; i < m_Line_Area4_Array_->GetSize()-1; ++i) {
+                    Area_4* pTmpArea4_A = m_Line_Area4_Array_->GetAt(i);
+                    tmpLineSegment_A1.pt1 = PPR_Point(pTmpArea4_A->pt1.x, pTmpArea4_A->pt1.z);
+                    tmpLineSegment_A1.pt2 = PPR_Point(pTmpArea4_A->pt4.x, pTmpArea4_A->pt4.z);
+
+                    tmpLineSegment_A2.pt1 = PPR_Point(pTmpArea4_A->pt2.x, pTmpArea4_A->pt2.z);
+                    tmpLineSegment_A2.pt2 = PPR_Point(pTmpArea4_A->pt3.x, pTmpArea4_A->pt3.z);
+
+                    // ----------------------------------------------------------
+                    Area_4* pTmpArea4_B = m_Line_Area4_Array_->GetAt(i+1);
+                    tmpLineSegment_B1.pt1 = PPR_Point(pTmpArea4_B->pt1.x, pTmpArea4_B->pt1.z);
+                    tmpLineSegment_B1.pt2 = PPR_Point(pTmpArea4_B->pt4.x, pTmpArea4_B->pt4.z);
+
+                    tmpLineSegment_B2.pt1 = PPR_Point(pTmpArea4_B->pt2.x, pTmpArea4_B->pt2.z);
+                    tmpLineSegment_B2.pt2 = PPR_Point(pTmpArea4_B->pt3.x, pTmpArea4_B->pt3.z);
+                    //
+
+                    bool xj_1 = tmpCPR.Intersect(tmpLineSegment_A1, tmpLineSegment_B1);
+                    bool xj_2 = tmpCPR.Intersect(tmpLineSegment_A2, tmpLineSegment_B2);
+                    LOGGER_INFO << "xiangjiao 1? = "<< tmpCPR.Intersect(tmpLineSegment_A1, tmpLineSegment_B1);
+                    LOGGER_INFO << "xiangjiao 2? = "<< tmpCPR.Intersect(tmpLineSegment_A2, tmpLineSegment_B2);
+
+                    if (xj_1 || xj_2) {
+                        if (xj_1) {
+                            PPR_Point JD1 = tmpCPR.getJD(tmpLineSegment_A1.pt1, tmpLineSegment_A1.pt2, tmpLineSegment_B1.pt1, tmpLineSegment_B1.pt2);
+                            LOGGER_INFO << "JD1 = " << JD1.x << ", " << JD1.y;  
+
+                            float a1 = 0.0f, b1 = 0.0f, c1 = 0.0f;
+                            a1 = tmpLineSegment_A2.pt2.y - tmpLineSegment_A2.pt1.y;
+                            b1 = tmpLineSegment_A2.pt1.x - tmpLineSegment_A2.pt2.x;
+                            c1 = tmpLineSegment_A2.pt2.x * tmpLineSegment_A2.pt1.y - tmpLineSegment_A2.pt1.x * tmpLineSegment_A2.pt2.y;
+                            
+                            float a2 = 0.0f, b2 = 0.0f, c2 = 0.0f;
+                            a2 = tmpLineSegment_B2.pt2.y - tmpLineSegment_B2.pt1.y;
+                            b2 = tmpLineSegment_B2.pt1.x - tmpLineSegment_B2.pt2.x;
+                            c2 = tmpLineSegment_B2.pt2.x * tmpLineSegment_B2.pt1.y - tmpLineSegment_B2.pt1.x * tmpLineSegment_B2.pt2.y;
+
+
+                            PPR_Point JD2;
+                            if ( MATH_FLOAT_EQUAL_0(a1*b2 - a2*b1) ) {
+                                AfxMessageBox("MATH_FLOAT_EQUAL_0(a1*b2 - a2*b1)...");
+                            } else {
+                                JD2.x = (b1*c2 - b2*c1) / (a1*b2 - a2*b1);
+                                JD2.y = (a2*c1 - a1*c2) / (a1*b2 - a2*b1);
+                            }
+
+                            
+                            LOGGER_INFO << ".....JD2 = " << JD2.x << ", " << JD2.y;  
+
+
+                            pTmpArea4_A->pt4.x = JD1.x;
+                            pTmpArea4_A->pt4.z = JD1.y;
+                            pTmpArea4_A->pt4.y = GetHeight(pTmpArea4_A->pt4.x, pTmpArea4_A->pt4.z);
+
+                            pTmpArea4_A->pt3.x = JD2.x;
+                            pTmpArea4_A->pt3.z = JD2.y;
+                            pTmpArea4_A->pt3.y = GetHeight(pTmpArea4_A->pt4.x, pTmpArea4_A->pt4.z);
+
+
+
+                            pTmpArea4_B->pt1.x = JD1.x;
+                            pTmpArea4_B->pt1.z = JD1.y;
+                            pTmpArea4_B->pt1.y = GetHeight(pTmpArea4_B->pt1.x, pTmpArea4_B->pt1.z);
+
+                            pTmpArea4_B->pt2.x = JD2.x;
+                            pTmpArea4_B->pt2.z = JD2.y;
+                            pTmpArea4_B->pt2.y = GetHeight(pTmpArea4_B->pt2.x, pTmpArea4_B->pt2.z);
+
+                        }
+                        else {
+                            PPR_Point JD2 = tmpCPR.getJD(tmpLineSegment_A2.pt1, tmpLineSegment_A2.pt2, tmpLineSegment_B2.pt1, tmpLineSegment_B2.pt2);
+                            LOGGER_INFO << "JD2 = " << JD2.x << ", " << JD2.y; 
+
+
+
+                            float a1 = 0.0f, b1 = 0.0f, c1 = 0.0f;
+                            a1 = tmpLineSegment_A1.pt2.y - tmpLineSegment_A1.pt1.y;
+                            b1 = tmpLineSegment_A1.pt1.x - tmpLineSegment_A1.pt2.x;
+                            c1 = tmpLineSegment_A1.pt2.x * tmpLineSegment_A1.pt1.y - tmpLineSegment_A1.pt1.x * tmpLineSegment_A1.pt2.y;
+
+                            float a2 = 0.0f, b2 = 0.0f, c2 = 0.0f;
+                            a2 = tmpLineSegment_B1.pt2.y - tmpLineSegment_B1.pt1.y;
+                            b2 = tmpLineSegment_B1.pt1.x - tmpLineSegment_B1.pt2.x;
+                            c2 = tmpLineSegment_B1.pt2.x * tmpLineSegment_B1.pt1.y - tmpLineSegment_B1.pt1.x * tmpLineSegment_B1.pt2.y;
+
+
+                            PPR_Point JD1;
+                            if ( MATH_FLOAT_EQUAL_0(a1*b2 - a2*b1) ) {
+                                AfxMessageBox("MATH_FLOAT_EQUAL_0(a1*b2 - a2*b1)...");
+                            } else {
+                                JD1.x = (b1*c2 - b2*c1) / (a1*b2 - a2*b1);
+                                JD1.y = (a2*c1 - a1*c2) / (a1*b2 - a2*b1);
+                            }
+
+
+
+                            LOGGER_INFO << "...JD1 = " << JD1.x << ", " << JD1.y;
+
+
+
+                            pTmpArea4_A->pt4.x = JD1.x;
+                            pTmpArea4_A->pt4.z = JD1.y;
+                            pTmpArea4_A->pt4.y = GetHeight(pTmpArea4_A->pt4.x, pTmpArea4_A->pt4.z);
+
+                            pTmpArea4_A->pt3.x = JD2.x;
+                            pTmpArea4_A->pt3.z = JD2.y;
+                            pTmpArea4_A->pt3.y = GetHeight(pTmpArea4_A->pt4.x, pTmpArea4_A->pt4.z);
+
+
+
+                            pTmpArea4_B->pt1.x = JD1.x;
+                            pTmpArea4_B->pt1.z = JD1.y;
+                            pTmpArea4_B->pt1.y = GetHeight(pTmpArea4_B->pt1.x, pTmpArea4_B->pt1.z);
+
+                            pTmpArea4_B->pt2.x = JD2.x;
+                            pTmpArea4_B->pt2.z = JD2.y;
+                            pTmpArea4_B->pt2.y = GetHeight(pTmpArea4_B->pt2.x, pTmpArea4_B->pt2.z);
+
+                        }
+
+                    }
+
+
+
+                }
+            }
+
+
+            allLineArea4Array_.push_back(m_Line_Area4_Array_);
+
         }
     }
 }
