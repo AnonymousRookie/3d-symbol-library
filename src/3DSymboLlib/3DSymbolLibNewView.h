@@ -456,24 +456,17 @@ class CMy3DSymbolLibNewView : public CView {
     int32 m_LineEdit_pointNum;  // 线编辑  选择的点的个数
     Line3 m_line;
     CArray<PLine3, PLine3> m_LinesArray;  // 存放所有的线符号
-//    afx_msg void OnMenuLineAdd();
-//    afx_msg void OnMenuLineFuse();
-//    afx_msg void OnUpdateMenuLineAdd(CCmdUI* pCmdUI);
-//    afx_msg void OnMenuAddLineWidth();
+    //    afx_msg void OnMenuLineAdd();
+    //    afx_msg void OnMenuLineFuse();
+    //    afx_msg void OnUpdateMenuLineAdd(CCmdUI* pCmdUI);
+    //    afx_msg void OnMenuAddLineWidth();
     // --------------------------------------------------------------
     /* L2DRoad */
     std::unique_ptr<L2DRoad> pL2DRoad_;
-    std::unordered_map<int, LineSymbol*> allLineSymbols_;  // 存放所有的线符号
+
     LineSymbol* pLineSymbol_;
 
-    // 根据线段的2个端点, 获取增加宽度后的矩形的4个顶点
-    int GetArea4FromLine(const Point3& p1, const Point3& p2, const float& line_width, Area_4* pArea4/*output*/);
-    
-    
-    vector< std::shared_ptr<CArray<PArea_4, PArea_4>> > allLineArea4Array_;  // 存放所有的线的面
 
-
-    BOOL Line_fuse_Flag_;  // 是否已经对线符号进行融合
     // 三角化并渲染增加宽度后的线符号
     void Line_Area_Triangled(const PArea_4& _area4);
 
@@ -525,7 +518,7 @@ class CMy3DSymbolLibNewView : public CView {
     // 多边形三角化
     void Area_Triangled(const PArea_4& _area4);
 
-    
+
 
     UINT m_area_texture;
     void LoadAreaTexture(CString _areaTexture_str, UINT& texture_id);  // 加载面符号纹理  // NOLINT
@@ -565,7 +558,7 @@ class CMy3DSymbolLibNewView : public CView {
 
 
     afx_msg void OnLine2dRoadAddEnd();
-    afx_msg void OnUpdateLine2dRoadFuse(CCmdUI *pCmdUI);
+    afx_msg void OnUpdateLine2dRoadFuse(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // 3DSymbolLibNewView.cpp 中的调试版本
