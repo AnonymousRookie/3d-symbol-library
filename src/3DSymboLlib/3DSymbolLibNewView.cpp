@@ -123,6 +123,8 @@ BEGIN_MESSAGE_MAP(CMy3DSymbolLibNewView, CView)
     ON_COMMAND(ID_LINE_2D_ROAD_FUSE, &CMy3DSymbolLibNewView::OnLine2dRoadFuse)
     ON_COMMAND(ID_LINE_2D_ROAD_SET, &CMy3DSymbolLibNewView::OnLine2dRoadSet)
     ON_UPDATE_COMMAND_UI(ID_LINE_2D_ROAD_ADD, &CMy3DSymbolLibNewView::OnUpdateLine2dRoadAdd)
+    ON_COMMAND(ID_LINE_2D_ROAD_ADD_END, &CMy3DSymbolLibNewView::OnLine2dRoadAddEnd)
+    ON_UPDATE_COMMAND_UI(ID_LINE_2D_ROAD_FUSE, &CMy3DSymbolLibNewView::OnUpdateLine2dRoadFuse)
 END_MESSAGE_MAP()
 
 
@@ -141,7 +143,8 @@ CMy3DSymbolLibNewView::CMy3DSymbolLibNewView()
       pDesingScheme_(new CDesingScheme),
       pSimpleLine_(new SimpleLine),
       pL3DRoad_(new L3DRoad), 
-      pL2DRoad_(new L2DRoad) {}
+      pL2DRoad_(new L2DRoad),
+      pLineSymbol_(nullptr) {}
 
 CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView() {}
 
@@ -489,7 +492,7 @@ unsigned char* CMy3DSymbolLibNewView::LoadBit(char* filename, BITMAPINFOHEADER* 
 void CMy3DSymbolLibNewView::InitTerrain() {
     // 读取等高线数据
     terrainContourData_.clear();
-    std::ifstream t("C:\\256x256.txt");  
+    std::ifstream t("C:\\128x128.txt");  
     std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
 
     std::vector<std::string> row = StringUtils::split(str, '\n');
@@ -1441,7 +1444,6 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         glLineWidth(2.0);                   // 设置查询标志线宽度
         glColor3f(spaceSearchInfo_.m_QueryColorR / 255.0 , spaceSearchInfo_.m_QueryColorG / 255.0 , spaceSearchInfo_.m_QueryColorB / 255.0);  // 设置查询标志线颜色
         
-
         for (auto iter = allLineSymbols_.begin(); iter!= allLineSymbols_.end(); ++iter) {
             LineSymbol* pLs = iter->second;
 
@@ -1454,9 +1456,20 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
                 }
                 glEnd();
             }
+        } 
+
+        if (nullptr != pLineSymbol_ && pLineSymbol_->line_type_ != 0) {
+            std::vector<Vec3*> lintPoints = pLineSymbol_->line_points_;
+            if (lintPoints.size() >= 2) {
+                glBegin(GL_LINE_STRIP);
+                for (auto it = lintPoints.begin(); it != lintPoints.end(); ++it) {
+                    glVertex3f((*it)->x, (*it)->y, (*it)->z);
+                }
+                glEnd();
+            }
+        }
 
         glLineWidth(1.0);
-        } 
     }
     
     
@@ -5143,8 +5156,10 @@ void CMy3DSymbolLibNewView::OnLine2dRoadAdd()
     if (spaceSearchInfo_.m_QueryType == LINE_ADD) {
         spaceSearchInfo_.m_QueryType = -1;
         // 
-        delete pLineSymbol_;
-        pLineSymbol_ = nullptr;
+        if (nullptr != pLineSymbol_) {
+            delete pLineSymbol_;
+            pLineSymbol_ = nullptr;
+        }
         
     } else {
         spaceSearchInfo_.m_QueryType = LINE_ADD;
@@ -5194,28 +5209,25 @@ int CMy3DSymbolLibNewView::GetArea4FromLine(const Point3& p1, const Point3& p2, 
     else {
         // 求k
         float k = (p1.z - p2.z) / (p1.x - p2.x);
-        // if (k > 0) {
-            float deltaX = sin(atan(k)) * line_width/2;
-            float deltaY = cos(atan(k)) * line_width/2;
 
-            pArea4->pt1.x = p1.x - deltaX;
-            pArea4->pt1.z = p1.z + deltaY;
-            pArea4->pt1.y = GetHeight(pArea4->pt1.x, pArea4->pt1.z);
-            //
-            pArea4->pt2.x = p1.x + deltaX;
-            pArea4->pt2.z = p1.z - deltaY;
-            pArea4->pt2.y = GetHeight(pArea4->pt2.x, pArea4->pt2.z);
-            //
-            pArea4->pt3.x = p2.x + deltaX;
-            pArea4->pt3.z = p2.z - deltaY;
-            pArea4->pt3.y = GetHeight(pArea4->pt3.x, pArea4->pt3.z);
-            //
-            pArea4->pt4.x = p2.x - deltaX;
-            pArea4->pt4.z = p2.z + deltaY;
-            pArea4->pt4.y = GetHeight(pArea4->pt4.x, pArea4->pt4.z);
-        //} else {
+        float deltaX = sin(atan(k)) * line_width/2;
+        float deltaY = cos(atan(k)) * line_width/2;
 
-        
+        pArea4->pt1.x = p1.x - deltaX;
+        pArea4->pt1.z = p1.z + deltaY;
+        pArea4->pt1.y = GetHeight(pArea4->pt1.x, pArea4->pt1.z);
+        //
+        pArea4->pt2.x = p1.x + deltaX;
+        pArea4->pt2.z = p1.z - deltaY;
+        pArea4->pt2.y = GetHeight(pArea4->pt2.x, pArea4->pt2.z);
+        //
+        pArea4->pt3.x = p2.x + deltaX;
+        pArea4->pt3.z = p2.z - deltaY;
+        pArea4->pt3.y = GetHeight(pArea4->pt3.x, pArea4->pt3.z);
+        //
+        pArea4->pt4.x = p2.x - deltaX;
+        pArea4->pt4.z = p2.z + deltaY;
+        pArea4->pt4.y = GetHeight(pArea4->pt4.x, pArea4->pt4.z);
     }
 
     return 0;
@@ -5223,40 +5235,6 @@ int CMy3DSymbolLibNewView::GetArea4FromLine(const Point3& p1, const Point3& p2, 
 
 void CMy3DSymbolLibNewView::OnLine2dRoadFuse()
 {
-    // 将刚才创建的线符号保存
-    int line_count = allLineSymbols_.size();
-    if (pLineSymbol_->line_type_ != 0) {
-        allLineSymbols_.insert(std::unordered_map<int, LineSymbol*>::value_type(line_count++, pLineSymbol_));
-    }
-
-    // 
-    LOGGER_INFO << "allLineSymbols_.size() = " << allLineSymbols_.size();
-    for (auto iter = allLineSymbols_.begin(); iter!= allLineSymbols_.end(); ++iter) {
-        LineSymbol* pLs = iter->second;
-
-        vector<Vec3*> lp = pLs->line_points_;
-        LOGGER_INFO << "lp.size() = " << lp.size();
-        for (auto it = lp.begin(); it != lp.end(); ++it) {
-            LOGGER_INFO << (*it)->x << ", " << (*it)->y << ", " << (*it)->z;
-        }
-        if (lp.size() >= 2) {
-            Area_4* pArea4 = new Area_4;
-            Point3 p1 = Point3(lp.at(0)->x, lp.at(0)->y, lp.at(0)->z);
-            Point3 p2 = Point3(lp.at(1)->x, lp.at(1)->y, lp.at(1)->z);
-
-            GetArea4FromLine(p1, p2, pLs->line_width_, pArea4);
-
-            pArea4->area_texture = "";
-            pArea4->deleted = 0;
-            m_Line_Area4_Array_.Add(pArea4);
-        }
-
-    }
-
-
-    // ...............
-
-
     if (m_Line_Area4_Array_.GetSize() <= 0) {
         return;
     }
@@ -5292,6 +5270,14 @@ void CMy3DSymbolLibNewView::OnLine2dRoadFuse()
         }
     }
     Line_fuse_Flag_ = TRUE;
+
+    if (nullptr != pLineSymbol_) {
+        delete pLineSymbol_;
+        pLineSymbol_ = nullptr;
+    }
+    // 取消添加线前面的勾选状态
+
+    spaceSearchInfo_.m_QueryType = -1;
 }
 
 
@@ -5306,5 +5292,57 @@ void CMy3DSymbolLibNewView::OnUpdateLine2dRoadAdd(CCmdUI *pCmdUI)
 }
 
 
+// 结束选线(一条线路结束)
+void CMy3DSymbolLibNewView::OnLine2dRoadAddEnd()
+{
+    // 将刚才创建的线符号保存
+    int line_count = allLineSymbols_.size();
+
+    if (nullptr != pLineSymbol_ && pLineSymbol_->line_type_ != 0) {
+        allLineSymbols_.insert(std::unordered_map<int, LineSymbol*>::value_type(line_count++, pLineSymbol_));
+    } else {
+        return;
+    }
+
+    LOGGER_INFO << "==============> allLineSymbols_.size() = " << allLineSymbols_.size();
+    for (auto iter = allLineSymbols_.begin(); iter!= allLineSymbols_.end(); ++iter) {
+        LineSymbol* pLs = iter->second;
+
+        vector<Vec3*> lp = pLs->line_points_;
+        LOGGER_INFO << "lp.size() = " << lp.size();
 
 
+        if (!lp.empty()) {
+
+            for (auto it = lp.begin(); it != lp.end(); ++it) {
+                LOGGER_INFO << (*it)->x << ", " << (*it)->y << ", " << (*it)->z;
+            }
+
+            // 对线符号按矩形分块
+            int point_count = lp.size();
+            if (point_count >= 2) {
+
+                for (int i = 0; i< point_count-1; ++i) {
+
+                    Area_4* pArea4 = new Area_4;
+
+                    Point3 p1 = Point3(lp.at(i)->x, lp.at(i)->y, lp.at(i)->z);
+                    Point3 p2 = Point3(lp.at(i+1)->x, lp.at(i+1)->y, lp.at(i+1)->z);
+
+                    GetArea4FromLine(p1, p2, pLs->line_width_, pArea4);
+
+                    pArea4->area_texture = "";
+                    pArea4->deleted = 0;
+                    m_Line_Area4_Array_.Add(pArea4);
+                }
+            }
+        }
+    }
+}
+
+
+void CMy3DSymbolLibNewView::OnUpdateLine2dRoadFuse(CCmdUI *pCmdUI)
+{
+    // TODO: 在此添加命令更新用户界面处理程序代码
+
+}

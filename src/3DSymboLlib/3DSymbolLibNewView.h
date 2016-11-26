@@ -470,8 +470,14 @@ class CMy3DSymbolLibNewView : public CView {
     int GetArea4FromLine(const Point3& p1, const Point3& p2, const float& line_width, Area_4* pArea4/*output*/);
     CArray<PArea_4, PArea_4> m_Line_Area4_Array_;     // 存放所有的面符号(线符号增加宽度后形成的面)
 
-    BOOL Line_fuse_Flag_;
+    BOOL Line_fuse_Flag_;  // 是否已经对线符号进行融合
+    // 三角化并渲染增加宽度后的线符号
     void Line_Area_Triangled(const PArea_4& _area4);
+
+    afx_msg void OnLine2dRoadAdd();
+    afx_msg void OnLine2dRoadFuse();
+    afx_msg void OnLine2dRoadSet();
+    afx_msg void OnUpdateLine2dRoadAdd(CCmdUI* pCmdUI);
     // --------------------------------------------------------------
     /* L3DRoad */
     std::shared_ptr<CDesingScheme> pDesingScheme_;  // 线路设计
@@ -554,10 +560,9 @@ class CMy3DSymbolLibNewView : public CView {
 
 
 
-    afx_msg void OnLine2dRoadAdd();
-    afx_msg void OnLine2dRoadFuse();
-    afx_msg void OnLine2dRoadSet();
-    afx_msg void OnUpdateLine2dRoadAdd(CCmdUI* pCmdUI);
+
+    afx_msg void OnLine2dRoadAddEnd();
+    afx_msg void OnUpdateLine2dRoadFuse(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // 3DSymbolLibNewView.cpp 中的调试版本
