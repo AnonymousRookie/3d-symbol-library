@@ -109,10 +109,6 @@ BEGIN_MESSAGE_MAP(CMy3DSymbolLibNewView, CView)
     ON_COMMAND(ID_MENU_CLEAR_LINES, &CMy3DSymbolLibNewView::OnMenuClearLines)
     ON_COMMAND(ID_SCENE_NEW, &CMy3DSymbolLibNewView::OnSceneNew)
     ON_COMMAND(ID_FILE_SAVE_AS, &CMy3DSymbolLibNewView::OnSceneSaveAs)
-    ON_COMMAND(ID_MENU_LINE_ADD, &CMy3DSymbolLibNewView::OnMenuLineAdd)
-    ON_COMMAND(ID_MENU_LINE_FUSE, &CMy3DSymbolLibNewView::OnMenuLineFuse)
-    ON_UPDATE_COMMAND_UI(ID_MENU_LINE_ADD, &CMy3DSymbolLibNewView::OnUpdateMenuLineAdd)
-    ON_COMMAND(ID_MENU_ADD_LINE_WIDTH, &CMy3DSymbolLibNewView::OnMenuAddLineWidth)
     ON_COMMAND(ID_MENU_ADD_AREA_SLIB, &CMy3DSymbolLibNewView::OnMenuAddAreaSlib)
     ON_UPDATE_COMMAND_UI(ID_MENU_ADD_AREA_SLIB, &CMy3DSymbolLibNewView::OnUpdateMenuAddAreaSlib)
     ON_COMMAND(ID_MENU_AREA_FUSE, &CMy3DSymbolLibNewView::OnMenuAreaFuse)
@@ -493,7 +489,7 @@ unsigned char* CMy3DSymbolLibNewView::LoadBit(char* filename, BITMAPINFOHEADER* 
 void CMy3DSymbolLibNewView::InitTerrain() {
     // 读取等高线数据
     terrainContourData_.clear();
-    std::ifstream t("C:\\128x128.txt");  
+    std::ifstream t("C:\\256x256.txt");  
     std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
 
     std::vector<std::string> row = StringUtils::split(str, '\n');
@@ -5136,6 +5132,9 @@ void CMy3DSymbolLibNewView::OnMenuAreaDelete() {
     m_Area4_Array[area_id]->deleted = 1;
 }
 
+/************************************************************************/
+/*                              线符号                                  */
+/************************************************************************/
 
 
 // 二维道路矢量与三维地形融合
@@ -5308,32 +5307,4 @@ void CMy3DSymbolLibNewView::OnUpdateLine2dRoadAdd(CCmdUI *pCmdUI)
 
 
 
-/************************************************************************/
-/*                              线符号                                  */
-/************************************************************************/
 
-// 线编辑 ==》 添加线
-void CMy3DSymbolLibNewView::OnMenuLineAdd() {
-    // TODO(jason): 在此添加命令处理程序代码
-    //if (spaceSearchInfo_.m_QueryType == LINE_ADD)
-    //    spaceSearchInfo_.m_QueryType = -1;
-    //else
-    //    spaceSearchInfo_.m_QueryType = LINE_ADD;
-}
-
-// 线编辑 ==》融合   线矢量与地表三角网融合
-void CMy3DSymbolLibNewView::OnMenuLineFuse() {
-    // TODO(jason): 在此添加命令处理程序代码
-    // pSimpleLine_->OnLineFuse(m_LinesArray, g_terrain);
-}
-
-void CMy3DSymbolLibNewView::OnUpdateMenuLineAdd(CCmdUI* pCmdUI) {
-    // TODO(jason): 在此添加命令更新用户界面处理程序代码
-    // pCmdUI->SetCheck(spaceSearchInfo_.m_QueryType == LINE_ADD);
-}
-
-
-// 增加线符号的宽度信息
-void CMy3DSymbolLibNewView::OnMenuAddLineWidth() {
-    // TODO(jason): 在此添加命令处理程序代码
-}

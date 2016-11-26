@@ -2,7 +2,7 @@
 #include "Area4.h"
 
 
-Area4Symbol::Area4Symbol() {}
+Area4Symbol::Area4Symbol() : delta_(0.001f) {}
 
 Area4Symbol::~Area4Symbol() {}
 
@@ -279,10 +279,10 @@ int32 Area4Symbol::FindTriangles_2_point_inPolygon(Area_4& m_area4, float (*g_te
                             float tmp_max_y = MATH_MAX(tmp_triangle1.pt1.z, tmp_triangle1.pt2.z);
                             float tmp_min_x = MATH_MIN(tmp_triangle1.pt1.x, tmp_point1.x);
                             float tmp_max_x = MATH_MAX(tmp_triangle1.pt1.x, tmp_point1.x);
-                            bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
-                            bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
-                            bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
-                            bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
+                            bool b11 = (JD1.y > (tmp_min_y + delta_)) && (JD1.y < (tmp_max_y - delta_));
+                            bool b21 = (JD2.y > (tmp_min_y + delta_)) && (JD2.y < (tmp_max_y - delta_));
+                            bool b12 = (JD1.x > (tmp_min_x + delta_)) && (JD1.x < (tmp_max_x - delta_));
+                            bool b22 = (JD2.x > (tmp_min_x + delta_)) && (JD2.x < (tmp_max_x - delta_));
                             if (b11 && b12) {
                                 tmp_triangle1.pt3 = Point3(JD1.x, GetHeight(JD1.x, JD1.y, g_terrain), JD1.y);
                             } else if (b21 && b22) {
@@ -356,10 +356,10 @@ int32 Area4Symbol::FindTriangles_2_point_inPolygon(Area_4& m_area4, float (*g_te
                             float tmp_max_y = MATH_MAX(tmp_triangle1.pt1.z, tmp_point1.y);
                             float tmp_min_x = MATH_MIN(tmp_triangle1.pt1.x, tmp_triangle1.pt2.x);
                             float tmp_max_x = MATH_MAX(tmp_triangle1.pt1.x, tmp_triangle1.pt2.x);
-                            bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
-                            bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
-                            bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
-                            bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
+                            bool b11 = (JD1.y > (tmp_min_y + delta_)) && (JD1.y < (tmp_max_y - delta_));
+                            bool b21 = (JD2.y > (tmp_min_y + delta_)) && (JD2.y < (tmp_max_y - delta_));
+                            bool b12 = (JD1.x > (tmp_min_x + delta_)) && (JD1.x < (tmp_max_x - delta_));
+                            bool b22 = (JD2.x > (tmp_min_x + delta_)) && (JD2.x < (tmp_max_x - delta_));
                             if (b11 && b12) {
                                 tmp_triangle1.pt3 = Point3(JD1.x, GetHeight(JD1.x, JD1.y, g_terrain), JD1.y);
                             } else if (b21 && b22) {
@@ -506,10 +506,10 @@ int32 Area4Symbol::FindTriangles_2_point_inPolygon(Area_4& m_area4, float (*g_te
                             float tmp_max_x = MATH_MAX(tmp_triangle1.pt1.x, tmp_triangle1.pt2.x);
                             float tmp_min_y = MATH_MIN(tmp_triangle1.pt1.z, tmp_point1.y);
                             float tmp_max_y = MATH_MAX(tmp_triangle1.pt1.z, tmp_point1.y);
-                            bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
-                            bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
-                            bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
-                            bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
+                            bool b11 = (JD1.y > (tmp_min_y + delta_)) && (JD1.y < (tmp_max_y - delta_));
+                            bool b21 = (JD2.y > (tmp_min_y + delta_)) && (JD2.y < (tmp_max_y - delta_));
+                            bool b12 = (JD1.x > (tmp_min_x + delta_)) && (JD1.x < (tmp_max_x - delta_));
+                            bool b22 = (JD2.x > (tmp_min_x + delta_)) && (JD2.x < (tmp_max_x - delta_));
                             if (b11 && b12) {
                                 tmp_triangle1.pt3 = Point3(JD1.x, GetHeight(JD1.x, JD1.y, g_terrain), JD1.y);
                             } else if (b21 && b22) {
@@ -584,10 +584,10 @@ int32 Area4Symbol::FindTriangles_2_point_inPolygon(Area_4& m_area4, float (*g_te
                             float tmp_max_x = MATH_MAX(tmp_triangle1.pt1.x, tmp_point1.x);
                             float tmp_min_y = MATH_MIN(tmp_triangle1.pt1.z, tmp_triangle1.pt2.z);
                             float tmp_max_y = MATH_MAX(tmp_triangle1.pt1.z, tmp_triangle1.pt2.z);
-                            bool b11 = (JD1.y > (tmp_min_y + 0.01)) && (JD1.y < (tmp_max_y - 0.01));
-                            bool b21 = (JD2.y > (tmp_min_y + 0.01)) && (JD2.y < (tmp_max_y - 0.01));
-                            bool b12 = (JD1.x > (tmp_min_x + 0.01)) && (JD1.x < (tmp_max_x - 0.01));
-                            bool b22 = (JD2.x > (tmp_min_x + 0.01)) && (JD2.x < (tmp_max_x - 0.01));
+                            bool b11 = (JD1.y > (tmp_min_y + delta_)) && (JD1.y < (tmp_max_y - delta_));
+                            bool b21 = (JD2.y > (tmp_min_y + delta_)) && (JD2.y < (tmp_max_y - delta_));
+                            bool b12 = (JD1.x > (tmp_min_x + delta_)) && (JD1.x < (tmp_max_x - delta_));
+                            bool b22 = (JD2.x > (tmp_min_x + delta_)) && (JD2.x < (tmp_max_x - delta_));
                             if (b11 && b12) {
                                 tmp_triangle1.pt3 = Point3(JD1.x, GetHeight(JD1.x, JD1.y, g_terrain), JD1.y);
                             } else if (b21 && b22) {

@@ -82,6 +82,9 @@ class Area4Symbol {
     vector<Point3> index_pointsInPolygonVector;
     // (MAP_W * MAP_W)方阵 1:在多边形内, 0:不在
     int32 inPolygonArrayFlag[MAP_W][MAP_W];
+
+private:
+    float delta_;
 };
 
 

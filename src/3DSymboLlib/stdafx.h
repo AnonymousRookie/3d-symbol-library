@@ -89,8 +89,8 @@
 // #define MAP_W       32         // size of map aint64 x-axis 32， 32*32地面方阵
 // #define MAP_SCALE   24.0f      // the scale of the terrain map，边长为24
 
-#define MAP_W       128
-#define MAP_SCALE   6.00f
+#define MAP_W       256
+#define MAP_SCALE   3.00f
 
 
 #define MAP         MAP_W*MAP_SCALE/2

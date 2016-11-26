@@ -456,10 +456,10 @@ class CMy3DSymbolLibNewView : public CView {
     int32 m_LineEdit_pointNum;  // 线编辑  选择的点的个数
     Line3 m_line;
     CArray<PLine3, PLine3> m_LinesArray;  // 存放所有的线符号
-    afx_msg void OnMenuLineAdd();
-    afx_msg void OnMenuLineFuse();
-    afx_msg void OnUpdateMenuLineAdd(CCmdUI* pCmdUI);
-    afx_msg void OnMenuAddLineWidth();
+//    afx_msg void OnMenuLineAdd();
+//    afx_msg void OnMenuLineFuse();
+//    afx_msg void OnUpdateMenuLineAdd(CCmdUI* pCmdUI);
+//    afx_msg void OnMenuAddLineWidth();
     // --------------------------------------------------------------
     /* L2DRoad */
     std::unique_ptr<L2DRoad> pL2DRoad_;
