@@ -5126,6 +5126,47 @@ void CMy3DSymbolLibNewView::UpdateAreaTexture(PPR_Point _mp, CPoint point) {
 }
 
 
+
+// 更换选中的线符号的属性
+void CMy3DSymbolLibNewView::UpdateLineSymbol(PPR_Point _mp, CPoint point) {
+    uint32 tmp_size = m_Area4_Array.GetSize();
+    for (uint32 i = 0; i < tmp_size; ++i) {
+        Area_4 m_area4;
+        m_area4.pt1 = m_Area4_Array[i]->pt1;
+        m_area4.pt2 = m_Area4_Array[i]->pt2;
+        m_area4.pt3 = m_Area4_Array[i]->pt3;
+        m_area4.pt4 = m_Area4_Array[i]->pt4;
+        CPointPolygonRelationship tmp_ppr;
+        PPR_Polygon tmp_polygon;
+        PPR_Point tmp_point;
+        tmp_point.x = m_area4.pt1.x;
+        tmp_point.y = m_area4.pt1.z;
+        tmp_polygon.push_back(tmp_point);
+        tmp_point.x = m_area4.pt2.x;
+        tmp_point.y = m_area4.pt2.z;
+        tmp_polygon.push_back(tmp_point);
+        tmp_point.x = m_area4.pt3.x;
+        tmp_point.y = m_area4.pt3.z;
+        tmp_polygon.push_back(tmp_point);
+        tmp_point.x = m_area4.pt4.x;
+        tmp_point.y = m_area4.pt4.z;
+        tmp_polygon.push_back(tmp_point);
+        PPR_Point tmp_dem_point;
+        int32 inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, _mp);
+        if (inPolygonFlag == 0) {  // 点在多边形内
+            // 右键快捷菜单
+            CMenu menu;
+            menu.LoadMenu(IDR_POPUP_MENU_LINE_OPERATE);
+            CMenu* pPopUp = menu.GetSubMenu(0);
+            ClientToScreen(&point);
+            pPopUp->TrackPopupMenu(/*TPM_LEFTALIGN | */TPM_RIGHTBUTTON, point.x, point.y, this);
+            area_id = i;
+        } else {
+            // AfxMessageBox("点不在多边形内!");
+        }
+    }
+}
+
 /************************************************************************/
 /* 点符号模型                                                            */
 /************************************************************************/

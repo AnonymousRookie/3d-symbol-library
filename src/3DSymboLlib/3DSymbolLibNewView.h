@@ -467,6 +467,9 @@ class CMy3DSymbolLibNewView : public CView {
     LineSymbol* pLineSymbol_;
 
 
+    // 更换选中的线符号的属性
+    void UpdateLineSymbol(PPR_Point _mp, CPoint point);
+
     // 三角化并渲染增加宽度后的线符号
     void Line_Area_Triangled(const PArea_4& _area4);
 

@@ -12,6 +12,7 @@ fi
 changed_files=$(git diff-index --cached $against | \
 	grep -E '[MA]	.*\.(c|cpp|h)$' | \
 	grep -v 'glog' | \
+	grep -v 'resource.h' | \
 	cut -d'	' -f 2)
 
 astyle_args="--style=google --delete-empty-lines --suffix=none --indent=spaces=4 --min-conditional-indent=2 --align-pointer=type --align-reference=type --indent-switches --indent-cases --indent-col1-comments --pad-oper --pad-header --unpad-paren --close-templates --convert-tabs --mode=c"

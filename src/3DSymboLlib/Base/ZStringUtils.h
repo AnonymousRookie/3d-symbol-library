@@ -1,4 +1,4 @@
-#ifndef BASE_STRING_UTILS_H
+﻿#ifndef BASE_STRING_UTILS_H
 #define BASE_STRING_UTILS_H
 
 #include <vector>
