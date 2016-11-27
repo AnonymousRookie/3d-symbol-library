@@ -1440,8 +1440,8 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         glLineWidth(2.0);                   // 设置查询标志线宽度
         glColor3f(spaceSearchInfo_.m_QueryColorR / 255.0 , spaceSearchInfo_.m_QueryColorG / 255.0 , spaceSearchInfo_.m_QueryColorB / 255.0);  // 设置查询标志线颜色
         for (auto iter = pL2DRoad_->allLineSymbols_.begin(); iter != pL2DRoad_->allLineSymbols_.end(); ++iter) {
-            LineSymbol* pLs = iter->second;
-            vector<Vec3*> lp = pLs->line_points_;
+            LineSymbol pLs = iter->second;
+            vector<Vec3*> lp = pLs.line_points_;
             if (lp.size() >= 2) {
                 glBegin(GL_LINE_STRIP);
                 for (auto it = lp.begin(); it != lp.end(); ++it) {
@@ -4084,6 +4084,53 @@ int32 CMy3DSymbolLibNewView::savePointSymbolFile(CString filename) {
 }
 // 保存线文件
 int32 CMy3DSymbolLibNewView::saveLineSymbolFile(CString filename) {
+    CStdioFile file;
+    file.Open(filename, CStdioFile::modeCreate | CStdioFile::modeWrite);
+    if (NULL == file) {
+        MessageBox("线文件不存在！", "保存线文件", MB_ICONINFORMATION + MB_OK);
+        LOGGER_ERROR << "线文件不存在！";
+        return FALSE;
+    } else {
+        file.WriteString("LINE\n");
+        int32 lineSize = pL2DRoad_->allLineSymbols_.size();
+        int32 lineSize_Save = pL2DRoad_->allLineSymbols_.size();
+        // 已经删除掉的不做保存
+        for (int32 i = 0; i < lineSize; ++i) {
+            if (pL2DRoad_->allLineSymbols_.at(i).deleted_) {
+                --lineSize_Save;
+            }
+        }
+        // save line 的个数
+        CString lineCountStr;
+        lineCountStr.Format("%d\n", lineSize_Save);
+        file.WriteString(lineCountStr);
+        // save all Lines one by one
+        for (int line_index = 0; line_index < lineSize; ++line_index) {
+            auto tt = pL2DRoad_->allLineSymbols_.at(line_index).deleted_;
+            if (pL2DRoad_->allLineSymbols_.at(line_index).deleted_) {
+                continue;
+            }
+            // 线段上点的个数
+            int32 line_points_count = pL2DRoad_->allLineSymbols_.at(line_index).line_points_.size();
+            // 线的类型 线段端点的个数 端点坐标 线段宽度 线段纹理
+            std::ostringstream lineFormatInfoStr;
+            lineFormatInfoStr << pL2DRoad_->allLineSymbols_.at(line_index).line_type_ << " "
+                              << line_points_count << " ";
+            for (int32 p_index = 0; p_index < line_points_count; ++p_index) {
+                lineFormatInfoStr << pL2DRoad_->allLineSymbols_.at(line_index).line_points_.at(p_index)->x << " "
+                                  << pL2DRoad_->allLineSymbols_.at(line_index).line_points_.at(p_index)->y << " "
+                                  << pL2DRoad_->allLineSymbols_.at(line_index).line_points_.at(p_index)->z << " ";
+            }
+            lineFormatInfoStr << pL2DRoad_->allLineSymbols_.at(line_index).line_width_ << " "
+                              << pL2DRoad_->allLineSymbols_.at(line_index).line_texture_ << "\n";
+            // auto ss = lineFormatInfoStr.str();
+            // LOGGER_INFO << "[" << lineFormatInfoStr.str() << "]";
+            CString lineFormatInfoStr2;
+            lineFormatInfoStr2.Format("%s", lineFormatInfoStr.str().c_str());
+            file.WriteString(lineFormatInfoStr2);
+        }
+        file.Close();
+    }
     return 0;
 }
 // 保存区文件
@@ -5137,20 +5184,31 @@ void CMy3DSymbolLibNewView::OnMenuAreaDelete() {
 /*                              线符号                                  */
 /************************************************************************/
 
-
 // 二维道路矢量与三维地形融合
 void CMy3DSymbolLibNewView::OnLine2dRoadAdd() {
-    if (spaceSearchInfo_.m_QueryType == LINE_ADD) {
-        spaceSearchInfo_.m_QueryType = -1;
-        //
-        if (nullptr != pLineSymbol_) {
-            delete pLineSymbol_;
-            pLineSymbol_ = nullptr;
+    int32 newFlag = 0;
+    if (!exist_line_file()) {
+        INT_PTR nRes;
+        nRes = MessageBox("没有打开的线文件，需要新建文件吗？", "找不到线文件", MB_YESNO | MB_ICONQUESTION);
+        if (nRes == IDYES) {
+            newFlag = new_line_file();
+            if (0 == newFlag) {
+                exist_line_flag = TRUE;
+            }
         }
     } else {
-        spaceSearchInfo_.m_QueryType = LINE_ADD;
-        // 创建新的线符号
-        pLineSymbol_ = new LineSymbol;
+        if (spaceSearchInfo_.m_QueryType == LINE_ADD) {
+            spaceSearchInfo_.m_QueryType = -1;
+            //
+            if (nullptr != pLineSymbol_) {
+                delete pLineSymbol_;
+                pLineSymbol_ = nullptr;
+            }
+        } else {
+            spaceSearchInfo_.m_QueryType = LINE_ADD;
+            // 创建新的线符号
+            pLineSymbol_ = new LineSymbol;
+        }
     }
 }
 

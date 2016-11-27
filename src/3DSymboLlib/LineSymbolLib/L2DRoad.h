@@ -11,9 +11,10 @@
 #include <memory>
 
 struct LineSymbol {
-    LineSymbol() : line_texture_(""),
+    LineSymbol() : line_texture_("NONE"),
         line_type_(0),
-        line_width_(8) {
+        line_width_(8),
+        deleted_(false) {
         line_points_.clear();
     }
 
@@ -21,6 +22,7 @@ struct LineSymbol {
     string line_texture_;       // 纹理
     int32 line_type_;             // 线符号类型
     float line_width_;          // 线宽
+    bool deleted_;  // 标记是否已经删除
 };
 
 
@@ -40,7 +42,7 @@ class L2DRoad : Base::Uncopyable {
     void SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]);
 
 
-    std::unordered_map<int32, LineSymbol*> allLineSymbols_;  // 存放所有的线符号
+    std::unordered_map<int32, LineSymbol> allLineSymbols_;  // 存放所有的线符号
     vector<std::shared_ptr<CArray<PArea_4, PArea_4>>> allLineArea4Array_;  // 存放所有的线的面
     BOOL Line_fuse_Flag_;  // 是否已经对线符号进行融合
 
