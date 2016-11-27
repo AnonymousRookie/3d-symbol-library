@@ -466,7 +466,7 @@ class CMy3DSymbolLibNewView : public CView {
 
     LineSymbol* pLineSymbol_;
 
-
+    int32 line_selected_id;  // 鼠标右击选中的线符号id
     // 更换选中的线符号的属性
     void UpdateLineSymbol(PPR_Point _mp, CPoint point);
 
@@ -562,6 +562,9 @@ class CMy3DSymbolLibNewView : public CView {
 
     afx_msg void OnLine2dRoadAddEnd();
     afx_msg void OnUpdateLine2dRoadFuse(CCmdUI* pCmdUI);
+    afx_msg void OnPopupLineDelete();
+    afx_msg void OnPopupLineModifyTexture();
+    afx_msg void OnPopupLineModifyWidth();
 };
 
 #ifndef _DEBUG  // 3DSymbolLibNewView.cpp 中的调试版本

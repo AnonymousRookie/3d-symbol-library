@@ -125,6 +125,9 @@ BEGIN_MESSAGE_MAP(CMy3DSymbolLibNewView, CView)
     ON_UPDATE_COMMAND_UI(ID_LINE_2D_ROAD_ADD, &CMy3DSymbolLibNewView::OnUpdateLine2dRoadAdd)
     ON_COMMAND(ID_LINE_2D_ROAD_ADD_END, &CMy3DSymbolLibNewView::OnLine2dRoadAddEnd)
     ON_UPDATE_COMMAND_UI(ID_LINE_2D_ROAD_FUSE, &CMy3DSymbolLibNewView::OnUpdateLine2dRoadFuse)
+    ON_COMMAND(ID_POPUP_LINE_DELETE, &CMy3DSymbolLibNewView::OnPopupLineDelete)
+    ON_COMMAND(ID_POPUP_LINE_MODIFY_TEXTURE, &CMy3DSymbolLibNewView::OnPopupLineModifyTexture)
+    ON_COMMAND(ID_POPUP_LINE_MODIFY_WIDTH, &CMy3DSymbolLibNewView::OnPopupLineModifyWidth)
 END_MESSAGE_MAP()
 
 
@@ -492,7 +495,7 @@ unsigned char* CMy3DSymbolLibNewView::LoadBit(char* filename, BITMAPINFOHEADER* 
 void CMy3DSymbolLibNewView::InitTerrain() {
     // 读取等高线数据
     terrainContourData_.clear();
-    std::ifstream t("C:\\128x128.txt");
+    std::ifstream t("C:\\256x256.txt");
     std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
     std::vector<std::string> row = StringUtils::split(str, '\n');
     for (auto iter = row.begin(); iter != row.end(); ++iter) {
@@ -671,9 +674,21 @@ void CMy3DSymbolLibNewView::DrawScene() {
                 }
             }
         }
+        // if (pL2DRoad_->Line_fuse_Flag_) {
+        //    for (uint32 i = 0; i < pL2DRoad_->allLineArea4Array_.size(); ++i) {
+        //        auto pLineArea4Array = pL2DRoad_->allLineArea4Array_.at(i);
+        //        //
+        //        int32 tmp_size = pLineArea4Array->GetSize();
+        //        for (int32 i = 0; i < tmp_size; ++i) {
+        //            if ((*pLineArea4Array)[i]->deleted != 1) {
+        //                Line_Area_Triangled((*pLineArea4Array)[i]);
+        //            }
+        //        }
+        //    }
+        // }
         if (pL2DRoad_->Line_fuse_Flag_) {
-            for (uint32 i = 0; i < pL2DRoad_->allLineArea4Array_.size(); ++i) {
-                auto pLineArea4Array = pL2DRoad_->allLineArea4Array_.at(i);
+            for (auto iter = pL2DRoad_->allLineArea4Array_.begin(); iter != pL2DRoad_->allLineArea4Array_.end(); ++iter) {
+                auto pLineArea4Array = (*iter).second;
                 //
                 int32 tmp_size = pLineArea4Array->GetSize();
                 for (int32 i = 0; i < tmp_size; ++i) {
@@ -1442,7 +1457,7 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         for (auto iter = pL2DRoad_->allLineSymbols_.begin(); iter != pL2DRoad_->allLineSymbols_.end(); ++iter) {
             LineSymbol pLs = iter->second;
             vector<Vec3> lp = pLs.line_points_;
-            if (lp.size() >= 2) {
+            if (lp.size() >= 2 && !pLs.deleted_) {
                 glBegin(GL_LINE_STRIP);
                 for (auto it = lp.begin(); it != lp.end(); ++it) {
                     glVertex3f((*it).x, (*it).y, (*it).z);
@@ -1450,7 +1465,7 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
                 glEnd();
             }
         }
-        if (nullptr != pLineSymbol_ && pLineSymbol_->line_type_ != 0) {
+        if (nullptr != pLineSymbol_ && pLineSymbol_->line_type_ != 0 && !pLineSymbol_->deleted_) {
             std::vector<Vec3> lintPoints = pLineSymbol_->line_points_;
             if (lintPoints.size() >= 2) {
                 glBegin(GL_LINE_STRIP);
@@ -1559,6 +1574,7 @@ void CMy3DSymbolLibNewView::OnRButtonDown(UINT nFlags, CPoint point) {
     ScreenToGL2(point, wx, wz);
     PPR_Point tmp_mp(wx, wz);
     UpdateAreaTexture(tmp_mp, point);
+    UpdateLineSymbol(tmp_mp, point);
     Invalidate(FALSE);
     CView::OnRButtonDown(nFlags, point);
 }
@@ -5129,30 +5145,38 @@ void CMy3DSymbolLibNewView::UpdateAreaTexture(PPR_Point _mp, CPoint point) {
 
 // 更换选中的线符号的属性
 void CMy3DSymbolLibNewView::UpdateLineSymbol(PPR_Point _mp, CPoint point) {
-    uint32 tmp_size = m_Area4_Array.GetSize();
-    for (uint32 i = 0; i < tmp_size; ++i) {
-        Area_4 m_area4;
-        m_area4.pt1 = m_Area4_Array[i]->pt1;
-        m_area4.pt2 = m_Area4_Array[i]->pt2;
-        m_area4.pt3 = m_Area4_Array[i]->pt3;
-        m_area4.pt4 = m_Area4_Array[i]->pt4;
-        CPointPolygonRelationship tmp_ppr;
-        PPR_Polygon tmp_polygon;
-        PPR_Point tmp_point;
-        tmp_point.x = m_area4.pt1.x;
-        tmp_point.y = m_area4.pt1.z;
-        tmp_polygon.push_back(tmp_point);
-        tmp_point.x = m_area4.pt2.x;
-        tmp_point.y = m_area4.pt2.z;
-        tmp_polygon.push_back(tmp_point);
-        tmp_point.x = m_area4.pt3.x;
-        tmp_point.y = m_area4.pt3.z;
-        tmp_polygon.push_back(tmp_point);
-        tmp_point.x = m_area4.pt4.x;
-        tmp_point.y = m_area4.pt4.z;
-        tmp_polygon.push_back(tmp_point);
-        PPR_Point tmp_dem_point;
-        int32 inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, _mp);
+    for (auto it = pL2DRoad_->allLineArea4Array_.begin(); it != pL2DRoad_->allLineArea4Array_.end(); ++it) {
+        auto pOneLineAllArea = (*it).second;
+        line_selected_id = -1;
+        int32 inPolygonFlag = -1;
+        uint32 tmp_size = (*pOneLineAllArea).GetSize();
+        for (uint32 i = 0; i < tmp_size; ++i) {
+            Area_4 m_area4;
+            m_area4.pt1 = (*pOneLineAllArea)[i]->pt1;
+            m_area4.pt2 = (*pOneLineAllArea)[i]->pt2;
+            m_area4.pt3 = (*pOneLineAllArea)[i]->pt3;
+            m_area4.pt4 = (*pOneLineAllArea)[i]->pt4;
+            CPointPolygonRelationship tmp_ppr;
+            PPR_Polygon tmp_polygon;
+            PPR_Point tmp_point;
+            tmp_point.x = m_area4.pt1.x;
+            tmp_point.y = m_area4.pt1.z;
+            tmp_polygon.push_back(tmp_point);
+            tmp_point.x = m_area4.pt2.x;
+            tmp_point.y = m_area4.pt2.z;
+            tmp_polygon.push_back(tmp_point);
+            tmp_point.x = m_area4.pt3.x;
+            tmp_point.y = m_area4.pt3.z;
+            tmp_polygon.push_back(tmp_point);
+            tmp_point.x = m_area4.pt4.x;
+            tmp_point.y = m_area4.pt4.z;
+            tmp_polygon.push_back(tmp_point);
+            PPR_Point tmp_dem_point;
+            inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, _mp);
+            if (inPolygonFlag == 0) {
+                break;
+            }
+        }
         if (inPolygonFlag == 0) {  // 点在多边形内
             // 右键快捷菜单
             CMenu menu;
@@ -5160,7 +5184,9 @@ void CMy3DSymbolLibNewView::UpdateLineSymbol(PPR_Point _mp, CPoint point) {
             CMenu* pPopUp = menu.GetSubMenu(0);
             ClientToScreen(&point);
             pPopUp->TrackPopupMenu(/*TPM_LEFTALIGN | */TPM_RIGHTBUTTON, point.x, point.y, this);
-            area_id = i;
+            line_selected_id = (*it).first;
+            // LOGGER_INFO << "[D] line_selected_id = " << line_selected_id;
+            break;
         } else {
             // AfxMessageBox("点不在多边形内!");
         }
@@ -5307,12 +5333,13 @@ void CMy3DSymbolLibNewView::OnLine2dRoadAdd() {
 
 
 void CMy3DSymbolLibNewView::OnLine2dRoadFuse() {
-    if (pL2DRoad_->allLineArea4Array_.size() <= 0) {
+    if (pL2DRoad_->allLineArea4Array_.empty()) {
         return;
     }
     // =========================================================================================
-    for (uint32 k = 0; k < pL2DRoad_->allLineArea4Array_.size(); ++k) {
-        auto pLineArea4Array = pL2DRoad_->allLineArea4Array_.at(k);
+    for (auto it = pL2DRoad_->allLineArea4Array_.begin(); it != pL2DRoad_->allLineArea4Array_.end(); ++it) {
+        // for (uint32 k = 0; k < pL2DRoad_->allLineArea4Array_.size(); ++k) {
+        auto pLineArea4Array = (*it).second;
         uint32 tmp_size = (*pLineArea4Array).GetSize();
         for (uint32 i = 0; i < tmp_size; ++i) {
             Area_4 tmp_area4;
@@ -5334,12 +5361,14 @@ void CMy3DSymbolLibNewView::OnLine2dRoadFuse() {
             // ==================================================================================
             CString scenePath = g_sceneDataPath.c_str();
             CString area_texture = scenePath + "\\RoadTexture\\4.bmp";
-            if ((*pLineArea4Array)[i]->area_texture == "") {
+            if ((*pLineArea4Array)[i]->area_texture == "NONE") {
                 // AfxMessageBox("texture == NULL");
                 (*pLineArea4Array)[i]->area_texture = area_texture;
                 LoadAreaTexture(area_texture, (*pLineArea4Array)[i]->area_texture_rd);
+                LOGGER_INFO << "texture = " << (*pLineArea4Array)[i]->area_texture;
             } else {
                 LoadAreaTexture((*pLineArea4Array)[i]->area_texture, (*pLineArea4Array)[i]->area_texture_rd);
+                LOGGER_INFO << "texture2 = " << (*pLineArea4Array)[i]->area_texture;
             }
         }
     }
@@ -5369,4 +5398,73 @@ void CMy3DSymbolLibNewView::OnLine2dRoadAddEnd() {
 
 
 void CMy3DSymbolLibNewView::OnUpdateLine2dRoadFuse(CCmdUI* pCmdUI) {
+}
+
+
+void CMy3DSymbolLibNewView::OnPopupLineDelete() {
+    if (line_selected_id >= 0) {
+        // 更新线符号属性中的纹理信息
+        auto it = pL2DRoad_->allLineSymbols_.find(line_selected_id);
+        if (it != pL2DRoad_->allLineSymbols_.end()) {
+            (*it).second.deleted_ = true;
+            // LOGGER_INFO << "[D] allLineSymbols_ find "<< lineTexturePathStr;
+        } else {
+            // LOGGER_INFO << "[D] allLineSymbols_ NOT  find ...."<< lineTexturePathStr;
+        }
+        // 更新线符号上所有面的纹理
+        auto it2 = pL2DRoad_->allLineArea4Array_.find(line_selected_id);
+        if (it2 != pL2DRoad_->allLineArea4Array_.end()) {
+            auto pOneLineAllArea = (*it2).second;
+            // LOGGER_INFO << "[D] allLineArea4Array_ find "<< lineTexturePathStr << "  " << line_selected_id;
+            for (int32 i = 0; i < pOneLineAllArea->GetSize(); ++i) {
+                auto pArea = pOneLineAllArea->GetAt(i);
+                pArea->deleted = 1;
+            }
+        } else {
+            // LOGGER_INFO << "[D] allLineArea4Array_ NOT  find ...."<< lineTexturePathStr;
+        }
+    }
+}
+
+
+void CMy3DSymbolLibNewView::OnPopupLineModifyTexture() {
+    CAreaClassification ac_dlg;
+    CString selectItem = "";
+    if (ac_dlg.DoModal() == IDOK) {
+        selectItem = ac_dlg.m_selectItem;
+        CString lineTexturePath = ac_dlg.m_Dir + "\\" + selectItem;
+        std::ostringstream lineTexturePathSS;
+        lineTexturePathSS << (LPSTR)(LPCTSTR)lineTexturePath;
+        std::string lineTexturePathStr = lineTexturePathSS.str();
+        // LOGGER_INFO << "[D ]OnPopupLineModifyTexture = " << line_selected_id;
+        if (line_selected_id >= 0) {
+            // 更新线符号属性中的纹理信息
+            auto it = pL2DRoad_->allLineSymbols_.find(line_selected_id);
+            if (it != pL2DRoad_->allLineSymbols_.end()) {
+                (*it).second.line_texture_ = lineTexturePathStr;
+                // LOGGER_INFO << "[D] allLineSymbols_ find "<< lineTexturePathStr;
+            } else {
+                // LOGGER_INFO << "[D] allLineSymbols_ NOT  find ...."<< lineTexturePathStr;
+            }
+            // 更新线符号上所有面的纹理
+            auto it2 = pL2DRoad_->allLineArea4Array_.find(line_selected_id);
+            if (it2 != pL2DRoad_->allLineArea4Array_.end()) {
+                auto pOneLineAllArea = (*it2).second;
+                // LOGGER_INFO << "[D] allLineArea4Array_ find "<< lineTexturePathStr << "  " << line_selected_id;
+                for (int32 i = 0; i < pOneLineAllArea->GetSize(); ++i) {
+                    auto pArea = pOneLineAllArea->GetAt(i);
+                    pArea->area_texture = lineTexturePath;
+                    LoadAreaTexture(lineTexturePath, pArea->area_texture_rd);
+                }
+            } else {
+                // LOGGER_INFO << "[D] allLineArea4Array_ NOT  find ...."<< lineTexturePathStr;
+            }
+        }
+    } else {
+        return;
+    }
+}
+
+
+void CMy3DSymbolLibNewView::OnPopupLineModifyWidth() {
 }

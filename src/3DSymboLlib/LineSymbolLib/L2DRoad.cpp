@@ -106,6 +106,7 @@ void L2DRoad::SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]) {
         vector<Vec3> lp = pLs.line_points_;
         LOGGER_INFO << "lp.size() = " << lp.size();
         if (!lp.empty()) {
+            int32 key_line_index = iter->first;
             std::shared_ptr<CArray<PArea_4, PArea_4>> m_Line_Area4_Array_ = std::make_shared<CArray<PArea_4, PArea_4>>();  // 存放一条线中所有的面符号(线符号增加宽度后形成的面)
             for (auto it = lp.begin(); it != lp.end(); ++it) {
                 LOGGER_INFO << (*it).x << ", " << (*it).y << ", " << (*it).z;
@@ -118,7 +119,9 @@ void L2DRoad::SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]) {
                     Point3 p1 = Point3(lp.at(i).x, lp.at(i).y, lp.at(i).z);
                     Point3 p2 = Point3(lp.at(i + 1).x, lp.at(i + 1).y, lp.at(i + 1).z);
                     GetArea4FromLine(p1, p2, pLs.line_width_, pArea4, g_terrain);
-                    pArea4->area_texture = "";
+                    CString tmpTextureStr;
+                    tmpTextureStr.Format("%s", pLs.line_texture_.c_str());
+                    pArea4->area_texture = tmpTextureStr;
                     pArea4->deleted = 0;
                     m_Line_Area4_Array_->Add(pArea4);
                 }
@@ -216,7 +219,7 @@ void L2DRoad::SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]) {
                     }
                 }
             }
-            allLineArea4Array_.push_back(m_Line_Area4_Array_);
+            allLineArea4Array_.insert(std::unordered_map<int32, std::shared_ptr<CArray<PArea_4, PArea_4>>>::value_type(key_line_index, m_Line_Area4_Array_));
         }
     }
 }

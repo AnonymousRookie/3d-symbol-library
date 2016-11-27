@@ -2,7 +2,7 @@
 #include "Area4.h"
 
 
-Area4Symbol::Area4Symbol() : delta_(0.001f) {}
+Area4Symbol::Area4Symbol() : delta_(0.0001f) {}
 
 Area4Symbol::~Area4Symbol() {}
 
