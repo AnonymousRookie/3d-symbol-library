@@ -7,10 +7,9 @@
 #include "Uncopyable.h"
 
 
-class StringUtils : Base::Uncopyable 
-{
-public:
-    // °´Ö¸¶¨·Ö¸ô·û¶Ô×Ö·û´®½øÐÐsplit
+class StringUtils : Base::Uncopyable {
+  public:
+    // æŒ‰æŒ‡å®šåˆ†éš”ç¬¦å¯¹å­—ç¬¦ä¸²è¿›è¡Œsplit
     static std::vector<std::string>& split(const std::string& s, char delim, std::vector<std::string>& elems) {
         std::stringstream ss(s);
         std::string item;
@@ -26,12 +25,19 @@ public:
         return elems;
     }
 
-    // ×Ö·û´® ×ª»»³É float ÀàÐÍ
-    static float stringToFloat(const std::string& str) {  
-        std::istringstream iss(str);  
-        float num;  
-        iss >> num;  
-        return num;      
+    // å­—ç¬¦ä¸² è½¬æ¢æˆ float ç±»åž‹
+    static float stringToFloat(const std::string& str) {
+        std::istringstream iss(str);
+        float num;
+        iss >> num;
+        return num;
+    }
+    // å­—ç¬¦ä¸² è½¬æ¢æˆ int32 ç±»åž‹
+    static int32 stringToInt32(const std::string& str) {
+        std::istringstream iss(str);
+        int32 num;
+        iss >> num;
+        return num;
     }
 };
 

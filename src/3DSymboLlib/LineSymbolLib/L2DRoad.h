@@ -18,7 +18,7 @@ struct LineSymbol {
         line_points_.clear();
     }
 
-    vector<Vec3*> line_points_;  // 线上各点
+    vector<Vec3> line_points_;  // 线上各点
     string line_texture_;       // 纹理
     int32 line_type_;             // 线符号类型
     float line_width_;          // 线宽

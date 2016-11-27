@@ -103,20 +103,20 @@ void L2DRoad::SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]) {
     LOGGER_INFO << "==============> allLineSymbols_.size() = " << allLineSymbols_.size();
     for (auto iter = allLineSymbols_.begin(); iter != allLineSymbols_.end(); ++iter) {
         LineSymbol pLs = iter->second;
-        vector<Vec3*> lp = pLs.line_points_;
+        vector<Vec3> lp = pLs.line_points_;
         LOGGER_INFO << "lp.size() = " << lp.size();
         if (!lp.empty()) {
             std::shared_ptr<CArray<PArea_4, PArea_4>> m_Line_Area4_Array_ = std::make_shared<CArray<PArea_4, PArea_4>>();  // 存放一条线中所有的面符号(线符号增加宽度后形成的面)
             for (auto it = lp.begin(); it != lp.end(); ++it) {
-                LOGGER_INFO << (*it)->x << ", " << (*it)->y << ", " << (*it)->z;
+                LOGGER_INFO << (*it).x << ", " << (*it).y << ", " << (*it).z;
             }
             // 对线符号按矩形分块
             int32 point_count = lp.size();
             if (point_count >= 2) {
                 for (int32 i = 0; i < point_count - 1; ++i) {
                     Area_4* pArea4 = new Area_4;
-                    Point3 p1 = Point3(lp.at(i)->x, lp.at(i)->y, lp.at(i)->z);
-                    Point3 p2 = Point3(lp.at(i + 1)->x, lp.at(i + 1)->y, lp.at(i + 1)->z);
+                    Point3 p1 = Point3(lp.at(i).x, lp.at(i).y, lp.at(i).z);
+                    Point3 p2 = Point3(lp.at(i + 1).x, lp.at(i + 1).y, lp.at(i + 1).z);
                     GetArea4FromLine(p1, p2, pLs.line_width_, pArea4, g_terrain);
                     pArea4->area_texture = "";
                     pArea4->deleted = 0;

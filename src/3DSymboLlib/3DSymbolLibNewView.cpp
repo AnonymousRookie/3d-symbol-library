@@ -926,7 +926,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             //    }
             // L2DRoad
         } else if (spaceSearchInfo_.m_QueryType == LINE_ADD) {                        // 线编辑  添加线
-            Point3* p = new Point3(wx, wy, wz);
+            Point3 p(wx, wy, wz);
             pLineSymbol_->line_type_ = 1;
             pLineSymbol_->line_points_.push_back(p);
         } else if (spaceSearchInfo_.m_QueryType == AREA_ADD) {   // 选取面符号上的点
@@ -1441,21 +1441,21 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         glColor3f(spaceSearchInfo_.m_QueryColorR / 255.0 , spaceSearchInfo_.m_QueryColorG / 255.0 , spaceSearchInfo_.m_QueryColorB / 255.0);  // 设置查询标志线颜色
         for (auto iter = pL2DRoad_->allLineSymbols_.begin(); iter != pL2DRoad_->allLineSymbols_.end(); ++iter) {
             LineSymbol pLs = iter->second;
-            vector<Vec3*> lp = pLs.line_points_;
+            vector<Vec3> lp = pLs.line_points_;
             if (lp.size() >= 2) {
                 glBegin(GL_LINE_STRIP);
                 for (auto it = lp.begin(); it != lp.end(); ++it) {
-                    glVertex3f((*it)->x, (*it)->y, (*it)->z);
+                    glVertex3f((*it).x, (*it).y, (*it).z);
                 }
                 glEnd();
             }
         }
         if (nullptr != pLineSymbol_ && pLineSymbol_->line_type_ != 0) {
-            std::vector<Vec3*> lintPoints = pLineSymbol_->line_points_;
+            std::vector<Vec3> lintPoints = pLineSymbol_->line_points_;
             if (lintPoints.size() >= 2) {
                 glBegin(GL_LINE_STRIP);
                 for (auto it = lintPoints.begin(); it != lintPoints.end(); ++it) {
-                    glVertex3f((*it)->x, (*it)->y, (*it)->z);
+                    glVertex3f((*it).x, (*it).y, (*it).z);
                 }
                 glEnd();
             }
@@ -3481,12 +3481,6 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
             LoadPointSymbolFile(point_Path);
             exist_point_flag = TRUE;
         }
-        // 加载线文件
-        if (m_LineSymbolFile != "0") {
-            CString line_Path = /*m_AllDataPath + "\\" + m_SceneConfig + "\\" + */m_LineSymbolFile;
-            LoadLineSymbolFile(line_Path);
-            exist_line_flag = TRUE;
-        }
         // 加载区文件  必须等初始化地形数据之后  (见下方)
         /**************************************/
         /* 加载线路纹理资源                    */
@@ -3528,6 +3522,12 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
             CString area_Path = m_AreaSymbolFile;
             LoadAreaSymbolFile(area_Path);
             exist_area_flag = TRUE;
+        }
+        // 加载线文件
+        if (m_LineSymbolFile != "0") {
+            CString line_Path = /*m_AllDataPath + "\\" + m_SceneConfig + "\\" + */m_LineSymbolFile;
+            LoadLineSymbolFile(line_Path);
+            exist_line_flag = TRUE;
         }
     }
 }
@@ -3741,8 +3741,60 @@ void CMy3DSymbolLibNewView::LoadPointSymbolFile(CString filename) {
 }
 // 加载线文件(.ln)
 void CMy3DSymbolLibNewView::LoadLineSymbolFile(CString filename) {
+    CStdioFile file;
+    BOOL b_open = file.Open(filename, CStdioFile::modeRead);
+    if ((!b_open) || (file == NULL)) {
+        MessageBox(_T("线文件!\n") + filename, _T("打开线文件"), MB_ICONWARNING + MB_OK);
+        return;
+    } else {
+        // 读取所有数据
+        CString tmp_lineHeader;
+        // 线文件首部
+        file.ReadString(tmp_lineHeader);
+        // ----------------------------------------------------
+        // 线符号的个数
+        CString line_count_str;
+        file.ReadString(line_count_str);
+        int32 line_num = atoi(line_count_str);
+        // 依次读取所有的线数据
+        CString lineInfoStr = "";  // 线数据(线的类型 线段端点的个数 端点坐标 线段宽度 线段纹理)
+        // 细分信息
+        CString lineTypeStr = "";  // 线的类型
+        CString linePointsCountStr = "";  // 线段端点的个数
+        CString linePointsPosStr = "";  // 端点坐标
+        CString lineWidthStr = "";  // 线段宽度
+        CString lineTextureStr = "";  // 线段纹理
+        for (int32 line_index = 0; line_index < line_num; ++line_index) {
+            file.ReadString(lineInfoStr);
+            LOGGER_INFO << "lineInfoStr = " << lineInfoStr;
+            std::ostringstream lineInfoSS;
+            lineInfoSS << (LPSTR)(LPCTSTR)lineInfoStr;
+            std::string line_info = lineInfoSS.str();
+            std::vector<std::string> lineInfoVector = StringUtils::split(StringUtils::split(line_info, '\n').at(0), ' ');
+            // 线数据(线的类型 线段端点的个数 端点坐标 线段宽度 线段纹理)
+            LineSymbol l_lineSymbol;
+            // 线的类型
+            l_lineSymbol.line_type_ = StringUtils::stringToFloat(lineInfoVector.at(0));
+            // 线段端点的个数
+            int32 line_points_num = StringUtils::stringToInt32(lineInfoVector.at(1));
+            // 端点坐标
+            for (int32 lp_index = 0; lp_index < line_points_num; ++lp_index) {
+                Vec3 l_point(StringUtils::stringToFloat(lineInfoVector.at(2 + lp_index * 3)),
+                             StringUtils::stringToFloat(lineInfoVector.at(3 + lp_index * 3)),
+                             StringUtils::stringToFloat(lineInfoVector.at(4 + lp_index * 3)));
+                l_lineSymbol.line_points_.push_back(l_point);
+            }
+            // 线段宽度
+            l_lineSymbol.line_width_ = StringUtils::stringToFloat(lineInfoVector.at(2 + 3 * line_points_num));
+            // 线段纹理
+            l_lineSymbol.line_texture_ = lineInfoVector.at(3 + 3 * line_points_num);
+            pL2DRoad_->SaveLineSymbol(&l_lineSymbol, g_terrain);
+        }
+        OnLine2dRoadFuse();
+        file.Close();
+    }
 }
-// 加载区文件(.gsf)
+// 加载面文件(.gsf)
 void CMy3DSymbolLibNewView::LoadAreaSymbolFile(CString filename) {
     CStdioFile file;
     BOOL b_open = file.Open(filename, CStdioFile::modeRead);
@@ -3753,7 +3805,7 @@ void CMy3DSymbolLibNewView::LoadAreaSymbolFile(CString filename) {
         // 读取所有数据文件路径
         // m_AllDataPath = g_sceneDataPath.c_str();
         CString tmp_areaHeader;
-        // 点文件首部
+        // 面文件首部
         file.ReadString(tmp_areaHeader);
         // ----------------------------------------------------
         // 面符号的个数
@@ -4117,9 +4169,9 @@ int32 CMy3DSymbolLibNewView::saveLineSymbolFile(CString filename) {
             lineFormatInfoStr << pL2DRoad_->allLineSymbols_.at(line_index).line_type_ << " "
                               << line_points_count << " ";
             for (int32 p_index = 0; p_index < line_points_count; ++p_index) {
-                lineFormatInfoStr << pL2DRoad_->allLineSymbols_.at(line_index).line_points_.at(p_index)->x << " "
-                                  << pL2DRoad_->allLineSymbols_.at(line_index).line_points_.at(p_index)->y << " "
-                                  << pL2DRoad_->allLineSymbols_.at(line_index).line_points_.at(p_index)->z << " ";
+                lineFormatInfoStr << pL2DRoad_->allLineSymbols_.at(line_index).line_points_.at(p_index).x << " "
+                                  << pL2DRoad_->allLineSymbols_.at(line_index).line_points_.at(p_index).y << " "
+                                  << pL2DRoad_->allLineSymbols_.at(line_index).line_points_.at(p_index).z << " ";
             }
             lineFormatInfoStr << pL2DRoad_->allLineSymbols_.at(line_index).line_width_ << " "
                               << pL2DRoad_->allLineSymbols_.at(line_index).line_texture_ << "\n";
