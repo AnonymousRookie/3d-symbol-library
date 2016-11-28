@@ -37,7 +37,7 @@ void CAreaClassification::OnBnClickedOk() {
     // TODO(jason): 在此添加控件通知处理程序代码
     CDialog::OnOK();
     CString tmp = "\\";
-    CString topItem = "AreaTexture";
+    CString topItem = "SymbolTexture";
     HTREEITEM selectItem = m_Area_Texture_List.GetSelectedItem();
     CString selectItemText = m_Area_Texture_List.GetItemText(selectItem);
     HTREEITEM parentItem = m_Area_Texture_List.GetParentItem(selectItem);
@@ -59,11 +59,14 @@ void CAreaClassification::OnSelchangedTreeAreaList(NMHDR* pNMHDR, LRESULT* pResu
     CString selectItemText = m_Area_Texture_List.GetItemText(selectItem);
     HTREEITEM parentItem = m_Area_Texture_List.GetParentItem(selectItem);
     CString parentItemText = m_Area_Texture_List.GetItemText(parentItem);
-    CString topItem = "AreaTexture";
-    CString RockType[1] = {"grassland"};
+
+    CString topItem = "SymbolTexture";
+    enum {SYMBOL_TYPE_COUNT = 2};
+    CString RockType[SYMBOL_TYPE_COUNT] = {"AreaSymbolTexture", "LineSymbolTexture"};
+
     CString imgPathAndName;
     CString tmp = "\\";
-    for (int32 i = 0; i < 1; ++i) {
+    for (int32 i = 0; i < SYMBOL_TYPE_COUNT; ++i) {
         if (parentItemText == RockType[i]) {
             imgPathAndName = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i] + tmp + selectItemText;
             // BMP
@@ -101,10 +104,11 @@ void CAreaClassification::drawBitmapFromFile(const CString& bitmapFilePath, CDC*
 BOOL CAreaClassification::OnInitDialog() {
     CDialog::OnInitDialog();
     CString tmp = "\\";
-    CString topItem = "AreaTexture";
-    CString RockType[1] = {"grassland"};
+    CString topItem = "SymbolTexture";
+    enum {SYMBOL_TYPE_COUNT = 2};
+    CString RockType[SYMBOL_TYPE_COUNT] = {"AreaSymbolTexture", "LineSymbolTexture"};
     hRoot = m_Area_Texture_List.InsertItem(topItem, 0, 0);
-    for (int32 i = 0; i < 1; ++i) {
+    for (int32 i = 0; i < SYMBOL_TYPE_COUNT; ++i) {
         hCataItem = m_Area_Texture_List.InsertItem(RockType[i], 1, 1, hRoot, TVI_LAST);
         m_Dir = g_sceneDataPath.c_str() + tmp + topItem + tmp + RockType[i];
         if (1) {
@@ -116,11 +120,11 @@ BOOL CAreaClassification::OnInitDialog() {
             int32 fileNum = 0;
             // 搜索与指定的文件名称匹配的第一个实例，若成功则返回第一个实例的句柄，否则返回-1L
             if ((lfDir = _findfirst(dir, &fileDir)) == -1l) {
-                printf("No file is found\n");
+                LOGGER_WARNING << "No file is found!!!";
             } else {
-                printf("file list:\n");
+                LOGGER_INFO << "file list:";
                 do {
-                    printf("%s\n", fileDir.name);  // XXX.format
+                    LOGGER_INFO << fileDir.name;  // XXX.format
                     hArtItem = m_Area_Texture_List.InsertItem(fileDir.name, 2, 2, hCataItem, TVI_LAST);
                     ++fileNum;
                 } while (_findnext(lfDir, &fileDir) == 0);
