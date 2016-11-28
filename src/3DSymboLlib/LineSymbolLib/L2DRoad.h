@@ -13,7 +13,7 @@
 struct LineSymbol {
     LineSymbol() : line_texture_("NONE"),
         line_type_(0),
-        line_width_(8),
+        line_width_(8.5),
         deleted_(false) {
         line_points_.clear();
     }

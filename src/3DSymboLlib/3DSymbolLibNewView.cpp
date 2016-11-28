@@ -495,7 +495,7 @@ unsigned char* CMy3DSymbolLibNewView::LoadBit(char* filename, BITMAPINFOHEADER* 
 void CMy3DSymbolLibNewView::InitTerrain() {
     // 读取等高线数据
     terrainContourData_.clear();
-    std::ifstream t("C:\\256x256.txt");
+    std::ifstream t("C:\\128x128.txt");
     std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
     std::vector<std::string> row = StringUtils::split(str, '\n');
     for (auto iter = row.begin(); iter != row.end(); ++iter) {
@@ -4920,14 +4920,14 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
     if (pL2DRoad_->Line_fuse_Flag_ == TRUE && m_Drawmode == 3) {
         glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
         glPushMatrix();             // 压入矩阵堆栈
-        glLineWidth(3.0);           // 设置线宽
+        glLineWidth(1.0);           // 设置线宽
         glColor3f(0, 0.5, 1);       // 设置颜色
         {
             glBindTexture(GL_TEXTURE_2D, _area4->area_texture_rd);
             glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-            static const double deta = 1.00;
+            static const double deta = 0.1;
             // 1.多边形内原先完整的三角形
             for (uint32 i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
                 glColor3f(1.0000 , 0.9804 , 0.9804);
@@ -5032,6 +5032,7 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
                 }
                 glEnd();
             }
+            Vec3 tmpRGB(0.1, 0.1, 0.5);
             // 2. 经过局部三角化的三角形
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1.size(); ++i) {
                 glColor3f(1.0, 1.0, 0.1);
@@ -5075,7 +5076,8 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
                 glEnd();
             }
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr_last.size(); ++i) {
-                glColor3f(0.6275, 0.1255, 0.9412);
+                // glColor3f(0.6275, 0.1255, 0.9412);
+                glColor3f(0.511, 0.300, 0.221);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1.x, _area4->LocalTrianglesVecotr_last[i].pt1.y, _area4->LocalTrianglesVecotr_last[i].pt1.z);
@@ -5400,7 +5402,7 @@ void CMy3DSymbolLibNewView::OnLine2dRoadAddEnd() {
 void CMy3DSymbolLibNewView::OnUpdateLine2dRoadFuse(CCmdUI* pCmdUI) {
 }
 
-
+// 右击菜单(LineDelete)
 void CMy3DSymbolLibNewView::OnPopupLineDelete() {
     if (line_selected_id >= 0) {
         // 更新线符号属性中的纹理信息
@@ -5426,7 +5428,7 @@ void CMy3DSymbolLibNewView::OnPopupLineDelete() {
     }
 }
 
-
+// 右击菜单(LineModifyTexture)
 void CMy3DSymbolLibNewView::OnPopupLineModifyTexture() {
     CAreaClassification ac_dlg;
     CString selectItem = "";
@@ -5465,6 +5467,6 @@ void CMy3DSymbolLibNewView::OnPopupLineModifyTexture() {
     }
 }
 
-
+// 右击菜单(LineModifyWidth)
 void CMy3DSymbolLibNewView::OnPopupLineModifyWidth() {
 }
