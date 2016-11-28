@@ -5362,7 +5362,7 @@ void CMy3DSymbolLibNewView::OnLine2dRoadFuse() {
             (*pLineArea4Array)[i]->TrianglesInPolygonVecotr = tmp_area4.TrianglesInPolygonVecotr;
             // ==================================================================================
             CString scenePath = g_sceneDataPath.c_str();
-            CString area_texture = scenePath + "\\RoadTexture\\4.bmp";
+            CString area_texture = scenePath + "\\SymbolTexture\\LineSymbolTexture\\LINE_TEXTURE_06.bmp";
             if ((*pLineArea4Array)[i]->area_texture == "NONE") {
                 // AfxMessageBox("texture == NULL");
                 (*pLineArea4Array)[i]->area_texture = area_texture;
@@ -5395,7 +5395,15 @@ void CMy3DSymbolLibNewView::OnUpdateLine2dRoadAdd(CCmdUI* pCmdUI) {
 
 // 结束选线(一条线路结束)
 void CMy3DSymbolLibNewView::OnLine2dRoadAddEnd() {
-    pL2DRoad_->SaveLineSymbol(pLineSymbol_, g_terrain);
+    if (nullptr == pLineSymbol_) {
+        return;
+    }
+    if (false == pLineSymbol_->inserted_) {
+        pL2DRoad_->SaveLineSymbol(pLineSymbol_, g_terrain);
+        pLineSymbol_->inserted_ = true;
+    } else {
+        return;
+    }
 }
 
 

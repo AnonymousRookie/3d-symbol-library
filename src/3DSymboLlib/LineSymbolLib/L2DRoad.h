@@ -14,7 +14,8 @@ struct LineSymbol {
     LineSymbol() : line_texture_("NONE"),
         line_type_(0),
         line_width_(8.5),
-        deleted_(false) {
+        deleted_(false),
+        inserted_(false) {
         line_points_.clear();
     }
 
@@ -23,6 +24,7 @@ struct LineSymbol {
     int32 line_type_;             // 线符号类型
     float line_width_;          // 线宽
     bool deleted_;  // 标记是否已经删除
+    bool inserted_;  // 标记是否已插入
 };
 
 
