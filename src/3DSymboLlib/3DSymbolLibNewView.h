@@ -32,6 +32,9 @@
 #include "LineSymbolLib/L2DRoad.h"
 #include <unordered_map>
 
+#include "AreaSymbolLib/FiveStar.h"
+
+
 class CMy3DSymbolLibNewView : public CView {
   protected:  // 仅从序列化创建
     CMy3DSymbolLibNewView();
@@ -522,6 +525,18 @@ class CMy3DSymbolLibNewView : public CView {
     void Area_Triangled(const PArea_4& _area4);
 
 
+    // 五角星 ----------------------------------------------
+    FiveStar fiveStarSymbol_;
+
+
+    Point3 fiveStar_o_fromMouseClicked_;
+
+    bool draw_fiveStar_5_area4_;
+
+    CArray<PArea_4, PArea_4> fiveStar_5_area4_array_;
+
+    // -----------------------------------------------------
+
 
     UINT m_area_texture;
     void LoadAreaTexture(CString _areaTexture_str, UINT& texture_id);  // 加载面符号纹理  // NOLINT
@@ -565,6 +580,7 @@ class CMy3DSymbolLibNewView : public CView {
     afx_msg void OnPopupLineDelete();
     afx_msg void OnPopupLineModifyTexture();
     afx_msg void OnPopupLineModifyWidth();
+    afx_msg void OnTestCalcFivestarInfo();
 };
 
 #ifndef _DEBUG  // 3DSymbolLibNewView.cpp 中的调试版本

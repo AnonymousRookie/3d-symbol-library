@@ -19,6 +19,7 @@
 #include "MathUtils/MathUtil.h"
 #include "Base/ZStringUtils.h"
 
+
 extern t3DModel g_3DModel[MODEL_NUM_MAX];
 
 #ifdef _DEBUG
@@ -128,6 +129,7 @@ BEGIN_MESSAGE_MAP(CMy3DSymbolLibNewView, CView)
     ON_COMMAND(ID_POPUP_LINE_DELETE, &CMy3DSymbolLibNewView::OnPopupLineDelete)
     ON_COMMAND(ID_POPUP_LINE_MODIFY_TEXTURE, &CMy3DSymbolLibNewView::OnPopupLineModifyTexture)
     ON_COMMAND(ID_POPUP_LINE_MODIFY_WIDTH, &CMy3DSymbolLibNewView::OnPopupLineModifyWidth)
+    ON_COMMAND(ID_TEST_CALC_FIVESTAR_INFO, &CMy3DSymbolLibNewView::OnTestCalcFivestarInfo)
 END_MESSAGE_MAP()
 
 
@@ -296,6 +298,7 @@ void CMy3DSymbolLibNewView::InitData() {
         m_LineSymbolFile = "0";
         m_AreaSymbolFile = "0";
     }
+    draw_fiveStar_5_area4_ = false;
 }
 
 
@@ -904,6 +907,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             pt1[2] = wz;                                            // 查询获得的三维大地坐标
             Invalidate(FALSE);
             MessageBox(tt, "三维坐标查询", MB_ICONINFORMATION);      // 给出坐标查询信息
+            fiveStar_o_fromMouseClicked_ = Point3(wx, wy, wz);
             IsSearchPoint_ = true;
         } else if (spaceSearchInfo_.m_QueryType == QUERY_DISTENCE) {                 // 查询空间距离
             if (spaceSearchInfo_.m_bSearchDistencePtNums >= 2) {                     // 如果选择点数2个，归零
@@ -1488,6 +1492,19 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
                 glVertex3f(m_Area4_Array[i]->pt4.x, m_Area4_Array[i]->pt4.y, m_Area4_Array[i]->pt4.z);
                 glEnd();
             }
+        }
+        glLineWidth(1.0);
+    }
+    if (draw_fiveStar_5_area4_) {
+        glLineWidth(3.0);                   // 设置查询标志线宽度
+        glColor3f(0.3, 0.6, 0.5);           // 设置查询标志线颜色
+        for (int32 i = 0; i < fiveStar_5_area4_array_.GetSize(); ++i) {
+            glBegin(GL_QUADS);
+            glVertex3f(fiveStar_5_area4_array_[i]->pt1.x, fiveStar_5_area4_array_[i]->pt1.y, fiveStar_5_area4_array_[i]->pt1.z);
+            glVertex3f(fiveStar_5_area4_array_[i]->pt2.x, fiveStar_5_area4_array_[i]->pt2.y, fiveStar_5_area4_array_[i]->pt2.z);
+            glVertex3f(fiveStar_5_area4_array_[i]->pt3.x, fiveStar_5_area4_array_[i]->pt3.y, fiveStar_5_area4_array_[i]->pt3.z);
+            glVertex3f(fiveStar_5_area4_array_[i]->pt4.x, fiveStar_5_area4_array_[i]->pt4.y, fiveStar_5_area4_array_[i]->pt4.z);
+            glEnd();
         }
         glLineWidth(1.0);
     }
@@ -5477,4 +5494,55 @@ void CMy3DSymbolLibNewView::OnPopupLineModifyTexture() {
 
 // 右击菜单(LineModifyWidth)
 void CMy3DSymbolLibNewView::OnPopupLineModifyWidth() {
+}
+
+
+
+
+
+
+void CMy3DSymbolLibNewView::OnTestCalcFivestarInfo() {
+    // TODO: 在此添加命令处理程序代码
+    LOGGER_INFO << "fiveStar_o_fromMouseClicked_ = " << fiveStar_o_fromMouseClicked_.x << fiveStar_o_fromMouseClicked_.y << fiveStar_o_fromMouseClicked_.z;
+    FiveStarTools::CalculateFiveStarInfo(10.0f, fiveStar_o_fromMouseClicked_, &fiveStarSymbol_);
+    PArea_4 area = new Area_4;
+    // APOT
+    area->pt1 = fiveStarSymbol_.pA_;
+    area->pt2 = fiveStarSymbol_.pP_;
+    area->pt3 = fiveStarSymbol_.pO_;
+    area->pt4 = fiveStarSymbol_.pT_;
+    fiveStar_5_area4_array_.Add(area);
+    area = new Area_4;
+    // BQOP
+    area->pt1 = fiveStarSymbol_.pB_;
+    area->pt2 = fiveStarSymbol_.pQ_;
+    area->pt3 = fiveStarSymbol_.pO_;
+    area->pt4 = fiveStarSymbol_.pP_;
+    fiveStar_5_area4_array_.Add(area);
+    area = new Area_4;
+    // CROQ
+    area->pt1 = fiveStarSymbol_.pC_;
+    area->pt2 = fiveStarSymbol_.pR_;
+    area->pt3 = fiveStarSymbol_.pO_;
+    area->pt4 = fiveStarSymbol_.pQ_;
+    fiveStar_5_area4_array_.Add(area);
+    area = new Area_4;
+    // DSOR
+    area->pt1 = fiveStarSymbol_.pD_;
+    area->pt2 = fiveStarSymbol_.pS_;
+    area->pt3 = fiveStarSymbol_.pO_;
+    area->pt4 = fiveStarSymbol_.pR_;
+    fiveStar_5_area4_array_.Add(area);
+    area = new Area_4;
+    // ETOS
+    area->pt1 = fiveStarSymbol_.pE_;
+    area->pt2 = fiveStarSymbol_.pT_;
+    area->pt3 = fiveStarSymbol_.pO_;
+    area->pt4 = fiveStarSymbol_.pS_;
+    fiveStar_5_area4_array_.Add(area);
+    area = new Area_4;
+    //for (auto i=0; i<fiveStar_5_area4_array_.GetSize(); ++i) {
+    //    LOGGER_INFO << "fiveStar_5_area4_array_ .. " << i << " ==>  "<< fiveStar_5_area4_array_[i]->pt1.x <<  "   " << fiveStar_5_area4_array_[i]->pt1.y;
+    //}
+    draw_fiveStar_5_area4_ = true;
 }
