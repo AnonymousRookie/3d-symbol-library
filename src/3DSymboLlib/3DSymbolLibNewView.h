@@ -535,6 +535,10 @@ class CMy3DSymbolLibNewView : public CView {
 
     CArray<PArea_4, PArea_4> fiveStar_5_area4_array_;
 
+    BOOL FiveStarFuseFlag_;
+
+    // 三角化
+    void FiveStarTriangled(const PArea_4& _area4);
     // -----------------------------------------------------
 
 
@@ -581,6 +585,9 @@ class CMy3DSymbolLibNewView : public CView {
     afx_msg void OnPopupLineModifyTexture();
     afx_msg void OnPopupLineModifyWidth();
     afx_msg void OnTestCalcFivestarInfo();
+    afx_msg void OnFivestarFuse();
+//    afx_msg void OnUpdateFivestarFuse(CCmdUI *pCmdUI);
+    afx_msg void OnUpdateTestCalcFivestarInfo(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // 3DSymbolLibNewView.cpp 中的调试版本

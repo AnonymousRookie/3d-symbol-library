@@ -7,7 +7,7 @@ void FiveStarTools::CalculateFiveStarInfo(const float d, const Point3& pO, FiveS
     pFiveStarInfo->d_ = d;
     pFiveStarInfo->pO_ = pO;
     //
-    float theta = MATH_DEG_TO_RAD(18);  // 18度
+    float theta = MATH_DEG_TO_RAD(30);  // 18度
     //
     float a = d * sin(theta);
     float b = d * cos(theta);
