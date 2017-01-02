@@ -540,6 +540,20 @@ class CMy3DSymbolLibNewView : public CView {
     // 三角化
     void FiveStarTriangled(const PArea_4& _area4);
     // -----------------------------------------------------
+    float distance_xz(const Vec3& v1, const Vec3& v2) {
+        float dx = v1.x - v2.x;
+        float dz = v1.z - v2.z;
+        return std::sqrt(dx * dx + dz * dz);
+    }
+    float distance_point_line(float a, float b, float c, const Vec3& point) {
+        if (MATH_FLOAT_EQUAL_0(sqrt(a*a + b*b))) {
+            AfxMessageBox("MATH_FLOAT_EQUAL_0(sqrt(a*a + b*b))");
+            return 0;
+        }
+        float dis = abs( (a*point.x + b*point.z + c) / sqrt(a*a + b*b) );
+        return dis;
+    }
+
 
 
     UINT m_area_texture;

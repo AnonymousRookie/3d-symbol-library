@@ -568,6 +568,9 @@ void CMy3DSymbolLibNewView::DrawTerrain() {
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+
+    // glColor3f(0.0, 0.0, 0.0);  // [color]
+
     for (int32 z = 0; z < MAP_W - 1; z++) {
         glDrawElements(GL_TRIANGLE_STRIP, MAP_W * 2, GL_UNSIGNED_INT, &g_index[z * MAP_W * 2]);
     }
@@ -641,7 +644,9 @@ void  CMy3DSymbolLibNewView::SetDrawMode() {
 
 // Function:场景绘制
 void CMy3DSymbolLibNewView::DrawScene() {
-    glClearColor(0.53, 0.81, 0.92, 0.0);                 // 设置刷新背景色SkyBlue: 135,206,235
+    // glClearColor(0.53, 0.81, 0.92, 0.0);                 // 设置刷新背景色SkyBlue: 135,206,235
+    glClearColor(1.0, 1.0, 1.0, 0.0);  // 设置刷新背景色[color]
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // 刷新背景
     glLoadIdentity();                                    // 重置当前的模型观察矩阵
     SetDrawMode();
@@ -930,7 +935,7 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
         else if (FIVE_STAR_ADD == spaceSearchInfo_.m_QueryType) {
             fiveStar_o_fromMouseClicked_ = Point3(wx, wy, wz);
             // -----------------------------
-            FiveStarTools::CalculateFiveStarInfo(20.0f, fiveStar_o_fromMouseClicked_, &fiveStarSymbol_);
+            FiveStarTools::CalculateFiveStarInfo(10.0f, fiveStar_o_fromMouseClicked_, &fiveStarSymbol_);
             PArea_4 area = new Area_4;
             // APOT
             area->pt1 = fiveStarSymbol_.pA_;
@@ -2583,7 +2588,12 @@ void CMy3DSymbolLibNewView::SetSkyProjectionNavigate() {
     // 设置正射投影视景体
     glMatrixMode(GL_MODELVIEW);                         // 定义矩阵为模型模型矩阵
     glLoadIdentity();                                   // 将当前矩阵置换为单位矩阵
-    glClearColor(0.53, 0.81, 0.92, 0.0);                // 设置刷新背景色SkyBlue: 135,206,235
+    
+    
+    // glClearColor(0.53, 0.81, 0.92, 0.0);                // 设置刷新背景色SkyBlue: 135,206,235
+    glClearColor(1.0, 1.0, 1.0, 0.0);  // 设置刷新背景色[color]
+
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // 刷新背景
     glLoadIdentity();                                   // 重置当前的模型观察矩阵
     SetCamra();
@@ -5001,29 +5011,318 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
     }
 }
 
+// [201611]
+//void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
+//    if (pL2DRoad_->Line_fuse_Flag_ == TRUE && m_Drawmode == 3) {
+//        glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
+//        glPushMatrix();             // 压入矩阵堆栈
+//        glLineWidth(1.0);           // 设置线宽
+//        glColor3f(0, 0.5, 1);       // 设置颜色
+//        {
+//            glBindTexture(GL_TEXTURE_2D, _area4->area_texture_rd);
+//            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+//            static const double deta = 0.1;
+//            // 1.多边形内原先完整的三角形
+//            for (uint32 i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
+//                glColor3f(1.0000 , 0.9804 , 0.9804);
+//                glBegin(GL_TRIANGLES);
+//                {
+//                    glTexCoord2f(0.0f, 0.0f);
+//                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1.x, _area4->TrianglesInPolygonVecotr[i].pt1.y + deta, _area4->TrianglesInPolygonVecotr[i].pt1.z);
+//                    glTexCoord2f(0.0f, 1.0f);
+//                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2.x, _area4->TrianglesInPolygonVecotr[i].pt2.y + deta, _area4->TrianglesInPolygonVecotr[i].pt2.z);
+//                    glTexCoord2f(1.0f, 0.0f);
+//                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3.x, _area4->TrianglesInPolygonVecotr[i].pt3.y + deta, _area4->TrianglesInPolygonVecotr[i].pt3.z);
+//                }
+//                glEnd();
+//            }
+//            // 2. 经过局部三角化的三角形
+//            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1.size(); ++i) {
+//                glColor3f(0.0980 , 0.0980 , 0.4392);
+//                glBegin(GL_TRIANGLES);
+//                {
+//                    glTexCoord2f(0.0f, 0.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1.x, _area4->LocalTrianglesVecotr1[i].pt1.y + deta, _area4->LocalTrianglesVecotr1[i].pt1.z);
+//                    glTexCoord2f(0.0f, 1.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2.x, _area4->LocalTrianglesVecotr1[i].pt2.y + deta, _area4->LocalTrianglesVecotr1[i].pt2.z);
+//                    glTexCoord2f(1.0f, 0.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3.x, _area4->LocalTrianglesVecotr1[i].pt3.y + deta, _area4->LocalTrianglesVecotr1[i].pt3.z);
+//                }
+//                glEnd();
+//            }
+//            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2.size(); ++i) {
+//                glColor3f(0.611, 0.400, 0.121);
+//                glBegin(GL_TRIANGLES);
+//                {
+//                    glTexCoord2f(0.0f, 0.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1.x, _area4->LocalTrianglesVecotr2[i].pt1.y + deta, _area4->LocalTrianglesVecotr2[i].pt1.z);
+//                    glTexCoord2f(0.0f, 1.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2.x, _area4->LocalTrianglesVecotr2[i].pt2.y + deta, _area4->LocalTrianglesVecotr2[i].pt2.z);
+//                    glTexCoord2f(1.0f, 0.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3.x, _area4->LocalTrianglesVecotr2[i].pt3.y + deta, _area4->LocalTrianglesVecotr2[i].pt3.z);
+//                }
+//                glEnd();
+//            }
+//            // 2.1 多边形 顶点处
+//            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1_1.size(); ++i) {
+//                glColor3f(1.0000 , 0.3882 , 0.2784);
+//                glBegin(GL_TRIANGLES);
+//                {
+//                    glTexCoord2f(0.0f, 0.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1.x, _area4->LocalTrianglesVecotr1_1[i].pt1.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt1.z);
+//                    glTexCoord2f(0.0f, 1.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2.x, _area4->LocalTrianglesVecotr1_1[i].pt2.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt2.z);
+//                    glTexCoord2f(1.0f, 0.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3.x, _area4->LocalTrianglesVecotr1_1[i].pt3.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt3.z);
+//                }
+//                glEnd();
+//            }
+//            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2_1.size(); ++i) {
+//                glColor3f(0.6980 , 0.1333 , 0.1333);
+//                glBegin(GL_TRIANGLES);
+//                {
+//                    glTexCoord2f(0.0f, 0.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1.x, _area4->LocalTrianglesVecotr2_1[i].pt1.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt1.z);
+//                    glTexCoord2f(0.0f, 1.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2.x, _area4->LocalTrianglesVecotr2_1[i].pt2.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt2.z);
+//                    glTexCoord2f(1.0f, 0.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3.x, _area4->LocalTrianglesVecotr2_1[i].pt3.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt3.z);
+//                }
+//                glEnd();
+//            }
+//            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr_last.size(); ++i) {
+//                glColor3f(0.6275,  0.1255,  0.9412);
+//                glBegin(GL_TRIANGLES);
+//                {
+//                    glTexCoord2f(0.0f, 0.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1.x, _area4->LocalTrianglesVecotr_last[i].pt1.y + deta, _area4->LocalTrianglesVecotr_last[i].pt1.z);
+//                    glTexCoord2f(0.0f, 1.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2.x, _area4->LocalTrianglesVecotr_last[i].pt2.y + deta, _area4->LocalTrianglesVecotr_last[i].pt2.z);
+//                    glTexCoord2f(1.0f, 0.0f);
+//                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3.x, _area4->LocalTrianglesVecotr_last[i].pt3.y + deta, _area4->LocalTrianglesVecotr_last[i].pt3.z);
+//                }
+//                glEnd();
+//            }
+//        }
+//        glLineWidth(1.0);           // 恢复线宽
+//        glPopAttrib();
+//        glPopMatrix();              // 弹出矩阵堆栈
+//    }
+//    // ...............................................................
+//    if (pL2DRoad_->Line_fuse_Flag_ == TRUE && m_Drawmode == 1) {
+//        glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
+//        glPushMatrix();             // 压入矩阵堆栈
+//        glLineWidth(3.0);           // 设置线宽
+//        glColor3f(0, 0.5, 1);       // 设置颜色
+//        {
+//            // 1.多边形内原先完整的三角形
+//            for (uint32 i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
+//                glColor3f(1.0000, 0.9804, 0.9804);
+//                glBegin(GL_TRIANGLES);
+//                {
+//                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1.x, _area4->TrianglesInPolygonVecotr[i].pt1.y , _area4->TrianglesInPolygonVecotr[i].pt1.z);
+//                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2.x, _area4->TrianglesInPolygonVecotr[i].pt2.y , _area4->TrianglesInPolygonVecotr[i].pt2.z);
+//                    glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3.x, _area4->TrianglesInPolygonVecotr[i].pt3.y , _area4->TrianglesInPolygonVecotr[i].pt3.z);
+//                }
+//                glEnd();
+//            }
+//            Vec3 tmpRGB(0.1, 0.1, 0.5);
+//            // 2. 经过局部三角化的三角形
+//            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1.size(); ++i) {
+//                glColor3f(1.0, 1.0, 0.1);
+//                glBegin(GL_TRIANGLES);
+//                {
+//                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1.x, _area4->LocalTrianglesVecotr1[i].pt1.y , _area4->LocalTrianglesVecotr1[i].pt1.z);
+//                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2.x, _area4->LocalTrianglesVecotr1[i].pt2.y , _area4->LocalTrianglesVecotr1[i].pt2.z);
+//                    glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3.x, _area4->LocalTrianglesVecotr1[i].pt3.y , _area4->LocalTrianglesVecotr1[i].pt3.z);
+//                }
+//                glEnd();
+//            }
+//            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2.size(); ++i) {
+//                glColor3f(0.611, 0.400, 0.121);
+//                glBegin(GL_TRIANGLES);
+//                {
+//                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1.x, _area4->LocalTrianglesVecotr2[i].pt1.y , _area4->LocalTrianglesVecotr2[i].pt1.z);
+//                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2.x, _area4->LocalTrianglesVecotr2[i].pt2.y , _area4->LocalTrianglesVecotr2[i].pt2.z);
+//                    glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3.x, _area4->LocalTrianglesVecotr2[i].pt3.y , _area4->LocalTrianglesVecotr2[i].pt3.z);
+//                }
+//                glEnd();
+//            }
+//            // 2.1 多边形 顶点处
+//            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1_1.size(); ++i) {
+//                glColor3f(1.0000, 0.3882, 0.2784);
+//                glBegin(GL_TRIANGLES);
+//                {
+//                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1.x, _area4->LocalTrianglesVecotr1_1[i].pt1.y , _area4->LocalTrianglesVecotr1_1[i].pt1.z);
+//                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2.x, _area4->LocalTrianglesVecotr1_1[i].pt2.y , _area4->LocalTrianglesVecotr1_1[i].pt2.z);
+//                    glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3.x, _area4->LocalTrianglesVecotr1_1[i].pt3.y , _area4->LocalTrianglesVecotr1_1[i].pt3.z);
+//                }
+//                glEnd();
+//            }
+//            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2_1.size(); ++i) {
+//                glColor3f(0.6980, 0.1333, 0.1333);
+//                glBegin(GL_TRIANGLES);
+//                {
+//                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1.x, _area4->LocalTrianglesVecotr2_1[i].pt1.y, _area4->LocalTrianglesVecotr2_1[i].pt1.z);
+//                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2.x, _area4->LocalTrianglesVecotr2_1[i].pt2.y, _area4->LocalTrianglesVecotr2_1[i].pt2.z);
+//                    glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3.x, _area4->LocalTrianglesVecotr2_1[i].pt3.y, _area4->LocalTrianglesVecotr2_1[i].pt3.z);
+//                }
+//                glEnd();
+//            }
+//            for (uint32 i = 0; i < _area4->LocalTrianglesVecotr_last.size(); ++i) {
+//                // glColor3f(0.6275, 0.1255, 0.9412);
+//                glColor3f(0.511, 0.300, 0.221);
+//                glBegin(GL_TRIANGLES);
+//                {
+//                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1.x, _area4->LocalTrianglesVecotr_last[i].pt1.y, _area4->LocalTrianglesVecotr_last[i].pt1.z);
+//                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2.x, _area4->LocalTrianglesVecotr_last[i].pt2.y, _area4->LocalTrianglesVecotr_last[i].pt2.z);
+//                    glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3.x, _area4->LocalTrianglesVecotr_last[i].pt3.y, _area4->LocalTrianglesVecotr_last[i].pt3.z);
+//                }
+//                glEnd();
+//            }
+//        }
+//        glLineWidth(1.0);           // 恢复线宽
+//        glPopAttrib();
+//        glPopMatrix();              // 弹出矩阵堆栈
+//    }
+//}
+
 
 void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
+
     if (pL2DRoad_->Line_fuse_Flag_ == TRUE && m_Drawmode == 3) {
+
+        float distance_14 = distance_xz(_area4->pt1, _area4->pt4);
+        float distance_23 = distance_xz(_area4->pt2, _area4->pt3);
+
+        float line_length = (distance_14 > distance_23 ? distance_14 : distance_23);
+
+        float line_width = 8.5f;
+
+        // 平面中 12直线方程，a2x + b2y + c2 = 0
+        float a2 = _area4->pt2.z - _area4->pt1.z;
+        float b2 = _area4->pt1.x - _area4->pt2.x;
+        float c2 = (_area4->pt2.x * _area4->pt1.z) - (_area4->pt1.x * _area4->pt2.z);
+
+        // 平面中 23直线方程，a1x + b1y + c1 = 0
+        float a1 = _area4->pt3.z - _area4->pt2.z;
+        float b1 = _area4->pt2.x - _area4->pt3.x;
+        float c1 = (_area4->pt3.x * _area4->pt2.z) - (_area4->pt2.x * _area4->pt3.z);
+
+
+        // 12 作为参考边
+        float l_u = 0.0f;  // distance
+        float l_v = 0.0f;  // line_width
+
+
         glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
         glPushMatrix();             // 压入矩阵堆栈
         glLineWidth(1.0);           // 设置线宽
         glColor3f(0, 0.5, 1);       // 设置颜色
         {
             glBindTexture(GL_TEXTURE_2D, _area4->area_texture_rd);
-            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+            // glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+            
+            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+
+
             static const double deta = 0.1;
+
+
+            //glBegin(GL_TRIANGLES);
+            //glBegin(GL_QUADS);
+
+            //l_u = 0;//distance_point_line(a1,b1,c1,_area4->pt2) / line_width;
+            //l_v = 0;//distance_point_line(a2,b2,c2,_area4->pt2) / line_length;
+            //glTexCoord2f(l_u, l_v);
+            //glVertex3f(_area4->pt2.x, _area4->pt2.y + deta, _area4->pt2.z);
+
+            //l_u = 1;//distance_point_line(a1,b1,c1,_area4->pt1) / line_width;
+            //l_v = 0;//distance_point_line(a2,b2,c2,_area4->pt1) / line_length;
+            //glTexCoord2f(l_u, l_v);
+            //glVertex3f(_area4->pt1.x, _area4->pt1.y + deta, _area4->pt1.z);
+
+            //l_u = 1;//distance_point_line(a1,b1,c1,_area4->pt4) / line_width;
+            //l_v = 1;//distance_point_line(a2,b2,c2,_area4->pt4) / line_length;
+            //glTexCoord2f(l_u, l_v);
+            //glVertex3f(_area4->pt4.x, _area4->pt4.y + deta, _area4->pt4.z);
+
+            //l_u = 0;//distance_point_line(a1,b1,c1,_area4->pt3) / line_width;
+            //l_v = 1;//distance_point_line(a2,b2,c2,_area4->pt3) / line_length;
+            //glTexCoord2f(l_u, l_v);
+            //glVertex3f(_area4->pt3.x, _area4->pt3.y + deta, _area4->pt3.z);
+
+
+            //glEnd();
+
+
+            /////////////////////////////////////////////////////
+
+          /*  glBegin(GL_QUADS);
+
+            l_u = distance_point_line(a1,b1,c1,_area4->pt2) / line_width;
+            l_v = distance_point_line(a2,b2,c2,_area4->pt2) / line_length;
+
+            LOGGER_INFO << "pt2 UV [0,0]= " << l_u << ", " << l_v;
+
+            glTexCoord2f(l_u, l_v);
+            glVertex3f(_area4->pt2.x, _area4->pt2.y + deta, _area4->pt2.z);
+
+            l_u = distance_point_line(a1,b1,c1,_area4->pt1) / line_width;
+            l_v = distance_point_line(a2,b2,c2,_area4->pt1) / line_length;
+
+            LOGGER_INFO << "pt1 UV [1,0]= " << l_u << ", " << l_v;
+
+            glTexCoord2f(l_u, l_v);
+            glVertex3f(_area4->pt1.x, _area4->pt1.y + deta, _area4->pt1.z);
+
+            l_u = distance_point_line(a1,b1,c1,_area4->pt4) / line_width;
+            l_v = distance_point_line(a2,b2,c2,_area4->pt4) / line_length;
+
+            LOGGER_INFO << "pt4 UV [1,1]= " << l_u << ", " << l_v;
+
+            glTexCoord2f(l_u, l_v);
+            glVertex3f(_area4->pt4.x, _area4->pt4.y + deta, _area4->pt4.z);
+
+            l_u = distance_point_line(a1,b1,c1,_area4->pt3) / line_width;
+            l_v = distance_point_line(a2,b2,c2,_area4->pt3) / line_length;
+
+            LOGGER_INFO << "pt3 UV [0,1]= " << l_u << ", " << l_v;
+
+            glTexCoord2f(l_u, l_v);
+            glVertex3f(_area4->pt3.x, _area4->pt3.y + deta, _area4->pt3.z);
+
+
+            glEnd();*/
+
+
+
+
+
             // 1.多边形内原先完整的三角形
             for (uint32 i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
                 glColor3f(1.0000 , 0.9804 , 0.9804);
                 glBegin(GL_TRIANGLES);
                 {
-                    glTexCoord2f(0.0f, 0.0f);
+                    l_u = distance_point_line(a1,b1,c1,_area4->TrianglesInPolygonVecotr[i].pt1) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->TrianglesInPolygonVecotr[i].pt1) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1.x, _area4->TrianglesInPolygonVecotr[i].pt1.y + deta, _area4->TrianglesInPolygonVecotr[i].pt1.z);
-                    glTexCoord2f(0.0f, 1.0f);
+                    
+                    l_u = distance_point_line(a1,b1,c1,_area4->TrianglesInPolygonVecotr[i].pt2) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->TrianglesInPolygonVecotr[i].pt2) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2.x, _area4->TrianglesInPolygonVecotr[i].pt2.y + deta, _area4->TrianglesInPolygonVecotr[i].pt2.z);
-                    glTexCoord2f(1.0f, 0.0f);
+                    
+                    l_u = distance_point_line(a1,b1,c1,_area4->TrianglesInPolygonVecotr[i].pt3) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->TrianglesInPolygonVecotr[i].pt3) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3.x, _area4->TrianglesInPolygonVecotr[i].pt3.y + deta, _area4->TrianglesInPolygonVecotr[i].pt3.z);
                 }
                 glEnd();
@@ -5033,11 +5332,19 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
                 glColor3f(0.0980 , 0.0980 , 0.4392);
                 glBegin(GL_TRIANGLES);
                 {
-                    glTexCoord2f(0.0f, 0.0f);
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr1[i].pt1) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr1[i].pt1) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1.x, _area4->LocalTrianglesVecotr1[i].pt1.y + deta, _area4->LocalTrianglesVecotr1[i].pt1.z);
-                    glTexCoord2f(0.0f, 1.0f);
+                    
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr1[i].pt2) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr1[i].pt2) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2.x, _area4->LocalTrianglesVecotr1[i].pt2.y + deta, _area4->LocalTrianglesVecotr1[i].pt2.z);
-                    glTexCoord2f(1.0f, 0.0f);
+                    
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr1[i].pt3) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr1[i].pt3) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3.x, _area4->LocalTrianglesVecotr1[i].pt3.y + deta, _area4->LocalTrianglesVecotr1[i].pt3.z);
                 }
                 glEnd();
@@ -5046,11 +5353,19 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
                 glColor3f(0.611, 0.400, 0.121);
                 glBegin(GL_TRIANGLES);
                 {
-                    glTexCoord2f(0.0f, 0.0f);
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr2[i].pt1) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr2[i].pt1) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1.x, _area4->LocalTrianglesVecotr2[i].pt1.y + deta, _area4->LocalTrianglesVecotr2[i].pt1.z);
-                    glTexCoord2f(0.0f, 1.0f);
+                    
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr2[i].pt2) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr2[i].pt2) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2.x, _area4->LocalTrianglesVecotr2[i].pt2.y + deta, _area4->LocalTrianglesVecotr2[i].pt2.z);
-                    glTexCoord2f(1.0f, 0.0f);
+                    
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr2[i].pt3) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr2[i].pt3) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3.x, _area4->LocalTrianglesVecotr2[i].pt3.y + deta, _area4->LocalTrianglesVecotr2[i].pt3.z);
                 }
                 glEnd();
@@ -5060,24 +5375,42 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
                 glColor3f(1.0000 , 0.3882 , 0.2784);
                 glBegin(GL_TRIANGLES);
                 {
-                    glTexCoord2f(0.0f, 0.0f);
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr1_1[i].pt1) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr1_1[i].pt1) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1.x, _area4->LocalTrianglesVecotr1_1[i].pt1.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt1.z);
-                    glTexCoord2f(0.0f, 1.0f);
+                    
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr1_1[i].pt2) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr1_1[i].pt2) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2.x, _area4->LocalTrianglesVecotr1_1[i].pt2.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt2.z);
-                    glTexCoord2f(1.0f, 0.0f);
+                    
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr1_1[i].pt3) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr1_1[i].pt3) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3.x, _area4->LocalTrianglesVecotr1_1[i].pt3.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt3.z);
                 }
                 glEnd();
             }
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2_1.size(); ++i) {
-                glColor3f(0.6980 , 0.1333 , 0.1333);
+                glColor3f(0.6980, 0.1333, 0.1333);
                 glBegin(GL_TRIANGLES);
                 {
-                    glTexCoord2f(0.0f, 0.0f);
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr2_1[i].pt1) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr2_1[i].pt1) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1.x, _area4->LocalTrianglesVecotr2_1[i].pt1.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt1.z);
-                    glTexCoord2f(0.0f, 1.0f);
+                    
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr2_1[i].pt2) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr2_1[i].pt2) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2.x, _area4->LocalTrianglesVecotr2_1[i].pt2.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt2.z);
-                    glTexCoord2f(1.0f, 0.0f);
+                    
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr2_1[i].pt3) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr2_1[i].pt3) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3.x, _area4->LocalTrianglesVecotr2_1[i].pt3.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt3.z);
                 }
                 glEnd();
@@ -5086,11 +5419,19 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
                 glColor3f(0.6275,  0.1255,  0.9412);
                 glBegin(GL_TRIANGLES);
                 {
-                    glTexCoord2f(0.0f, 0.0f);
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr_last[i].pt1) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr_last[i].pt1) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1.x, _area4->LocalTrianglesVecotr_last[i].pt1.y + deta, _area4->LocalTrianglesVecotr_last[i].pt1.z);
-                    glTexCoord2f(0.0f, 1.0f);
+                    
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr_last[i].pt2) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr_last[i].pt2) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2.x, _area4->LocalTrianglesVecotr_last[i].pt2.y + deta, _area4->LocalTrianglesVecotr_last[i].pt2.z);
-                    glTexCoord2f(1.0f, 0.0f);
+                    
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr_last[i].pt3) / line_width;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr_last[i].pt3) / line_length;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3.x, _area4->LocalTrianglesVecotr_last[i].pt3.y + deta, _area4->LocalTrianglesVecotr_last[i].pt3.z);
                 }
                 glEnd();
