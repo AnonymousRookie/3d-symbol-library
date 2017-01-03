@@ -5199,7 +5199,7 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
 
         float line_length = (distance_14 > distance_23 ? distance_14 : distance_23);
 
-        float line_width = 8.5f;
+        float line_width = 18.5f;
 
         // 平面中 12直线方程，a2x + b2y + c2 = 0
         float a2 = _area4->pt2.z - _area4->pt1.z;
@@ -5233,13 +5233,8 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
             //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
             //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
 
-            // GL_LINEAR_MIPMAP_NEAREST (y)
-            // GL_NEAREST (x)
-            // GL_LINEAR (x)
-            // GL_NEAREST_MIPMAP_NEAREST(x)
-            // GL_NEAREST_MIPMAP_LINEAR (x)
-            // GL_LINEAR_MIPMAP_LINEAR (y)
-
+            // GL_LINEAR_MIPMAP_NEAREST、GL_LINEAR_MIPMAP_LINEAR
+            // 
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
@@ -5805,10 +5800,10 @@ void CMy3DSymbolLibNewView::OnLine2dRoadFuse() {
                 // AfxMessageBox("texture == NULL");
                 (*pLineArea4Array)[i]->area_texture = area_texture;
                 LoadAreaTexture(area_texture, (*pLineArea4Array)[i]->area_texture_rd);
-                LOGGER_INFO << "texture = " << (*pLineArea4Array)[i]->area_texture;
+                // LOGGER_INFO << "texture = " << (*pLineArea4Array)[i]->area_texture;
             } else {
                 LoadAreaTexture((*pLineArea4Array)[i]->area_texture, (*pLineArea4Array)[i]->area_texture_rd);
-                LOGGER_INFO << "texture2 = " << (*pLineArea4Array)[i]->area_texture;
+                // LOGGER_INFO << "texture2 = " << (*pLineArea4Array)[i]->area_texture;
             }
         }
     }
