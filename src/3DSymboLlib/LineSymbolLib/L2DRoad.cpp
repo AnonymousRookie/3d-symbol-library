@@ -96,8 +96,7 @@ float L2DRoad::GetHeight(float x, float z, float (*g_terrain)[3]) {
 }
 
 
-//// 保存线符号，并且增加宽度变成多边形
-
+// 保存线符号，并且增加宽度变成多边形(等分每个线段外接矩形)
 void L2DRoad::SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]) {
     // 将刚才创建的线符号保存
     int32 line_count = allLineSymbols_.size();
@@ -161,10 +160,11 @@ void L2DRoad::SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]) {
                     }
                     
                     allBigAreaContainsSmallAreaVector.push_back(BigArea4Vector);
-
+                    BigArea4Vector.clear();
                 }
             }
             // 线路拐点，矩形相交 ==> 梯形
+
             std::shared_ptr<CArray<PArea_4, PArea_4>> pLine_Area4_Array_After_XiangJiao = std::make_shared<CArray<PArea_4, PArea_4>>();  // 存放一条线中所有的面符号(线符号增加宽度后形成的面)
             if (m_Line_Area4_Array_->GetSize() >= 2) {  // 至少2个矩形，相交
                 CPointPolygonRelationship tmpCPR;
@@ -282,6 +282,52 @@ void L2DRoad::SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]) {
                     m_Line_XiFen_Area4_Array->Add(pArea4);
                 }
             }
+
+            LOGGER_INFO << "----------------------------------";
+
+            auto size1 = m_Line_Area4_Array_->GetSize();
+
+            //if (size1 >= 2) {
+
+            //    {
+            //        Area_4* pArea4 = new Area_4;
+            //        CString tmpTextureStr;
+            //        tmpTextureStr.Format("%s", pLs.line_texture_.c_str());
+            //        pArea4->area_texture = tmpTextureStr;
+            //        pArea4->deleted = 0;
+
+            //        auto size2 = allBigAreaContainsSmallAreaVector.at(0).size();
+            //        auto tmpVector = allBigAreaContainsSmallAreaVector.at(0).at(size2-1);
+            //        pArea4->pt1 = tmpVector.pt1;
+            //        pArea4->pt2 = tmpVector.pt2;
+            //        pArea4->pt3 = tmpVector.pt3;
+            //        pArea4->pt4 = tmpVector.pt4;
+
+
+            //        m_Line_XiFen_Area4_Array->Add(pArea4);
+            //    }
+            //    
+            //    {
+            //        Area_4* pArea4 = new Area_4;
+            //        CString tmpTextureStr;
+            //        tmpTextureStr.Format("%s", pLs.line_texture_.c_str());
+            //        pArea4->area_texture = tmpTextureStr;
+            //        pArea4->deleted = 0;
+            //        auto tmpVector2 = allBigAreaContainsSmallAreaVector.at(1).at(0);
+            //        pArea4->pt1 = tmpVector2.pt1;
+            //        pArea4->pt2 = tmpVector2.pt2;
+            //        pArea4->pt3 = tmpVector2.pt3;
+            //        pArea4->pt4 = tmpVector2.pt4;
+
+            //        m_Line_XiFen_Area4_Array->Add(pArea4);
+
+            //    }
+
+                
+            //}
+
+
+
             allLineArea4Array_.insert(std::unordered_map<int32, std::shared_ptr<CArray<PArea_4, PArea_4>>>::value_type(key_line_index, m_Line_XiFen_Area4_Array));
 
             

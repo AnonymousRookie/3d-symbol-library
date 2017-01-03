@@ -502,8 +502,8 @@ unsigned char* CMy3DSymbolLibNewView::LoadBit(char* filename, BITMAPINFOHEADER* 
 void CMy3DSymbolLibNewView::InitTerrain() {
     // 读取等高线数据
     terrainContourData_.clear();
-    std::ifstream t("C:\\128x128.txt");
-    // std::ifstream t("C:\\256x256.txt");
+    //std::ifstream t("C:\\128x128.txt");
+     std::ifstream t("C:\\256x256.txt");
     
     std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
     std::vector<std::string> row = StringUtils::split(str, '\n');
@@ -5199,7 +5199,7 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
 
         float line_length = (distance_14 > distance_23 ? distance_14 : distance_23);
 
-        float line_width = 18.5f;
+        float line_width = LINE_WIDTH;
 
         // 平面中 12直线方程，a2x + b2y + c2 = 0
         float a2 = _area4->pt2.z - _area4->pt1.z;

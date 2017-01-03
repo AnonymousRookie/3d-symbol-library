@@ -10,10 +10,13 @@
 #include "../MathUtils/PointPolygonRelationship.h"
 #include <memory>
 
+
+#define LINE_WIDTH 8.5
+
 struct LineSymbol {
     LineSymbol() : line_texture_("NONE"),
         line_type_(0),
-        line_width_(18.5),
+        line_width_(LINE_WIDTH),
         deleted_(false),
         inserted_(false) {
         line_points_.clear();
