@@ -529,16 +529,10 @@ class CMy3DSymbolLibNewView : public CView {
     std::unique_ptr<FiveStar> pAFiveStar_;
     AreaFiveStarSymbol* pAreaFiveStarSymbol_;
 
+    int32 fiveStar_selected_id;  // 鼠标右击选中的线符号id
+    // 更换选中的线符号的属性
+    void UpdateFiveStarSymbol(PPR_Point _mp, CPoint point);
 
-    // 五角星 ----------------------------------------------
-    // FiveStar fiveStarSymbol_;
-
-    // Point3 fiveStar_o_fromMouseClicked_;
-
-
-    // CArray<PArea_4, PArea_4> fiveStar_5_area4_array_;
-
-    // BOOL FiveStarFuseFlag_;
 
     // 三角化
     void FiveStarTriangled(const AreaFiveStarSymbol& pAreaFiveStarSymbol, const PArea_4& _area4);

@@ -1526,7 +1526,7 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         }
         glLineWidth(1.0);
     }
-    if (spaceSearchInfo_.m_QueryType == FIVE_STAR_ADD) {
+    else if (spaceSearchInfo_.m_QueryType == FIVE_STAR_ADD) {
         glLineWidth(3.0);                   // 设置查询标志线宽度
         glColor3f(0.3, 0.6, 0.5);           // 设置查询标志线颜色
 
@@ -1534,6 +1534,10 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         for (auto it = pAFiveStar_->allFiveStarArea4Array_.begin(); it != pAFiveStar_->allFiveStarArea4Array_.end(); ++it) {
             auto fiveStarIndex = it->first;
             auto allFiveStarArea4Array = it->second;
+
+            
+            if(pAFiveStar_->allFiveStarSymbols_[fiveStarIndex].deleted_)
+                return;
 
             for (auto i=0; i < allFiveStarArea4Array->GetSize(); ++i) {
                 glBegin(GL_QUADS);
@@ -1636,6 +1640,7 @@ void CMy3DSymbolLibNewView::OnRButtonDown(UINT nFlags, CPoint point) {
     PPR_Point tmp_mp(wx, wz);
     UpdateAreaTexture(tmp_mp, point);
     UpdateLineSymbol(tmp_mp, point);
+    UpdateFiveStarSymbol(tmp_mp, point);
     Invalidate(FALSE);
     CView::OnRButtonDown(nFlags, point);
 }
@@ -5600,6 +5605,61 @@ void CMy3DSymbolLibNewView::UpdateLineSymbol(PPR_Point _mp, CPoint point) {
     }
 }
 
+
+
+
+// 更换选中的五角星符号的属性
+void CMy3DSymbolLibNewView::UpdateFiveStarSymbol(PPR_Point _mp, CPoint point) {
+    LOGGER_INFO << "UpdateFiveStarSymbol";
+    for (auto it = pAFiveStar_->allFiveStarArea4Array_.begin(); it != pAFiveStar_->allFiveStarArea4Array_.end(); ++it) {
+        auto pOneFiveStarAllArea = (*it).second;
+        fiveStar_selected_id = -1;
+        int32 inPolygonFlag = -1;
+        uint32 tmp_size = (*pOneFiveStarAllArea).GetSize();
+        for (uint32 i = 0; i < tmp_size; ++i) {
+            Area_4 m_area4;
+            m_area4.pt1 = (*pOneFiveStarAllArea)[i]->pt1;
+            m_area4.pt2 = (*pOneFiveStarAllArea)[i]->pt2;
+            m_area4.pt3 = (*pOneFiveStarAllArea)[i]->pt3;
+            m_area4.pt4 = (*pOneFiveStarAllArea)[i]->pt4;
+            CPointPolygonRelationship tmp_ppr;
+            PPR_Polygon tmp_polygon;
+            PPR_Point tmp_point;
+            tmp_point.x = m_area4.pt1.x;
+            tmp_point.y = m_area4.pt1.z;
+            tmp_polygon.push_back(tmp_point);
+            tmp_point.x = m_area4.pt2.x;
+            tmp_point.y = m_area4.pt2.z;
+            tmp_polygon.push_back(tmp_point);
+            tmp_point.x = m_area4.pt3.x;
+            tmp_point.y = m_area4.pt3.z;
+            tmp_polygon.push_back(tmp_point);
+            tmp_point.x = m_area4.pt4.x;
+            tmp_point.y = m_area4.pt4.z;
+            tmp_polygon.push_back(tmp_point);
+            PPR_Point tmp_dem_point;
+            inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, _mp);
+            if (inPolygonFlag == 0) {
+                break;
+            }
+        }
+        if (inPolygonFlag == 0) {  // 点在多边形内
+            // 右键快捷菜单
+            CMenu menu;
+            menu.LoadMenu(IDR_POPUP_MENU_LINE_OPERATE);
+            CMenu* pPopUp = menu.GetSubMenu(0);
+            ClientToScreen(&point);
+            pPopUp->TrackPopupMenu(/*TPM_LEFTALIGN | */TPM_RIGHTBUTTON, point.x, point.y, this);
+            fiveStar_selected_id = (*it).first;
+            LOGGER_INFO << "[D] fivestar_selected_id = " << fiveStar_selected_id;
+            break;
+        } else {
+            // AfxMessageBox("点不在多边形内!");
+            LOGGER_INFO << "点不在多边形内!";
+        }
+    }
+}
+
 /************************************************************************/
 /* 点符号模型                                                            */
 /************************************************************************/
@@ -5817,6 +5877,8 @@ void CMy3DSymbolLibNewView::OnUpdateLine2dRoadFuse(CCmdUI* pCmdUI) {
 
 // 右击菜单(LineDelete)
 void CMy3DSymbolLibNewView::OnPopupLineDelete() {
+
+    // line
     if (line_selected_id >= 0) {
         // 更新线符号属性中的纹理信息
         auto it = pL2DRoad_->allLineSymbols_.find(line_selected_id);
@@ -5833,6 +5895,31 @@ void CMy3DSymbolLibNewView::OnPopupLineDelete() {
             // LOGGER_INFO << "[D] allLineArea4Array_ find "<< lineTexturePathStr << "  " << line_selected_id;
             for (int32 i = 0; i < pOneLineAllArea->GetSize(); ++i) {
                 auto pArea = pOneLineAllArea->GetAt(i);
+                pArea->deleted = 1;
+            }
+        } else {
+            // LOGGER_INFO << "[D] allLineArea4Array_ NOT  find ...."<< lineTexturePathStr;
+        }
+    }
+
+    // fiveStar
+    if (fiveStar_selected_id >= 0) {
+        LOGGER_INFO << "fiveStar_selected_id = " << fiveStar_selected_id;
+        // 更新线符号属性中的纹理信息
+        auto it = pAFiveStar_->allFiveStarSymbols_.find(fiveStar_selected_id);
+        if (it != pAFiveStar_->allFiveStarSymbols_.end()) {
+            (*it).second.deleted_ = true;
+            // LOGGER_INFO << "[D] allLineSymbols_ find "<< lineTexturePathStr;
+        } else {
+            // LOGGER_INFO << "[D] allLineSymbols_ NOT  find ...."<< lineTexturePathStr;
+        }
+        // 更新线符号上所有面的纹理
+        auto it2 = pAFiveStar_->allFiveStarArea4Array_.find(fiveStar_selected_id);
+        if (it2 != pAFiveStar_->allFiveStarArea4Array_.end()) {
+            auto pOneFiveStarAllArea = (*it2).second;
+            // LOGGER_INFO << "[D] allLineArea4Array_ find "<< lineTexturePathStr << "  " << line_selected_id;
+            for (int32 i = 0; i < pOneFiveStarAllArea->GetSize(); ++i) {
+                auto pArea = pOneFiveStarAllArea->GetAt(i);
                 pArea->deleted = 1;
             }
         } else {
@@ -5951,11 +6038,13 @@ void CMy3DSymbolLibNewView::OnFivestarFuse()
             // ==================================================================================
             CString scenePath = g_sceneDataPath.c_str();
             CString area_texture = scenePath + "\\SymbolTexture\\AreaSymbolTexture\\FiveStar.bmp";
-            if ((*pFiveStarArea4Array)[i]->area_texture == "NONE") {
+            if ((*pFiveStarArea4Array)[i]->area_texture == "NONE" || (*pFiveStarArea4Array)[i]->area_texture == "") {
                 (*pFiveStarArea4Array)[i]->area_texture = area_texture;
                 LoadAreaTexture(area_texture, (*pFiveStarArea4Array)[i]->area_texture_rd);
+                LOGGER_INFO << "NONE " << area_texture;
             } else {
                 LoadAreaTexture((*pFiveStarArea4Array)[i]->area_texture, (*pFiveStarArea4Array)[i]->area_texture_rd);
+                LOGGER_INFO << "NOT NONE " << (*pFiveStarArea4Array)[i]->area_texture;
             }
         }
     }
@@ -6227,3 +6316,7 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const AreaFiveStarSymbol& pAreaFiv
         glPopMatrix();              // 弹出矩阵堆栈
     }
 }
+
+
+
+
