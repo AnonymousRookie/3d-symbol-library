@@ -55,6 +55,9 @@ class L2DRoad : Base::Uncopyable {
 
     std::unordered_map<int32, LineSymbol> allLineSymbols_;  // 存放所有的线符号
     std::unordered_map<int32, std::shared_ptr<CArray<PArea_4, PArea_4>>> allLineArea4Array_;  // 存放所有的线的面
+
+    std::unordered_map<int32, std::shared_ptr<CArray<PArea_4, PArea_4>>> allLineArea4ArrayNotDF_;  // 存放所有的线的面(未等分)
+
     BOOL Line_fuse_Flag_;  // 是否已经对线符号进行融合
 
   protected:

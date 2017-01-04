@@ -165,7 +165,6 @@ void L2DRoad::SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]) {
             }
             // 线路拐点，矩形相交 ==> 梯形
 
-            std::shared_ptr<CArray<PArea_4, PArea_4>> pLine_Area4_Array_After_XiangJiao = std::make_shared<CArray<PArea_4, PArea_4>>();  // 存放一条线中所有的面符号(线符号增加宽度后形成的面)
             if (m_Line_Area4_Array_->GetSize() >= 2) {  // 至少2个矩形，相交
                 CPointPolygonRelationship tmpCPR;
                 LineSegment tmpLineSegment_A1;
@@ -325,6 +324,102 @@ void L2DRoad::SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]) {
             
            // allLineArea4Array_.insert(std::unordered_map<int32, std::shared_ptr<CArray<PArea_4, PArea_4>>>::value_type(key_line_index, m_Line_Area4_Array_));
 
+
+
+            // 线路拐点，矩形相交 ==> 梯形
+            if (m_Line_Area4_Array_->GetSize() >= 2) {  // 至少2个矩形，相交
+                CPointPolygonRelationship tmpCPR;
+                LineSegment tmpLineSegment_A1;
+                LineSegment tmpLineSegment_A2;
+                LineSegment tmpLineSegment_B1;
+                LineSegment tmpLineSegment_B2;
+                for (int32 i = 0; i < m_Line_Area4_Array_->GetSize() - 1; ++i) {
+                    Area_4* pTmpArea4_A = m_Line_Area4_Array_->GetAt(i);
+                    tmpLineSegment_A1.pt1 = PPR_Point(pTmpArea4_A->pt1.x, pTmpArea4_A->pt1.z);
+                    tmpLineSegment_A1.pt2 = PPR_Point(pTmpArea4_A->pt4.x, pTmpArea4_A->pt4.z);
+                    tmpLineSegment_A2.pt1 = PPR_Point(pTmpArea4_A->pt2.x, pTmpArea4_A->pt2.z);
+                    tmpLineSegment_A2.pt2 = PPR_Point(pTmpArea4_A->pt3.x, pTmpArea4_A->pt3.z);
+                    // ----------------------------------------------------------
+                    Area_4* pTmpArea4_B = m_Line_Area4_Array_->GetAt(i + 1);
+                    tmpLineSegment_B1.pt1 = PPR_Point(pTmpArea4_B->pt1.x, pTmpArea4_B->pt1.z);
+                    tmpLineSegment_B1.pt2 = PPR_Point(pTmpArea4_B->pt4.x, pTmpArea4_B->pt4.z);
+                    tmpLineSegment_B2.pt1 = PPR_Point(pTmpArea4_B->pt2.x, pTmpArea4_B->pt2.z);
+                    tmpLineSegment_B2.pt2 = PPR_Point(pTmpArea4_B->pt3.x, pTmpArea4_B->pt3.z);
+                    //
+                    bool xj_1 = tmpCPR.Intersect(tmpLineSegment_A1, tmpLineSegment_B1);
+                    bool xj_2 = tmpCPR.Intersect(tmpLineSegment_A2, tmpLineSegment_B2);
+                    LOGGER_INFO << "xiangjiao 1? = " << tmpCPR.Intersect(tmpLineSegment_A1, tmpLineSegment_B1);
+                    LOGGER_INFO << "xiangjiao 2? = " << tmpCPR.Intersect(tmpLineSegment_A2, tmpLineSegment_B2);
+                    if (xj_1 || xj_2) {
+                        if (xj_1) {
+                            PPR_Point JD1 = tmpCPR.getJD(tmpLineSegment_A1.pt1, tmpLineSegment_A1.pt2, tmpLineSegment_B1.pt1, tmpLineSegment_B1.pt2);
+                            // LOGGER_INFO << "JD1 = " << JD1.x << ", " << JD1.y;
+                            float a1 = 0.0f, b1 = 0.0f, c1 = 0.0f;
+                            a1 = tmpLineSegment_A2.pt2.y - tmpLineSegment_A2.pt1.y;
+                            b1 = tmpLineSegment_A2.pt1.x - tmpLineSegment_A2.pt2.x;
+                            c1 = tmpLineSegment_A2.pt2.x * tmpLineSegment_A2.pt1.y - tmpLineSegment_A2.pt1.x * tmpLineSegment_A2.pt2.y;
+                            float a2 = 0.0f, b2 = 0.0f, c2 = 0.0f;
+                            a2 = tmpLineSegment_B2.pt2.y - tmpLineSegment_B2.pt1.y;
+                            b2 = tmpLineSegment_B2.pt1.x - tmpLineSegment_B2.pt2.x;
+                            c2 = tmpLineSegment_B2.pt2.x * tmpLineSegment_B2.pt1.y - tmpLineSegment_B2.pt1.x * tmpLineSegment_B2.pt2.y;
+                            PPR_Point JD2;
+                            if (MATH_FLOAT_EQUAL_0(a1 * b2 - a2 * b1)) {
+                                AfxMessageBox("MATH_FLOAT_EQUAL_0(a1*b2 - a2*b1)...");
+                            } else {
+                                JD2.x = (b1 * c2 - b2 * c1) / (a1 * b2 - a2 * b1);
+                                JD2.y = (a2 * c1 - a1 * c2) / (a1 * b2 - a2 * b1);
+                            }
+                            // LOGGER_INFO << ".....JD2 = " << JD2.x << ", " << JD2.y;
+                            // 矩形 ==> 梯形, 修改原来四边形的坐标
+                            pTmpArea4_A->pt4.x = JD1.x;
+                            pTmpArea4_A->pt4.z = JD1.y;
+                            pTmpArea4_A->pt4.y = GetHeight(pTmpArea4_A->pt4.x, pTmpArea4_A->pt4.z, g_terrain);
+                            pTmpArea4_A->pt3.x = JD2.x;
+                            pTmpArea4_A->pt3.z = JD2.y;
+                            pTmpArea4_A->pt3.y = GetHeight(pTmpArea4_A->pt4.x, pTmpArea4_A->pt4.z, g_terrain);
+                            pTmpArea4_B->pt1.x = JD1.x;
+                            pTmpArea4_B->pt1.z = JD1.y;
+                            pTmpArea4_B->pt1.y = GetHeight(pTmpArea4_B->pt1.x, pTmpArea4_B->pt1.z, g_terrain);
+                            pTmpArea4_B->pt2.x = JD2.x;
+                            pTmpArea4_B->pt2.z = JD2.y;
+                            pTmpArea4_B->pt2.y = GetHeight(pTmpArea4_B->pt2.x, pTmpArea4_B->pt2.z, g_terrain);
+                        } else {
+                            PPR_Point JD2 = tmpCPR.getJD(tmpLineSegment_A2.pt1, tmpLineSegment_A2.pt2, tmpLineSegment_B2.pt1, tmpLineSegment_B2.pt2);
+                            LOGGER_INFO << "JD2 = " << JD2.x << ", " << JD2.y;
+                            float a1 = 0.0f, b1 = 0.0f, c1 = 0.0f;
+                            a1 = tmpLineSegment_A1.pt2.y - tmpLineSegment_A1.pt1.y;
+                            b1 = tmpLineSegment_A1.pt1.x - tmpLineSegment_A1.pt2.x;
+                            c1 = tmpLineSegment_A1.pt2.x * tmpLineSegment_A1.pt1.y - tmpLineSegment_A1.pt1.x * tmpLineSegment_A1.pt2.y;
+                            float a2 = 0.0f, b2 = 0.0f, c2 = 0.0f;
+                            a2 = tmpLineSegment_B1.pt2.y - tmpLineSegment_B1.pt1.y;
+                            b2 = tmpLineSegment_B1.pt1.x - tmpLineSegment_B1.pt2.x;
+                            c2 = tmpLineSegment_B1.pt2.x * tmpLineSegment_B1.pt1.y - tmpLineSegment_B1.pt1.x * tmpLineSegment_B1.pt2.y;
+                            PPR_Point JD1;
+                            if (MATH_FLOAT_EQUAL_0(a1 * b2 - a2 * b1)) {
+                                AfxMessageBox("MATH_FLOAT_EQUAL_0(a1*b2 - a2*b1)...");
+                            } else {
+                                JD1.x = (b1 * c2 - b2 * c1) / (a1 * b2 - a2 * b1);
+                                JD1.y = (a2 * c1 - a1 * c2) / (a1 * b2 - a2 * b1);
+                            }
+                            // LOGGER_INFO << "...JD1 = " << JD1.x << ", " << JD1.y;
+                            pTmpArea4_A->pt4.x = JD1.x;
+                            pTmpArea4_A->pt4.z = JD1.y;
+                            pTmpArea4_A->pt4.y = GetHeight(pTmpArea4_A->pt4.x, pTmpArea4_A->pt4.z, g_terrain);
+                            pTmpArea4_A->pt3.x = JD2.x;
+                            pTmpArea4_A->pt3.z = JD2.y;
+                            pTmpArea4_A->pt3.y = GetHeight(pTmpArea4_A->pt4.x, pTmpArea4_A->pt4.z, g_terrain);
+                            pTmpArea4_B->pt1.x = JD1.x;
+                            pTmpArea4_B->pt1.z = JD1.y;
+                            pTmpArea4_B->pt1.y = GetHeight(pTmpArea4_B->pt1.x, pTmpArea4_B->pt1.z, g_terrain);
+                            pTmpArea4_B->pt2.x = JD2.x;
+                            pTmpArea4_B->pt2.z = JD2.y;
+                            pTmpArea4_B->pt2.y = GetHeight(pTmpArea4_B->pt2.x, pTmpArea4_B->pt2.z, g_terrain);
+                        }
+                    }
+                }
+            }
+            allLineArea4ArrayNotDF_.insert(std::unordered_map<int32, std::shared_ptr<CArray<PArea_4, PArea_4>>>::value_type(key_line_index, m_Line_Area4_Array_));
+            
         }
     }
 }

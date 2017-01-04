@@ -314,6 +314,9 @@
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZRGB.h">
       <Filter>SymbolLib\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\3DSymboLlib\LineSymbolLib\SingleLine.h">
+      <Filter>SymbolLib\LineSymbolLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\3DSymboLlib\3DSymbolLibNew.cpp">
@@ -441,6 +444,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\3DSymboLlib\AreaSymbolLib\FiveStar.cpp">
       <Filter>SymbolLib\AreaSymbolLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\3DSymboLlib\LineSymbolLib\SingleLine.cpp">
+      <Filter>SymbolLib\LineSymbolLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

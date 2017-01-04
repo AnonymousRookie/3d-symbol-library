@@ -134,6 +134,8 @@ BEGIN_MESSAGE_MAP(CMy3DSymbolLibNewView, CView)
     ON_COMMAND(ID_FIVESTAR_FUSE, &CMy3DSymbolLibNewView::OnFivestarFuse)
 //    ON_UPDATE_COMMAND_UI(ID_FIVESTAR_FUSE, &CMy3DSymbolLibNewView::OnUpdateFivestarFuse)
 ON_UPDATE_COMMAND_UI(ID_TEST_CALC_FIVESTAR_INFO, &CMy3DSymbolLibNewView::OnUpdateTestCalcFivestarInfo)
+//ON_WM_RBUTTONDBLCLK()
+ON_WM_LBUTTONDBLCLK()
 END_MESSAGE_MAP()
 
 
@@ -155,6 +157,7 @@ CMy3DSymbolLibNewView::CMy3DSymbolLibNewView()
       pL2DRoad_(new L2DRoad),
       pLineSymbol_(nullptr),
       pAreaFiveStarSymbol_(nullptr),
+      pSingleLine_(new SingleLine),
       pAFiveStar_(new FiveStar) {}
 
 CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView() {}
@@ -305,6 +308,7 @@ void CMy3DSymbolLibNewView::InitData() {
         m_LineSymbolFile = "0";
         m_AreaSymbolFile = "0";
     }
+    lightDrawFlag_ = false;
 }
 
 
@@ -692,6 +696,53 @@ void CMy3DSymbolLibNewView::DrawScene() {
             }
         }
 
+        if (lightDrawFlag_) {
+            glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
+            glPushMatrix();             // 压入矩阵堆栈
+            glLineWidth(6.6);           // 设置线宽
+            glColor3f(0, 0.5, 1);       // 设置颜色
+            float deta = 2;
+
+            if (!pSingleLine_->all_line_JD_vector_.empty()) {
+                
+                auto size = pSingleLine_->all_line_JD_vector_.size();
+                for (decltype(size) i=0;i<size; ++i) {
+                    glColor3f(Color_shenlanse);
+                    glBegin(GL_LINE_STRIP);
+                    auto one_line_JD_vector = pSingleLine_->all_line_JD_vector_.at(i);
+                    auto siz2 = one_line_JD_vector.size();
+                    for (decltype(size) j=0; j<siz2; ++j) {
+                        glVertex3f(one_line_JD_vector[j].x, one_line_JD_vector[j].y + deta, one_line_JD_vector[j].z);
+                    }
+                    glEnd();
+                }
+            }
+
+            
+
+
+            //for (auto i =0; i<LightDrawArea4Array_.GetSize(); ++i) {
+            //    auto pArea4 = LightDrawArea4Array_.GetAt(i);
+    
+            //    glColor3f(Color_shenlanse);
+            //    glBegin(GL_LINES);
+            //    {
+            //        float deta = 5;
+
+            //        // LOGGER_INFO << "...........";
+
+            //        glVertex3f(pArea4->pt1.x, pArea4->pt1.y + deta, pArea4->pt1.z);
+            //        glVertex3f(pArea4->pt4.x, pArea4->pt4.y + deta, pArea4->pt4.z);
+
+            //        glVertex3f(pArea4->pt2.x, pArea4->pt2.y + deta, pArea4->pt2.z);
+            //        glVertex3f(pArea4->pt3.x, pArea4->pt3.y + deta, pArea4->pt3.z);
+            //    }
+            //    glEnd();
+            //}
+            glLineWidth(1.0);           // 恢复线宽
+            glPopAttrib();
+            glPopMatrix();              // 弹出矩阵堆栈
+        }
 
         if (pAFiveStar_->fiveStar_fuse_Flag_) {
             for (auto iter = pAFiveStar_->allFiveStarArea4Array_.begin(); iter != pAFiveStar_->allFiveStarArea4Array_.end(); ++iter) {
@@ -1643,6 +1694,23 @@ void CMy3DSymbolLibNewView::OnRButtonDown(UINT nFlags, CPoint point) {
     UpdateFiveStarSymbol(tmp_mp, point);
     Invalidate(FALSE);
     CView::OnRButtonDown(nFlags, point);
+}
+
+
+
+// tmp, just for ....
+void CMy3DSymbolLibNewView::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+    // TODO: 在此添加消息处理程序代码和/或调用默认值
+    GLdouble wx = 0.0;
+    GLdouble wz = 0.0;
+    ScreenToGL2(point, wx, wz);
+    PPR_Point tmp_mp(wx, wz);
+    //UpdateAreaTexture2(tmp_mp, point);
+    LightDrawLineSymbol(tmp_mp, point);
+    //UpdateFiveStarSymbol2(tmp_mp, point);
+    Invalidate(FALSE);
+    CView::OnLButtonDblClk(nFlags, point);
 }
 
 void CMy3DSymbolLibNewView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
@@ -4916,11 +4984,11 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
         glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
         glPushMatrix();             // 压入矩阵堆栈
         glLineWidth(3.0);           // 设置线宽
-        glColor3f(0, 0.5, 1);       // 设置颜色
+        glColor3f(Color_shenlanse);       // 设置颜色
         {
             // 1.多边形内原先完整的三角形
             for (uint32 i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
-                glColor3f(1.0000, 0.9804, 0.9804);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1.x, _area4->TrianglesInPolygonVecotr[i].pt1.y , _area4->TrianglesInPolygonVecotr[i].pt1.z);
@@ -4931,7 +4999,7 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
             }
             // 2. 经过局部三角化的三角形
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1.size(); ++i) {
-                glColor3f(1.0, 1.0, 0.1);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1.x, _area4->LocalTrianglesVecotr1[i].pt1.y , _area4->LocalTrianglesVecotr1[i].pt1.z);
@@ -4941,7 +5009,7 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glEnd();
             }
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2.size(); ++i) {
-                glColor3f(0.611, 0.400, 0.121);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1.x, _area4->LocalTrianglesVecotr2[i].pt1.y , _area4->LocalTrianglesVecotr2[i].pt1.z);
@@ -4952,7 +5020,7 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
             }
             // 2.1 多边形 顶点处
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1_1.size(); ++i) {
-                glColor3f(1.0000, 0.3882, 0.2784);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1.x, _area4->LocalTrianglesVecotr1_1[i].pt1.y , _area4->LocalTrianglesVecotr1_1[i].pt1.z);
@@ -4962,7 +5030,7 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glEnd();
             }
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2_1.size(); ++i) {
-                glColor3f(0.6980, 0.1333, 0.1333);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1.x, _area4->LocalTrianglesVecotr2_1[i].pt1.y, _area4->LocalTrianglesVecotr2_1[i].pt1.z);
@@ -4972,7 +5040,7 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
                 glEnd();
             }
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr_last.size(); ++i) {
-                glColor3f(0.6275, 0.1255, 0.9412);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1.x, _area4->LocalTrianglesVecotr_last[i].pt1.y, _area4->LocalTrianglesVecotr_last[i].pt1.z);
@@ -5605,7 +5673,85 @@ void CMy3DSymbolLibNewView::UpdateLineSymbol(PPR_Point _mp, CPoint point) {
     }
 }
 
+// 高亮显示
+void CMy3DSymbolLibNewView::LightDrawLineSymbol(PPR_Point _mp, CPoint point) {
+    for (auto it = pL2DRoad_->allLineArea4Array_.begin(); it != pL2DRoad_->allLineArea4Array_.end(); ++it) {
+        auto pOneLineAllArea = (*it).second;
+        line_selected_id = -1;
+        int32 inPolygonFlag = -1;
+        uint32 tmp_size = (*pOneLineAllArea).GetSize();
+        for (uint32 i = 0; i < tmp_size; ++i) {
+            Area_4 m_area4;
+            m_area4.pt1 = (*pOneLineAllArea)[i]->pt1;
+            m_area4.pt2 = (*pOneLineAllArea)[i]->pt2;
+            m_area4.pt3 = (*pOneLineAllArea)[i]->pt3;
+            m_area4.pt4 = (*pOneLineAllArea)[i]->pt4;
+            CPointPolygonRelationship tmp_ppr;
+            PPR_Polygon tmp_polygon;
+            PPR_Point tmp_point;
+            tmp_point.x = m_area4.pt1.x;
+            tmp_point.y = m_area4.pt1.z;
+            tmp_polygon.push_back(tmp_point);
+            tmp_point.x = m_area4.pt2.x;
+            tmp_point.y = m_area4.pt2.z;
+            tmp_polygon.push_back(tmp_point);
+            tmp_point.x = m_area4.pt3.x;
+            tmp_point.y = m_area4.pt3.z;
+            tmp_polygon.push_back(tmp_point);
+            tmp_point.x = m_area4.pt4.x;
+            tmp_point.y = m_area4.pt4.z;
+            tmp_polygon.push_back(tmp_point);
+            PPR_Point tmp_dem_point;
+            inPolygonFlag = tmp_ppr.InPolygon(tmp_polygon, _mp);
+            if (inPolygonFlag == 0) {
+                break;
+            }
+        }
+        if (inPolygonFlag == 0) {  // 点在多边形内
+            LightDrawArea4Array_.RemoveAll();
+            // 右键快捷菜单
+            //CMenu menu;
+            //menu.LoadMenu(IDR_POPUP_MENU_LINE_OPERATE);
+            //CMenu* pPopUp = menu.GetSubMenu(0);
+            //ClientToScreen(&point);
+            //pPopUp->TrackPopupMenu(/*TPM_LEFTALIGN | */TPM_RIGHTBUTTON, point.x, point.y, this);
+            line_selected_id = (*it).first;
+            // LOGGER_INFO << "[D] line_selected_id = " << line_selected_id;
 
+            auto tt = pL2DRoad_->allLineArea4ArrayNotDF_.find(line_selected_id);
+            if (tt != pL2DRoad_->allLineArea4ArrayNotDF_.end()) {
+
+                pSingleLine_->all_line_JD_vector_.clear();
+
+                auto lineBigArea4 = tt->second;
+
+                for (auto i =0; i<lineBigArea4->GetSize(); ++i) {
+                    auto pArea4 = lineBigArea4->GetAt(i);
+                    // LightDrawArea4Array_.Add(pArea4);
+                    lightDrawFlag_ = true;
+                    LOGGER_INFO << "lightDrawFlag_ = true";
+                    pSingleLine_->GetEveryJDInLines(pArea4->pt1, pArea4->pt4);
+                    pSingleLine_->GetEveryJDInLines(pArea4->pt2, pArea4->pt3);
+                }
+                if (lineBigArea4->GetSize() == 1) {
+                    auto pArea4 = lineBigArea4->GetAt(0);
+                    pSingleLine_->GetEveryJDInLines(pArea4->pt1, pArea4->pt2);
+                    pSingleLine_->GetEveryJDInLines(pArea4->pt3, pArea4->pt4);
+                }
+                else if (lineBigArea4->GetSize() >= 2) {
+                    auto pArea4_1 = lineBigArea4->GetAt(0);
+                    pSingleLine_->GetEveryJDInLines(pArea4_1->pt1, pArea4_1->pt2);
+                    auto pArea4_2 = lineBigArea4->GetAt(lineBigArea4->GetSize()-1);
+                    pSingleLine_->GetEveryJDInLines(pArea4_2->pt3, pArea4_2->pt4);
+                }
+
+            } else {
+                //  AfxMessageBox("点不在多边形内!");
+            }
+        }
+
+    }
+}
 
 
 // 更换选中的五角星符号的属性
@@ -6249,7 +6395,7 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const AreaFiveStarSymbol& pAreaFiv
         {
             // 1.多边形内原先完整的三角形
             for (uint32 i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
-                glColor3f(1.0000, 0.9804, 0.9804);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1.x, _area4->TrianglesInPolygonVecotr[i].pt1.y , _area4->TrianglesInPolygonVecotr[i].pt1.z);
@@ -6316,6 +6462,8 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const AreaFiveStarSymbol& pAreaFiv
         glPopMatrix();              // 弹出矩阵堆栈
     }
 }
+
+
 
 
 

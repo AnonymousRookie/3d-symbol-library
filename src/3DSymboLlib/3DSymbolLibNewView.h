@@ -31,9 +31,8 @@
 #include "LineSymbolLib/DesingScheme.h"
 #include "LineSymbolLib/L2DRoad.h"
 #include <unordered_map>
-
 #include "AreaSymbolLib/FiveStar.h"
-
+#include "LineSymbolLib/SingleLine.h"
 
 class CMy3DSymbolLibNewView : public CView {
   protected:  // 仅从序列化创建
@@ -473,8 +472,22 @@ class CMy3DSymbolLibNewView : public CView {
     // 更换选中的线符号的属性
     void UpdateLineSymbol(PPR_Point _mp, CPoint point);
 
+
+
+
     // 三角化并渲染增加宽度后的线符号
     void Line_Area_Triangled(const PArea_4& _area4);
+
+
+    // ------------------------------高亮显示
+    void LightDrawLineSymbol(PPR_Point _mp, CPoint point); // 高亮显示
+    CArray<PArea_4, PArea_4> LightDrawArea4Array_;
+    bool lightDrawFlag_;
+
+    std::unique_ptr<SingleLine> pSingleLine_;
+    // ------------------------------
+
+
 
     afx_msg void OnLine2dRoadAdd();
     afx_msg void OnLine2dRoadFuse();
@@ -599,6 +612,7 @@ class CMy3DSymbolLibNewView : public CView {
     afx_msg void OnFivestarFuse();
 //    afx_msg void OnUpdateFivestarFuse(CCmdUI *pCmdUI);
     afx_msg void OnUpdateTestCalcFivestarInfo(CCmdUI *pCmdUI);
+    afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // 3DSymbolLibNewView.cpp 中的调试版本
