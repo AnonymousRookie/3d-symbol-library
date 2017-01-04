@@ -166,6 +166,7 @@ copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
     <ClInclude Include="..\..\src\3DSymboLlib\AreaSymbolLib\AreaClassification.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\AreaSymbolLib\FiveStar.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Base\Uncopyable.h" />
+    <ClInclude Include="..\..\src\3DSymboLlib\Base\ZRGB.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZStackDumper.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZMacros.h" />
     <ClInclude Include="..\..\src\3DSymboLlib\Base\ZStringUtils.h" />

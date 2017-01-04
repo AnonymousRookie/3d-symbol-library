@@ -525,20 +525,23 @@ class CMy3DSymbolLibNewView : public CView {
     void Area_Triangled(const PArea_4& _area4);
 
 
+    /* FiveStar */
+    std::unique_ptr<FiveStar> pAFiveStar_;
+    AreaFiveStarSymbol* pAreaFiveStarSymbol_;
+
+
     // 五角星 ----------------------------------------------
-    FiveStar fiveStarSymbol_;
+    // FiveStar fiveStarSymbol_;
+
+    // Point3 fiveStar_o_fromMouseClicked_;
 
 
-    Point3 fiveStar_o_fromMouseClicked_;
+    // CArray<PArea_4, PArea_4> fiveStar_5_area4_array_;
 
-    bool draw_fiveStar_5_area4_;
-
-    CArray<PArea_4, PArea_4> fiveStar_5_area4_array_;
-
-    BOOL FiveStarFuseFlag_;
+    // BOOL FiveStarFuseFlag_;
 
     // 三角化
-    void FiveStarTriangled(const PArea_4& _area4);
+    void FiveStarTriangled(const AreaFiveStarSymbol& pAreaFiveStarSymbol, const PArea_4& _area4);
     // -----------------------------------------------------
     float distance_xz(const Vec3& v1, const Vec3& v2) {
         float dx = v1.x - v2.x;

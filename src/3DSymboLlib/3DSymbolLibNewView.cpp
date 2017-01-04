@@ -18,6 +18,7 @@
 #include "AreaSymbolLib/AreaClassification.h"
 #include "MathUtils/MathUtil.h"
 #include "Base/ZStringUtils.h"
+#include "Base/ZRGB.h"
 
 
 extern t3DModel g_3DModel[MODEL_NUM_MAX];
@@ -152,7 +153,9 @@ CMy3DSymbolLibNewView::CMy3DSymbolLibNewView()
       pSimpleLine_(new SimpleLine),
       pL3DRoad_(new L3DRoad),
       pL2DRoad_(new L2DRoad),
-      pLineSymbol_(nullptr) {}
+      pLineSymbol_(nullptr),
+      pAreaFiveStarSymbol_(nullptr),
+      pAFiveStar_(new FiveStar) {}
 
 CMy3DSymbolLibNewView::~CMy3DSymbolLibNewView() {}
 
@@ -291,6 +294,7 @@ void CMy3DSymbolLibNewView::InitData() {
     m_Area_pointNum = 0;
     Area_fuse_Flag = FALSE;
     pL2DRoad_->Line_fuse_Flag_ = FALSE;
+    pAFiveStar_->fiveStar_fuse_Flag_ = FALSE;
     m_CurrentProjectName = "";
     {
         // 是否存在已打开的符号文件
@@ -301,8 +305,6 @@ void CMy3DSymbolLibNewView::InitData() {
         m_LineSymbolFile = "0";
         m_AreaSymbolFile = "0";
     }
-    draw_fiveStar_5_area4_ = false;
-    FiveStarFuseFlag_ = FALSE;
 }
 
 
@@ -569,7 +571,7 @@ void CMy3DSymbolLibNewView::DrawTerrain() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 
-    // glColor3f(0.0, 0.0, 0.0);  // [color]
+    glColor3f(Color_chengse);  // [color]
 
     for (int32 z = 0; z < MAP_W - 1; z++) {
         glDrawElements(GL_TRIANGLE_STRIP, MAP_W * 2, GL_UNSIGNED_INT, &g_index[z * MAP_W * 2]);
@@ -691,26 +693,20 @@ void CMy3DSymbolLibNewView::DrawScene() {
         }
 
 
-        if (FiveStarFuseFlag_) {
-            auto tmpSize = fiveStar_5_area4_array_.GetSize();
-            for (auto i=0; i<tmpSize; ++i) {
-                FiveStarTriangled(fiveStar_5_area4_array_[i]);
+        if (pAFiveStar_->fiveStar_fuse_Flag_) {
+            for (auto iter = pAFiveStar_->allFiveStarArea4Array_.begin(); iter != pAFiveStar_->allFiveStarArea4Array_.end(); ++iter) {
+                auto fiveStarIndex = iter->first;
+                auto pFiveStarArea4Array = (*iter).second;
+                //
+                int32 tmp_size = pFiveStarArea4Array->GetSize();
+                for (int32 i = 0; i < tmp_size; ++i) {
+                    if ((*pFiveStarArea4Array)[i]->deleted != 1) {
+                        FiveStarTriangled(pAFiveStar_->allFiveStarSymbols_[fiveStarIndex],(*pFiveStarArea4Array)[i]);
+                    }
+                }
             }
         }
 
-
-        // if (pL2DRoad_->Line_fuse_Flag_) {
-        //    for (uint32 i = 0; i < pL2DRoad_->allLineArea4Array_.size(); ++i) {
-        //        auto pLineArea4Array = pL2DRoad_->allLineArea4Array_.at(i);
-        //        //
-        //        int32 tmp_size = pLineArea4Array->GetSize();
-        //        for (int32 i = 0; i < tmp_size; ++i) {
-        //            if ((*pLineArea4Array)[i]->deleted != 1) {
-        //                Line_Area_Triangled((*pLineArea4Array)[i]);
-        //            }
-        //        }
-        //    }
-        // }
         if (pL2DRoad_->Line_fuse_Flag_) {
             for (auto iter = pL2DRoad_->allLineArea4Array_.begin(); iter != pL2DRoad_->allLineArea4Array_.end(); ++iter) {
                 auto pLineArea4Array = (*iter).second;
@@ -933,49 +929,15 @@ void CMy3DSymbolLibNewView::ScreenToGL(CPoint point) {
             IsSearchPoint_ = true;
         } 
         else if (FIVE_STAR_ADD == spaceSearchInfo_.m_QueryType) {
-            fiveStar_o_fromMouseClicked_ = Point3(wx, wy, wz);
             // -----------------------------
-            FiveStarTools::CalculateFiveStarInfo(10.0f, fiveStar_o_fromMouseClicked_, &fiveStarSymbol_);
-            PArea_4 area = new Area_4;
-            // APOT
-            area->pt1 = fiveStarSymbol_.pA_;
-            area->pt2 = fiveStarSymbol_.pP_;
-            area->pt3 = fiveStarSymbol_.pO_;
-            area->pt4 = fiveStarSymbol_.pT_;
-            fiveStar_5_area4_array_.Add(area);
-            area = new Area_4;
-            // BQOP
-            area->pt1 = fiveStarSymbol_.pB_;
-            area->pt2 = fiveStarSymbol_.pQ_;
-            area->pt3 = fiveStarSymbol_.pO_;
-            area->pt4 = fiveStarSymbol_.pP_;
-            fiveStar_5_area4_array_.Add(area);
-            area = new Area_4;
-            // CROQ
-            area->pt1 = fiveStarSymbol_.pC_;
-            area->pt2 = fiveStarSymbol_.pR_;
-            area->pt3 = fiveStarSymbol_.pO_;
-            area->pt4 = fiveStarSymbol_.pQ_;
-            fiveStar_5_area4_array_.Add(area);
-            area = new Area_4;
-            // DSOR
-            area->pt1 = fiveStarSymbol_.pD_;
-            area->pt2 = fiveStarSymbol_.pS_;
-            area->pt3 = fiveStarSymbol_.pO_;
-            area->pt4 = fiveStarSymbol_.pR_;
-            fiveStar_5_area4_array_.Add(area);
-            area = new Area_4;
-            // ETOS
-            area->pt1 = fiveStarSymbol_.pE_;
-            area->pt2 = fiveStarSymbol_.pT_;
-            area->pt3 = fiveStarSymbol_.pO_;
-            area->pt4 = fiveStarSymbol_.pS_;
-            fiveStar_5_area4_array_.Add(area);
-            area = new Area_4;
-            //for (auto i=0; i<fiveStar_5_area4_array_.GetSize(); ++i) {
-            //    LOGGER_INFO << "fiveStar_5_area4_array_ .. " << i << " ==>  "<< fiveStar_5_area4_array_[i]->pt1.x <<  "   " << fiveStar_5_area4_array_[i]->pt1.y;
-            //}
-            draw_fiveStar_5_area4_ = true;
+            if (pAreaFiveStarSymbol_ == nullptr) {
+                LOGGER_ERROR << "pAreaFiveStarSymbol_ == nullptr";
+            }
+            pAreaFiveStarSymbol_->pO_ = Point3(wx, wy, wz);
+            pAreaFiveStarSymbol_->area_type_ = "FIVESTAR";
+            pAFiveStar_->SaveFiveStarInfo(pAreaFiveStarSymbol_->d_, pAreaFiveStarSymbol_->pO_, pAreaFiveStarSymbol_);
+            
+
             // -----------------------------
         } 
         else if (spaceSearchInfo_.m_QueryType == QUERY_DISTENCE) {                 // 查询空间距离
@@ -1564,17 +1526,25 @@ void CMy3DSymbolLibNewView::DrawSearchPoint() {
         }
         glLineWidth(1.0);
     }
-    if (draw_fiveStar_5_area4_) {
+    if (spaceSearchInfo_.m_QueryType == FIVE_STAR_ADD) {
         glLineWidth(3.0);                   // 设置查询标志线宽度
         glColor3f(0.3, 0.6, 0.5);           // 设置查询标志线颜色
-        for (int32 i = 0; i < fiveStar_5_area4_array_.GetSize(); ++i) {
-            glBegin(GL_QUADS);
-            glVertex3f(fiveStar_5_area4_array_[i]->pt1.x, fiveStar_5_area4_array_[i]->pt1.y, fiveStar_5_area4_array_[i]->pt1.z);
-            glVertex3f(fiveStar_5_area4_array_[i]->pt2.x, fiveStar_5_area4_array_[i]->pt2.y, fiveStar_5_area4_array_[i]->pt2.z);
-            glVertex3f(fiveStar_5_area4_array_[i]->pt3.x, fiveStar_5_area4_array_[i]->pt3.y, fiveStar_5_area4_array_[i]->pt3.z);
-            glVertex3f(fiveStar_5_area4_array_[i]->pt4.x, fiveStar_5_area4_array_[i]->pt4.y, fiveStar_5_area4_array_[i]->pt4.z);
-            glEnd();
+
+
+        for (auto it = pAFiveStar_->allFiveStarArea4Array_.begin(); it != pAFiveStar_->allFiveStarArea4Array_.end(); ++it) {
+            auto fiveStarIndex = it->first;
+            auto allFiveStarArea4Array = it->second;
+
+            for (auto i=0; i < allFiveStarArea4Array->GetSize(); ++i) {
+                glBegin(GL_QUADS);
+                glVertex3f((*allFiveStarArea4Array)[i]->pt1.x, (*allFiveStarArea4Array)[i]->pt1.y, (*allFiveStarArea4Array)[i]->pt1.z);
+                glVertex3f((*allFiveStarArea4Array)[i]->pt2.x, (*allFiveStarArea4Array)[i]->pt2.y, (*allFiveStarArea4Array)[i]->pt2.z);
+                glVertex3f((*allFiveStarArea4Array)[i]->pt3.x, (*allFiveStarArea4Array)[i]->pt3.y, (*allFiveStarArea4Array)[i]->pt3.z);
+                glVertex3f((*allFiveStarArea4Array)[i]->pt4.x, (*allFiveStarArea4Array)[i]->pt4.y, (*allFiveStarArea4Array)[i]->pt4.z);
+                glEnd();
+            }
         }
+
         glLineWidth(1.0);
     }
     glPopMatrix();
@@ -2858,6 +2828,8 @@ void CMy3DSymbolLibNewView::ShowTree(int32 i) {
     CVector3 Z(mat[1], mat[5], mat[9]);
     glBindTexture(GL_TEXTURE_2D, g_cactus[i]);
     CVector3 pos(x, y, z);
+
+    glColor3f(Color_shenlanse);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0, 0.0);
     glVertex3f((pos + (X + Z) * -h).x, (pos + (X + Z) * -h).y, (pos + (X + Z) * -h).z);  // 左下点
@@ -4847,7 +4819,7 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
             glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-            static const double deta = 1.00;
+            static const double deta = 0.06;
             // 1.多边形内原先完整的三角形
             for (uint32 i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
                 glColor3f(1.0000 , 0.9804 , 0.9804);
@@ -5189,7 +5161,7 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
 //    }
 //}
 
-
+// 计算UV坐标, 线符号三角化
 void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
 
     if (pL2DRoad_->Line_fuse_Flag_ == TRUE && m_Drawmode == 3) {
@@ -5238,7 +5210,7 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-            static const double deta = 0.1;
+            static const double deta = 0.06;
 
 
             //glBegin(GL_TRIANGLES);
@@ -5448,15 +5420,15 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
         glPopMatrix();              // 弹出矩阵堆栈
     }
     // ...............................................................
-    if (pL2DRoad_->Line_fuse_Flag_ == TRUE && m_Drawmode == 1) {
+    if (pL2DRoad_->Line_fuse_Flag_ == TRUE && m_Drawmode == 1) {  // 网格模式 
         glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
         glPushMatrix();             // 压入矩阵堆栈
-        glLineWidth(3.0);           // 设置线宽
+        glLineWidth(2.6);           // 设置线宽
         glColor3f(0, 0.5, 1);       // 设置颜色
         {
             // 1.多边形内原先完整的三角形
             for (uint32 i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
-                glColor3f(1.0000, 0.9804, 0.9804);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1.x, _area4->TrianglesInPolygonVecotr[i].pt1.y , _area4->TrianglesInPolygonVecotr[i].pt1.z);
@@ -5468,7 +5440,7 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
             Vec3 tmpRGB(0.1, 0.1, 0.5);
             // 2. 经过局部三角化的三角形
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1.size(); ++i) {
-                glColor3f(1.0, 1.0, 0.1);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1.x, _area4->LocalTrianglesVecotr1[i].pt1.y , _area4->LocalTrianglesVecotr1[i].pt1.z);
@@ -5478,7 +5450,7 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
                 glEnd();
             }
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2.size(); ++i) {
-                glColor3f(0.611, 0.400, 0.121);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1.x, _area4->LocalTrianglesVecotr2[i].pt1.y , _area4->LocalTrianglesVecotr2[i].pt1.z);
@@ -5489,7 +5461,7 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
             }
             // 2.1 多边形 顶点处
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1_1.size(); ++i) {
-                glColor3f(1.0000, 0.3882, 0.2784);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1.x, _area4->LocalTrianglesVecotr1_1[i].pt1.y , _area4->LocalTrianglesVecotr1_1[i].pt1.z);
@@ -5499,7 +5471,7 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
                 glEnd();
             }
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2_1.size(); ++i) {
-                glColor3f(0.6980, 0.1333, 0.1333);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1.x, _area4->LocalTrianglesVecotr2_1[i].pt1.y, _area4->LocalTrianglesVecotr2_1[i].pt1.z);
@@ -5510,7 +5482,7 @@ void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
             }
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr_last.size(); ++i) {
                 // glColor3f(0.6275, 0.1255, 0.9412);
-                glColor3f(0.511, 0.300, 0.221);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1.x, _area4->LocalTrianglesVecotr_last[i].pt1.y, _area4->LocalTrianglesVecotr_last[i].pt1.z);
@@ -5916,55 +5888,85 @@ void CMy3DSymbolLibNewView::OnPopupLineModifyWidth() {
 
 
 
-
+// 添加五角星
 void CMy3DSymbolLibNewView::OnTestCalcFivestarInfo() {
-    // TODO: 在此添加命令处理程序代码
-    spaceSearchInfo_.m_QueryType = FIVE_STAR_ADD;
+    
+    int32 newFlag = 0;
+    if (!exist_area_file()) {
+        INT_PTR nRes;
+        nRes = MessageBox("没有打开的面文件，需要新建文件吗？", "找不到面文件", MB_YESNO | MB_ICONQUESTION);
+        if (nRes == IDYES) {
+            newFlag = new_area_file();
+            if (0 == newFlag) {
+                exist_area_flag = TRUE;
+            }
+        }
+    } else {
+        if (spaceSearchInfo_.m_QueryType == FIVE_STAR_ADD) {
+            spaceSearchInfo_.m_QueryType = -1;
+            //
+            if (nullptr != pAreaFiveStarSymbol_) {
+                delete pAreaFiveStarSymbol_;
+                pAreaFiveStarSymbol_ = nullptr;
+            }
+        } else {
+            spaceSearchInfo_.m_QueryType = FIVE_STAR_ADD;
+            // 创建新的五角星符号
+            pAreaFiveStarSymbol_ = new AreaFiveStarSymbol;
+        }
+    }
 
-    LOGGER_INFO << "fiveStar_o_fromMouseClicked_ = " << fiveStar_o_fromMouseClicked_.x << fiveStar_o_fromMouseClicked_.y << fiveStar_o_fromMouseClicked_.z;
+    // LOGGER_INFO << "fiveStar_o_fromMouseClicked_ = " << fiveStar_o_fromMouseClicked_.x << fiveStar_o_fromMouseClicked_.y << fiveStar_o_fromMouseClicked_.z;
     
 }
 
 
 void CMy3DSymbolLibNewView::OnFivestarFuse()
 {
-    // TODO: 在此添加命令处理程序代码
-    Area_4 tmp_area4;
-    if (fiveStar_5_area4_array_.GetSize() <= 0) {
+
+    if (pAFiveStar_->allFiveStarArea4Array_.empty()) {
         return;
     }
     // =========================================================================================
-    uint32 tmp_size = fiveStar_5_area4_array_.GetSize();
-    for (uint32 i = 0; i < tmp_size; ++i) {
-        Area_4 tmp_area4;
-        tmp_area4.pt1 = fiveStar_5_area4_array_[i]->pt1;
-        tmp_area4.pt2 = fiveStar_5_area4_array_[i]->pt2;
-        tmp_area4.pt3 = fiveStar_5_area4_array_[i]->pt3;
-        tmp_area4.pt4 = fiveStar_5_area4_array_[i]->pt4;
-        pArea4Symbol_->FindAllTrianglesInPolygon(tmp_area4, g_terrain);
-        fiveStar_5_area4_array_[i]->pt1 = tmp_area4.pt1;
-        fiveStar_5_area4_array_[i]->pt2 = tmp_area4.pt2;
-        fiveStar_5_area4_array_[i]->pt3 = tmp_area4.pt3;
-        fiveStar_5_area4_array_[i]->pt4 = tmp_area4.pt4;
-        fiveStar_5_area4_array_[i]->LocalTrianglesVecotr1 = tmp_area4.LocalTrianglesVecotr1;
-        fiveStar_5_area4_array_[i]->LocalTrianglesVecotr1_1 = tmp_area4.LocalTrianglesVecotr1_1;
-        fiveStar_5_area4_array_[i]->LocalTrianglesVecotr2 = tmp_area4.LocalTrianglesVecotr2;
-        fiveStar_5_area4_array_[i]->LocalTrianglesVecotr2_1 = tmp_area4.LocalTrianglesVecotr2_1;
-        fiveStar_5_area4_array_[i]->LocalTrianglesVecotr_last = tmp_area4.LocalTrianglesVecotr_last;
-        fiveStar_5_area4_array_[i]->TrianglesInPolygonVecotr = tmp_area4.TrianglesInPolygonVecotr;
-        // ==================================================================================
-        CString scenePath = g_sceneDataPath.c_str();
-        CString area_texture = scenePath + "\\SymbolTexture\\LineSymbolTexture\\LINE_TEXTURE_06.bmp";
-
-
-        LoadAreaTexture(area_texture, fiveStar_5_area4_array_[i]->area_texture_rd);
-
-        
+    for (auto it = pAFiveStar_->allFiveStarArea4Array_.begin(); it != pAFiveStar_->allFiveStarArea4Array_.end(); ++it) {
+        auto pFiveStarArea4Array = (*it).second;
+        uint32 tmp_size = (*pFiveStarArea4Array).GetSize();
+        for (uint32 i = 0; i < tmp_size; ++i) {
+            Area_4 tmp_area4;
+            tmp_area4.pt1 = (*pFiveStarArea4Array)[i]->pt1;
+            tmp_area4.pt2 = (*pFiveStarArea4Array)[i]->pt2;
+            tmp_area4.pt3 = (*pFiveStarArea4Array)[i]->pt3;
+            tmp_area4.pt4 = (*pFiveStarArea4Array)[i]->pt4;
+            pArea4Symbol_->FindAllTrianglesInPolygon(tmp_area4, g_terrain);
+            (*pFiveStarArea4Array)[i]->pt1 = tmp_area4.pt1;
+            (*pFiveStarArea4Array)[i]->pt2 = tmp_area4.pt2;
+            (*pFiveStarArea4Array)[i]->pt3 = tmp_area4.pt3;
+            (*pFiveStarArea4Array)[i]->pt4 = tmp_area4.pt4;
+            (*pFiveStarArea4Array)[i]->LocalTrianglesVecotr1 = tmp_area4.LocalTrianglesVecotr1;
+            (*pFiveStarArea4Array)[i]->LocalTrianglesVecotr1_1 = tmp_area4.LocalTrianglesVecotr1_1;
+            (*pFiveStarArea4Array)[i]->LocalTrianglesVecotr2 = tmp_area4.LocalTrianglesVecotr2;
+            (*pFiveStarArea4Array)[i]->LocalTrianglesVecotr2_1 = tmp_area4.LocalTrianglesVecotr2_1;
+            (*pFiveStarArea4Array)[i]->LocalTrianglesVecotr_last = tmp_area4.LocalTrianglesVecotr_last;
+            (*pFiveStarArea4Array)[i]->TrianglesInPolygonVecotr = tmp_area4.TrianglesInPolygonVecotr;
+            // ==================================================================================
+            CString scenePath = g_sceneDataPath.c_str();
+            CString area_texture = scenePath + "\\SymbolTexture\\AreaSymbolTexture\\FiveStar.bmp";
+            if ((*pFiveStarArea4Array)[i]->area_texture == "NONE") {
+                (*pFiveStarArea4Array)[i]->area_texture = area_texture;
+                LoadAreaTexture(area_texture, (*pFiveStarArea4Array)[i]->area_texture_rd);
+            } else {
+                LoadAreaTexture((*pFiveStarArea4Array)[i]->area_texture, (*pFiveStarArea4Array)[i]->area_texture_rd);
+            }
+        }
     }
-    FiveStarFuseFlag_ = TRUE;
-    draw_fiveStar_5_area4_ = false;
+ 
 
-
+    pAFiveStar_->fiveStar_fuse_Flag_ = TRUE;
+    if (nullptr != pAreaFiveStarSymbol_) {
+        delete pAreaFiveStarSymbol_;
+        pAreaFiveStarSymbol_ = nullptr;
+    }
+    // 取消添加线前面的勾选状态
     spaceSearchInfo_.m_QueryType = -1;
 }
 
@@ -5977,28 +5979,60 @@ void CMy3DSymbolLibNewView::OnUpdateTestCalcFivestarInfo(CCmdUI *pCmdUI)
 }
 
 
-void CMy3DSymbolLibNewView::FiveStarTriangled(const PArea_4& _area4) {
-    if (FiveStarFuseFlag_ == TRUE && m_Drawmode == 3) {
+void CMy3DSymbolLibNewView::FiveStarTriangled(const AreaFiveStarSymbol& pAreaFiveStarSymbol, const PArea_4& _area4) {
+    if (pAFiveStar_->fiveStar_fuse_Flag_ == TRUE && m_Drawmode == 3) {
+
+        Point3 tmpI = pAreaFiveStarSymbol.pI_;
+        Point3 tmpJ = pAreaFiveStarSymbol.pJ_;
+        Point3 tmpH = pAreaFiveStarSymbol.pH_;
+
+        float distance_IJ_U = distance_xz(tmpI, tmpJ);
+        float distance_IH_V = distance_xz(tmpI, tmpH);
+
+        // 平面中 IJ直线方程，a2x + b2y + c2 = 0
+        float a2 = tmpJ.z - tmpI.z;
+        float b2 = tmpI.x - tmpJ.x;
+        float c2 = (tmpJ.x * tmpI.z) - (tmpI.x * tmpJ.z);
+
+        // 平面中 IH直线方程，a1x + b1y + c1 = 0
+        float a1 = tmpH.z - tmpI.z;
+        float b1 = tmpI.x - tmpH.x;
+        float c1 = (tmpH.x * tmpI.z) - (tmpI.x * tmpH.z);
+
+
+        // 12 作为参考边
+        float l_u = 0.0f;
+        float l_v = 0.0f;
+
+
         glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
         glPushMatrix();             // 压入矩阵堆栈
         glLineWidth(3.0);           // 设置线宽
         glColor3f(0, 0.5, 1);       // 设置颜色
         {
             glBindTexture(GL_TEXTURE_2D, _area4->area_texture_rd);
-            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-            static const double deta = 1.00;
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+            static const double deta = 0.06;
             // 1.多边形内原先完整的三角形
             for (uint32 i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
                 glColor3f(1.0000 , 0.9804 , 0.9804);
                 glBegin(GL_TRIANGLES);
                 {
-                    glTexCoord2f(0.0f, 0.0f);
+                    l_u = distance_point_line(a1,b1,c1,_area4->TrianglesInPolygonVecotr[i].pt1) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->TrianglesInPolygonVecotr[i].pt1) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt1.x, _area4->TrianglesInPolygonVecotr[i].pt1.y + deta, _area4->TrianglesInPolygonVecotr[i].pt1.z);
-                    glTexCoord2f(0.0f, 1.0f);
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->TrianglesInPolygonVecotr[i].pt2) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->TrianglesInPolygonVecotr[i].pt2) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt2.x, _area4->TrianglesInPolygonVecotr[i].pt2.y + deta, _area4->TrianglesInPolygonVecotr[i].pt2.z);
-                    glTexCoord2f(1.0f, 0.0f);
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->TrianglesInPolygonVecotr[i].pt3) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->TrianglesInPolygonVecotr[i].pt3) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->TrianglesInPolygonVecotr[i].pt3.x, _area4->TrianglesInPolygonVecotr[i].pt3.y + deta, _area4->TrianglesInPolygonVecotr[i].pt3.z);
                 }
                 glEnd();
@@ -6008,11 +6042,19 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const PArea_4& _area4) {
                 glColor3f(0.0980 , 0.0980 , 0.4392);
                 glBegin(GL_TRIANGLES);
                 {
-                    glTexCoord2f(0.0f, 0.0f);
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr1[i].pt1) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr1[i].pt1) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1.x, _area4->LocalTrianglesVecotr1[i].pt1.y + deta, _area4->LocalTrianglesVecotr1[i].pt1.z);
-                    glTexCoord2f(0.0f, 1.0f);
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr1[i].pt2) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr1[i].pt2) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr1[i].pt2.x, _area4->LocalTrianglesVecotr1[i].pt2.y + deta, _area4->LocalTrianglesVecotr1[i].pt2.z);
-                    glTexCoord2f(1.0f, 0.0f);
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr1[i].pt3) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr1[i].pt3) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr1[i].pt3.x, _area4->LocalTrianglesVecotr1[i].pt3.y + deta, _area4->LocalTrianglesVecotr1[i].pt3.z);
                 }
                 glEnd();
@@ -6021,11 +6063,19 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const PArea_4& _area4) {
                 glColor3f(0.611, 0.400, 0.121);
                 glBegin(GL_TRIANGLES);
                 {
-                    glTexCoord2f(0.0f, 0.0f);
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr2[i].pt1) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr2[i].pt1) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1.x, _area4->LocalTrianglesVecotr2[i].pt1.y + deta, _area4->LocalTrianglesVecotr2[i].pt1.z);
-                    glTexCoord2f(0.0f, 1.0f);
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr2[i].pt2) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr2[i].pt2) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr2[i].pt2.x, _area4->LocalTrianglesVecotr2[i].pt2.y + deta, _area4->LocalTrianglesVecotr2[i].pt2.z);
-                    glTexCoord2f(1.0f, 0.0f);
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr2[i].pt3) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr2[i].pt3) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr2[i].pt3.x, _area4->LocalTrianglesVecotr2[i].pt3.y + deta, _area4->LocalTrianglesVecotr2[i].pt3.z);
                 }
                 glEnd();
@@ -6035,24 +6085,42 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const PArea_4& _area4) {
                 glColor3f(1.0000 , 0.3882 , 0.2784);
                 glBegin(GL_TRIANGLES);
                 {
-                    glTexCoord2f(0.0f, 0.0f);
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr1_1[i].pt1) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr1_1[i].pt1) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1.x, _area4->LocalTrianglesVecotr1_1[i].pt1.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt1.z);
-                    glTexCoord2f(0.0f, 1.0f);
+
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr1_1[i].pt2) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr1_1[i].pt2) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt2.x, _area4->LocalTrianglesVecotr1_1[i].pt2.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt2.z);
-                    glTexCoord2f(1.0f, 0.0f);
+
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr1_1[i].pt3) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr1_1[i].pt3) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt3.x, _area4->LocalTrianglesVecotr1_1[i].pt3.y + deta, _area4->LocalTrianglesVecotr1_1[i].pt3.z);
                 }
                 glEnd();
             }
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2_1.size(); ++i) {
-                glColor3f(0.6980 , 0.1333 , 0.1333);
+                glColor3f(0.6980, 0.1333, 0.1333);
                 glBegin(GL_TRIANGLES);
                 {
-                    glTexCoord2f(0.0f, 0.0f);
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr2_1[i].pt1) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr2_1[i].pt1) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1.x, _area4->LocalTrianglesVecotr2_1[i].pt1.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt1.z);
-                    glTexCoord2f(0.0f, 1.0f);
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr2_1[i].pt2) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr2_1[i].pt2) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt2.x, _area4->LocalTrianglesVecotr2_1[i].pt2.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt2.z);
-                    glTexCoord2f(1.0f, 0.0f);
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr2_1[i].pt3) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr2_1[i].pt3) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt3.x, _area4->LocalTrianglesVecotr2_1[i].pt3.y + deta, _area4->LocalTrianglesVecotr2_1[i].pt3.z);
                 }
                 glEnd();
@@ -6061,11 +6129,19 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const PArea_4& _area4) {
                 glColor3f(0.6275,  0.1255,  0.9412);
                 glBegin(GL_TRIANGLES);
                 {
-                    glTexCoord2f(0.0f, 0.0f);
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr_last[i].pt1) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr_last[i].pt1) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1.x, _area4->LocalTrianglesVecotr_last[i].pt1.y + deta, _area4->LocalTrianglesVecotr_last[i].pt1.z);
-                    glTexCoord2f(0.0f, 1.0f);
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr_last[i].pt2) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr_last[i].pt2) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt2.x, _area4->LocalTrianglesVecotr_last[i].pt2.y + deta, _area4->LocalTrianglesVecotr_last[i].pt2.z);
-                    glTexCoord2f(1.0f, 0.0f);
+
+                    l_u = distance_point_line(a1,b1,c1,_area4->LocalTrianglesVecotr_last[i].pt3) / distance_IJ_U;
+                    l_v = distance_point_line(a2,b2,c2,_area4->LocalTrianglesVecotr_last[i].pt3) / distance_IH_V;
+                    glTexCoord2f(l_u, l_v);
                     glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt3.x, _area4->LocalTrianglesVecotr_last[i].pt3.y + deta, _area4->LocalTrianglesVecotr_last[i].pt3.z);
                 }
                 glEnd();
@@ -6076,11 +6152,11 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const PArea_4& _area4) {
         glPopMatrix();              // 弹出矩阵堆栈
     }
     // ...............................................................
-    if (FiveStarFuseFlag_ == TRUE && m_Drawmode == 1) {
+    if (pAFiveStar_->fiveStar_fuse_Flag_ == TRUE && m_Drawmode == 1) {
         glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
         glPushMatrix();             // 压入矩阵堆栈
-        glLineWidth(3.0);           // 设置线宽
-        glColor3f(0, 0.5, 1);       // 设置颜色
+        glLineWidth(2.6);           // 设置线宽
+        glColor3f(Color_shenlanse);       // 设置颜色
         {
             // 1.多边形内原先完整的三角形
             for (uint32 i = 0; i < _area4->TrianglesInPolygonVecotr.size(); ++i) {
@@ -6095,7 +6171,7 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const PArea_4& _area4) {
             }
             // 2. 经过局部三角化的三角形
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1.size(); ++i) {
-                glColor3f(1.0, 1.0, 0.1);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr1[i].pt1.x, _area4->LocalTrianglesVecotr1[i].pt1.y , _area4->LocalTrianglesVecotr1[i].pt1.z);
@@ -6105,7 +6181,7 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const PArea_4& _area4) {
                 glEnd();
             }
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2.size(); ++i) {
-                glColor3f(0.611, 0.400, 0.121);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr2[i].pt1.x, _area4->LocalTrianglesVecotr2[i].pt1.y , _area4->LocalTrianglesVecotr2[i].pt1.z);
@@ -6116,7 +6192,7 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const PArea_4& _area4) {
             }
             // 2.1 多边形 顶点处
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr1_1.size(); ++i) {
-                glColor3f(1.0000, 0.3882, 0.2784);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr1_1[i].pt1.x, _area4->LocalTrianglesVecotr1_1[i].pt1.y , _area4->LocalTrianglesVecotr1_1[i].pt1.z);
@@ -6126,7 +6202,7 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const PArea_4& _area4) {
                 glEnd();
             }
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr2_1.size(); ++i) {
-                glColor3f(0.6980, 0.1333, 0.1333);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr2_1[i].pt1.x, _area4->LocalTrianglesVecotr2_1[i].pt1.y, _area4->LocalTrianglesVecotr2_1[i].pt1.z);
@@ -6136,7 +6212,7 @@ void CMy3DSymbolLibNewView::FiveStarTriangled(const PArea_4& _area4) {
                 glEnd();
             }
             for (uint32 i = 0; i < _area4->LocalTrianglesVecotr_last.size(); ++i) {
-                glColor3f(0.6275, 0.1255, 0.9412);
+                glColor3f(Color_shenlanse);
                 glBegin(GL_TRIANGLES);
                 {
                     glVertex3f(_area4->LocalTrianglesVecotr_last[i].pt1.x, _area4->LocalTrianglesVecotr_last[i].pt1.y, _area4->LocalTrianglesVecotr_last[i].pt1.z);

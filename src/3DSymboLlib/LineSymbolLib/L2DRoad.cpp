@@ -245,7 +245,7 @@ void L2DRoad::SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]) {
                                 JD1.x = (b1 * c2 - b2 * c1) / (a1 * b2 - a2 * b1);
                                 JD1.y = (a2 * c1 - a1 * c2) / (a1 * b2 - a2 * b1);
                             }
-                            LOGGER_INFO << "...JD1 = " << JD1.x << ", " << JD1.y;
+                            //LOGGER_INFO << "...JD1 = " << JD1.x << ", " << JD1.y;
                             pTmpArea4_A.pt4.x = JD1.x;
                             pTmpArea4_A.pt4.z = JD1.y;
                             pTmpArea4_A.pt4.y = GetHeight(pTmpArea4_A.pt4.x, pTmpArea4_A.pt4.z, g_terrain);
@@ -283,27 +283,23 @@ void L2DRoad::SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]) {
                 }
             }
 
-            LOGGER_INFO << "----------------------------------";
+            //LOGGER_INFO << "----------------------------------";
 
-            auto size1 = m_Line_Area4_Array_->GetSize();
+            // auto size1 = m_Line_Area4_Array_->GetSize();
 
             //if (size1 >= 2) {
-
             //    {
             //        Area_4* pArea4 = new Area_4;
             //        CString tmpTextureStr;
             //        tmpTextureStr.Format("%s", pLs.line_texture_.c_str());
             //        pArea4->area_texture = tmpTextureStr;
             //        pArea4->deleted = 0;
-
             //        auto size2 = allBigAreaContainsSmallAreaVector.at(0).size();
             //        auto tmpVector = allBigAreaContainsSmallAreaVector.at(0).at(size2-1);
             //        pArea4->pt1 = tmpVector.pt1;
             //        pArea4->pt2 = tmpVector.pt2;
             //        pArea4->pt3 = tmpVector.pt3;
             //        pArea4->pt4 = tmpVector.pt4;
-
-
             //        m_Line_XiFen_Area4_Array->Add(pArea4);
             //    }
             //    
@@ -318,12 +314,8 @@ void L2DRoad::SaveLineSymbol(LineSymbol* pLineSymbol_, float (*g_terrain)[3]) {
             //        pArea4->pt2 = tmpVector2.pt2;
             //        pArea4->pt3 = tmpVector2.pt3;
             //        pArea4->pt4 = tmpVector2.pt4;
-
             //        m_Line_XiFen_Area4_Array->Add(pArea4);
-
             //    }
-
-                
             //}
 
 

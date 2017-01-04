@@ -90,7 +90,7 @@
 // #define MAP_SCALE   24.0f      // the scale of the terrain map，边长为24
 
 
-//#define MAP_W       128
+// #define MAP_W       128
 //#define MAP_SCALE   6.00f
 
  #define MAP_W       256
