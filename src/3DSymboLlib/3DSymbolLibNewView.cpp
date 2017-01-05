@@ -699,15 +699,22 @@ void CMy3DSymbolLibNewView::DrawScene() {
         if (lightDrawFlag_) {
             glPushAttrib(GL_CURRENT_BIT);  // 保存现有颜色属性
             glPushMatrix();             // 压入矩阵堆栈
-            glLineWidth(6.6);           // 设置线宽
-            glColor3f(0, 0.5, 1);       // 设置颜色
-            float deta = 2;
+            glDisable(GL_TEXTURE_2D);  
+            glLineWidth(2.6);           // 设置线宽
+            glColor3f(Color_shenlanse);       // 设置颜色
+
+            glEnable(GL_BLEND);
+            glEnable(GL_LINE_SMOOTH);
+            glHint(GL_LINE_SMOOTH_HINT, GL_FASTEST);  // Antialias the lines
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+
+            float deta = 0.1;
 
             if (!pSingleLine_->all_line_JD_vector_.empty()) {
                 
                 auto size = pSingleLine_->all_line_JD_vector_.size();
                 for (decltype(size) i=0;i<size; ++i) {
-                    glColor3f(Color_shenlanse);
+                    glColor3f(Color_jinhuangse);
                     glBegin(GL_LINE_STRIP);
                     auto one_line_JD_vector = pSingleLine_->all_line_JD_vector_.at(i);
                     auto siz2 = one_line_JD_vector.size();
@@ -717,31 +724,11 @@ void CMy3DSymbolLibNewView::DrawScene() {
                     glEnd();
                 }
             }
-
-            
-
-
-            //for (auto i =0; i<LightDrawArea4Array_.GetSize(); ++i) {
-            //    auto pArea4 = LightDrawArea4Array_.GetAt(i);
-    
-            //    glColor3f(Color_shenlanse);
-            //    glBegin(GL_LINES);
-            //    {
-            //        float deta = 5;
-
-            //        // LOGGER_INFO << "...........";
-
-            //        glVertex3f(pArea4->pt1.x, pArea4->pt1.y + deta, pArea4->pt1.z);
-            //        glVertex3f(pArea4->pt4.x, pArea4->pt4.y + deta, pArea4->pt4.z);
-
-            //        glVertex3f(pArea4->pt2.x, pArea4->pt2.y + deta, pArea4->pt2.z);
-            //        glVertex3f(pArea4->pt3.x, pArea4->pt3.y + deta, pArea4->pt3.z);
-            //    }
-            //    glEnd();
-            //}
             glLineWidth(1.0);           // 恢复线宽
+
+            glPopMatrix();
+            glEnable(GL_TEXTURE_2D);
             glPopAttrib();
-            glPopMatrix();              // 弹出矩阵堆栈
         }
 
         if (pAFiveStar_->fiveStar_fuse_Flag_) {
