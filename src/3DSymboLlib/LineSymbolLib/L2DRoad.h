@@ -24,10 +24,10 @@ struct LineSymbol {
 
     vector<Vec3> line_points_;  // 线上各点
     string line_texture_;       // 纹理
-    int32 line_type_;             // 线符号类型
+    int32 line_type_;           // 线符号类型
     float line_width_;          // 线宽
-    bool deleted_;  // 标记是否已经删除
-    bool inserted_;  // 标记是否已插入
+    bool deleted_;              // 标记是否已经删除
+    bool inserted_;             // 标记是否已插入
 };
 
 

@@ -480,7 +480,7 @@ class CMy3DSymbolLibNewView : public CView {
 
 
     // ------------------------------高亮显示
-    void LightDrawLineSymbol(PPR_Point _mp, CPoint point); // 高亮显示
+    void LightDrawLineSymbol(PPR_Point _mp, CPoint point);  // 高亮显示
     CArray<PArea_4, PArea_4> LightDrawArea4Array_;
     bool lightDrawFlag_;
 
@@ -556,11 +556,11 @@ class CMy3DSymbolLibNewView : public CView {
         return std::sqrt(dx * dx + dz * dz);
     }
     float distance_point_line(float a, float b, float c, const Vec3& point) {
-        if (MATH_FLOAT_EQUAL_0(sqrt(a*a + b*b))) {
+        if (MATH_FLOAT_EQUAL_0(sqrt(a * a + b * b))) {
             AfxMessageBox("MATH_FLOAT_EQUAL_0(sqrt(a*a + b*b))");
             return 0;
         }
-        float dis = abs( (a*point.x + b*point.z + c) / sqrt(a*a + b*b) );
+        float dis = abs((a * point.x + b * point.z + c) / sqrt(a * a + b * b));
         return dis;
     }
 
@@ -610,8 +610,8 @@ class CMy3DSymbolLibNewView : public CView {
     afx_msg void OnPopupLineModifyWidth();
     afx_msg void OnTestCalcFivestarInfo();
     afx_msg void OnFivestarFuse();
-//    afx_msg void OnUpdateFivestarFuse(CCmdUI *pCmdUI);
-    afx_msg void OnUpdateTestCalcFivestarInfo(CCmdUI *pCmdUI);
+    //    afx_msg void OnUpdateFivestarFuse(CCmdUI *pCmdUI);
+    afx_msg void OnUpdateTestCalcFivestarInfo(CCmdUI* pCmdUI);
     afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 };
 

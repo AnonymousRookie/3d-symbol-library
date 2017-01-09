@@ -15,12 +15,12 @@ struct AreaFiveStarSymbol {
         deleted_(false) {
     }
 
-    float d_;           // 五角星边长
-    float theta_;       // 五角星锐角度数(36度)
-    Point3 pO_;         // 五角星中心坐标
-    string area_texture_;       // 纹理
-    string area_type_;          // 面符号类型
-    bool deleted_;      // 标记是否已经删除
+    float d_;               // 五角星边长
+    float theta_;           // 五角星锐角度数(36度)
+    Point3 pO_;             // 五角星中心坐标
+    string area_texture_;   // 纹理
+    string area_type_;      // 面符号类型
+    bool deleted_;          // 标记是否已经删除
 
     // 待求
     Point3 pA_;
@@ -43,13 +43,13 @@ struct AreaFiveStarSymbol {
 
 
 class FiveStar : Base::Uncopyable {
-public:
+  public:
     FiveStar() {}
     ~FiveStar() {}
   public:
     void SaveFiveStarInfo(const float d, const Point3& pO, AreaFiveStarSymbol* pFiveStarSymbol);
 
-public:
+  public:
     std::unordered_map<int32, AreaFiveStarSymbol> allFiveStarSymbols_;  // 存放所有的五角星面符号
     std::unordered_map<int32, std::shared_ptr<CArray<PArea_4, PArea_4>>> allFiveStarArea4Array_;  // 存放所有五角星的小四边形
     BOOL fiveStar_fuse_Flag_;  // 是否已经对五角星符号进行融合

@@ -25,7 +25,7 @@ class SingleLine : Base::Uncopyable {
     void CalcuateGridNum(int32* rowNum, int32* row_index_begin, int32* row_index_end,
                          int32* colNum, int32* col_index_begin, int32* col_index_end, Line3 _line);
 
- 
+
     void GetEveryJDInLines(const Point3& p1, const Point3& p2);
 
   public:
@@ -33,14 +33,8 @@ class SingleLine : Base::Uncopyable {
     vector<Point3> JD_vector2;
     vector<Point3> JD_vector3;  // 斜线交点
 
-
-
-
-    vector<Point3> Line_a_JD_vector;
-
-
-    vector<vector<Point3>> all_line_JD_vector_;
-
+    vector<Point3> Line_a_JD_vector;             // all points in one line
+    vector<vector<Point3>> all_line_JD_vector_;  // all points in all lines
 };
 
 
