@@ -476,7 +476,7 @@ class CMy3DSymbolLibNewView : public CView {
 
 
     // 三角化并渲染增加宽度后的线符号
-    void Line_Area_Triangled(const PArea_4& _area4);
+    void Line_Area_Triangled(const PArea_4& _area4, int line_id);
 
 
     // ------------------------------高亮显示

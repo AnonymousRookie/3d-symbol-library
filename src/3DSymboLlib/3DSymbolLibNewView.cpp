@@ -734,11 +734,12 @@ void CMy3DSymbolLibNewView::DrawScene() {
         if (pL2DRoad_->Line_fuse_Flag_) {
             for (auto iter = pL2DRoad_->allLineArea4Array_.begin(); iter != pL2DRoad_->allLineArea4Array_.end(); ++iter) {
                 auto pLineArea4Array = (*iter).second;
+                auto l_line_id = (*iter).first;
                 //
                 int32 tmp_size = pLineArea4Array->GetSize();
                 for (int32 i = 0; i < tmp_size; ++i) {
                     if ((*pLineArea4Array)[i]->deleted != 1) {
-                        Line_Area_Triangled((*pLineArea4Array)[i]);
+                        Line_Area_Triangled((*pLineArea4Array)[i], l_line_id);
                     }
                 }
             }
@@ -5186,12 +5187,13 @@ void CMy3DSymbolLibNewView::Area_Triangled(const PArea_4& _area4) {
 // }
 
 // 计算UV坐标, 线符号三角化
-void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4) {
+void CMy3DSymbolLibNewView::Line_Area_Triangled(const PArea_4& _area4, int line_id) {
     if (pL2DRoad_->Line_fuse_Flag_ == TRUE && m_Drawmode == 3) {
         float distance_14 = distance_xz(_area4->pt1, _area4->pt4);
         float distance_23 = distance_xz(_area4->pt2, _area4->pt3);
         float line_length = (distance_14 > distance_23 ? distance_14 : distance_23);
-        float line_width = LINE_WIDTH;
+        float line_width = pL2DRoad_->allLineSymbols_[line_id].line_width_;
+        // float line_width = LINE_WIDTH;
         // 平面中 12直线方程，a2x + b2y + c2 = 0
         float a2 = _area4->pt2.z - _area4->pt1.z;
         float b2 = _area4->pt1.x - _area4->pt2.x;
