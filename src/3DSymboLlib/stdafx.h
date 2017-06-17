@@ -23,6 +23,16 @@
 #define VC_EXTRALEAN            // 从 Windows 头中排除极少使用的资料
 #endif
 
+// 检测编译器版本
+// MS VC++ 11.0 _MSC_VER = 1700 (VisualStudio 2012)
+#if defined(_MSC_VER)
+#if _MSC_VER < 1700
+#error 你的编译器版本有点低哦! You need to use a C++11 compiler, such as Visual Studio 2012 or higher.
+#endif
+#endif
+
+
+
 #include "targetver.h"
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS      // 某些 CString 构造函数将是显式的
@@ -91,10 +101,10 @@
 
 
 // #define MAP_W       128
-//#define MAP_SCALE   6.00f
+// #define MAP_SCALE   6.00f
 
- #define MAP_W       256
- #define MAP_SCALE   3.00f
+#define MAP_W       256
+#define MAP_SCALE   3.00f
 
 
 #define MAP         MAP_W*MAP_SCALE/2

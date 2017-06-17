@@ -507,7 +507,15 @@ void CMy3DSymbolLibNewView::InitTerrain() {
     // 读取等高线数据
     terrainContourData_.clear();
     // std::ifstream t("C:\\128x128.txt");
-    std::ifstream t("C:\\256x256.txt");
+    // X:\xxx\DataFormated\Terrain\DEM\256x256.txt
+    std::string demFile = g_sceneDataPath + "\\Terrain\\DEM\\256x256";
+    LOGGER_INFO << "demFile = " << demFile;
+    if (!PathFileExists(CString(demFile.c_str()))) {
+        LOGGER_ERROR << demFile + " [DEM数据文件不存在!]";
+        AfxMessageBox(CString(demFile.c_str()) + " [DEM数据文件不存在!] ");
+        exit(-1);
+    }
+    std::ifstream t(demFile);
     std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
     std::vector<std::string> row = StringUtils::split(str, '\n');
     for (auto iter = row.begin(); iter != row.end(); ++iter) {
@@ -3544,6 +3552,7 @@ void CMy3DSymbolLibNewView::loadSceneFile(CString filename) {
         i = pTerrainData_->m_TerrainContourFolder.Find(" ");
         pTerrainData_->m_TerrainContour = pTerrainData_->m_TerrainContourFolder.Right(length - i - 1);
         pTerrainData_->m_TerrainContourFolder = pTerrainData_->m_TerrainContourFolder.Left(i);
+        // LOGGER_INFO << "==>>> pTerrainData_->m_TerrainContour = " << pTerrainData_->m_TerrainContour;
         // ----------------------------------------------------
         // 天空盒数据SkyBox
         file.ReadString(pSkyBox_->m_SkyBoxFolder);

@@ -78,8 +78,8 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PreBuildEvent>
-      <Command>copy $(ProjectDir)system.ini $(SolutionDir)..\bin\;
-copy $(ProjectDir)symbols.xml $(SolutionDir)..\bin\;</Command>
+      <Command>copy "$(ProjectDir)system.ini" "$(SolutionDir)..\bin\";
+copy "$(ProjectDir)symbols.xml" "$(SolutionDir)..\bin\";</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

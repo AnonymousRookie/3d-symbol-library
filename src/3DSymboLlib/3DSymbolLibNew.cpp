@@ -172,7 +172,9 @@ BOOL CMy3DSymbolLibNewApp::InitInstance() {
     CFileFind symbolConfigureFinder;
     BOOL isSymbolConfigureFind = symbolConfigureFinder.FindFile(g_point_symbolConfigureFile.c_str());
     if (!isSymbolConfigureFind) {
-        MessageBox(NULL, "Can not point.plib!", "warning", MB_OK);
+        MessageBox(NULL, "找不到场景文件,请通过<系统设置>选择正确的存放路径!", "warning", MB_OK);
+        LOGGER_WARNING << "找不到场景文件,请通过<系统设置>选择正确的存放路径!";
+        return TRUE;
     }
     // ==============================================================
     // 将XML文件中的信息读入全局list中
