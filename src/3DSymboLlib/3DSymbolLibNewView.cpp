@@ -4811,7 +4811,7 @@ void CMy3DSymbolLibNewView::OnMenuAreaFuse() {
         m_Area4_Array[i]->TrianglesInPolygonVecotr = tmp_area4.TrianglesInPolygonVecotr;
         // ==================================================================================
         CString scenePath = g_sceneDataPath.c_str();
-        CString area_texture = scenePath + "\\AreaTexture\\grassland\\area.bmp";
+        CString area_texture = scenePath + "\\SymbolTexture\\AreaSymbolTexture\\area.bmp";
         // 面符号纹理
         // m_Area4_Array[i]->area_texture = area_texture;
         /*  if(i == 1)
